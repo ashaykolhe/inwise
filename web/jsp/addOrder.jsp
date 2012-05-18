@@ -208,7 +208,7 @@ return true;
                 </tr>
                 <tr>
                     <td align="left" class="pageheading" valign="top">
-                        Order > Add Order
+                        Order > Add Orders
                     </td>
                 </tr>
                 <tr valign="top"><td align="center">&nbsp;
