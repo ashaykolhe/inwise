@@ -34,63 +34,25 @@ To change this template use File | Settings | File Templates.
     });
 
 </script>
-<%--
-<c:set var = "TR2" value="addreceipt"/>
-<c:if test="${orderBean.test eq TR2}">
-<script type="text/javascript">
-function OpenPopup(){
-var w = 800;
-var h = 480;
-var winl = (screen.width-w)/2;
-var wint = (screen.height-h)/2;
-if (winl < 0) winl = 0;
-if (wint < 0) wint = 0;
-var page = "/PurchaseOrder.action?redirectpopup";
-windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-+ "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-window.open(page, "Popup", windowprops);
-return;
-}
-window.onLoad =OpenPopup();
-</script>
-</c:if >
-<c:set var = "TR2" value="updatereceipt"/>
-<c:if test="${orderBean.test eq TR2}">
-<script type="text/javascript">
-function OpenPopup(){
-var w = 800;
-var h = 480;
-var winl = (screen.width-w)/2;
-var wint = (screen.height-h)/2;
-if (winl < 0) winl = 0;
-if (wint < 0) wint = 0;
-var page = "/PurchaseOrder.action?redirectpopupUpdate=&id="+${orderBean.id}+"";
-windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-+ "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-window.open(page, "Popup", windowprops);
-return;
-}
-window.onLoad =OpenPopup();
-</script>
-</c:if >
+
 <script type="text/javascript">
 function GetItemDetail(button){
 var count=$('#family #tabletr').length;
 var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
 var flag=true;
-var check=$('#itemcode'+rowid+'').val();
+var check=$('#productName'+rowid+'').val();
 for(var i=1;i<=count;i++)
 {
 if(rowid==i){
 continue;
 }
-var temp=$('#itemcode'+i+'').val();
+var temp=$('#productName'+i+'').val();
 
 if(check==temp)
 {
 flag=false;
 --rowid;
-alert("This Item has been already added. Please select another item.");
+alert("This Product has been already added. Please select another product.");
 $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
 $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
 return false;
@@ -98,10 +60,10 @@ return false;
 }//end of for
 if(flag==true)
 {
-$.post('PurchaseOrder.action?getItemDetails', {id:button.value}, function (data) {
+$.post('Order.action?productDetailsAjax', {id:button.value}, function (data) {
 var result=eval(data);
-$('#item'+rowid+'').attr("value",result.itemCode);
-$('#uom'+rowid+'').attr("value",result.uom.name);
+$('#cost'+rowid+'').attr("value",result.productCost);
+$('#productMeasurementType'+rowid+'').attr("value",result.productMeasurementType.measurementType);
 });//end of post funtion
 }//end of flag==true if
 } //end of getItem Funntion
@@ -114,59 +76,31 @@ var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
 if(p.value!=0){
 var chk = /^[0-9]+$/.test(p.value);
 if (!chk) {
-alert('please Enter Numeric value for rate');
+alert('please Enter Numeric value for quantity');
 --rowid;
-$('#family #tabletr:eq('+rowid+') input:eq(4)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(5)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(4)').focus();
+$('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
+$('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
+$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
 }//end of chk loop
-else if($('#ordqty'+rowid+'').val().trim()!=""){
-var ordqty=$('#ordqty'+rowid+'').val();
+else if($('#orderedQuantity'+rowid+'').val().trim()!=""){
+var ordqty=$('#orderedQuantity'+rowid+'').val();
 var valueset=parseFloat(p.value)*parseFloat(ordqty);
 $('#amount'+rowid+'').attr("value",valueset);
 }//end of else if loop
 else{
 --rowid;
-alert("Please enter order quantity");
-$('#family #tabletr:eq('+rowid+') input:eq(3)').focus();
+alert("Please enter quantity");
+$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
 }//ennd of else
 }//end of p.value!=0 if
 else{
 --rowid;
-alert("Please enter valid rate");
-$('#family #tabletr:eq('+rowid+') input:eq(4)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(5)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(4)').focus();
-}
-
-}//end of function
-/*the function calculateBalancechangeorder is use to validate quantity textfiled for numeric as well as blank
-this function is called onChange of quantity  textfield  */
-function calculateBalancechaneorder(p,i){
-var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
-
-if(p.value!=0){
-var chk = /^[0-9]+$/.test(p.value);
-if (!chk) {
---rowid;
-alert('please Enter Numeric value for Order Quantity');
+alert("Please enter valid quantity");
+$('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
 $('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(5)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(3)').focus();
+$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
 }
-else if($('#rate'+rowid+'').val().trim()!=""){
-var rate=$('#rate'+rowid+'').val();
-var valueset=parseFloat(p.value)*parseFloat(rate);
-$('#amount'+rowid+'').attr("value",valueset);
-}
-}
-else{
---rowid;
-alert("Please enter valid Quantity");
-$('#family #tabletr:eq('+i+') input:eq(3)').val("");
-$('#family #tabletr:eq('+i+') input:eq(5)').val("");
-$('#family #tabletr:eq('+i+') input:eq(3)').focus();
-}
+
 }//end of function
 
 function deletethis(p,a){
@@ -188,42 +122,55 @@ var count=$('#family #tabletr').length+1;
 $('#family #tabletr:last').clone(true).insertAfter('#family #tabletr:last');
 $('#family #tabletr:last select:eq(0)').attr("value","0");
 $('#family #tabletr:last input').removeAttr("value");
-$('#family #tabletr:last select:eq(0)').attr("name","purchasedetailarray["+count+"].item.id");
+$('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
 $('#family #tabletr:last select:eq(0)').attr("id","itemcode"+count);
-$('#family #tabletr:last input:eq(0)').attr("id","item"+count);
-$('#family #tabletr:last input:eq(1)').attr("id","uom"+count);
-$('#family #tabletr:last input:eq(2)').attr("name","purchasedetailarray["+count+"].description");
-$('#family #tabletr:last input:eq(3)').attr("name","purchasedetailarray["+count+"].orderedQty");
-$('#family #tabletr:last input:eq(3)').attr("id","ordqty"+count);
-$('#family #tabletr:last input:eq(4)').attr("name","purchasedetailarray["+count+"].rate");
-$('#family #tabletr:last input:eq(4)').attr("id","rate"+count);
-$('#family #tabletr:last input:eq(5)').attr("name","purchasedetailarray["+count+"].amount");
-$('#family #tabletr:last input:eq(5)').attr("id","amount"+count);
-$('#family #tabletr:last input:eq(6)').attr("name","delete["+count+"]");
-$('#family #tabletr:last input:eq(6)').attr("id","delete"+count);
+$('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
+$('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
+$('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");
+$('#family #tabletr:last input:eq(2)').attr("id","ordqty"+count);
+$('#family #tabletr:last input:eq(3)').attr("id","amount"+count);
+$('#family #tabletr:last input:eq(4)').attr("name","delete["+count+"]");
+$('#family #tabletr:last input:eq(4)').attr("id","delete"+count);
 });
-$("#addpopreview").click(function(){
+$("#addOrder").click(function(){
 var numeric = /^[0-9]+$/;
 var count=$('#family #tabletr').length;
-if($('#vendorName').attr("value")=="0"){
-alert("please select Vendor Name");
-$('#vendorName').focus();
+if($('#customerName').attr("value")=="0"){
+alert("please select Customer Name");
+$('#customerName').focus();
+    alert($('#createDate').attr("value").trim);
 return false;
+}else if($('#createDate').attr("value").trim==""){
+    $('#createDate').focus();
+    alert("please select a date");
+    return false;
+}else if($('#customerOrderNo').attr("value").trim==""){
+    $('#customerOrderNo').focus();
+    alert("please enter customer order number");
+    return false;
+}else if($('#consigneeName').attr("value").trim==""){
+    $('#consigneeName').focus();
+    alert("please enter consignee's name");
+    return false;
+}else if($('#invoiceAddress').attr("value").trim=="0"){
+    $('#invoiceAddress').focus();
+    alert("please select invoice address");
+    return false;
+}else if($('#shipmentAddress').attr("value").trim=="0"){
+    $('#shipmentAddress').focus();
+    alert("please select shipment address");
+    return false;
 }
 for(var i=0;i<count;i++){
 if(i==0){
-if($('#family #tabletr:eq('+i+') select:eq(0)').attr("value")=="0"){
-alert("please select Item Code")
+if($('#family #tabletr:eq('+i+') select:eq(0)').attr("value")==""){
+alert("please select Product Name")
 return false;
 }
-else if($('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="0"){
-$('#family #tabletr:eq('+i+') input:eq(3)').focus();
-alert("please enter ordered valid quantity");
-return false;
-}
-else if($('#family #tabletr:eq('+i+') input:eq(4)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(4)').attr("value").trim()=="0"){
-$('#family #tabletr:eq('+i+') input:eq(4)').focus();
-alert("please enter valid rate");
+else if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
+$('#family #tabletr:eq('+i+') input:eq(2)').focus();
+$('#family #tabletr:eq('+i+') input:eq(2)').attr("value","");
+alert("please enter valid order quantity");
 return false;
 }
 }
@@ -232,7 +179,6 @@ return true;
 });
 });
 </script>
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <s:layout-render name="/layout/_base.jsp">
@@ -245,7 +191,7 @@ return true;
                 </tr>
                 <tr>
                     <td align="left" class="pageheading" valign="top">
-                        Order > Add Orders
+                        Order > Add Order
                     </td>
                 </tr>
                 <tr valign="top"><td align="center">&nbsp;
@@ -255,12 +201,12 @@ return true;
             <table border="1" width="78%" bgcolor="#FCFCFC" ><tr><td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="16%" align="left" valign="top">
+                        <td width="21%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left">
                                 <s:select id="customerName" name="order.customer.id" class="dropdown">
                                     <option  value="0">---Select Customer---</option>
@@ -270,50 +216,50 @@ return true;
                                 </s:select>
                             </div>
                         </td>
-                        <td width="15%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="16%" align="left" valign="top">
+                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
+                        <td width="22%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Order Date<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="19%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.createDate" style="text-align:right;margin-right:2px;width:100px; "/>
+                                <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);" style="text-align:right;margin-right:2px;width:100px; "/>
                             </div>
                         </td>
                     </tr>
                     
                         <tr>
-                        <td width="16%" align="left" valign="top">
+                        <td width="21%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Customer Order No.<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.customerOrderNo" style="text-align:right;margin-right:2px;width:100px; "/>
+                                <s:text name="order.customerOrderNo" id="customerOrderNumber" style="text-align:right;margin-right:2px;width:200px; "/>
                             </div>
                         </td>
-                        <td width="15%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="16%" align="left" valign="top">
+                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
+                        <td width="22%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Consignee Name<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="19%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.consigneeName" style="text-align:right;margin-right:2px;width:100px; "/>
+                                <s:text name="order.consigneeName" id="consigneeName" style="text-align:right;margin-right:2px;width:100px; "/>
                             </div>
                         </td>
                     </tr>
 
                     <tr>
-                        <td width="16%" align="left" valign="top">
+                        <td width="21%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Invoice Address<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left">
                                 <s:hidden name="order.orderAddress[0].addressType.id" value="1"/>
                                 <s:select id="invoiceAddress" name="order.orderAddress[0].address.id" class="dropdown">
@@ -323,13 +269,13 @@ return true;
                                 </s:select>
                             </div>
                         </td>
-                        <td width="15%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="16%" align="left" valign="top">
+                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
+                        <td width="22%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Shipment Address<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="21%" align="left" valign="top">
+                        <td width="19%" align="left" valign="top">
                             <div align="left">
                                 <s:hidden name="order.orderAddress[1].addressType.id" value="2"/>
                                 <s:select id="shipmentAddress" name="order.orderAddress[1].address.id" class="dropdown">
@@ -351,7 +297,8 @@ return true;
                                     <td width="20%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Cost</span></strong></div></td>
                                     <td width="9%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">UOM</span></strong></div></td>
                                     <td width="12%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Quantity</span></strong></div></td>
-                                    <td width="5%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"></span></strong></div></td>
+                                    <td width="12%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amount</span></strong></div></td>
+                                    <td width="5%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"/></span></strong></div></td>
                                 </tr>
                                 <c:forEach var="i" begin="1" end="4" step="1" varStatus ="status" >
                                     <tr id="tabletr">
@@ -361,7 +308,7 @@ return true;
                                                     <s:select id="productName${i}" name="order.orderDetail[${i}].product.id"  onchange= "return GetItemDetail(this);">
                                                         <option  value="">---Select Product---</option>
                                                         <c:forEach items="${orderBean.productList}" var="product" varStatus="loop" >
-                                                            <option value ="<c:out value="${product.id}"/>"><c:out value="${product.productName}"/></option>
+                                                            <option value ="<c:out value='${product.id}'/>"><c:out value="${product.productName}"/></option>
                                                         </c:forEach>
                                                     </s:select>
                                                 </div></div></td>
@@ -369,22 +316,27 @@ return true;
                                         <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                             <div align="left" style="margin-left:4px;">
                                                 <div align="right">
-                                                    <s:text  name="productCost" id="cost${i}" style="text-align:right;margin-right:2px;width:100px; "/>
+                                                    <s:text  name="productCost" id="cost${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
                                                 </div></div></td>
                                         <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                             <div align="left" style="margin-left:4px;">
                                                 <div align="right">
-                                                    <s:text name="productMeasurementType" id="productMeasurementType${i}" style="text-align:right;margin-right:2px;width:100px; "/>
+                                                    <s:text name="productMeasurementType" id="productMeasurementType${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
                                                 </div></div></td>
                                         <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                             <div align="left" style="margin-left:4px;">
                                                 <div align="right">
-                                                    <s:text name="order.orderDetail[${i}].orderedQuantity" onchange="return calculateBalancechaneorder(this,${i})" style="text-align:right;margin-right:2px;width:100px; "/>
+                                                    <s:text name="order.orderDetail[${i}].orderedQuantity" id="orderedQuantity${i}" onchange="return calculateBalance(this,${i})"  style="text-align:right;margin-right:2px;width:100px; "/>
+                                                </div></div></td>
+                                        <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
+                                            <div align="left" style="margin-left:4px;">
+                                                <div align="right">
+                                                    <s:text name="amount[${i}]" id="amount${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
                                                 </div></div></td>
                                         <td style="border-top:1px solid #000000;">
                                             <div align="left" style="margin-left:0px;">
                                                 <div align="right">
-                                                    <s:text name="delete[${i}]"   id="delete${i}"  style="background-image:url('../images/Cfthrow.gif');border :none;cursor:auto;"    onclick="return deletethis(this)"/>
+                                                    <s:text name="delete[${i}]"   id="delete${i}"  style="background-image:url('images/Cfthrow.gif') no-repeat ;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
 
                                                 </div></div></td>
 
@@ -408,7 +360,7 @@ return true;
                             <input type="reset"  value="Reset" name="reset"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <s:submit name="cancel" value="Cancel"></s:submit>
                         </div></td>
-                        <td width="3%" align="left">&nbsp;</td>
+                        <td width="19%" align="left">&nbsp;</td>
                     </tr>
                     
                 </table></td></tr></table>
