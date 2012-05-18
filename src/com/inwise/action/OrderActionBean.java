@@ -31,11 +31,11 @@ public class OrderActionBean extends BaseActionBean{
 
     @Inject
     ProductDao productDao;
-    
+
     private Order order;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
-       private List<Order> orderlst;
+    private List<Order> orderlst;
 
     public List<Order> getOrderlst() {
         return orderlst;
@@ -89,8 +89,15 @@ public class OrderActionBean extends BaseActionBean{
         return new JavaScriptResolution(productDao.find(id));
     }
 
-        public Resolution getCustomerOrderNo(){
+    public Resolution getCustomerOrderNo(){
         orderlst=orderDao.getCustomerOrderNo(id);
-       return new JavaScriptResolution(orderlst);
+        return new JavaScriptResolution(orderlst);
     }
+
+    public Resolution customerOrderNoAlreadyPresent()
+    {
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(id));
+    }
+
+
 }

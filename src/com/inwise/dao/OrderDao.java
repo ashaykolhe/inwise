@@ -2,8 +2,11 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
+import com.inwise.pojo.Customer;
 
 import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,6 +32,10 @@ public class OrderDao extends BaseDao<Order,Integer> {
 
     public List<String> getOrderCustomerNameLst() {
          return (List<String>)sessionProvider.get().createQuery("SELECT o.customer.name from Order o").list();
+    }
+
+    public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
+        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
     }
 
 }
