@@ -257,8 +257,8 @@ To change this template use File | Settings | File Templates.
 
         <tr>
             <td >&nbsp;</td>
-            <td colspan="2" align="right" valign="top"><div align="center">
-                <s:submit id="addcustomerbutton" name="addCustomer" value="add"></s:submit>
+            <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:submit id="addcustomerbutton" name="addCustomer" value="Add"></s:submit>     &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:submit name="cancel" value="Cancel"></s:submit></div></td>
             <td >&nbsp;</td>
