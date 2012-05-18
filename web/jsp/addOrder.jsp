@@ -138,25 +138,24 @@ var count=$('#family #tabletr').length;
 if($('#customerName').attr("value")=="0"){
 alert("please select Customer Name");
 $('#customerName').focus();
-    alert($('#createDate').attr("value").trim);
 return false;
-}else if($('#createDate').attr("value").trim==""){
+}else if($('#createDate').attr("value").trim()==""){
     $('#createDate').focus();
     alert("please select a date");
     return false;
-}else if($('#customerOrderNo').attr("value").trim==""){
+}else if($('#customerOrderNo').attr("value").trim()==""){
     $('#customerOrderNo').focus();
     alert("please enter customer order number");
     return false;
-}else if($('#consigneeName').attr("value").trim==""){
+}else if($('#consigneeName').attr("value").trim()==""){
     $('#consigneeName').focus();
     alert("please enter consignee's name");
     return false;
-}else if($('#invoiceAddress').attr("value").trim=="0"){
+}else if($('#invoiceAddress').attr("value").trim()=="0"){
     $('#invoiceAddress').focus();
     alert("please select invoice address");
     return false;
-}else if($('#shipmentAddress').attr("value").trim=="0"){
+}else if($('#shipmentAddress').attr("value").trim()=="0"){
     $('#shipmentAddress').focus();
     alert("please select shipment address");
     return false;
@@ -198,15 +197,15 @@ return true;
                 </td>
                 </tr>
             </table>
-            <table border="1" width="78%" bgcolor="#FCFCFC" ><tr><td>
+            <table border="1" width="65%" bgcolor="#FCFCFC" ><tr><td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="24%" align="left" valign="top">
+                        <td width="22%" align="left" valign="top">
                             <div align="left">
                                 <s:select id="customerName" name="order.customer.id" class="dropdown">
                                     <option  value="0">---Select Customer---</option>
@@ -216,74 +215,65 @@ return true;
                                 </s:select>
                             </div>
                         </td>
-                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="22%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top"><s:hidden name="order.deleted" value="0"/>
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Order Date<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="19%" align="left" valign="top">
+                        <td width="30%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);" style="text-align:right;margin-right:2px;width:100px; "/>
+                                <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
                             </div>
                         </td>
                     </tr>
                     
                         <tr>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Customer Order No.<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="24%" align="left" valign="top">
+                        <td width="22%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.customerOrderNo" id="customerOrderNumber" style="text-align:right;margin-right:2px;width:200px; "/>
+                                <s:text name="order.customerOrderNo" id="customerOrderNo" class="textbox"/>
                             </div>
                         </td>
-                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="22%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Consignee Name<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="19%" align="left" valign="top">
+                        <td width="30%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.consigneeName" id="consigneeName" style="text-align:right;margin-right:2px;width:100px; "/>
+                                <s:text name="order.consigneeName" id="consigneeName"  class="textbox"/>
                             </div>
                         </td>
                     </tr>
 
                     <tr>
-                        <td width="21%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Invoice Address<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="24%" align="left" valign="top">
+                        <td width="22%" align="left" valign="top">
                             <div align="left">
                                 <s:hidden name="order.orderAddress[0].addressType.id" value="1"/>
                                 <s:select id="invoiceAddress" name="order.orderAddress[0].address.id" class="dropdown">
                                     <option  value="0">---Select Address---</option>
-
-
                                 </s:select>
                             </div>
                         </td>
-                        <td width="14%">&nbsp;<s:hidden name="order.deleted" value="0"/></td>
-                        <td width="22%" align="left" valign="top">
+                        <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Shipment Address<span style="color:#FF0000"> *</span></div>
                             </div>
                         </td>
-                        <td width="19%" align="left" valign="top">
+                        <td width="30%" align="left" valign="top">
                             <div align="left">
                                 <s:hidden name="order.orderAddress[1].addressType.id" value="2"/>
                                 <s:select id="shipmentAddress" name="order.orderAddress[1].address.id" class="dropdown">
                                     <option  value="0">---Select Address---</option>
-                                    
-                                    <%--<c:forEach items="${orderBean.customerList}" var="customer" varStatus="loop" >
-                                        <option value ="${customer.id}"><c:out value="${customer.name}"/></option>
-                                    </c:forEach>--%>
                                 </s:select>
                             </div>
                         </td>
@@ -291,14 +281,15 @@ return true;
 
                     <tr>
                         <td colspan="4"><br><div align="left" style="margin-left:10px;">
-                            <table width="95%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family">
+
+                            <table width="90%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family">
                                 <tr>
-                                    <td width="12%" height="28px" style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product</span></strong></div></td>
-                                    <td width="20%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Cost</span></strong></div></td>
-                                    <td width="9%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">UOM</span></strong></div></td>
-                                    <td width="12%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Quantity</span></strong></div></td>
-                                    <td width="12%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amount</span></strong></div></td>
-                                    <td width="5%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"/></span></strong></div></td>
+                                    <td width="17%" height="28px" style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product</span></strong></div></td>
+                                    <td width="21%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Cost</span></strong></div></td>
+                                    <td width="18%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">UOM</span></strong></div></td>
+                                    <td width="17%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Quantity</span></strong></div></td>
+                                    <td width="20%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amount</span></strong></div></td>
+                                    <td width="7%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"/></span></strong></div></td>
                                 </tr>
                                 <c:forEach var="i" begin="1" end="4" step="1" varStatus ="status" >
                                     <tr id="tabletr">
@@ -336,7 +327,7 @@ return true;
                                         <td style="border-top:1px solid #000000;">
                                             <div align="left" style="margin-left:0px;">
                                                 <div align="right">
-                                                    <s:text name="delete[${i}]"   id="delete${i}"  style="background-image:url('images/Cfthrow.gif') no-repeat ;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
+                                                    <s:text name="delete[${i}]"   id="delete${i}" class="delete" style="background:url('images/Cfthrow.gif') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
 
                                                 </div></div></td>
 
@@ -350,17 +341,17 @@ return true;
                     </tr>
                     <tr>
                         <td align="left">&nbsp;</td>
-                        <td align="left" colspan="3">&nbsp;</td>
+                        <td align="left" colspan="2">&nbsp;</td>
                         <td align="left">&nbsp;</td>
                     </tr>
                     <tr>
                         <td align="left">&nbsp;</td>
-                        <td align="left" colspan="3"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <s:submit name="addOrder" value="Submit" id="addOrder"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="reset"  value="Reset" name="reset"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <s:submit name="cancel" value="Cancel"></s:submit>
                         </div></td>
-                        <td width="19%" align="left">&nbsp;</td>
+                        <td width="30%" align="left">&nbsp;</td>
                     </tr>
                     
                 </table></td></tr></table>
