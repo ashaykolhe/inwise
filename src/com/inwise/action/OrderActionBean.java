@@ -88,6 +88,7 @@ public class OrderActionBean extends BaseActionBean{
     public Resolution productDetailsAjax(){
         return new JavaScriptResolution(productDao.find(id));
     }
+
         public Resolution getCustomerOrderNo(){
         orderlst=orderDao.getCustomerOrderNo(id);
        return new JavaScriptResolution(orderlst);
