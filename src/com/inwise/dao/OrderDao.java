@@ -38,7 +38,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
     }
 
     public Order findByOrderCustomerName(String name) {
-        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.customer.name='"+name+"'").uniqueResult();
+        return (Order) sessionProvider.get().createQuery("from Order o where o.id='1'").uniqueResult();
 
     }
 

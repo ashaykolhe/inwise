@@ -186,14 +186,18 @@ public class SearchActionBean extends BaseActionBean{
 
          if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
                 order=orderDao.findByOrderCustomerOrderNumber(getName());
-        if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
+        if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
+        {
+            System.out.println("name  :"+getName());
                 order=orderDao.findByOrderCustomerName(getName());
-        if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
+            System.out.println("oooooooooooo"+getOrder());
+        }
+        if(searchSubmenu.equalsIgnoreCase("orderProductName"))
                 order=orderDao.findByOrderProductName(getName());
-        if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
+        if(searchSubmenu.equalsIgnoreCase("orderDate"))
                 order=orderDao.findByOrderDate(getDate());
 
-        System.out.println("cccccccc"+getInvoice());
+
         return new ForwardResolution("jsp/search.jsp");
     }
 
@@ -209,7 +213,7 @@ public class SearchActionBean extends BaseActionBean{
         }
         if(ajaxSubmenu.equals("inwiseCustomerOrderNo"))
             Stringlst=invoiceDao.getInvoiceOrderNumberLst();
-        if(ajaxSubmenu.equals("inwiseCustomerOrderNo"))
+        if(ajaxSubmenu.equals("inwiseCustomerName"))
          Stringlst=invoiceDao.getInvoiceCustomerNameLst();
         if(ajaxSubmenu.equals("inwiseProductName"))
          Stringlst=invoiceDao.getInvoiceProductNameLst();
