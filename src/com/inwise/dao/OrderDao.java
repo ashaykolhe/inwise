@@ -2,8 +2,10 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
+import com.inwise.pojo.Invoice;
 
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,4 +33,20 @@ public class OrderDao extends BaseDao<Order,Integer> {
          return (List<String>)sessionProvider.get().createQuery("SELECT o.customer.name from Order o").list();
     }
 
+    public Order findByOrderCustomerOrderNumber(String name) {
+     return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.customerOrderNo='"+name+"'").uniqueResult();
+    }
+
+    public Order findByOrderCustomerName(String name) {
+        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.customer.name='"+name+"'").uniqueResult();
+
+    }
+
+    public Order findByOrderProductName(String name) {
+        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.orderDetail.produce.name='"+name+"'").uniqueResult();
+    }
+
+    public Order findByOrderDate(Date date) {
+        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.createDate='"+date+"'").uniqueResult();
+    }
 }

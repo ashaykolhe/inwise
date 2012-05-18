@@ -4,6 +4,7 @@ import com.inwise.pojo.Invoice;
 import com.inwise.dao.BaseDao;
 
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,4 +35,25 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
     }
 
 
+    public Invoice findByInvoiceNumber(int id) {
+           return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+id+"'").uniqueResult();
+
+    }
+
+    public Invoice findByInvoiceCustomerOrderNo(String customerOrderno) {
+      return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+customerOrderno+"'").uniqueResult();
+    }
+
+    public Invoice findByInvoiceProductName(String productname) {
+        return (Invoice) sessionProvider.get().createQuery("select i from Invoice i WHERE i.invoiceDetail.product.productName='"+productname+"'").uniqueResult();
+    }
+
+
+    public Invoice findByInvoiceCustomerName(String name) {
+         return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerName='"+name+"'").uniqueResult();
+    }
+
+    public Invoice findByInvoiceDate(Date date) {
+        return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate='"+date+"'").uniqueResult();
+    }
 }
