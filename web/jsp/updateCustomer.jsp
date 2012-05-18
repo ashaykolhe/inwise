@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function(){
 
       $("#getcustomerbutton").click(function(){
@@ -27,27 +27,27 @@
                           }
            if ($("#addressline11").val().trim() ==""){
                               alert("please enter line 1 of address");
-                              $("#addressline1").focus() ;
+                              $("#addressline11").focus() ;
                               return false;
                           }
           if ($("#addressline12").val().trim() ==""){
                               alert("please enter line 2 of address");
-                              $("#addressline2").focus() ;
+                              $("#addressline12").focus() ;
                               return false;
                           }
           if ($("#addresscity1").val().trim() ==""){
                               alert("please enter city");
-                              $("#addresscity").focus() ;
+                              $("#addresscity1").focus() ;
                               return false;
                           }
           if ($("#addressstate1").val().trim() ==""){
                               alert("please enter state");
-                              $("#addressstate").focus() ;
+                              $("#addressstate1").focus() ;
                               return false;
                           }
           if ($("#addresscountry1").val().trim() ==""){
                               alert("please enter country");
-                              $("#addresscountry").focus() ;
+                              $("#addresscountry1").focus() ;
                               return false;
                           }
            if ($("#addresszip1").val().trim() !=""&&!phoneval.test($('#addresszip1').val()))
@@ -98,8 +98,14 @@
      });
     });
 
-</script>--%>
-<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean"></s:useActionBean>
+</script>
+<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean" event="updateCustomerLink"/> 
+    <%
+        request.setAttribute("customerlst",customerBean.getCustomerlst());
+
+    %>
+
+
 
 <s:layout-render name="/layout/_base.jsp">
       <s:layout-component name="body">
@@ -118,7 +124,7 @@ Customer > Update Customer
 		  <td width="36%" align="left" valign="top" >
 <s:select id="cutomerName" name="id"  class="dropdown">
                         <option  value="0">---Select Customer---</option>
-              <c:forEach items="${actionBean.customerlst}" var="customer" varStatus="loop" >
+              <c:forEach items="${customerlst}" var="customer" varStatus="loop" >
                     <c:choose>
                   <c:when test="${customerBean.customer.name eq customer.name}">
 			            <option value ="<c:out value="${actionBean.customer.id}"/>" selected="selected"> <c:out value="${actionBean.customer.name}"/></option>
@@ -165,32 +171,32 @@ Customer > Update Customer
                             <tr>
 
                                 <td>Line 1</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].line1"  class="textbox" id="addressline11"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].line1"  class="textbox" id="addressline11"></s:text></div></td>
                             </tr>
                             <tr>
 
                                 <td>Line 2</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].line2"  class="textbox" id="addressline12"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].line2"  class="textbox" id="addressline12"></s:text></div></td>
                             </tr>
                             <tr>
 
                                 <td>City</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].city"  class="textbox" id="addresscity1"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].city"  class="textbox" id="addresscity1"></s:text></div></td>
                             </tr>
                             <tr>
 
                                 <td>State</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].state"  class="textbox" id="addressstate1"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].state"  class="textbox" id="addressstate1"></s:text></div></td>
                             </tr>
                             <tr>
 
                                 <td>Country</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].country"  class="textbox" id="addresscountry1"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].country"  class="textbox" id="addresscountry1"></s:text></div></td>
                             </tr>
                             <tr>
 
                                 <td>Zip</td>
-                                <td><div align="left"><s:text name="customer.addresslst[0].zip"  class="textbox" id="addresszip1"></s:text></div></td>
+                                <td><div align="left"><s:text name="customer.addressList[0].zip"  class="textbox" id="addresszip1"></s:text></div></td>
                             </tr>
 
                         </table>
@@ -207,35 +213,35 @@ Customer > Update Customer
             <tr>
 
                 <td>Line 1</td>
-                <td><div align="left"><s:text name="customer.addresslst[1].line1" class="textbox" id="addressline21"></s:text></div></td>
+                <td><div align="left"><s:text name="customer.addressList[1].line1" class="textbox" id="addressline21"></s:text></div></td>
             </tr>
             <tr>
 
                 <td>Line 2</td>
-                <td><div align="left"><s:text name="customer.addresslst[1].line2" class="textbox" id="addressline22"></s:text></div></td>
+                <td><div align="left"><s:text name="customer.addressList[1].line2" class="textbox" id="addressline22"></s:text></div></td>
             </tr>
             <tr>
 
                 <td>City</td>
-                <td><div align="left"><s:text name="customer.addresslst[1].city"  class="textbox" id="addresscity2"></s:text></div></td>
+                <td><div align="left"><s:text name="customer.addressList[1].city"  class="textbox" id="addresscity2"></s:text></div></td>
             </tr>
             <tr>
 
                 <td>State</td>
-                <td><div align="left"><s:text name="customer.addresslst[1].state"  class="textbox" id="addressstate2"></s:text></div></td>
+                <td><div align="left"><s:text name="customer.addressList[1].state"  class="textbox" id="addressstate2"></s:text></div></td>
             </tr>
             <tr>
 
             <td>Country</td>
             <td>
                 <div align="left">
-                    <s:text name="customer.addresslst[1].country"  class="textbox" id="addresscountry2"/>
+                    <s:text name="customer.addressList[1].country"  class="textbox" id="addresscountry2"/>
                     </div>
                     </td>
     </tr>
         <tr><td>Zip</td>
                 <td><div align="left">
-                    <s:text name="customer.addresslst[1].zip"  class="textbox" id="addresszip2"/>
+                    <s:text name="customer.addressList[1].zip"  class="textbox" id="addresszip2"/>
         </div></td> </tr>
 
         </table>
@@ -266,8 +272,8 @@ Customer > Update Customer
 
         <tr>
             <td >&nbsp;</td>
-            <td colspan="2" align="right" valign="top"><div align="center">
-                <s:submit id="updatecustomerbutton" name="update" value="update"></s:submit>
+            <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>      &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:submit name="cancel" value="Cancel"></s:submit></div></td>
             <td >&nbsp;</td>

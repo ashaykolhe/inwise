@@ -7,8 +7,8 @@ To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/includes/_taglibInclude.jsp" %>
-<link rel="stylesheet" href="/css/general.css" type="text/css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="../css/stylesheet.css"/>
+<link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <c:set var = "TR1" value="receiptgrn"/>
 <c:if test="${actionBean.hdnvalue eq TR1}">
 <script type="text/javascript">
@@ -19,7 +19,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "/Search.action?redirectgrnpopup=&id="+${actionBean.id}+"";
+            var page = "Search.action?redirectgrnpopup=&id="+${actionBean.id}+"";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
             return;
@@ -37,7 +37,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "/Search.action?redirectpopup=&id="+${actionBean.id}+"&name=+${actionBean.name}+";
+            var page = "Search.action?redirectpopup=&id="+${actionBean.id}+"&name=+${actionBean.name}+";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
             return;
@@ -56,7 +56,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "/Search.action?redirectpurchase=&id="+${actionBean.id}+"";
+            var page = "Search.action?redirectpurchase=&id="+${actionBean.id}+"";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
@@ -167,7 +167,7 @@ function fillsubmenu(){
          $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -178,7 +178,7 @@ function fillsubmenu(){
           $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -189,7 +189,7 @@ function fillsubmenu(){
              $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -200,7 +200,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -211,7 +211,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -223,7 +223,7 @@ function fillsubmenu(){
                      $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("/Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -234,7 +234,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("/Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
 
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -246,7 +246,7 @@ function fillsubmenu(){
                               $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("/Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
 
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -258,7 +258,7 @@ function fillsubmenu(){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
-                $.post("/Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -270,7 +270,7 @@ function fillsubmenu(){
                                    $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("/Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
            /* $.get("/Search.action?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -282,7 +282,7 @@ function fillsubmenu(){
                       $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("/Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
            /* $.get("/Search.action?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -418,7 +418,7 @@ $(document).ready(function() {
         <c:if test="${actionBean.customer!=null}">
         <c:if test="${actionBean.searchSubmenu eq 'custName'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>
@@ -430,7 +430,7 @@ $(document).ready(function() {
         </c:if>
          <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>

@@ -22,7 +22,7 @@ public class Tax {
     private String name;
 
     @Column(name = "tax_percentage",length = 10,precision = 8)    
-    private Double tax;
+    private Double taxPercentage;
 
     public Integer getId() {
         return id;
@@ -40,12 +40,13 @@ public class Tax {
         this.name = name;
     }
 
-    public Double getTax() {
-        return tax;
+
+    public Double getTaxPercentage() {
+        return taxPercentage;
     }
 
-    public void setTax(Double tax) {
-        this.tax = tax;
+    public void setTaxPercentage(Double taxPercentage) {
+        this.taxPercentage = taxPercentage;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class Tax {
         return "Tax{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", tax=" + tax +
+                ", taxPercentage=" + taxPercentage +
                 '}';
     }
 }

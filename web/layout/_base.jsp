@@ -70,7 +70,7 @@
                 </div>
             </s:layout-component></td>
         </tr>
-        <tr style="background: url(../images/navigation2_product_bottom.png) center center repeat-x;">
+        <tr style="background: url(images/navigation2_product_bottom.png) center center repeat-x;">
             <td height="20" colspan="2"> <s:layout-component name="menu">
                 <div class="menu">
 
