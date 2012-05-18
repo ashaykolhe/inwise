@@ -58,25 +58,23 @@ public class CustomerActionBean extends BaseActionBean
     @DefaultHandler
     public Resolution pageDirect()
     {
-        System.out.println("in paeg direct");
+      
      return new ForwardResolution(ADDCUSTOMER);
     }
 
     public Resolution addCustomer()
     {
-          System.out.println("in addd custmer");
-        System.out.println(getCustomer());
-        System.out.println(customer);
+
             customer.setAddressList(addresslst);
         customerDao.save(customer);
-        System.out.println(customerDao.listAll().iterator().next());
+
         return new RedirectResolution(CustomerActionBean.class,"pageDirect");
     }
 
 
      public Resolution deleteLink()
      {   customerlst=customerDao.listAll();
-         System.out.println("in delete link getting lists");
+
          return new ForwardResolution(DELETECUSTOMER);
      }
     public Resolution delete()
@@ -87,20 +85,20 @@ public class CustomerActionBean extends BaseActionBean
     public Resolution updateCustomerLink()
     {
         customerlst=customerDao.listAll();
-        System.out.println("in update link");
+
          return new ForwardResolution(UPDATECUSTOMER);
     }
     public Resolution updateCustomer()
     {
 
-        System.out.println(getId());
+
         customer = customerDao.find(id);
-         return updateCustomerLink();
+
+        return new ForwardResolution(CustomerActionBean.class,"updateCustomerLink");
     }
     public Resolution update()
     {
-        System.out.println("in update resolution");
-        System.out.println(customer);
+
               customerDao.save(customer);
 
         return new RedirectResolution(CustomerActionBean.class,"updateCustomerLink");

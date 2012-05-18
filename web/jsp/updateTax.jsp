@@ -42,7 +42,7 @@
    <script type="text/javascript">
        function checktax(){
 
-           $.post("/Tax.action?getTaxById", {id:$('#taxdropdown').val()}, function (result) {
+           $.post("Tax.action?getTaxById", {id:$('#taxdropdown').val()}, function (result) {
 
                 var taxvalue=eval(result);
 
