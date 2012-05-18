@@ -18,7 +18,7 @@ import java.util.Iterator;
  * Time: 3:34:52 PM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/tax")
+@UrlBinding("/tax")
 @HttpCache(allow = false)
 public class TaxActionBean extends BaseActionBean{
     private static final String ADDTAX="jsp/addTax.jsp";

@@ -19,7 +19,7 @@ import java.util.Iterator;
  * Time: 10:24:12 AM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/order")
+@UrlBinding("/order")
 public class OrderActionBean extends BaseActionBean{
 
     private static final String ADDORDER="jsp/addOrder.jsp";

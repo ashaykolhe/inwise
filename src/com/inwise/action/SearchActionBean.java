@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Date;
  * Time: 3:51:47 PM
  * To change this template use File | Settings | File Templates.
  */
+@UrlBinding("/search")
 public class SearchActionBean extends BaseActionBean{
     @Inject
     CustomerDao customerDao;
@@ -220,6 +222,7 @@ public class SearchActionBean extends BaseActionBean{
 
          return new JavaScriptResolution(Stringlst);
     }
+    //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
     public Resolution autoorder()
     {
         if(ajaxSubmenu.equals("orderCustomerOrderNumber"))
@@ -229,6 +232,11 @@ public class SearchActionBean extends BaseActionBean{
          if(ajaxSubmenu.equals("orderCustomerName"))
         {
                  Stringlst=orderDao.getOrderCustomerNameLst();
+
+        }
+         if(ajaxSubmenu.equals("orderProductName"))
+        {
+                 Stringlst=orderDao.getOrderProductNameLst();
 
         }
         System.out.println("cust name lst :"+Stringlst);
