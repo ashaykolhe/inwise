@@ -35,6 +35,15 @@ public class OrderActionBean extends BaseActionBean{
     private Order order;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
+       private List<Order> orderlst;
+
+    public List<Order> getOrderlst() {
+        return orderlst;
+    }
+
+    public void setOrderlst(List<Order> orderlst) {
+        this.orderlst = orderlst;
+    }
 
     public List<Customer> getCustomerList() {
         return customerList;
@@ -76,4 +85,11 @@ public class OrderActionBean extends BaseActionBean{
         return new JavaScriptResolution(customerDao.find(id).getAddressList());
     }
 
+    public Resolution productDetailsAjax(){
+        return new JavaScriptResolution(productDao.find(id));
+    }
+        public Resolution getCustomerOrderNo(){
+        orderlst=orderDao.getCustomerOrderNo(id);
+       return new JavaScriptResolution(orderlst);
+    }
 }

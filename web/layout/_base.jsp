@@ -107,10 +107,10 @@
                                                  </ul>
                                              </li>
                         <li><a class="hide" href="#">Invoice</a>
-                                                 <ul>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="addUserLink">Add</s:link></li>
+                                               <ul>
+                                                     <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Update</s:link></li>
-                                                    
+
 
                                                  </ul>
                                              </li>

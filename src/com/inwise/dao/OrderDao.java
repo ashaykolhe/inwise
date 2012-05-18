@@ -3,6 +3,8 @@ package com.inwise.dao;
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Ashay
@@ -13,5 +15,9 @@ import com.inwise.pojo.Order;
 public class OrderDao extends BaseDao<Order,Integer> {
     public OrderDao() {
         super(Order.class);
+    }
+     public List<Order> getCustomerOrderNo(Integer id) {
+
+         return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"'").list();
     }
 }

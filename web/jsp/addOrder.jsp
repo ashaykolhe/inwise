@@ -34,63 +34,26 @@ To change this template use File | Settings | File Templates.
     });
 
 </script>
-<%--
-<c:set var = "TR2" value="addreceipt"/>
-<c:if test="${orderBean.test eq TR2}">
+
+
 <script type="text/javascript">
-function OpenPopup(){
-var w = 800;
-var h = 480;
-var winl = (screen.width-w)/2;
-var wint = (screen.height-h)/2;
-if (winl < 0) winl = 0;
-if (wint < 0) wint = 0;
-var page = "/PurchaseOrder.action?redirectpopup";
-windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-+ "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-window.open(page, "Popup", windowprops);
-return;
-}
-window.onLoad =OpenPopup();
-</script>
-</c:if >
-<c:set var = "TR2" value="updatereceipt"/>
-<c:if test="${orderBean.test eq TR2}">
-<script type="text/javascript">
-function OpenPopup(){
-var w = 800;
-var h = 480;
-var winl = (screen.width-w)/2;
-var wint = (screen.height-h)/2;
-if (winl < 0) winl = 0;
-if (wint < 0) wint = 0;
-var page = "/PurchaseOrder.action?redirectpopupUpdate=&id="+${orderBean.id}+"";
-windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-+ "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-window.open(page, "Popup", windowprops);
-return;
-}
-window.onLoad =OpenPopup();
-</script>
-</c:if >
-<script type="text/javascript">
-function GetItemDetail(button){
+/*function GetItemDetail(button){
 var count=$('#family #tabletr').length;
 var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
 var flag=true;
-var check=$('#itemcode'+rowid+'').val();
+var check=$('#productName'+rowid+'').val();
 for(var i=1;i<=count;i++)
 {
 if(rowid==i){
 continue;
 }
-var temp=$('#itemcode'+i+'').val();
+var temp=$('#productName'+i+'').val();
 
 if(check==temp)
 {
 flag=false;
 --rowid;
-alert("This Item has been already added. Please select another item.");
+alert("This Product has been already added. Please select another product.");
 $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
 $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
 return false;
@@ -98,15 +61,15 @@ return false;
 }//end of for
 if(flag==true)
 {
-$.post('PurchaseOrder.action?getItemDetails', {id:button.value}, function (data) {
+$.post('Order.action?productDetailsAjax', {id:button.value}, function (data) {
 var result=eval(data);
 $('#item'+rowid+'').attr("value",result.itemCode);
 $('#uom'+rowid+'').attr("value",result.uom.name);
 });//end of post funtion
 }//end of flag==true if
 } //end of getItem Funntion
-/*the function calculateBalance is use to validate rate textfiled for numeric as well as blank
-this function is called onChange of rate textfield  */
+*//*the function calculateBalance is use to validate rate textfiled for numeric as well as blank
+this function is called onChange of rate textfield  *//*
 function calculateBalance(p,i){
 
 var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
@@ -140,8 +103,8 @@ $('#family #tabletr:eq('+rowid+') input:eq(4)').focus();
 }
 
 }//end of function
-/*the function calculateBalancechangeorder is use to validate quantity textfiled for numeric as well as blank
-this function is called onChange of quantity  textfield  */
+*//*the function calculateBalancechangeorder is use to validate quantity textfiled for numeric as well as blank
+this function is called onChange of quantity  textfield  *//*
 function calculateBalancechaneorder(p,i){
 var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
 
@@ -230,9 +193,9 @@ return false;
 }   //end of for
 return true;
 });
-});
+});*/
 </script>
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <s:layout-render name="/layout/_base.jsp">
