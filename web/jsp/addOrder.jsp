@@ -22,161 +22,182 @@ To change this template use File | Settings | File Templates.
             $.get("Order.action?addressAjax",{id:$(this).attr("value")}, function (result) {
                 var data=eval(result);
                 var options = '<option value="0">---Select Address---</option>';
-                            for (var i = 0; i < data.length; i++) {
-                                options += '<option value="' + data[i].id + '">' + data[i].line1+","+ data[i].line2+","+ data[i].city+"-"+data[i].zip +'</option>';
-                            }
-                            $("#invoiceAddress").html(options);
-                            $("#shipmentAddress").html(options);
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].id + '">' + data[i].line1+","+ data[i].line2+","+ data[i].city+"-"+data[i].zip +'</option>';
+                }
+                $("#invoiceAddress").html(options);
+                $("#shipmentAddress").html(options);
 
 
-     });        
+            });
         });
     });
 
 </script>
 
 <script type="text/javascript">
-function GetItemDetail(button){
-var count=$('#family #tabletr').length;
-var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
-var flag=true;
-var check=$('#productName'+rowid+'').val();
-for(var i=1;i<=count;i++)
-{
-if(rowid==i){
-continue;
-}
-var temp=$('#productName'+i+'').val();
+    function checkCustomerOrderNo() {
+        if($('#customerName').attr('value').trim()=="0"){
+            alert("please select customer");
+            $("#customerOrderNo").attr("value","");
+            $('#customerName').focus();
+            return false;
+        }
+        $.get('Order.action?customerOrderNoAlreadyPresent', {id:$("#customerOrderNo").val().trim()}, function (data) {
+            var flag=eval(data);
+            if(flag)
+            {
+                alert("this customer order number has already been used");
+                $("#customerOrderNo").val("");
+                $("#customerOrderNo").focus();
+                return false;
+            }
+            return true;
+        });
 
-if(check==temp)
-{
-flag=false;
---rowid;
-alert("This Product has been already added. Please select another product.");
-$('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
-$('#family #tabletr:eq('+rowid+') input').removeAttr("value");
-return false;
-}//end of if
-}//end of for
-if(flag==true)
-{
-$.post('Order.action?productDetailsAjax', {id:button.value}, function (data) {
-var result=eval(data);
-$('#cost'+rowid+'').attr("value",result.productCost);
-$('#productMeasurementType'+rowid+'').attr("value",result.productMeasurementType.measurementType);
-});//end of post funtion
-}//end of flag==true if
-} //end of getItem Funntion
-/*the function calculateBalance is use to validate rate textfiled for numeric as well as blank
-this function is called onChange of rate textfield  */
-function calculateBalance(p,i){
+    }
 
-var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
+    function GetItemDetail(button){
+        var count=$('#family #tabletr').length;
+        var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
+        var flag=true;
+        var check=$('#productName'+rowid+'').val();
+        for(var i=1;i<=count;i++)
+        {
+            if(rowid==i){
+                continue;
+            }
+            var temp=$('#productName'+i+'').val();
 
-if(p.value!=0){
-var chk = /^[0-9]+$/.test(p.value);
-if (!chk) {
-alert('please Enter Numeric value for quantity');
---rowid;
-$('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
-}//end of chk loop
-else if($('#orderedQuantity'+rowid+'').val().trim()!=""){
-var ordqty=$('#orderedQuantity'+rowid+'').val();
-var valueset=parseFloat(p.value)*parseFloat(ordqty);
-$('#amount'+rowid+'').attr("value",valueset);
-}//end of else if loop
-else{
---rowid;
-alert("Please enter quantity");
-$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
-}//ennd of else
-}//end of p.value!=0 if
-else{
---rowid;
-alert("Please enter valid quantity");
-$('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
-$('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
-}
+            if(check==temp)
+            {
+                flag=false;
+                --rowid;
+                alert("This Product has been already added. Please select another product.");
+                $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
+                $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
+                return false;
+            }//end of if
+        }//end of for
+        if(flag==true)
+        {
+            $.post('Order.action?productDetailsAjax', {id:button.value}, function (data) {
+                var result=eval(data);
+                $('#cost'+rowid+'').attr("value",result.productCost);
+                $('#productMeasurementType'+rowid+'').attr("value",result.productMeasurementType.measurementType);
+            });//end of post funtion
+        }//end of flag==true if
+    } //end of getItem Funntion
+    /*the function calculateBalance is use to validate rate textfiled for numeric as well as blank
+     this function is called onChange of rate textfield  */
+    function calculateBalance(p,i){
 
-}//end of function
+        var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
 
-function deletethis(p,a){
-var tr=$('#family #tabletr').length;
-if(tr==1){
-alert("You can not deleted the last row.");
-}
-else{
-var count=$('#family #tabletr').length;
-var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"))-1;
-$('#family #tabletr:eq('+rowid+') input').removeAttr("value");
-$('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
-}
-}
-$(document).ready(function(){
+        if(p.value!=0){
+            var chk = /^[0-9]+$/.test(p.value);
+            if (!chk) {
+                alert('please Enter Numeric value for quantity');
+                --rowid;
+                $('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
+                $('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
+                $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
+            }//end of chk loop
+            else if($('#orderedQuantity'+rowid+'').val().trim()!=""){
+                var ordqty=$('#orderedQuantity'+rowid+'').val();
+                var valueset=parseFloat(p.value)*parseFloat(ordqty);
+                $('#amount'+rowid+'').attr("value",valueset);
+            }//end of else if loop
+            else{
+                --rowid;
+                alert("Please enter quantity");
+                $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
+            }//ennd of else
+        }//end of p.value!=0 if
+        else{
+            --rowid;
+            alert("Please enter valid quantity");
+            $('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
+            $('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
+            $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
+        }
 
-$('#add').click(function(){
-var count=$('#family #tabletr').length+1;
-$('#family #tabletr:last').clone(true).insertAfter('#family #tabletr:last');
-$('#family #tabletr:last select:eq(0)').attr("value","0");
-$('#family #tabletr:last input').removeAttr("value");
-$('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
-$('#family #tabletr:last select:eq(0)').attr("id","itemcode"+count);
-$('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
-$('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
-$('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");
-$('#family #tabletr:last input:eq(2)').attr("id","ordqty"+count);
-$('#family #tabletr:last input:eq(3)').attr("id","amount"+count);
-$('#family #tabletr:last input:eq(4)').attr("name","delete["+count+"]");
-$('#family #tabletr:last input:eq(4)').attr("id","delete"+count);
-});
-$("#addOrder").click(function(){
-var numeric = /^[0-9]+$/;
-var count=$('#family #tabletr').length;
-if($('#customerName').attr("value")=="0"){
-alert("please select Customer Name");
-$('#customerName').focus();
-return false;
-}else if($('#createDate').attr("value").trim()==""){
-    $('#createDate').focus();
-    alert("please select a date");
-    return false;
-}else if($('#customerOrderNo').attr("value").trim()==""){
-    $('#customerOrderNo').focus();
-    alert("please enter customer order number");
-    return false;
-}else if($('#consigneeName').attr("value").trim()==""){
-    $('#consigneeName').focus();
-    alert("please enter consignee's name");
-    return false;
-}else if($('#invoiceAddress').attr("value").trim()=="0"){
-    $('#invoiceAddress').focus();
-    alert("please select invoice address");
-    return false;
-}else if($('#shipmentAddress').attr("value").trim()=="0"){
-    $('#shipmentAddress').focus();
-    alert("please select shipment address");
-    return false;
-}
-for(var i=0;i<count;i++){
-if(i==0){
-if($('#family #tabletr:eq('+i+') select:eq(0)').attr("value")==""){
-alert("please select Product Name")
-return false;
-}
-else if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
-$('#family #tabletr:eq('+i+') input:eq(2)').focus();
-$('#family #tabletr:eq('+i+') input:eq(2)').attr("value","");
-alert("please enter valid order quantity");
-return false;
-}
-}
-}   //end of for
-return true;
-});
-});
+    }//end of function
+
+    function deletethis(p,a){
+        var tr=$('#family #tabletr').length;
+        if(tr==1){
+            alert("You can not deleted the last row.");
+        }
+        else{
+            var count=$('#family #tabletr').length;
+            var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"))-1;
+            $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
+            $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
+        }
+    }
+    $(document).ready(function(){
+
+        $('#add').click(function(){
+            var count=$('#family #tabletr').length+1;
+            $('#family #tabletr:last').clone(true).insertAfter('#family #tabletr:last');
+            $('#family #tabletr:last select:eq(0)').attr("value","0");
+            $('#family #tabletr:last input').removeAttr("value");
+            $('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
+            $('#family #tabletr:last select:eq(0)').attr("id","itemcode"+count);
+            $('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
+            $('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
+            $('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");
+            $('#family #tabletr:last input:eq(2)').attr("id","ordqty"+count);
+            $('#family #tabletr:last input:eq(3)').attr("id","amount"+count);
+            $('#family #tabletr:last input:eq(4)').attr("name","delete["+count+"]");
+            $('#family #tabletr:last input:eq(4)').attr("id","delete"+count);
+        });
+        $("#addOrder").click(function(){
+            var numeric = /^[0-9]+$/;
+            var count=$('#family #tabletr').length;
+            if($('#customerName').attr("value")=="0"){
+                alert("please select Customer Name");
+                $('#customerName').focus();
+                return false;
+            }else if($('#createDate').attr("value").trim()==""){
+                $('#createDate').focus();
+                alert("please select a date");
+                return false;
+            }else if($('#customerOrderNo').attr("value").trim()==""){
+                $('#customerOrderNo').focus();
+                alert("please enter customer order number");
+                return false;
+            }else if($('#consigneeName').attr("value").trim()==""){
+                $('#consigneeName').focus();
+                alert("please enter consignee's name");
+                return false;
+            }else if($('#invoiceAddress').attr("value").trim()=="0"){
+                $('#invoiceAddress').focus();
+                alert("please select invoice address");
+                return false;
+            }else if($('#shipmentAddress').attr("value").trim()=="0"){
+                $('#shipmentAddress').focus();
+                alert("please select shipment address");
+                return false;
+            }
+            for(var i=0;i<count;i++){
+                if(i==0){
+                    if($('#family #tabletr:eq('+i+') select:eq(0)').attr("value")==""){
+                        alert("please select Product Name")
+                        return false;
+                    }
+                    else if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
+                        $('#family #tabletr:eq('+i+') input:eq(2)').focus();
+                        $('#family #tabletr:eq('+i+') input:eq(2)').attr("value","");
+                        alert("please enter valid order quantity");
+                        return false;
+                    }
+                }
+            }   //end of for
+            return true;
+        });
+    });
 </script>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -226,8 +247,8 @@ return true;
                             </div>
                         </td>
                     </tr>
-                    
-                        <tr>
+
+                    <tr>
                         <td width="24%" align="left" valign="top">
                             <div align="left" style="margin-left: 2px;" class="labels">
                                 <div align="right">Customer Order No.<span style="color:#FF0000"> *</span></div>
@@ -235,7 +256,7 @@ return true;
                         </td>
                         <td width="22%" align="left" valign="top">
                             <div align="left">
-                                <s:text name="order.customerOrderNo" id="customerOrderNo" class="textbox"/>
+                                <s:text name="order.customerOrderNo" id="customerOrderNo" class="textbox" onchange="return checkCustomerOrderNo();"/>
                             </div>
                         </td>
                         <td width="24%" align="left" valign="top">
@@ -303,7 +324,7 @@ return true;
                                                         </c:forEach>
                                                     </s:select>
                                                 </div></div></td>
-                                        
+
                                         <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                             <div align="left" style="margin-left:4px;">
                                                 <div align="right">
@@ -353,7 +374,7 @@ return true;
                         </div></td>
                         <td width="30%" align="left">&nbsp;</td>
                     </tr>
-                    
+
                 </table></td></tr></table>
         </s:form>
     </s:layout-component>
