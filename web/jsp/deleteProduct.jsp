@@ -48,7 +48,7 @@ Delete Product
 
                                      <s:link beanclass="com.inwise.action.ProductActionBean" event="deleteProduct" onclick="return show_confirm();" >
                                         <s:param name="id" value="${prod.id}"></s:param>
-                                    <img src="/images/Close-2-icon.png" />   </s:link>
+                                    <img src="images/Close-2-icon.png" />   </s:link>
 
                                 </d:column>
 

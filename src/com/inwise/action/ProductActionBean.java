@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  * Time: 11:40:38 AM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/product")
+@UrlBinding("/product")
 @HttpCache(allow = false)
 public class ProductActionBean extends BaseActionBean{
 

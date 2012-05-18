@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 11:38:26 AM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/customer")
+@UrlBinding("/customer")
 public class CustomerActionBean extends BaseActionBean
 {
     private static final String ADDCUSTOMER="jsp/addCustomer.jsp";
