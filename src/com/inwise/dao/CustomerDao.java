@@ -46,7 +46,22 @@ public class CustomerDao extends BaseDao<Customer,Integer> {
    return criteria.list();
    }
 
+	
+    public List<String> getCustomerNameLst() {
+        return (List<String>)sessionProvider.get().createQuery("SELECT c.name from Customer c").list();
+    }
 
+    public List<String> getCustomerCodeLst() {
+         return (List<String>)sessionProvider.get().createQuery("SELECT c.customerCode from Customer c").list();
+    }
+
+    public Customer findByCustomerName(String name) {
+        return (Customer) sessionProvider.get().createQuery("SELECT c from Customer c where c.name='"+name+"' " ).uniqueResult();
+    }
+
+    public Customer findByCustomerCode(String name) {
+    return (Customer) sessionProvider.get().createQuery("SELECT c from Customer c where c.customerCode='"+name+"' " ).uniqueResult();
+    }
 
 /*    public boolean updateCustomer(Customer customer)
     {

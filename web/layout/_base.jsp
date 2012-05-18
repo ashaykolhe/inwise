@@ -116,7 +116,7 @@
                                              </li>
                         <li><a class="hide" href="#">Search/Print</a>
                                                  <ul>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="addUserLink">Search</s:link></li>
+                                                                 <li><s:link beanclass="com.inwise.action.SearchActionBean" event="searchLink">Search</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Print</s:link></li>
 
 
