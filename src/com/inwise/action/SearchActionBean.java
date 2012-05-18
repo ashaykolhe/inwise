@@ -155,12 +155,12 @@ public class SearchActionBean extends BaseActionBean{
             customer=customerDao.findByCustomerName(getName());
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
-        if(searchSubmenu.equalsIgnoreCase("inwiseNumber"))
+        /*if(searchSubmenu.equalsIgnoreCase("inwiseNumber"))
             invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
         if(searchSubmenu.equalsIgnoreCase("inwiseCustomerOrderNo"))
                 invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
         if(searchSubmenu.equalsIgnoreCase("inwiseProductName"))
-                invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
+                invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));*/
 
         System.out.println("cccccccc"+getCustomer());
         return new ForwardResolution("jsp/search.jsp");
