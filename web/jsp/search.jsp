@@ -9,6 +9,7 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
 <c:set var = "TR1" value="receiptgrn"/>
 <c:if test="${actionBean.hdnvalue eq TR1}">
 <script type="text/javascript">
@@ -267,13 +268,14 @@ function fillsubmenu(){
         }
      //"none","custName","custCode"
        else if($('#submenu').val() == 'custName'){
-                                   $('#myDiv3').hide();
+                alert("1 "+$('#submenu').val());                                       
+               $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
+                 $.get("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                     alert("2 "+$('#submenu').val());
                 var availableTags=eval(result);
-                $("input#autocomplete").autocomplete({
+               $("input#autocomplete").autocomplete({
                     source: availableTags
                 });
             });

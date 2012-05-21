@@ -159,6 +159,7 @@ public class SearchActionBean extends BaseActionBean{
 
     public Resolution searchLink()
     {
+        System.out.println("from search link");
         return new ForwardResolution("jsp/search.jsp");
     }
     public Resolution search()
@@ -244,6 +245,7 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution autocust()
     {
+        System.out.println("in atuooooooooooooooooooooooooo");
          if(ajaxSubmenu.equals("custName"))
         {
                  Stringlst=customerDao.getCustomerNameLst();
@@ -253,6 +255,7 @@ public class SearchActionBean extends BaseActionBean{
                  
                  Stringlst=customerDao.getCustomerCodeLst();
         }
+        System.out.println("autocust "+Stringlst);
         return new JavaScriptResolution(Stringlst);
     }
 
