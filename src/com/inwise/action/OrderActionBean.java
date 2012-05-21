@@ -23,6 +23,7 @@ import java.util.Iterator;
 public class OrderActionBean extends BaseActionBean{
 
     private static final String ADDORDER="jsp/addOrder.jsp";
+    private static final String UPDATEORDER="jsp/updateOrder.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -35,6 +36,7 @@ public class OrderActionBean extends BaseActionBean{
     private Order order;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
+    private List<Address> addressList=new ArrayList<Address>();
     private List<Order> orderlst;
 
     public List<Order> getOrderlst() {
@@ -61,6 +63,14 @@ public class OrderActionBean extends BaseActionBean{
         this.productList = productList;
     }
 
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
+
     public Order getOrder() {
         return order;
     }
@@ -76,9 +86,30 @@ public class OrderActionBean extends BaseActionBean{
         return new ForwardResolution(ADDORDER);
     }
 
+    public Resolution updateOrderLink(){
+        orderlst=orderDao.listAll();
+        customerList=customerDao.listAll();
+        productList=productDao.listAll();
+        return new ForwardResolution(UPDATEORDER);
+    }
+
     public Resolution addOrder(){
         orderDao.save(order);
         return new RedirectResolution(OrderActionBean.class,"pre");
+    }
+
+    public Resolution getOrders(){
+        order=orderDao.find(id);
+        addressList=order.getCustomer().getAddressList();
+        return updateOrderLink();
+    }
+
+    public Resolution updateOrder(){
+        System.out.println("----------------------------------order------------------------------------");
+        System.out.println(order);
+        System.out.println("----------------------------------order------------------------------------");
+        orderDao.save(order);
+        return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
     }
 
     public Resolution addressAjax(){
