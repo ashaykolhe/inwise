@@ -63,7 +63,7 @@
        })
        function checkProduct() {
 
-$.post("/Product.action?productAlreadyPresent", {addProductName:$("#addproductname").val().trim()}, function (data) {
+$.post("product?productAlreadyPresent", {addProductName:$("#addproductname").val().trim()}, function (data) {
                                          var flag=eval(data);
                                         var updatename=$('#addproductname').val().trim().toString();
                                     var dropdownname=$("#productdropdown1 option:selected").text().trim().toString();
