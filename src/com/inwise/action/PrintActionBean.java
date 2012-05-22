@@ -38,6 +38,7 @@ public class PrintActionBean extends BaseActionBean
     List<Invoice> invoiceList;
     private Customer cust;
     private Integer customerOrderNo;
+    private static final String PRINTINVOICE="jsp/printInvoice.jsp";
 
     public List<Invoice> getInvoiceList() {
         return invoiceList;
@@ -105,7 +106,7 @@ public class PrintActionBean extends BaseActionBean
 
     public Resolution getOrderDropDown()
     {
-        orderNoList=orderDao.getOrderNoList(id);
+        orderNoList=orderDao.getCustomerOrderNo(id);
         return new JavaScriptResolution(orderNoList);
     }
 
@@ -113,21 +114,21 @@ public class PrintActionBean extends BaseActionBean
     {
 
         orderList= orderDao.listAll();
-        selectedOrderList= orderDao.getOrderNoList(id);
+        selectedOrderList= orderDao.getCustomerOrderNo(id);
         System.out.println(selectedOrderList);
         cust=customerDao.find(id);
-        return new ForwardResolution("jsp/printInvoice.jsp");
+        return new ForwardResolution(PRINTINVOICE);
     }
     public Resolution invoiceLst()
     {
         orderList= orderDao.listAll();
         invoiceList=invoiceDao.findByOrderNo(customerOrderNo);
         cust=customerDao.find(id);
-        return new ForwardResolution("jsp/printInvoice.jsp");
+        return new ForwardResolution(PRINTINVOICE);
     }
     public Resolution printInvoiceLink()
     {
          orderList= orderDao.listAll();
-         return new ForwardResolution("jsp/printInvoice.jsp");
+         return new ForwardResolution(PRINTINVOICE);
     }
 }
