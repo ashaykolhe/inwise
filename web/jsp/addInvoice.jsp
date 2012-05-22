@@ -24,6 +24,92 @@
  });
        }
 
+       function Selected(s)
+{
+    alert("hi")
+	var tex = parseFloat(document.getElementById("inExcisetax").value);
+	var ted = parseFloat(document.getElementById("inEducationCesstax").value);
+	var tse = parseFloat(document.getElementById("inSectax").value);
+	var tcst1 = parseFloat(document.getElementById("inCST1tax").value);
+	var tcst2 = parseFloat(document.getElementById("inCST2tax").value);
+	var tovat = parseFloat(document.getElementById("inOVATtax").value);
+
+	var xy = 'inRemQty'+s;
+	var xyh = 'inRemQtyh'+s;
+	var cs = 'incsh'+s;
+	var ab = 'inDing'+s;
+	var de = 'inProType'+s;
+	var cbx = 'chkbx'+s;
+	var pq = 'inAmount'+s;
+	var uv = 'inExch'+s;
+	var dn = 'inDraw'+s;
+	var e=document.getElementById(cbx);
+	if(e.checked)
+	{
+		document.getElementById(cs).disabled = false;
+		document.getElementById(ab).disabled = false;
+		document.getElementById(de).disabled = false;
+		document.getElementById(dn).disabled = false;
+
+				}
+		else
+		{
+			document.getElementById(cs).disabled = true;
+			document.getElementById(ab).disabled = true;
+			document.getElementById(de).disabled = true;
+			document.getElementById(dn).disabled = true;
+			document.getElementById(xy).value = document.getElementById(xyh).value;
+			document.getElementById(ab).value = 0;
+			document.getElementById(de).value = 'MFG & Supply';
+			document.getElementById(cs).value = 'Enter CSH No';
+			document.getElementById(dn).value = 'Item No';
+			var amont = document.getElementById(pq).value;
+			var tamont = document.getElementById("inTotalAmount").value;
+			document.getElementById(pq).value = (0).toFixed(2);
+			document.getElementById("inTotalAmount").value = (tamont - amont).toFixed(2);
+			var tvar1 = parseFloat(document.getElementById("inTotalAmount").value);
+			var exce = document.getElementById("inExcise").value;
+			document.getElementById("inExcise").value = (exce - document.getElementById(uv).value).toFixed(2);
+			document.getElementById(uv).value = (0).toFixed(2);
+			var tvar2 = parseFloat(document.getElementById("inExcise").value);
+			document.getElementById("inEducationCess").value = Math.round(((tvar2 * ted)/100)).toFixed(2);
+			var tvar3 = parseFloat(document.getElementById("inEducationCess").value);
+			document.getElementById("inSec").value = Math.round(((tvar2 * tse)/100).toFixed(2));
+			var tvar4 = parseFloat(document.getElementById("inSec").value);
+			var toentrytax = parseFloat(document.getElementById("inentrytaxhdn").value);
+			if(document.getElementById("inCSTS").value=="OVAT")
+			{
+				document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tovat)/100)).toFixed(2);
+				var tvar6 = parseFloat(document.getElementById("inCST").value);
+				document.getElementById("inEntryTax").value = Math.round((((tvar1+tvar2+tvar3+tvar4+tvar6) * toentrytax)/100)).toFixed(2);
+			}
+			else if(document.getElementById("inCSTS").value=="CST")
+			{
+				document.getElementById("inEntryTax").value = (0).toFixed(2);
+				if(document.getElementById("inCSTTaxS").value==tcst1)
+				{
+					document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tcst1)/100)).toFixed(2);
+				}
+				else if(document.getElementById("inCSTTaxS").value==tcst2)
+				{
+					document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tcst2)/100)).toFixed(2);
+				}
+			}
+			var tvar5 = parseFloat(document.getElementById("inCST").value);
+			document.getElementById("inTaxCharges").value = (tvar2+tvar3+tvar4+tvar5).toFixed(2);
+			var tvar7 = parseFloat(document.getElementById("inTaxCharges").value);
+			var tvar8 = parseFloat(document.getElementById("inEntryTax").value);
+			var tvar9 = parseFloat(document.getElementById("inFright").value);
+			var tvar10 = parseFloat(document.getElementById("inInsurance").value);
+			var tvar11 = parseFloat(document.getElementById("inOthers").value);
+			document.getElementById("inOtherCharges").value = (tvar8+tvar9+tvar10+tvar11+tvar7).toFixed(2);
+			var tvar12 = parseFloat(document.getElementById("inOtherCharges").value);
+			document.getElementById("inGrandTotal").value = (tvar1+tvar12).toFixed(2);
+			var tvar13 = parseFloat(document.getElementById("inGrandTotal").value);
+			var tvar14 = parseFloat(document.getElementById("inAdvanceEntered").value);
+			document.getElementById("inNetPayable").value = (tvar13 - tvar14).toFixed(2);
+		}
+	}
       /* function getOrderDetail(){
 
            $.post("/Invoice.action?getOrderDetail", {id:$('#inoid').val()}, function (result) {
@@ -41,17 +127,16 @@
 
           
 
-   </script>
-<script type="text/javascript">
+
      function jqCheckAll1(name)  {
-         alert("aaa");
+      
         if($('#allbox').attr('checked'))
     {
         $('#'+name+'[type="checkbox"]').attr('checked', true);
         var countl = document.getElementById('inCount').value;
-        alert(countl)
-	for(q=0;q<countl;q++)
-	{
+
+	for(q=-1;q<countl;q++)
+	{        alert(countl)
 		Selected(q);
 	}
     }
@@ -588,91 +673,7 @@ function CalculateAmount(d)
 	document.getElementById("inNetPayable").value = ((t13 - t14)).toFixed(2);
 }
 
-function Selected(s)
-{
-	var tex = parseFloat(document.getElementById("inExcisetax").value);
-	var ted = parseFloat(document.getElementById("inEducationCesstax").value);
-	var tse = parseFloat(document.getElementById("inSectax").value);
-	var tcst1 = parseFloat(document.getElementById("inCST1tax").value);
-	var tcst2 = parseFloat(document.getElementById("inCST2tax").value);
-	var tovat = parseFloat(document.getElementById("inOVATtax").value);
 
-	var xy = 'inRemQty'+s;
-	var xyh = 'inRemQtyh'+s;
-	var cs = 'incsh'+s;
-	var ab = 'inDing'+s;
-	var de = 'inProType'+s;
-	var cbx = 'chkbx'+s;
-	var pq = 'inAmount'+s;
-	var uv = 'inExch'+s;
-	var dn = 'inDraw'+s;
-	var e=document.getElementById(cbx);
-	if(e.checked)
-	{
-		document.getElementById(cs).disabled = false;
-		document.getElementById(ab).disabled = false;
-		document.getElementById(de).disabled = false;
-		document.getElementById(dn).disabled = false;
-
-				}
-		else
-		{
-			document.getElementById(cs).disabled = true;
-			document.getElementById(ab).disabled = true;
-			document.getElementById(de).disabled = true;
-			document.getElementById(dn).disabled = true;
-			document.getElementById(xy).value = document.getElementById(xyh).value;
-			document.getElementById(ab).value = 0;
-			document.getElementById(de).value = 'MFG & Supply';
-			document.getElementById(cs).value = 'Enter CSH No';
-			document.getElementById(dn).value = 'Item No';
-			var amont = document.getElementById(pq).value;
-			var tamont = document.getElementById("inTotalAmount").value;
-			document.getElementById(pq).value = (0).toFixed(2);
-			document.getElementById("inTotalAmount").value = (tamont - amont).toFixed(2);
-			var tvar1 = parseFloat(document.getElementById("inTotalAmount").value);
-			var exce = document.getElementById("inExcise").value;
-			document.getElementById("inExcise").value = (exce - document.getElementById(uv).value).toFixed(2);
-			document.getElementById(uv).value = (0).toFixed(2);
-			var tvar2 = parseFloat(document.getElementById("inExcise").value);
-			document.getElementById("inEducationCess").value = Math.round(((tvar2 * ted)/100)).toFixed(2);
-			var tvar3 = parseFloat(document.getElementById("inEducationCess").value);
-			document.getElementById("inSec").value = Math.round(((tvar2 * tse)/100).toFixed(2));
-			var tvar4 = parseFloat(document.getElementById("inSec").value);
-			var toentrytax = parseFloat(document.getElementById("inentrytaxhdn").value);
-			if(document.getElementById("inCSTS").value=="OVAT")
-			{
-				document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tovat)/100)).toFixed(2);
-				var tvar6 = parseFloat(document.getElementById("inCST").value);
-				document.getElementById("inEntryTax").value = Math.round((((tvar1+tvar2+tvar3+tvar4+tvar6) * toentrytax)/100)).toFixed(2);
-			}
-			else if(document.getElementById("inCSTS").value=="CST")
-			{
-				document.getElementById("inEntryTax").value = (0).toFixed(2);
-				if(document.getElementById("inCSTTaxS").value==tcst1)
-				{
-					document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tcst1)/100)).toFixed(2);
-				}
-				else if(document.getElementById("inCSTTaxS").value==tcst2)
-				{
-					document.getElementById("inCST").value = Math.round((((tvar1+tvar2+tvar3+tvar4) * tcst2)/100)).toFixed(2);
-				}
-			}
-			var tvar5 = parseFloat(document.getElementById("inCST").value);
-			document.getElementById("inTaxCharges").value = (tvar2+tvar3+tvar4+tvar5).toFixed(2);
-			var tvar7 = parseFloat(document.getElementById("inTaxCharges").value);
-			var tvar8 = parseFloat(document.getElementById("inEntryTax").value);
-			var tvar9 = parseFloat(document.getElementById("inFright").value);
-			var tvar10 = parseFloat(document.getElementById("inInsurance").value);
-			var tvar11 = parseFloat(document.getElementById("inOthers").value);
-			document.getElementById("inOtherCharges").value = (tvar8+tvar9+tvar10+tvar11+tvar7).toFixed(2);
-			var tvar12 = parseFloat(document.getElementById("inOtherCharges").value);
-			document.getElementById("inGrandTotal").value = (tvar1+tvar12).toFixed(2);
-			var tvar13 = parseFloat(document.getElementById("inGrandTotal").value);
-			var tvar14 = parseFloat(document.getElementById("inAdvanceEntered").value);
-			document.getElementById("inNetPayable").value = (tvar13 - tvar14).toFixed(2);
-		}
-	}
     
 </script>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -716,7 +717,7 @@ Generate Invoice
       <c:forEach items="${invoiceBean.orderlst}" var="orderloop" varStatus="loop" >
 
            <option value ="<c:out value="${orderloop.customer.id}"/>"> <c:out value="${orderloop.customer.name}"/></option>   </c:forEach>
-    
+
   </s:select>			</td>
           <td width="15%" align="right" valign="top">&nbsp;</td>
             <td width="39%">&nbsp;</td>
@@ -1096,12 +1097,12 @@ Rate</b>
 
 								<%--	<input type="text" id="inAmount<%= count %>" name="inAmount<%= count %>" value="0.00" size="13" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">
 									<input type="hidden" id="inExch<%= count %>" name="inExch<%= count %>" value="0.00">--%>
-																	</div>							</td>
+									<s:hidden name="inCount" id="inCount" value="${loop.index}"/>								</div>							</td>
 						</tr>
                       </c:forEach>
 						<tr>
 
-							<td>&nbsp;<s:hidden name="inCount" id="inCount" value="${loop.index}"/> </td>
+							<td>&nbsp; </td>
 							<td>&nbsp;							</td>
 							<td>&nbsp;							</td>
 							<td>&nbsp;							</td>
