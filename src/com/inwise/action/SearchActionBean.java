@@ -239,7 +239,7 @@ public class SearchActionBean extends BaseActionBean{
                  Stringlst=orderDao.getOrderProductNameLst();
 
         }
-        System.out.println("cust name lst :"+Stringlst);
+        System.out.println("prod name lst :"+Stringlst);
         return new JavaScriptResolution(Stringlst);
     }
     public Resolution autocust()
