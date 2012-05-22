@@ -105,7 +105,7 @@ Add Product
 	<td width="34%" align="left" valign="top" >
     <s:hidden name="product.deleted" value="0"/>
     </td>
-
+                               
 	</tr>
   <tr><td align="left" valign="top">
   <div align="right" style="margin-left: 2px;" class="labels"><s:label name="Product Rate"></s:label><span style="color:#FF0000"> *</span></div></td>

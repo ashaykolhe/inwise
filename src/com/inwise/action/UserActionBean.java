@@ -25,7 +25,7 @@ import com.google.inject.Inject;
  * Time: 3:33:43 PM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/user")
+@UrlBinding("/user")
 @HttpCache(allow = false)
 public class UserActionBean extends BaseActionBean {
 

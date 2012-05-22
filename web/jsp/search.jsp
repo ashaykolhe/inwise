@@ -116,7 +116,7 @@ function combo(){
          {
          order.removeChild(options[i]);
          }// end for i
-        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","OrderProductName","orderDate");
+        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate");
         var ordershow=new Array("--Select Order Options--","Customer Order Number","Customer Name","Product Name","Order Date");
         for(var i=0;i<ordervalue.length;i++){
                     var t=ordervalue[i];
@@ -242,7 +242,7 @@ function fillsubmenu(){
                 });
             });
         }
-       else if($('#submenu').val() == 'OrderProductName'){
+       else if($('#submenu').val() == 'orderProductName'){
                               $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
@@ -327,6 +327,8 @@ $(document).ready(function() {
 <s:useActionBean beanclass="com.inwise.action.SearchActionBean" event="search" var="searchlst"></s:useActionBean>
 <%
     request.setAttribute("custlst",searchlst.getCustomer());
+    request.setAttribute("invoice",searchlst.getInvoice());
+    request.setAttribute("order",searchlst.getOrder());
 
 
 %>
@@ -441,6 +443,26 @@ $(document).ready(function() {
                   </d:table></td></tr></table>
         </c:if>
          </c:if>
+    <c:if test="${actionBean.invoice!=null}">
+
+            <table class="t" id="grntable" width="100%"><tr><td>
+                <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                    <d:column property="invoiceNumber" title="Invoice Number"/>
+                  <d:column property="customer.name" title="Customer Name"/>
+                  <d:column property="createDate" title="Invoice Date"/>
+
+                </d:table></td></tr></table>
+       </c:if>
+    <c:if test="${actionBean.order!=null}">
+
+            <table class="t" id="grntable" width="100%"><tr><td>
+                <d:table name="order" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                    <d:column property="customerOrderNo" title="Customer Order Number"/>
+                      <d:column property="customer.name" title="Customer Name"/>
+                      <d:column property="createDate" title="Order Date"/>
+
+                </d:table></td></tr></table>
+       </c:if>
     </s:form>
 </s:layout-component>
 </s:layout-render>

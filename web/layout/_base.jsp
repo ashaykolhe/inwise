@@ -101,7 +101,7 @@
                                  <li><a class="hide" href="#">Order</a>
                                                  <ul>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Update</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink">Delete</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink">Advance Payment</s:link></li>
                                                  </ul>

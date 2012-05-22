@@ -11,11 +11,13 @@ import javax.inject.Inject;
 
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
+import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +26,7 @@ import java.util.Iterator;
  * Time: 3:51:47 PM
  * To change this template use File | Settings | File Templates.
  */
+@UrlBinding("/search")
 public class SearchActionBean extends BaseActionBean{
     @Inject
     CustomerDao customerDao;
@@ -40,6 +43,15 @@ public class SearchActionBean extends BaseActionBean{
     private Invoice invoice;
     private Order order;
     private String searchMenu,searchSubmenu,name,hdnvalue,ajaxSubmenu;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -151,18 +163,43 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution search()
     {
+        //Customer
+         //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
             customer=customerDao.findByCustomerName(getName());
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
-        /*if(searchSubmenu.equalsIgnoreCase("inwiseNumber"))
+        //Invoice
+        //"none","inwiseNumber","inwiseCustomerOrderNo","inwiseCustomerName","inwiseProductName","inwiseDate"
+        if(searchSubmenu.equalsIgnoreCase("inwiseNumber"))
             invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
         if(searchSubmenu.equalsIgnoreCase("inwiseCustomerOrderNo"))
-                invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
+                invoice=invoiceDao.findByInvoiceCustomerOrderNo(getName());
+        if(searchSubmenu.equalsIgnoreCase("inwiseCustomerName"))
+                invoice=invoiceDao.findByInvoiceCustomerName(getName());
         if(searchSubmenu.equalsIgnoreCase("inwiseProductName"))
-                invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));*/
+                invoice=invoiceDao.findByInvoiceProductName(getName());
+        if(searchSubmenu.equalsIgnoreCase("inwiseDate"))
+                        invoice=invoiceDao.findByInvoiceDate(getDate());
 
-        System.out.println("cccccccc"+getCustomer());
+        //Order
+        //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
+
+
+         if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
+                order=orderDao.findByOrderCustomerOrderNumber(getName());
+        if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
+        {
+            System.out.println("name  :"+getName());
+                order=orderDao.findByOrderCustomerName(getName());
+            System.out.println("oooooooooooo"+getOrder());
+        }
+        if(searchSubmenu.equalsIgnoreCase("orderProductName"))
+                order=orderDao.findByOrderProductName(getName());
+        if(searchSubmenu.equalsIgnoreCase("orderDate"))
+                order=orderDao.findByOrderDate(getDate());
+
+
         return new ForwardResolution("jsp/search.jsp");
     }
 
@@ -178,13 +215,14 @@ public class SearchActionBean extends BaseActionBean{
         }
         if(ajaxSubmenu.equals("inwiseCustomerOrderNo"))
             Stringlst=invoiceDao.getInvoiceOrderNumberLst();
-        if(ajaxSubmenu.equals("inwiseCustomerOrderNo"))
+        if(ajaxSubmenu.equals("inwiseCustomerName"))
          Stringlst=invoiceDao.getInvoiceCustomerNameLst();
         if(ajaxSubmenu.equals("inwiseProductName"))
          Stringlst=invoiceDao.getInvoiceProductNameLst();
 
          return new JavaScriptResolution(Stringlst);
     }
+    //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
     public Resolution autoorder()
     {
         if(ajaxSubmenu.equals("orderCustomerOrderNumber"))
@@ -194,8 +232,14 @@ public class SearchActionBean extends BaseActionBean{
          if(ajaxSubmenu.equals("orderCustomerName"))
         {
                  Stringlst=orderDao.getOrderCustomerNameLst();
-        }
 
+        }
+         if(ajaxSubmenu.equals("orderProductName"))
+        {
+                 Stringlst=orderDao.getOrderProductNameLst();
+
+        }
+        System.out.println("cust name lst :"+Stringlst);
         return new JavaScriptResolution(Stringlst);
     }
     public Resolution autocust()

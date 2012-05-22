@@ -19,10 +19,11 @@ import java.util.Iterator;
  * Time: 10:24:12 AM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/order")
+@UrlBinding("/order")
 public class OrderActionBean extends BaseActionBean{
 
     private static final String ADDORDER="jsp/addOrder.jsp";
+    private static final String UPDATEORDER="jsp/updateOrder.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -31,11 +32,12 @@ public class OrderActionBean extends BaseActionBean{
 
     @Inject
     ProductDao productDao;
-    
+
     private Order order;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
-       private List<Order> orderlst;
+    private List<Address> addressList=new ArrayList<Address>();
+    private List<Order> orderlst;
 
     public List<Order> getOrderlst() {
         return orderlst;
@@ -61,6 +63,14 @@ public class OrderActionBean extends BaseActionBean{
         this.productList = productList;
     }
 
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
+
     public Order getOrder() {
         return order;
     }
@@ -76,9 +86,30 @@ public class OrderActionBean extends BaseActionBean{
         return new ForwardResolution(ADDORDER);
     }
 
+    public Resolution updateOrderLink(){
+        orderlst=orderDao.listAll();
+        customerList=customerDao.listAll();
+        productList=productDao.listAll();
+        return new ForwardResolution(UPDATEORDER);
+    }
+
     public Resolution addOrder(){
         orderDao.save(order);
         return new RedirectResolution(OrderActionBean.class,"pre");
+    }
+
+    public Resolution getOrders(){
+        order=orderDao.find(id);
+        addressList=order.getCustomer().getAddressList();
+        return updateOrderLink();
+    }
+
+    public Resolution updateOrder(){
+        System.out.println("----------------------------------order------------------------------------");
+        System.out.println(order);
+        System.out.println("----------------------------------order------------------------------------");
+        orderDao.save(order);
+        return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
     }
 
     public Resolution addressAjax(){
@@ -88,8 +119,16 @@ public class OrderActionBean extends BaseActionBean{
     public Resolution productDetailsAjax(){
         return new JavaScriptResolution(productDao.find(id));
     }
-        public Resolution getCustomerOrderNo(){
+
+    public Resolution getCustomerOrderNo(){
         orderlst=orderDao.getCustomerOrderNo(id);
-       return new JavaScriptResolution(orderlst);
+        return new JavaScriptResolution(orderlst);
     }
+
+    public Resolution customerOrderNoAlreadyPresent()
+    {
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(id));
+    }
+
+
 }

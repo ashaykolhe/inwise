@@ -18,7 +18,7 @@ import com.google.inject.Inject;
  * Time: 11:04:10 AM
  * To change this template use File | Settings | File Templates.
  */
-//@UrlBinding("/role")
+@UrlBinding("/role")
 @HttpCache(allow = false)
 public class RoleActionBean extends BaseActionBean {
 
