@@ -9,6 +9,7 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+
 <script type="text/javascript">
 
 function combo(){
@@ -111,7 +112,9 @@ function fillsubmenu(){
          $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -122,7 +125,8 @@ function fillsubmenu(){
           $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -133,18 +137,36 @@ function fillsubmenu(){
              $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
             });
         });
     }
-    
-    else if($('#submenu').val() == 'invoiceDate'){
-           $('#myDiv3').hide();
-                $('#myDiv2').show();
-                $('#myDiv1').hide();
+    else if($('#submenu').val() == 'inwiseProductName'){
+               $('#myDiv3').hide();
+              $('#myDiv2').hide();
+              $('#myDiv1').show();
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+            var availableTags=eval(result);
+            $("input#autocomplete").autocomplete({
+                source: availableTags
+            });
+        });
+    }
+    else if($('#submenu').val() == 'inwiseDate'){
+               $('#myDiv3').hide();
+              $('#myDiv2').hide();
+              $('#myDiv1').show();
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+            var availableTags=eval(result);
+            $("input#autocomplete").autocomplete({
+                source: availableTags
+            });
+        });
+
     }
       //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
     else if($('#submenu').val() == 'orderCustomerOrderNumber'){
@@ -170,11 +192,30 @@ function fillsubmenu(){
                 });
             });
         }
+       else if($('#submenu').val() == 'orderProductName'){
+                              $('#myDiv3').hide();
+              $('#myDiv2').hide();
+              $('#myDiv1').show();
+                 $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+
+
+                var availableTags=eval(result);
+                $("input#autocomplete").autocomplete({
+                    source: availableTags
+                });
+            });
+        }
        else if($('#submenu').val() == 'orderDate'){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
-               
+                $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                var availableTags=eval(result);
+                $("input#autocomplete").autocomplete({
+                    source: availableTags
+                });
+            });
+
         }
      //"none","custName","custCode"
        else if($('#submenu').val() == 'custName'){
@@ -381,6 +422,7 @@ $(document).ready(function() {
 
             <table class="t" id="grntable" width="100%"><tr><td>
                 <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search?search">
+<<<<<<< HEAD
                     <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column property="customer.name" title="Customer Name"/>
                   <d:column property="createDate" title="Invoice Date"/>
@@ -391,6 +433,8 @@ $(document).ready(function() {
 
             <table class="t" id="grntable" width="100%"><tr><td>
                 <d:table name="invoicelst" id="c" pagesize="10" class="disp" requestURI="search?search">
+=======
+>>>>>>> c2133bd7c203094ab365a713e07ff419816ba6a4
                     <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column property="customer.name" title="Customer Name"/>
                   <d:column property="createDate" title="Invoice Date"/>
@@ -401,6 +445,7 @@ $(document).ready(function() {
 
             <table class="t" id="grntable" width="100%"><tr><td>
                 <d:table name="order" id="c" pagesize="10" class="disp" requestURI="search?search">
+<<<<<<< HEAD
                     <d:column property="customerOrderNo" title="Customer Order Number"/>
                       <d:column property="customer.name" title="Customer Name"/>
                       <d:column property="createDate" title="Order Date"/>
@@ -411,6 +456,8 @@ $(document).ready(function() {
 
             <table class="t" id="grntable" width="100%"><tr><td>
                 <d:table name="orderlst" id="c" pagesize="10" class="disp" requestURI="search?search">
+=======
+>>>>>>> c2133bd7c203094ab365a713e07ff419816ba6a4
                     <d:column property="customerOrderNo" title="Customer Order Number"/>
                       <d:column property="customer.name" title="Customer Name"/>
                       <d:column property="createDate" title="Order Date"/>

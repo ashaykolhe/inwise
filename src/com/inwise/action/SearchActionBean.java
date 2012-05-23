@@ -230,7 +230,12 @@ public class SearchActionBean extends BaseActionBean{
 
         }
 
+<<<<<<< HEAD
         System.out.println("order prod name lst :"+Stringlst);
+=======
+        }
+        System.out.println("prod name lst :"+Stringlst);
+>>>>>>> c2133bd7c203094ab365a713e07ff419816ba6a4
         return new JavaScriptResolution(Stringlst);
     }
     public Resolution autocust()

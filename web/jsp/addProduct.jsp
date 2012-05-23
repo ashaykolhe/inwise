@@ -64,7 +64,7 @@
        })
        function checkProduct() {
 
-$.post("/Product.action?productAlreadyPresent", {addProductName:$("#addproductname").val().trim()}, function (data) {
+$.post("product?productAlreadyPresent", {addProductName:$("#addproductname").val().trim()}, function (data) {
                                          var flag=eval(data);
                                          if(flag)
                                          {

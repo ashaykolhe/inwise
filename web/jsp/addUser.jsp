@@ -14,7 +14,7 @@
 <script type="text/javascript">
     function checkuser(){
 
-            $.post("/User.action?checkUserAlreadyPresent", {addUserName:$('#addusername').val()}, function (data) {
+            $.post("user?checkUserAlreadyPresent", {addUserName:$('#addusername').val()}, function (data) {
             var flag=eval(data);
 
            if(flag)
@@ -81,6 +81,7 @@ $ .post(link, function (data) {
 function submitForm(button,update) {
 
 var form = button.form;
+    var resolution=button.name;
 var params = $(form).serializeArray();
       if ($("#roletxt").val().trim() ==""){
                    alert("Please enter role");
@@ -88,7 +89,7 @@ var params = $(form).serializeArray();
                    return false;
  }else{
 params.push({name: '_eventName' , value: button.name});
-$.post(form.action, params, function (data) {
+$.post("role?"+resolution, params, function (data) {
 $( update ).html(data);
      $(update).show();
      $('#roletxt').val("");
