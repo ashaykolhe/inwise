@@ -95,7 +95,8 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution addOrder(){
         orderDao.save(order);
-        return new RedirectResolution(OrderActionBean.class,"pre");
+        
+        return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
     }
 
     public Resolution getOrders(){
