@@ -2,6 +2,8 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
+import com.inwise.pojo.Customer;
+
 import java.util.List;
 import java.util.Date;
 
@@ -57,5 +59,11 @@ public class OrderDao extends BaseDao<Order,Integer> {
     public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
         return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
     }
+    public List<Order> findOrderByOrderNo(Integer customerOrderNo)
+    {
+        return (List<Order>)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).list();
+    }
+   
+     
 
 }
