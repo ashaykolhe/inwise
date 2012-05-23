@@ -19,7 +19,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "Search.action?redirectgrnpopup=&id="+${actionBean.id}+"";
+            var page = "search?redirectgrnpopup=&id="+${actionBean.id}+"";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
             return;
@@ -37,7 +37,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "Search.action?redirectpopup=&id="+${actionBean.id}+"&name=+${actionBean.name}+";
+            var page = "search?redirectpopup=&id="+${actionBean.id}+"&name=+${actionBean.name}+";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
             return;
@@ -56,7 +56,7 @@ To change this template use File | Settings | File Templates.
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "Search.action?redirectpurchase=&id="+${actionBean.id}+"";
+            var page = "search?redirectpurchase=&id="+${actionBean.id}+"";
             windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
@@ -167,7 +167,7 @@ function fillsubmenu(){
          $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -178,7 +178,7 @@ function fillsubmenu(){
           $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -189,7 +189,7 @@ function fillsubmenu(){
              $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -200,7 +200,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -211,19 +211,19 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
             });
         });
     }
-      //"none","orderCustomerOrderNumber","orderCustomerName","OrderProductName","orderDate"
+      //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
     else if($('#submenu').val() == 'orderCustomerOrderNumber'){
                      $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -234,7 +234,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
 
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -246,7 +246,7 @@ function fillsubmenu(){
                               $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
 
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -258,7 +258,7 @@ function fillsubmenu(){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
-                $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -270,8 +270,8 @@ function fillsubmenu(){
                                    $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
+                 $.post("search?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+           /* $.get("/search?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -282,8 +282,8 @@ function fillsubmenu(){
                       $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
+                 $.post("search?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+           /* $.get("/search?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -420,7 +420,7 @@ $(document).ready(function() {
         <c:if test="${actionBean.customer!=null}">
         <c:if test="${actionBean.searchSubmenu eq 'custName'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>
@@ -432,7 +432,7 @@ $(document).ready(function() {
         </c:if>
          <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>
@@ -446,7 +446,7 @@ $(document).ready(function() {
     <c:if test="${actionBean.invoice!=null}">
 
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search?search">
                     <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column property="customer.name" title="Customer Name"/>
                   <d:column property="createDate" title="Invoice Date"/>
@@ -456,7 +456,7 @@ $(document).ready(function() {
     <c:if test="${actionBean.order!=null}">
 
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="order" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="order" id="c" pagesize="10" class="disp" requestURI="search?search">
                     <d:column property="customerOrderNo" title="Customer Order Number"/>
                       <d:column property="customer.name" title="Customer Name"/>
                       <d:column property="createDate" title="Order Date"/>

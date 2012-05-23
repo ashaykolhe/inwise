@@ -23,7 +23,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
          return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"'").list();
     }
 
-   
+
 
     public List<String> getOrderCustomerOrderNumber() {
          return (List<String>)sessionProvider.get().createQuery("SELECT o.customerOrderNo from Order o").list();
