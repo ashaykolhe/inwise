@@ -34,6 +34,7 @@ public class OrderActionBean extends BaseActionBean{
     ProductDao productDao;
 
     private Order order;
+    private String customerOrderNumber;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
     private List<Address> addressList=new ArrayList<Address>();
@@ -77,6 +78,14 @@ public class OrderActionBean extends BaseActionBean{
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getCustomerOrderNumber() {
+        return customerOrderNumber;
+    }
+
+    public void setCustomerOrderNumber(String customerOrderNumber) {
+        this.customerOrderNumber = customerOrderNumber;
     }
 
     @DefaultHandler
@@ -128,7 +137,7 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution customerOrderNoAlreadyPresent()
     {
-        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(id));
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber));
     }
 
 

@@ -29,30 +29,30 @@
             <td><div align="center" class="style3" style="margin-top:5px; text-decoration:underline">ADVANCE RECEIPT</div></td>
         </tr>
         <tr>
-            <td><table width="760px" border="0" cellspacing="0" cellpadding="0">
+            <td height="229"><table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td width="83"><div align="left"  style="margin-top:5px;">
+                    <td><div align="left"  style="margin-top:5px;">
                         <div align="center" class="style1" style="margin-bottom:2px"><b>DATE :</b></div>
                     </div></td>
-                    <td width="192"><div align="left"><fmt:formatDate value="<%= new Date()%>"/> </div></td>
-                    <td width="309"><div align="right" class="style1"><b>No.  :</b></div></td>
-                    <td width="176">${advanceBean.advance.id}</td>
+                    <td><div align="left"><fmt:formatDate value="<%= new Date()%>"/> </div></td>
+                    <td><div align="right" class="style1"><b>No.  :</b></div></td>
+                    <td>${advanceBean.advance.id}</td>
                 </tr>
                 <tr>
-                    <td width="83"><div align="left"  style="margin-top:5px;">
+                    <td><div align="left"  style="margin-top:5px;">
                         <div align="center" class="style1" style="margin-bottom:2px"><b>Customer Order No. :</b></div>
                     </div></td>
-                    <td width="192"><div align="left">${advanceBean.advance.order.customerOrderNo}</div></td>
-                    <td width="309"><div align="right" class="style1"><b>Received From  :</b></div></td>
-                    <td width="176">${advanceBean.advance.order.customer.name}</td>
+                    <td><div align="left">${advanceBean.advance.order.customerOrderNo}</div></td>
+                    <td><div align="right" class="style1"><b>Received From  :</b></div></td>
+                    <td>${advanceBean.advance.order.customer.name}</td>
                 </tr>
                 <tr>
-                    <td width="83"><div align="left"  style="margin-top:5px;">
+                    <td height="103"><div align="left"  style="margin-top:5px;">
                         <div align="center" class="style1" style="margin-bottom:2px"><b>Payment Amount:</b></div>
                     </div></td>
-                    <td width="192"><div align="left">${advanceBean.advance.amountReceived}</div></td>
-                    <td width="309"><div align="right" class="style1"><b>Payment Mode  :</b></div></td>
-                    <td width="176">${advanceBean.advance.paymentMode.mode}</td>
+                <td><div align="left">${advanceBean.advance.amountReceived}</div></td>
+                    <td><div align="right" class="style1"><b>Payment Mode  :</b></div></td>
+                    <td>${advanceBean.advance.paymentMode.mode}</td>
                 </tr>
             </table>    </td>
         </tr>

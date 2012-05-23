@@ -54,8 +54,8 @@ public class OrderDao extends BaseDao<Order,Integer> {
     public List<String> getOrderProductNameLst() {
         return sessionProvider.get().createQuery("select o.orderDetail.product.productName from Order o").list();
     }
-    public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
-        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
+    public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
+        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
     }
 
     public Integer latestOrderId(){
