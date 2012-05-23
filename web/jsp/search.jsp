@@ -9,62 +9,6 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
-<c:set var = "TR1" value="receiptgrn"/>
-<c:if test="${actionBean.hdnvalue eq TR1}">
-<script type="text/javascript">
-        function OpenPopup(){
-            var w = 760;
-            var h = 450;
-            var winl = (screen.width-w)/2;
-            var wint = (screen.height-h)/2;
-            if (winl < 0) winl = 0;
-            if (wint < 0) wint = 0;
-            var page = "Search.action?redirectgrnpopup=&id="+${actionBean.id}+"";
-            windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-            window.open(page, "Popup", windowprops);
-            return;
-        }
-        window.onLoad =OpenPopup();
-    </script>
-</c:if >
-<c:set var = "TR2" value="receipt"/>
-<c:if test="${actionBean.hdnvalue eq TR2}">
-<script type="text/javascript">
-        function OpenPopup(){
-            var w = 760;
-            var h = 450;
-            var winl = (screen.width-w)/2;
-            var wint = (screen.height-h)/2;
-            if (winl < 0) winl = 0;
-            if (wint < 0) wint = 0;
-            var page = "Search.action?redirectpopup=&id="+${actionBean.id}+"&name=+${actionBean.name}+";
-            windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-            window.open(page, "Popup", windowprops);
-            return;
-        }
-        window.onLoad =OpenPopup();
-    </script>
-</c:if >
-<c:set var = "TR3" value="receiptpurchase"/>
-<c:if test="${actionBean.hdnvalue eq TR3}">
-    <script type="text/javascript">
-        function OpenPopup(){
-
-            var w = 780;
-            var h = 450;
-            var winl = (screen.width-w)/2;
-            var wint = (screen.height-h)/2;
-            if (winl < 0) winl = 0;
-            if (wint < 0) wint = 0;
-            var page = "Search.action?redirectpurchase=&id="+${actionBean.id}+"";
-            windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-            window.open(page, "Popup", windowprops);
-            return;
-        }
-        window.onLoad =OpenPopup();
-    </script>
-</c:if >
 <script type="text/javascript">
 
 function combo(){
@@ -82,29 +26,29 @@ function combo(){
 
     }
 
-    if($('#menu').val()=='byInwise')
+    if($('#menu').val()=='byInvoice')
     {
 
 
-        var inwise = document.getElementById("submenu");
-         var options=inwise.getElementsByTagName("option");
+        var invoice = document.getElementById("submenu");
+         var options=invoice.getElementsByTagName("option");
          var i;
          // Loop through the array of options and remove each
          // each one from the parent's childNode list.
          for (i=0; i<options.length; i++)
          {
-         inwise.removeChild(options[i]);
+         invoice.removeChild(options[i]);
          }// end for i
-        var inwisevalue=new Array("none","inwiseNumber","inwiseCustomerOrderNo","inwiseCustomerName","inwiseProductName","inwiseDate");
-        var inwiseshow=new Array("--Select Inwise Options--","Inwise Number","Customer Order Number","Customer Name","Product Name","Inwise Date");
-        for(var i=0;i<inwisevalue.length;i++){
-                    var t=inwisevalue[i];
+        var invoicevalue=new Array("none","invoiceNumber","invoiceCustomerOrderNo","invoiceCustomerName","invoiceDate");
+        var invoiceshow=new Array("--Select Invoice Options--","Invoice Number","Customer Order Number","Customer Name","Invoice Date");
+        for(var i=0;i<invoicevalue.length;i++){
+                    var t=invoicevalue[i];
                     if(t==submenuvalue){
-                       inwise.options[i]=new Option(inwiseshow[i],inwisevalue[i],false,true);
+                       invoice.options[i]=new Option(invoiceshow[i],invoicevalue[i],false,true);
 
                     }
                     else
-                       inwise.options[i]=new Option(inwiseshow[i],inwisevalue[i]);
+                       invoice.options[i]=new Option(invoiceshow[i],invoicevalue[i]);
                }    //end of for
     }
     else if($('#menu').val()=='byOrder')
@@ -116,8 +60,8 @@ function combo(){
          {
          order.removeChild(options[i]);
          }// end for i
-        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate");
-        var ordershow=new Array("--Select Order Options--","Customer Order Number","Customer Name","Product Name","Order Date");
+        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","orderDate");
+        var ordershow=new Array("--Select Order Options--","Customer Order Number","Customer Name","Order Date");
         for(var i=0;i<ordervalue.length;i++){
                     var t=ordervalue[i];
                     if(t==submenuvalue){
@@ -162,68 +106,52 @@ function fillsubmenu(){
        $('#autocomplete').val("");
        $('.textbox').val("");
 
-   }   //"none","inwiseNumber","inwiseCustomerOrderNo","inwiseCustomerName","inwiseProductName","inwiseDate"
-    if($('#submenu').val() == 'inwiseNumber'){
+   }   //"none","invoiceNumber","invoiceCustomerOrderNo","invoiceCustomerName","invoiceProductName","invoiceDate"
+    if($('#submenu').val() == 'invoiceNumber'){
          $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
             });
         });
     }
-    else if($('#submenu').val() == 'inwiseCustomerOrderNo'){
+    else if($('#submenu').val() == 'invoiceCustomerOrderNo'){
           $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
             });
         });
     }
-     else if($('#submenu').val() == 'inwiseCustomerName'){
+     else if($('#submenu').val() == 'invoiceCustomerName'){
              $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoinvoice", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
             });
         });
     }
-    else if($('#submenu').val() == 'inwiseProductName'){
-               $('#myDiv3').hide();
-              $('#myDiv2').hide();
-              $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-            var availableTags=eval(result);
-            $("input#autocomplete").autocomplete({
-                source: availableTags
-            });
-        });
+    
+    else if($('#submenu').val() == 'invoiceDate'){
+           $('#myDiv3').hide();
+                $('#myDiv2').show();
+                $('#myDiv1').hide();
     }
-    else if($('#submenu').val() == 'inwiseDate'){
-               $('#myDiv3').hide();
-              $('#myDiv2').hide();
-              $('#myDiv1').show();
-          $.post("Search.action?autoinwise", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-            var availableTags=eval(result);
-            $("input#autocomplete").autocomplete({
-                source: availableTags
-            });
-        });
-    }
-      //"none","orderCustomerOrderNumber","orderCustomerName","OrderProductName","orderDate"
+      //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
     else if($('#submenu').val() == 'orderCustomerOrderNumber'){
                      $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-          $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+          $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
             var availableTags=eval(result);
             $("input#autocomplete").autocomplete({
                 source: availableTags
@@ -234,19 +162,7 @@ function fillsubmenu(){
                $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-
-                var availableTags=eval(result);
-                $("input#autocomplete").autocomplete({
-                    source: availableTags
-                });
-            });
-        }
-       else if($('#submenu').val() == 'orderProductName'){
-                              $('#myDiv3').hide();
-              $('#myDiv2').hide();
-              $('#myDiv1').show();
-                 $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                 $.post("search?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
 
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
@@ -258,20 +174,15 @@ function fillsubmenu(){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
-                $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-                var availableTags=eval(result);
-                $("input#autocomplete").autocomplete({
-                    source: availableTags
-                });
-            });
+               
         }
      //"none","custName","custCode"
        else if($('#submenu').val() == 'custName'){
                                    $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
+                 $.post("search?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+           /* $.get("/search?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -282,8 +193,8 @@ function fillsubmenu(){
                       $('#myDiv3').hide();
               $('#myDiv2').hide();
               $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
+                 $.post("search?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+           /* $.get("/search?autovendor",function(result) {*/
                 var availableTags=eval(result);
                 $("input#autocomplete").autocomplete({
                     source: availableTags
@@ -298,7 +209,9 @@ $(document).ready(function() {
 
            fillsubmenu();
 
-    $("#seperategetbtn").click(function(){
+    $("#textgetbtn").click(function(){
+        var varsubmenu=$("#submenu option:selected").val().trim().toString();
+
         if ($("#autocomplete").val().trim()==""){
             alert("please enter search details.");
             return false;
@@ -309,7 +222,7 @@ $(document).ready(function() {
         alert("Please,Select Search By Option");
         return false;
         }
-        else if(varsubmenu=='grnNumber' || varsubmenu=='siNumber' || varsubmenu=='siRequisitionId')
+        else if(varsubmenu=='invoiceNumber')
        {
             var chk = /^[0-9]+$/.test($('#autocomplete').val().trim());
                     if (!chk) {
@@ -320,6 +233,25 @@ $(document).ready(function() {
        }
 
     });
+    $("#dategetbtn").click(function(){
+        var varsubmenu=$("#submenu option:selected").val().trim().toString();
+
+               if(varsubmenu=='orderDate' || varsubmenu=='invoiceDate')
+               {
+                   if($('#date').val()=="")
+                   {
+                   alert("please select date");
+                   return false;
+                   }
+               }
+               var varsubmenu=$("#submenu option:selected").val().trim().toString();
+              if(varsubmenu=='none')
+               {
+               alert("Please,Select Search By Option");
+               return false;
+               }
+       
+    });
 
 });
 </script>
@@ -328,7 +260,9 @@ $(document).ready(function() {
 <%
     request.setAttribute("custlst",searchlst.getCustomer());
     request.setAttribute("invoice",searchlst.getInvoice());
+    request.setAttribute("invoicelst",searchlst.getInvoicelst());
     request.setAttribute("order",searchlst.getOrder());
+    request.setAttribute("orderlst",searchlst.getOrderlst());
 
 
 %>
@@ -353,8 +287,8 @@ $(document).ready(function() {
                             <td width="13%" align="left" valign="top">Search What ?</td>
                             <td width="87%" align="left" valign="top">
                                 <%
-                                    String[] menu={"byInwise","byOrder","byCustomer"};
-                                    String[] name={"Inwise","Order","Customer"};
+                                    String[] menu={"byInvoice","byOrder","byCustomer"};
+                                    String[] name={"Invoice","Order","Customer"};
                                 %>
                                 <s:select name="searchMenu" id="menu" class="dropdown" onchange="combo()">
                                     <option value="0">----Select Menu----</option>
@@ -392,22 +326,22 @@ $(document).ready(function() {
                                 <div id="myDiv1"  align="left" style="display:none;" class="labels">
                                         <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
                                     &nbsp;&nbsp;<s:text style="border:1px solid #FFCC66;height: 23px; width: 173px;" name="name" id="autocomplete" value=""/>
-                                    <s:submit name="search" id="seperategetbtn" value="Get" ></s:submit>
+                                    <s:submit name="search" id="textgetbtn" value="Get" ></s:submit>
 
                                 </div>
 
                                 <div id="myDiv2"  align="left" style="display:none;" class="labels">
                                         <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
-                                    &nbsp;&nbsp;<s:text name="date" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                                    <s:submit name="search" id="seperategetbtn" value="Get" ></s:submit>
+                                    &nbsp;&nbsp;<s:text id="date" name="date" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
+                                    <s:submit name="search" id="dategetbtn" value="Get" ></s:submit>
 
                                 </div>
 
                                 <div id="myDiv3"  align="left" style="display:none;" class="labels">
                                         <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
                                     &nbsp;&nbsp;<s:text name="fromdate" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                                    &nbsp;&nbsp;        <s:text name="todate" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                                    <s:submit name="search" id="seperategetbtn" value="Get" ></s:submit>
+                                    &nbsp;&nbsp;        <s:text id="betweendate" name="todate" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
+                                    <s:submit name="search" id="betgetbtn" value="Get" ></s:submit>
 
                                 </div>
                             </td>
@@ -420,7 +354,7 @@ $(document).ready(function() {
         <c:if test="${actionBean.customer!=null}">
         <c:if test="${actionBean.searchSubmenu eq 'custName'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>
@@ -432,7 +366,7 @@ $(document).ready(function() {
         </c:if>
          <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="Search.action?search">
+                <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
                       <d:column property="customerCode" title="Customer Code"/>
                     <d:column property="name" title="Name"/>
                     <d:column property="contactPerson" title="Contact Person Name"/>
@@ -446,7 +380,17 @@ $(document).ready(function() {
     <c:if test="${actionBean.invoice!=null}">
 
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search?search">
+                    <d:column property="invoiceNumber" title="Invoice Number"/>
+                  <d:column property="customer.name" title="Customer Name"/>
+                  <d:column property="createDate" title="Invoice Date"/>
+
+                </d:table></td></tr></table>
+       </c:if>
+    <c:if test="${actionBean.invoicelst!=null}">
+
+            <table class="t" id="grntable" width="100%"><tr><td>
+                <d:table name="invoicelst" id="c" pagesize="10" class="disp" requestURI="search?search">
                     <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column property="customer.name" title="Customer Name"/>
                   <d:column property="createDate" title="Invoice Date"/>
@@ -456,7 +400,17 @@ $(document).ready(function() {
     <c:if test="${actionBean.order!=null}">
 
             <table class="t" id="grntable" width="100%"><tr><td>
-                <d:table name="order" id="c" pagesize="10" class="disp" requestURI="/Search.action?search">
+                <d:table name="order" id="c" pagesize="10" class="disp" requestURI="search?search">
+                    <d:column property="customerOrderNo" title="Customer Order Number"/>
+                      <d:column property="customer.name" title="Customer Name"/>
+                      <d:column property="createDate" title="Order Date"/>
+
+                </d:table></td></tr></table>
+       </c:if>
+    <c:if test="${actionBean.orderlst!=null}">
+
+            <table class="t" id="grntable" width="100%"><tr><td>
+                <d:table name="orderlst" id="c" pagesize="10" class="disp" requestURI="search?search">
                     <d:column property="customerOrderNo" title="Customer Order Number"/>
                       <d:column property="customer.name" title="Customer Name"/>
                       <d:column property="createDate" title="Order Date"/>

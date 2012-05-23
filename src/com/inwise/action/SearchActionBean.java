@@ -17,7 +17,7 @@ import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Date;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,14 +42,14 @@ public class SearchActionBean extends BaseActionBean{
     private Customer customer;
     private Invoice invoice;
     private Order order;
-    private String searchMenu,searchSubmenu,name,hdnvalue,ajaxSubmenu;
-    private Date date;
+    private String searchMenu,searchSubmenu,name,ajaxSubmenu;
+    private String date;
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -133,14 +133,6 @@ public class SearchActionBean extends BaseActionBean{
         this.customerlst = customerlst;
     }
 
-    public String getHdnvalue() {
-        return hdnvalue;
-    }
-
-    public void setHdnvalue(String hdnvalue) {
-        this.hdnvalue = hdnvalue;
-    }
-
     public String getSearchMenu() {
         return searchMenu;
     }
@@ -163,6 +155,7 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution search()
     {
+        System.out.println("from search "+getDate());
         //Customer
          //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
@@ -170,42 +163,45 @@ public class SearchActionBean extends BaseActionBean{
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
         //Invoice
-        //"none","inwiseNumber","inwiseCustomerOrderNo","inwiseCustomerName","inwiseProductName","inwiseDate"
-        if(searchSubmenu.equalsIgnoreCase("inwiseNumber"))
+        //"none","invoiceNumber","invoiceCustomerOrderNo","invoiceCustomerName","invoiceProductName","invoiceDate"
+        if(searchSubmenu.equalsIgnoreCase("invoiceNumber"))
             invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(getName()));
-        if(searchSubmenu.equalsIgnoreCase("inwiseCustomerOrderNo"))
-                invoice=invoiceDao.findByInvoiceCustomerOrderNo(getName());
-        if(searchSubmenu.equalsIgnoreCase("inwiseCustomerName"))
-                invoice=invoiceDao.findByInvoiceCustomerName(getName());
-        if(searchSubmenu.equalsIgnoreCase("inwiseProductName"))
-                invoice=invoiceDao.findByInvoiceProductName(getName());
-        if(searchSubmenu.equalsIgnoreCase("inwiseDate"))
-                        invoice=invoiceDao.findByInvoiceDate(getDate());
+        if(searchSubmenu.equalsIgnoreCase("invoiceCustomerOrderNo"))
+                invoicelst=invoiceDao.findByInvoiceCustomerOrderNo(getName());
+        if(searchSubmenu.equalsIgnoreCase("invoiceCustomerName"))
+                invoicelst=invoiceDao.findByInvoiceCustomerName(getName());
+        if(searchSubmenu.equalsIgnoreCase("invoiceDate"))
+        {
 
+            invoicelst=invoiceDao.findByInvoiceDate(getDate());
+             System.out.println("lst :"+getInvoicelst());
         //Order
         //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
-
+        }
 
          if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
-                order=orderDao.findByOrderCustomerOrderNumber(getName());
+
+         {
+             order=orderDao.findByOrderCustomerOrderNumber(getName());
+             System.out.println("oooooooooooooooooooooooooooooooooooooooooo"+order);
+         }
         if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
         {
             System.out.println("name  :"+getName());
                 order=orderDao.findByOrderCustomerName(getName());
             System.out.println("oooooooooooo"+getOrder());
         }
-        if(searchSubmenu.equalsIgnoreCase("orderProductName"))
-                order=orderDao.findByOrderProductName(getName());
+
         if(searchSubmenu.equalsIgnoreCase("orderDate"))
-                order=orderDao.findByOrderDate(getDate());
+                orderlst=orderDao.findByOrderDate(getDate());
 
 
         return new ForwardResolution("jsp/search.jsp");
     }
 
-    public Resolution autoinwise()
+    public Resolution autoinvoice()
     {
-        if(ajaxSubmenu.equals("inwiseNumber"))
+        if(ajaxSubmenu.equals("invoiceNumber"))
         {
             Integerlst=invoiceDao.getInvoiceNumberLst();
              Stringlst=new ArrayList<String>();
@@ -213,13 +209,12 @@ public class SearchActionBean extends BaseActionBean{
                 Stringlst.add(i.next().toString());
                 }
         }
-        if(ajaxSubmenu.equals("inwiseCustomerOrderNo"))
+        if(ajaxSubmenu.equals("invoiceCustomerOrderNo"))
             Stringlst=invoiceDao.getInvoiceOrderNumberLst();
-        if(ajaxSubmenu.equals("inwiseCustomerName"))
+        if(ajaxSubmenu.equals("invoiceCustomerName"))
          Stringlst=invoiceDao.getInvoiceCustomerNameLst();
-        if(ajaxSubmenu.equals("inwiseProductName"))
-         Stringlst=invoiceDao.getInvoiceProductNameLst();
 
+        System.out.println("invoice stringlst :"+Stringlst);
          return new JavaScriptResolution(Stringlst);
     }
     //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
@@ -234,12 +229,8 @@ public class SearchActionBean extends BaseActionBean{
                  Stringlst=orderDao.getOrderCustomerNameLst();
 
         }
-         if(ajaxSubmenu.equals("orderProductName"))
-        {
-                 Stringlst=orderDao.getOrderProductNameLst();
 
-        }
-        System.out.println("cust name lst :"+Stringlst);
+        System.out.println("order prod name lst :"+Stringlst);
         return new JavaScriptResolution(Stringlst);
     }
     public Resolution autocust()
