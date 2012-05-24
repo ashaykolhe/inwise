@@ -2,6 +2,8 @@ package com.inwise.pojo;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,6 +38,11 @@ public class Payment {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date",length = 20)
     private Date updateDate;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "payment_has_paymentdetail",
+    joinColumns = { @JoinColumn(name = "payment_id") }, inverseJoinColumns = { @JoinColumn(name = "payment_detail_id") })
+    private List<PaymentDetail> paymentDetail=new ArrayList<PaymentDetail>();
 
     public Integer getId() {
         return id;
@@ -85,6 +92,14 @@ public class Payment {
         this.updateDate = updateDate;
     }
 
+    public List<PaymentDetail> getPaymentDetail() {
+        return paymentDetail;
+    }
+
+    public void setPaymentDetail(List<PaymentDetail> paymentDetail) {
+        this.paymentDetail = paymentDetail;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +
@@ -94,6 +109,7 @@ public class Payment {
                 ", user=" + user +
                 ", createDate=" + createDate +
                 ", updateDate=" + updateDate +
+                ", paymentDetail=" + paymentDetail +
                 '}';
     }
 }
