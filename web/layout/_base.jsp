@@ -110,7 +110,7 @@
                                                <ul>
                                                      <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Update</s:link></li>
-
+                                                      <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
 
                                                  </ul>
                                              </li>
