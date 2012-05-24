@@ -126,7 +126,11 @@
         <url-pattern>/order</url-pattern>
         <url-pattern>/product</url-pattern>
         <url-pattern>/search</url-pattern>
+
         <url-pattern>/paymentstatus</url-pattern>
+
+        <url-pattern>/advance</url-pattern>
+
     </servlet-mapping>
 <welcome-file-list>
     <welcome-file>/jsp/login.jsp</welcome-file>

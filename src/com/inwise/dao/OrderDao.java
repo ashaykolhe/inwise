@@ -61,8 +61,12 @@ public class OrderDao extends BaseDao<Order,Integer> {
         }
         return (List<Order>)sessionProvider.get().createQuery("select o from Order o WHERE o.createDate LIKE '"+sdate+"%'").list();
     }
-    public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
-        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
+    public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
+        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
+    }
+
+    public Integer latestOrderId(){
+        return (Integer)sessionProvider.get().createQuery("select max(id) from Order").uniqueResult();
     }
 
 }

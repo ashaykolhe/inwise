@@ -51,7 +51,7 @@ Payment Status
                     </tr>
                         <tr>
                         <td width="24%" align="left" valign="top">
-                            <div align="left" style="margin-left: 2px;" class="labels">
+                            <div align="left" style="margin-left: 2px;" class="labewels">
                                 <div align="right">Customer Name</div>
                             </div>
                         </td>

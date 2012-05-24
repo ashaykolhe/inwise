@@ -43,7 +43,7 @@ To change this template use File | Settings | File Templates.
             $('#customerName').focus();
             return false;
         }
-        $.get('order?customerOrderNoAlreadyPresent', {id:$("#customerOrderNo").val().trim()}, function (data) {
+        $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim()}, function (data) {
             var flag=eval(data);
             if(flag)
             {
