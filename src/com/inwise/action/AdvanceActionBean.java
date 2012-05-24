@@ -71,6 +71,7 @@ public class AdvanceActionBean extends BaseActionBean{
 
     @DefaultHandler
     public Resolution pre(){
+        
         return new ForwardResolution(ADVANCE);
     }
 

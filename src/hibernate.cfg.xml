@@ -36,6 +36,8 @@
         <mapping class="com.inwise.pojo.UserPermissions"/>
         <mapping class="com.inwise.pojo.OrderAddress"/>
         <mapping class="com.inwise.pojo.PaymentMode"/>
+        <mapping class="com.inwise.pojo.Payment"/>
+        <mapping class="com.inwise.pojo.PaymentDetail"/>
 
 
     </session-factory>
