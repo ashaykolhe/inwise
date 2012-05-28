@@ -24,6 +24,7 @@ public class OrderActionBean extends BaseActionBean{
 
     private static final String ADDORDER="jsp/addOrder.jsp";
     private static final String UPDATEORDER="jsp/updateOrder.jsp";
+    private static final String DELETEORDER="jsp/deleteOrder.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -96,7 +97,7 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution updateOrderLink(){
-        orderlst=orderDao.listAll();
+        
         customerList=customerDao.listAll();
         productList=productDao.listAll();
         return new ForwardResolution(UPDATEORDER);
@@ -104,13 +105,13 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution addOrder(){
         orderDao.save(order);
-        
         return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
     }
 
     public Resolution getOrders(){
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
+        orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
         return updateOrderLink();
     }
 
@@ -140,5 +141,15 @@ public class OrderActionBean extends BaseActionBean{
         return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber));
     }
 
+    public Resolution deleteOrderLink(){
+        orderlst=orderDao.getOrderList();
+        return new ForwardResolution(DELETEORDER);
+    }
 
+        //delete user
+    public Resolution delete(){
+
+        orderDao.remove(id);
+        return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
+    }
 }

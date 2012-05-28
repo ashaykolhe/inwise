@@ -102,7 +102,7 @@
                                                  <ul>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink">Delete</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="pre">Advance Payment</s:link></li>
                                                  </ul>
                                              </li>

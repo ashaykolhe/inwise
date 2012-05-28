@@ -109,6 +109,7 @@ To change this template use File | Settings | File Templates.
      });
      });
 
+
 </script>
 
 <s:layout-render name="/layout/_base.jsp">
@@ -125,12 +126,6 @@ To change this template use File | Settings | File Templates.
             </table>
             <table border="1" width="66%" bgcolor="#FCFCFC" ><tr><td>
             <table width="100%" border="0" cellspacing="1" bordercolor="#FCFCFC">
-            <%-- <tr>
-           <td align="left"  valign="top" colspan="2"><div align="left" class="labels" style="margin-left:2px"><span style="border-bottom-color:#000">Vendor</span></div></td>
-
-           <td align="left" valign="top" colspan="2"><div align="left" class="labels" style="margin-left:2px">Product Supplied</div></td>
-
-           </tr> --%>
             <tr>
                 <td width="21%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
                 <td width="29%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>

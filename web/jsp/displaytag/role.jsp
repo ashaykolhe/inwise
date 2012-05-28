@@ -6,7 +6,7 @@
 
 %>
  <div style="height:250px;overflow-y:auto">
-<d:table name="rolelst"  class="disp" id="rolel" requestURI="/Role.action?paginationRole">
+<d:table name="rolelst"  class="disp" id="rolel" requestURI="/role?paginationRole">
 <d:column property="name" title="Role Name"/>
                   <d:column  title="update">
                         <s:link beanclass="com.inwise.action.RoleActionBean" event="readname" onclick= "return updateLink(this);">

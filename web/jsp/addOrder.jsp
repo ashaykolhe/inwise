@@ -9,11 +9,6 @@ To change this template use File | Settings | File Templates.
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <s:useActionBean beanclass="com.inwise.action.OrderActionBean" var="orderBean" event="pre"></s:useActionBean>
-<%
-    //    request.setAttribute("vendorlst",orderBean.getVendorlst());
-//    request.setAttribute("itemidlst",orderBean.getItemidlst());
-
-%>
 <script type="text/javascript">
 
     $(document).ready(function(){
@@ -144,7 +139,7 @@ To change this template use File | Settings | File Templates.
             $('#family #tabletr:last select:eq(0)').attr("value","0");
             $('#family #tabletr:last input').removeAttr("value");
             $('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
-            $('#family #tabletr:last select:eq(0)').attr("id","itemcode"+count);
+            $('#family #tabletr:last select:eq(0)').attr("id","productName"+count);
             $('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
             $('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
             $('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");
