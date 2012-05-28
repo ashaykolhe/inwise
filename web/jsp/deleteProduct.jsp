@@ -39,7 +39,7 @@ Delete Product
  </td></tr>
  </table>
               <table width="100%"><tr><td>
-                    <d:table name="prodlst" id="prod" pagesize="10" class="disp" requestURI="/Product.action">
+                    <d:table name="prodlst" id="prod" pagesize="10" class="disp" requestURI="/product">
 
                  <d:column property="productName" title="Product Name"  />
                   <d:column property="productCost" title="Product Cost" />

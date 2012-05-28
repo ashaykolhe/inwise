@@ -94,4 +94,6 @@ public class InvoiceActionBean extends BaseActionBean{
        return new ForwardResolution(InvoiceActionBean.class,"pre");
     }
 
+    
+
 }

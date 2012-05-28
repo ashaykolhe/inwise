@@ -21,6 +21,9 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         super(Invoice.class);
     }
 
+    public List<Invoice> findByOrderNo(Integer orderNo) {
+        return (List<Invoice>)sessionProvider.get().createQuery("from Invoice i where i.order.id='"+orderNo+"'").list();
+    }
     public List<Integer> getInvoiceNumberLst() {
         return sessionProvider.get().createQuery("select distinct i.invoiceNumber from Invoice i").list();  //To change body of created methods use File | Settings | File Templates.
     }

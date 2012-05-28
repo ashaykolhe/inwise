@@ -124,6 +124,7 @@ function fillsubmenu(){
                 source: availableTags
             });
         });
+
     }
     else if($('#submenu').val() == 'invoiceCustomerOrderNo'){
         $('#myDiv3').hide();
@@ -259,6 +260,25 @@ $(document).ready(function() {
             return false;
         }
 
+    });
+    $("#dategetbtn").click(function(){
+        var varsubmenu=$("#submenu option:selected").val().trim().toString();
+
+               if(varsubmenu=='orderDate' || varsubmenu=='invoiceDate')
+               {
+                   if($('#date').val()=="")
+                   {
+                   alert("please select date");
+                   return false;
+                   }
+               }
+               var varsubmenu=$("#submenu option:selected").val().trim().toString();
+              if(varsubmenu=='none')
+               {
+               alert("Please,Select Search By Option");
+               return false;
+               }
+       
     });
 
 });
