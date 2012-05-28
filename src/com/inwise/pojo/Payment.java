@@ -39,10 +39,16 @@ public class Payment {
     @Column(name = "update_date",length = 20)
     private Date updateDate;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name = "payment_has_paymentdetail",
-    joinColumns = { @JoinColumn(name = "payment_id") }, inverseJoinColumns = { @JoinColumn(name = "payment_detail_id") })
-    private List<PaymentDetail> paymentDetail=new ArrayList<PaymentDetail>();
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "received_date",length = 20)
+    private Date receivedDate;
+
+    @Column(name = "received_amount",length = 10,precision = 8)
+    private Double receivedAmount;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_mode")
+    private PaymentMode paymentMode;
 
     public Integer getId() {
         return id;
@@ -92,12 +98,28 @@ public class Payment {
         this.updateDate = updateDate;
     }
 
-    public List<PaymentDetail> getPaymentDetail() {
-        return paymentDetail;
+    public Date getReceivedDate() {
+        return receivedDate;
     }
 
-    public void setPaymentDetail(List<PaymentDetail> paymentDetail) {
-        this.paymentDetail = paymentDetail;
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public Double getReceivedAmount() {
+        return receivedAmount;
+    }
+
+    public void setReceivedAmount(Double receivedAmount) {
+        this.receivedAmount = receivedAmount;
+    }
+
+    public PaymentMode getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(PaymentMode paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
     @Override
@@ -109,7 +131,9 @@ public class Payment {
                 ", user=" + user +
                 ", createDate=" + createDate +
                 ", updateDate=" + updateDate +
-                ", paymentDetail=" + paymentDetail +
+                ", receivedDate=" + receivedDate +
+                ", receivedAmount=" + receivedAmount +
+                ", paymentMode=" + paymentMode +
                 '}';
     }
 }
