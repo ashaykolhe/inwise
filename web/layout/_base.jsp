@@ -102,22 +102,22 @@
                                                  <ul>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink">Delete</s:link></li>
-                                                   <li><s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink">Advance Payment</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
+                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="pre">Advance Payment</s:link></li>
                                                  </ul>
                                              </li>
                         <li><a class="hide" href="#">Invoice</a>
                                                <ul>
                                                      <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Update</s:link></li>
-
+                                                      <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
 
                                                  </ul>
                                              </li>
                         <li><a class="hide" href="#">Search/Print</a>
                                                  <ul>
                                                                  <li><s:link beanclass="com.inwise.action.SearchActionBean" event="searchLink">Search</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink">Print</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceLink">Print</s:link></li>
 
 
                                                  </ul>

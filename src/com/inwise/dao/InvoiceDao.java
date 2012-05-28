@@ -5,6 +5,9 @@ import com.inwise.dao.BaseDao;
 
 import java.util.List;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,42 +21,59 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         super(Invoice.class);
     }
 
+    public List<Invoice> findByOrderNo(Integer orderNo) {
+        return (List<Invoice>)sessionProvider.get().createQuery("from Invoice i where i.order.id='"+orderNo+"'").list();
+    }
     public List<Integer> getInvoiceNumberLst() {
-        return sessionProvider.get().createQuery("select i.invoiceNumber from Invoice i").list();  //To change body of created methods use File | Settings | File Templates.
+        return sessionProvider.get().createQuery("select distinct i.invoiceNumber from Invoice i").list();  //To change body of created methods use File | Settings | File Templates.
     }
 
     public List<String> getInvoiceOrderNumberLst() {
-         return sessionProvider.get().createQuery("select i.order.customerOrderNo from Invoice i").list();  //To change body of created methods use File | Settings | File Templates.
+         return sessionProvider.get().createQuery("select distinct i.order.customerOrderNo from Invoice i").list();  //To change body of created methods use File | Settings | File Templates.
     }
 
     public List<String> getInvoiceCustomerNameLst() {
-         return sessionProvider.get().createQuery("select i.customer.name from Invoice i").list();
+         return sessionProvider.get().createQuery("select distinct i.customer.name from Invoice i").list();
     }
 
     public List<String> getInvoiceProductNameLst() {
-         return sessionProvider.get().createQuery("select i.invoiceDetail.product.name from Invoice i").list();
+         return sessionProvider.get().createQuery("select distinct i.product.productName from InvoiceDetail i").list();
     }
 
 
     public Invoice findByInvoiceNumber(int id) {
-           return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+id+"'").uniqueResult();
-
+       Invoice ii=null;
+        try{
+           ii= (Invoice)sessionProvider.get().createQuery("select distinct i from Invoice i WHERE i.invoiceNumber='"+id+"'").uniqueResult();
+            System.out.println("ii from dao :"+ii);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return ii;
     }
 
-    public Invoice findByInvoiceCustomerOrderNo(String customerOrderno) {
-      return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+customerOrderno+"'").uniqueResult();
+    public List<Invoice> findByInvoiceCustomerOrderNo(String customerOrderno) {
+      return (List<Invoice>)sessionProvider.get().createQuery("select distinct i from Invoice i WHERE i.order.customerOrderNo='"+customerOrderno+"'").list();
     }
 
-    public Invoice findByInvoiceProductName(String productname) {
-        return (Invoice) sessionProvider.get().createQuery("select i from Invoice i WHERE i.invoiceDetail.product.productName='"+productname+"'").uniqueResult();
+    public List<Invoice> findByInvoiceCustomerName(String name) {
+         return (List<Invoice>)sessionProvider.get().createQuery("select distinct i from Invoice i WHERE i.customer.name='"+name+"'").list();
     }
 
+    public List<Invoice> findByInvoiceDate(String sdate) {
+          sdate=sdate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(sdate);
+            sdate = formatter.format(date);
 
-    public Invoice findByInvoiceCustomerName(String name) {
-         return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerName='"+name+"'").uniqueResult();
-    }
-
-    public Invoice findByInvoiceDate(Date date) {
-        return (Invoice)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate='"+date+"'").uniqueResult();
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate LIKE '"+sdate+"%'").list();
     }
 }

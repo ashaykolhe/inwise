@@ -9,17 +9,12 @@ To change this template use File | Settings | File Templates.
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <s:useActionBean beanclass="com.inwise.action.OrderActionBean" var="orderBean" event="pre"></s:useActionBean>
-<%
-    //    request.setAttribute("vendorlst",orderBean.getVendorlst());
-//    request.setAttribute("itemidlst",orderBean.getItemidlst());
-
-%>
 <script type="text/javascript">
 
     $(document).ready(function(){
         $('#customerName').change(function(){
 
-            $.get("Order.action?addressAjax",{id:$(this).attr("value")}, function (result) {
+            $.get("order?addressAjax",{id:$(this).attr("value")}, function (result) {
                 var data=eval(result);
                 var options = '<option value="0">---Select Address---</option>';
                 for (var i = 0; i < data.length; i++) {
@@ -43,7 +38,7 @@ To change this template use File | Settings | File Templates.
             $('#customerName').focus();
             return false;
         }
-        $.get('Order.action?customerOrderNoAlreadyPresent', {id:$("#customerOrderNo").val().trim()}, function (data) {
+        $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim()}, function (data) {
             var flag=eval(data);
             if(flag)
             {
@@ -81,7 +76,7 @@ To change this template use File | Settings | File Templates.
         }//end of for
         if(flag==true)
         {
-            $.post('Order.action?productDetailsAjax', {id:button.value}, function (data) {
+            $.post('order?productDetailsAjax', {id:button.value}, function (data) {
                 var result=eval(data);
                 $('#cost'+rowid+'').attr("value",result.productCost);
                 $('#productMeasurementType'+rowid+'').attr("value",result.productMeasurementType.measurementType);
@@ -144,7 +139,7 @@ To change this template use File | Settings | File Templates.
             $('#family #tabletr:last select:eq(0)').attr("value","0");
             $('#family #tabletr:last input').removeAttr("value");
             $('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
-            $('#family #tabletr:last select:eq(0)').attr("id","itemcode"+count);
+            $('#family #tabletr:last select:eq(0)').attr("id","productName"+count);
             $('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
             $('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
             $('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");

@@ -8,9 +8,11 @@ import com.google.inject.Inject;
 import com.inwise.dao.CustomerDao;
 import com.inwise.dao.TaxDao;
 import com.inwise.dao.OrderDao;
+import com.inwise.dao.InvoiceDao;
 import com.inwise.pojo.Customer;
 import com.inwise.pojo.Tax;
 import com.inwise.pojo.Order;
+import com.inwise.pojo.Invoice;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class InvoiceActionBean extends BaseActionBean{
        protected TaxDao taxDao;
     @Inject
      CustomerDao customerDao;
+    @Inject
+     InvoiceDao  invoiceDao;
 
      @Inject
        protected OrderDao orderDao;
@@ -34,6 +38,15 @@ public class InvoiceActionBean extends BaseActionBean{
           private List<Tax> taxlst;
         private List<Order> orderlst;
         private Order order;
+        private Invoice invoice;
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
 
     public List<Order> getOrderlst() {
         return orderlst;
@@ -72,12 +85,15 @@ public class InvoiceActionBean extends BaseActionBean{
      customerlst=customerDao.listAll();
         orderlst=orderDao.listAll();
            taxlst=taxDao.listAll();
-     
+
      return new ForwardResolution("/jsp/addInvoice.jsp");
     }
      public Resolution getOrderDetail(){
         order=orderDao.find(id);
+         invoice=invoiceDao.find(id);
        return new ForwardResolution(InvoiceActionBean.class,"pre");
     }
+
+    
 
 }

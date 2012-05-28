@@ -2,8 +2,14 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
+import com.inwise.pojo.Invoice;
+import com.wideplay.warp.persist.Transactional;
+
 import java.util.List;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import org.hibernate.criterion.Restrictions;
 
@@ -19,11 +25,10 @@ public class OrderDao extends BaseDao<Order,Integer> {
         super(Order.class);
     }
 	public List<Order> getCustomerOrderNo(Integer id) {
-        
-         return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"'").list();
+         return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"' and deleted='0'").list();
     }
 
-   
+
 
     public List<String> getOrderCustomerOrderNumber() {
          return (List<String>)sessionProvider.get().createQuery("SELECT o.customerOrderNo from Order o").list();
@@ -42,20 +47,53 @@ public class OrderDao extends BaseDao<Order,Integer> {
 
     }
 
-    public Order findByOrderProductName(String name) {
-        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.orderDetail.produce.productName='"+name+"'").uniqueResult();
+
+    public List<Order> findByOrderDate(String sdate) {
+        sdate=sdate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(sdate);
+            sdate = formatter.format(date);
+
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Order>)sessionProvider.get().createQuery("select o from Order o WHERE o.createDate LIKE '"+sdate+"%'").list();
+    }
+    public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
+        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
     }
 
-    public Order findByOrderDate(Date date) {
-        return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.createDate='"+date+"'").uniqueResult();
+    public Integer latestOrderId(){
+        return (Integer)sessionProvider.get().createQuery("select max(id) from Order").uniqueResult();
     }
 
-
-    public List<String> getOrderProductNameLst() {
-        return sessionProvider.get().createQuery("select o.orderDetail.product.productName from Order o").list();
-    }
-    public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
-        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
+    public List<Order> getOrderList(){
+        return sessionProvider.get().createQuery("from Order where deleted='0'").list();
     }
 
+    @Override @Transactional
+public void remove(Integer id) {
+        try{
+            Order order=super.find(id);
+        order.setDeleted(1);
+            System.out.println("prod in delete dao"+order);
+            super.save(order);
+            System.out.println("prod in delete dao2"+order);
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+}
+    
+
+
+    public List<Invoice> findInvoiceByCustomerOrderNumber(String name) {
+        return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+name+"'").list();
+    }
+
+    public List<Invoice> findInvoiceByCustomerName(String name) {
+         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.customer.name='"+name+"'").list();
+    }
 }
