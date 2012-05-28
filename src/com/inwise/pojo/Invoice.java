@@ -15,8 +15,7 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "invoice")
 public class Invoice {
-
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 

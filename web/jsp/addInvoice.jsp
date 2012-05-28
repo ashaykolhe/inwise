@@ -11,7 +11,7 @@
      <script type="text/javascript">
        function getCustomerOrder(){
 
-           $.post("Order.action?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
+           $.post("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
 
                 var data=eval(result);
     var options = '<option value="">---Select CustomerOrder No---</option>';
@@ -48,8 +48,9 @@
         if($('#allbox').attr('checked'))
     {
         $('#'+name+'[type="checkbox"]').attr('checked', true);
-        var countl = document.getElementById('inCount').value;
-        alert(countl)
+        //var countl = document.getElementById('inCount').value;
+        var countl =$('#inCount').html();
+        alert("count "+countl);
 	for(q=0;q<countl;q++)
 	{
 		Selected(q);
@@ -590,6 +591,7 @@ function CalculateAmount(d)
 
 function Selected(s)
 {
+    alert("in selected fun :"+s)
 	var tex = parseFloat(document.getElementById("inExcisetax").value);
 	var ted = parseFloat(document.getElementById("inEducationCesstax").value);
 	var tse = parseFloat(document.getElementById("inSectax").value);
@@ -819,8 +821,9 @@ Generate Invoice
 			  <div align="right"  style="margin-bottom:20px;margin-left:15px;" class="labels">
 			    Invoice To				</div>			</td>
 	  <td width="24%" align="left" valign="bottom">
-					<s:textarea readonly="readonly" name="invto" id="invto"  style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66"/>
 
+					<s:textarea readonly="readonly" name="invto" id="invto"  style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66"/>
+    
 							</td>
 			<td width="19%" align="right" valign="top">
 			  <div align="right" style="margin-bottom:20px;margin-left:15px;" class="labels">
@@ -936,7 +939,7 @@ Rate</b>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
-							<%--		<%= p1[1] %>--%>
+							    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
@@ -954,102 +957,32 @@ Rate</b>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-								<%--	<%
-										if((Double)p1[3]<(Double)p1[2])
-										{
-									%>
-											<b style="font-size: 14px; font-weight: 600;"><%= p1[2] %></b>
-									<%
-										}else
-										{
-									%>
-											<%= p1[2] %>
-									<% } %>--%>
-                                   <%-- <%if(p1[8].equals("perkg")){%>
-                                    <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">MT</span>
-                                    <%} else if(p1[8].equals("perunit")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">unit</span>
-                                   <%} else if(p1[8].equals("pernumber")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right; font-size: 12px;">number</span>
-                                    <%} else {%>
-                                     <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">set</span>
-                                    <%}%>
+							      <s:text name="invoice.invoiceDetail[${loop.index}].dispatching" value="${orderdetailarray.orderedQuantity}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
-									<input type="hidden" name="hidord<%= count %>" id="hidord<%= count %>" value="<%= p1[2] %>">--%>
-								</div>
+                                </div>
 
 							</td>
    							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
-							<%--	<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<% double dd22amt =  (Double)p1[4]; DecimalFormat df22amt = new DecimalFormat("0.00");%>
-
-
-									<input type="text" id="inRemQtyamd<%= count %>" name="inRemQtyamd<%= count %>"
-                                    value="<%= df22amt.format(dd22amt) %>" size="4" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">
-                                 <%if(p1[8].equals("perkg")){%>
-                                    <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">MT</span>
-                                    <%} else if(p1[8].equals("perunit")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">unit</span>
-                                   <%} else if(p1[8].equals("pernumber")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">number</span>
-                                    <%} else {%>
-                                     <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">set</span>
-                                    <%}%>
-
-								</div>--%>&nbsp;
+								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+								<s:text name="invoice.invoiceDetail[${loop.index}].dispatchedQuantity" value="${orderdetailarray.remainingQuantity}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                                </div>
 							</td>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
-								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">&nbsp;
-									<%--<input type="hidden" id="inRemQty<%= count %>" name="inRemQty<%= count %>" value="<%= p1[4] %>" size="4" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right; font-size: 12px;">
-									<input type="hidden" id="inRemQtyh<%= count %>" name="inRemQtyh<%= count %>" value="<%= p1[4] %>">
-									<% double dd22 =  (Double)p1[5]; DecimalFormat df22 = new DecimalFormat("0.00");%>
-									<%= df22.format(dd22) %>
-									<%if(p1[8].equals("perkg")){%>
-                                    <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">per kg</span>
-                                    <%} else if(p1[8].equals("perunit")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">per unit</span>
-                                   <%} else if(p1[8].equals("pernumber")){%>
-                                       <span style="margin-top:0px ; border:0px; text-align:right; font-size: 12px;">per number</span>
-                                    <%} else {%>
-                                     <span style="margin-top:0px ; border:0px; text-align:right;  font-size: 12px;">per set</span>
-                                    <%}%>
-									<input type="hidden" id="inCosth<%= count %>" name="inCosth<%= count %>" value="<%= df22.format(dd22) %>">--%>
+								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                                <s:text name="invoice.invoiceDetail[${loop.index}].dispatchedQuantity" value="${orderdetailarray.product.productCost}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
-						&nbsp;	<%--	<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<%
-										if((Double)p1[3]<(Double)p1[2])
-										{
-									%>
-											<%= p1[6] %>
+								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+								    <s:text name="invoice.invoiceDetail[${loop.index}].dispatchedQuantity" value="${orderdetailarray.amendmentQuantity}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
-									<%
-										}else
-										{
-									%>
-											<b style="font-size: 14px; font-weight: 600;"><%= p1[6] %></b>
-
-									<% } %>
-									<input type="hidden" name="hidamnd<%= count %>" id="hidamnd<%= count %>" value="<%= p1[6] %>">
-									<input type="hidden" id="inDedQtyh<%= count %>" name="inDedQtyh<%= count %>" value="<%= p1[3] %>">
-								</div>--%>
+								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
-							<%--	<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<% if(p1[7].equals("0")) {%>
-									<%= 0.00 %>
-									<input type="hidden" id="inamndCosth<%= count %>" name="inamndCosth<%= count %>" value="0.00">
-									<% }else {
-										double dd222 =  (Double)p1[7]; DecimalFormat df222 = new DecimalFormat("0.00");
-									%>
-									<%= df222.format(dd222) %>
-
-									<input type="hidden" id="inamndCosth<%= count %>" name="inamndCosth<%= count %>" value="<%= df222.format(dd222) %>">
-									<% } %>
-
-								</div>--%>&nbsp;
+							<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+									<s:text name="invoice.invoiceDetail[${loop.index}].dispatchedQuantity" value="${orderdetailarray.amendmentCost}" id="inDraw${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+								</div>
 							</td>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
@@ -1098,10 +1031,16 @@ Rate</b>
 									<input type="hidden" id="inExch<%= count %>" name="inExch<%= count %>" value="0.00">--%>
 																	</div>							</td>
 						</tr>
+                              <c:if test="${loop.last}">
+                                 <span style="visibility:hidden;" id="inCount">${loop.count}</span>
+                              </c:if>
+
                       </c:forEach>
 						<tr>
 
-							<td>&nbsp;<s:hidden name="inCount" id="inCount" value="${loop.index}"/> </td>
+							<td>&nbsp;<%--<s:hidden name="inCount" id="inCount" value="${loop.index}"/>--%>
+
+                            </td>
 							<td>&nbsp;							</td>
 							<td>&nbsp;							</td>
 							<td>&nbsp;							</td>
