@@ -42,6 +42,11 @@ To change this template use File | Settings | File Templates.
                     display:"inline"
                 });
                 $('#ddOrCheque').html("Cheque <span style=\"color:#FF0000\">*</span>");
+            }else{
+                $('.hid').css({
+                    display:"none"
+                });
+                $('#ddOrCheque').html("");
             }
         });
 
