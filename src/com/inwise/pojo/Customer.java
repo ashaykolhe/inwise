@@ -40,10 +40,10 @@ public class Customer
     @Column(name = "customer_code",length = 10)
     private String customerCode;
 
-    @Column(name = "contact_no1",length = 10)
+    @Column(name = "contact_no1",length = 11)
     private Integer contactNo1;
 
-    @Column(name = "contact_no2",length = 10)
+    @Column(name = "contact_no2",length = 11)
     private Integer contactNo2;
 
     @Column(name = "deleted")
