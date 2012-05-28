@@ -22,31 +22,31 @@ else
     return false;
 }
 </script>
-<s:useActionBean beanclass="com.inwise.action.UserActionBean" var="listofusers" event="addUserLink"></s:useActionBean>
-<% request.setAttribute("userlst",listofusers.getUserlst());
+<s:useActionBean beanclass="com.inwise.action.OrderActionBean" var="orderBean" event="pre"></s:useActionBean>
+<% request.setAttribute("orderlst",orderBean.getOrderlst());
 
 %>
 <s:layout-render name="/layout/_base.jsp">
       <s:layout-component name="body">
-          <s:form beanclass="com.inwise.action.UserActionBean">
+          <s:form beanclass="com.inwise.action.OrderActionBean">
    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
  <tr valign="top"><td >&nbsp;
  </td></tr>
  <tr><td align="left" class="pageheading" valign="top">
-User Management > Delete User
+Order > Delete Order
  </td></tr>
  <tr valign="top"><td align="center">&nbsp;
  </td></tr>
  </table>
               <table width="100%"><tr><td>
-                    <d:table name="userlst" id="user1" pagesize="10" class="disp" requestURI="/user">
+                    <d:table name="orderlst" id="order" pagesize="10" class="disp" requestURI="/order">
                  <d:column property="id" title="Id"/>
-                 <d:column property="username" title="User Name"  />
+                 <d:column property="customerOrderNo" title="Customer Order No"  />
                  <d:column title="Delete" class="delete">
 
-                                     <s:link beanclass="com.inwise.action.UserActionBean" event="delete" onclick="return show_confirm();" >
-                                        <s:param name="id" value="${user1.id}"></s:param>
-                                    <img src="/images/Close-2-icon.png" />   </s:link>
+                                     <s:link beanclass="com.inwise.action.OrderActionBean" event="delete" onclick="return show_confirm();" >
+                                        <s:param name="id" value="${order.id}"></s:param>
+                                    <img src="images/Close-2-icon.png" />   </s:link>
 
                                 </d:column>
 

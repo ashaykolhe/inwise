@@ -1,13 +1,13 @@
 $(document).ready(function() {
     $('#po').autocomplete({
-        url: '/Vendor.action?autopo=',
+        url: '/vendor?autopo=',
         minChars: 1,
         max: 10,
         width: 150,
         scroll: false
     });
     $('#city').autocomplete({
-        url: '/Vendor.action?autovendor=',
+        url: '/vendor?autovendor=',
         minChars: 1,
         max: 10,
         width: 150,

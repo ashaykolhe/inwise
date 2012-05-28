@@ -13,6 +13,7 @@ To change this template use File | Settings | File Templates.
 
 <script type="text/javascript">
     
+/*
     $(document).ready(function(){
     var phoneval = /^([0-9]{0,10})$/;
 
@@ -108,6 +109,7 @@ To change this template use File | Settings | File Templates.
      
      });
      });
+*/
 
 </script>
 
@@ -150,6 +152,7 @@ To change this template use File | Settings | File Templates.
             <tr>
             <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Address 1<span style="color:#FF0000"> </span></div></td>
             <td align="left" valign="top"><div align="left">
+<%--
                 <table width="100%">
                     <tr>
                         <td> <table width="70%" cellspacing="0" cellpadding="0">
@@ -188,13 +191,14 @@ To change this template use File | Settings | File Templates.
                         </td>
                     </tr>
                 </table>
+--%>
 
             </div></td>
             <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Address 2</div></td>
             <td align="left" valign="top"><div align="left">
             <table width="100%">
             <tr>
-            <td> <table width="70%" cellspacing="0" cellpadding="0">
+            <td><%-- <table width="70%" cellspacing="0" cellpadding="0">
             <tr>
 
                 <td>Line 1</td>
@@ -229,7 +233,7 @@ To change this template use File | Settings | File Templates.
                     <s:text name="addresslst[1].zip"  class="textbox" id="addresszip2"/>
         </div></td> </tr>
 
-        </table>
+        </table>--%>
         </td>
         </tr>
         </table>
