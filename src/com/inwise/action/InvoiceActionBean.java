@@ -3,6 +3,7 @@ package com.inwise.action;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import com.google.inject.Inject;
 import com.inwise.dao.CustomerDao;
@@ -23,6 +24,7 @@ import java.util.List;
  * Time: 10:12:38 AM
  * To change this template use File | Settings | File Templates.
  */
+
 public class InvoiceActionBean extends BaseActionBean{
       @Inject
        protected TaxDao taxDao;
@@ -39,6 +41,15 @@ public class InvoiceActionBean extends BaseActionBean{
         private List<Order> orderlst;
         private Order order;
         private Invoice invoice;
+    private String incname;
+
+    public String getIncname() {
+        return incname;
+    }
+
+    public void setIncname(String incname) {
+        this.incname = incname;
+    }
 
     public Invoice getInvoice() {
         return invoice;
@@ -89,9 +100,18 @@ public class InvoiceActionBean extends BaseActionBean{
      return new ForwardResolution("/jsp/addInvoice.jsp");
     }
      public Resolution getOrderDetail(){
+         
         order=orderDao.find(id);
-         invoice=invoiceDao.find(id);
+
+       
        return new ForwardResolution(InvoiceActionBean.class,"pre");
+    }
+public Resolution getTax(){
+
+
+        taxlst=taxDao.listAll();
+    
+       return new JavaScriptResolution(taxlst);
     }
 
     

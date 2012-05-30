@@ -9,13 +9,10 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
-<<<<<<< HEAD
-<script type="text/javascript" src="js/jquery.js"></script>
-<c:set var = "TR1" value="receiptgrn"/>
-=======
+
 
 <c:set var = "TR1" value="receiptOrderSlip"/>
->>>>>>> master
+
 <c:if test="${actionBean.hdnvalue eq TR1}">
     <script type="text/javascript">
         function OpenPopup(){
@@ -158,41 +155,7 @@ function fillsubmenu(){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
-<<<<<<< HEAD
-                $.post("Search.action?autoorder", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-                var availableTags=eval(result);
-                $("input#autocomplete").autocomplete({
-                    source: availableTags
-                });
-            });
-        }
-     //"none","custName","custCode"
-       else if($('#submenu').val() == 'custName'){
-                alert("1 "+$('#submenu').val());                                       
-               $('#myDiv3').hide();
-              $('#myDiv2').hide();
-              $('#myDiv1').show();
-                 $.get("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-                     alert("2 "+$('#submenu').val());
-                var availableTags=eval(result);
-               $("input#autocomplete").autocomplete({
-                    source: availableTags
-                });
-            });
-        }
-       else if($('#submenu').val() == 'custCode'){
-                      $('#myDiv3').hide();
-              $('#myDiv2').hide();
-              $('#myDiv1').show();
-                 $.post("Search.action?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
-           /* $.get("/Search.action?autovendor",function(result) {*/
-                var availableTags=eval(result);
-                $("input#autocomplete").autocomplete({
-                    source: availableTags
-                });
-            });
-        }
-=======
+
             }
             //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
             else if($('#submenu').val() == 'orderCustomerOrderNumber'){
@@ -250,7 +213,6 @@ function fillsubmenu(){
                                         });
                                     });
                                 }
->>>>>>> master
 
 }
 $(document).ready(function() {
