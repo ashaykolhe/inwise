@@ -37,8 +37,5 @@
         <mapping class="com.inwise.pojo.OrderAddress"/>
         <mapping class="com.inwise.pojo.PaymentMode"/>
         <mapping class="com.inwise.pojo.Payment"/>
-        
-
-
     </session-factory>
 </hibernate-configuration>

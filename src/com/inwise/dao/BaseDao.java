@@ -67,7 +67,7 @@ public class BaseDao<T, PK extends Serializable> implements IDao<T, PK> {
 
 	@Transactional
 	public void remove(PK id) {
-		Session s = sessionProvider.get();
+    Session s = sessionProvider.get();
     s.setFlushMode(FlushMode.AUTO);
     s.delete(s.get(this.persistentClass, id));
 	}
