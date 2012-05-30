@@ -16,7 +16,9 @@ import org.hibernate.criterion.Restrictions;
  * Time: 11:44:46 AM
  * To change this template use File | Settings | File Templates.
  */
-public class CustomerDao extends BaseDao<Customer,Integer> {
+public class CustomerDao extends BaseDao<Customer,Integer>
+{
+
     public CustomerDao()
     {
         super(Customer.class);
@@ -68,4 +70,35 @@ public class CustomerDao extends BaseDao<Customer,Integer> {
           sessionProvider.get().update(customer);
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }*/
+      @Transactional
+      @Override
+    public Customer save(Customer customer)
+    {
+        try {
+            if(customer!=null && customer.getId()==null){
+              //  String subname=((String) sessionProvider.get().createQuery("SELECT name FROM Section WHERE id='"+customer.getSection().getId()+"'").uniqueResult()).substring(0,3);//getSection().getName();
+               String s="c";
+                String sname= ((String) sessionProvider.get().createQuery("SELECT max(customerCode) FROM Customer").uniqueResult());
+                if(sname==null)
+                    customer.setCustomerCode(s+1000);
+                else{
+                     long l=Long.parseLong(sname.substring(1));
+                    System.out.println(l);
+                    l=l+1;
+                    customer.setCustomerCode(s+l);
+                    System.out.println("aaaaaaaaaaazzzzzzzzzzzzsssssssss"+customer);
+                }
+
+
+            }else
+            {
+                 System.out.println(customer.getCustomerCode());
+              customer.setCustomerCode(customer.getCustomerCode());  
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return (Customer) sessionProvider.get().merge(customer);
+}
 }

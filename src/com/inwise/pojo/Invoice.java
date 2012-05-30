@@ -151,6 +151,17 @@ public class Invoice {
     joinColumns = { @JoinColumn(name = "invoice_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_detail_id") })
     private List<InvoiceDetail> invoiceDetail=new ArrayList<InvoiceDetail>();
 
+   @Transient
+    private Double dueQuantity;
+
+    public Double getDueQuantity() {
+        return dueQuantity;
+    }
+
+    public void setDueQuantity(Double dueQuantity) {
+        this.dueQuantity = dueQuantity;
+    }
+
     public Integer getId() {
         return id;
     }

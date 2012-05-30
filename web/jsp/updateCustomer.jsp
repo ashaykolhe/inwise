@@ -99,7 +99,7 @@
     });
 
 </script>
-<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean" event="updateCustomerLink"/> 
+<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean" event="updateCustomerLink"/>
     <%
         request.setAttribute("customerlst",customerBean.getCustomerlst());
 
@@ -273,7 +273,8 @@ Customer > Update Customer
         <tr>
             <td >&nbsp;</td>
             <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>      &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>
+                <s:hidden name="customer.customerCode" value="${customerBean.customer.customerCode}"/>&nbsp;&nbsp;&nbsp;&nbsp;
                 <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:submit name="cancel" value="Cancel"></s:submit></div></td>
             <td >&nbsp;</td>

@@ -17,13 +17,18 @@ this.form.submit();
 }); })
  </script>
 <s:useActionBean beanclass="com.inwise.action.PaymentStatusActionBean" var="payStatusBean" event="page" ></s:useActionBean>
- <%
+ <%--<%
     request.setAttribute("invoicelst",payStatusBean.getInvoicelst());
      request.setAttribute("customer",payStatusBean.getCustomer());
      request.setAttribute("invoice",payStatusBean.getInvoice());
      request.setAttribute("customerlst",payStatusBean.getCustomerlst());
       request.setAttribute("id",payStatusBean.getId());
-%>
+      request.setAttribute("payment",payStatusBean.getPayment());
+      request.setAttribute("paymentlst",payStatusBean.getPaymentlst());
+%>--%>
+<%
+    request.setAttribute("invoicelst",payStatusBean.getInvoicelst());
+ %>
 <s:layout-render name="/layout/_base.jsp">
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
@@ -45,7 +50,7 @@ Payment Status
 
 		  <td align="left" valign="top" width="21%" > <s:select name="id" id="customerdropdown" class="dropdown" onchange="getstatus()" >
                 <c:choose>
-                    <c:when test="${payStatusBean.invoice!=null}">
+                    <c:when test="${payStatusBean.invoicelst!=null && payStatusBean.test=='abc'}">
                <option value ="<c:out value="${payStatusBean.id}"/>" selected="selected" > <c:out value="${payStatusBean.customer.name}"/></option>
                          <option value ="<c:out value="0"/>"> <c:out value="All Customer"/></option>
                 <c:forEach items="${payStatusBean.customerlst}" var="cust" varStatus="loop" >
@@ -59,9 +64,9 @@ Payment Status
 
                 <c:forEach items="${payStatusBean.customerlst}" var="cust" varStatus="loop" >
              <option value ="<c:out value="${cust.id}"/>" > <c:out value="${cust.name}" /></option>
-		      </c:forEach>    
+		      </c:forEach>
                         </c:when>
-                    
+
                      <c:otherwise>
                <option value ="<c:out value="0"/>"> <c:out value="All Customer"/></option>
                 <c:forEach items="${payStatusBean.customerlst}" var="cust" varStatus="loop" >
@@ -74,20 +79,22 @@ Payment Status
    &nbsp;
     </td>
 						</tr> </table>
-              </td></tr></table> 
+              </td></tr></table>
 
-             <c:if test="${payStatusBean.invoicelst!=null}">
+             <c:if test="${payStatusBean.invoicelst!=null }">
 
                  <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
              <table class="t" id="invoicetable" width="100%"><tr><td>
-        <d:table name="invoicelst" pagesize="10" class="disp" requestURI="/PaymentStatus.action?">
+        <d:table name="invoicelst" pagesize="10" class="disp" id="inwise" requestURI="/PaymentStatus.action?">
             <d:column property="invoiceNumber" title="Invoice Number"   />
+            <d:column property="customer.name" title="Customer Name"   />
                <d:column property="createDate" title="Invoice Date"   format="{0,date,yyyy-MM-dd}"   />
              <d:column property="netPayable" title="Invoice Amount"   />
+              <d:column property="dueQuantity" title="Due Amount"   />
              <d:column title="Change Status" class="delete" >
-                <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
-                    <s:param name="id" value="${invoice.id}"></s:param>
-                    <s:param name="hdnvalue" value="teststatus"></s:param>
+             <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
+                    <s:param name="id" value="${inwise.id}"></s:param>
+                    <s:param name="hdnvalue" value="test"></s:param>
                    <%-- <s:param name="name" value="${purchase.purchaseOrderNo}"></s:param> --%>
 
 
@@ -97,48 +104,8 @@ Payment Status
            </d:table>
             </td></tr><table>
  </s:form> </c:if>
-   <%--<c:if test="${payStatusBean.customer!=null}">
-             <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
-             <table class="t" id="invoicetable" width="100%"><tr><td>
-        <d:table name="customerlst" id="customer" pagesize="10" class="disp" requestURI="/PaymentStatus.action?">
-            <d:column property="id" title="Customer Id"/>
-            <d:column property="contactPerson" title="contactPerson"   />
+   
 
-                    <d:column title="View" class="delete" >
-                <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
-                    <s:param name="id" value="${customer.id}"></s:param>
-                    <s:param name="hdnvalue" value="teststatus"></s:param>
-                   <%-- <s:param name="name" value="${purchase.purchaseOrderNo}"></s:param> %>
-
-
-                    <img src="images/view.png" />
-                </s:link>
-            </d:column>  </d:table>
-            </td></tr><table>
- </s:form>  --%>
-              <c:if test="${payStatusBean.invoice!=null}">
-              <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
-             <table class="t" id="invoicetable" width="100%"><tr><td>
-        <d:table name="invoice" pagesize="10" class="disp" requestURI="/PaymentStatus.action?">
-
-            <d:column property="invoiceNumber" title="Invoice Number"   />
-               <d:column property="createDate" title="Invoice Date"   format="{0,date,yyyy-MM-dd}"   />
-             <d:column property="netPayable" title="Invoice Amount"   />
-             <d:column title="Change Status" class="delete" >
-                <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
-                    <s:param name="id" value="${invoice.id}"></s:param>
-                    <s:param name="hdnvalue" value="teststatus"></s:param>
-                   <%-- <s:param name="name" value="${purchase.purchaseOrderNo}"></s:param> --%>
-
-
-                    <img src="images/view.png" />
-                </s:link>
-            </d:column>
-           </d:table>
-            </td></tr><table>
-
- </s:form> </c:if>
-           
 </s:form>
 </s:layout-component>
 </s:layout-render>
