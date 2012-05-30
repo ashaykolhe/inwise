@@ -22,7 +22,7 @@ $(document).ready(function()
 
       $('#addadvancebutton').click(function()
       {
-         alert($('#chequeddno').val());
+         
          if($('#advanceamount').val()==""||!phoneval.test($('#advanceamount').val()))
          {
              alert("please enter the amonut in numeric!");
