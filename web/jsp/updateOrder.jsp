@@ -15,7 +15,7 @@ To change this template use File | Settings | File Templates.
         $('#customerName').change(function(){
             $.get("order?getCustomerOrderNo",{id:$(this).attr("value")}, function (result) {
                 var data=eval(result);
-                var options = '<option value="0">---Select Customer Order No---</option>';
+                var options = '<option value="">---Select Customer Order No---</option>';
                 for (var i = 0; i < data.length; i++) {
                     options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo +'</option>';
                 }
@@ -25,8 +25,10 @@ To change this template use File | Settings | File Templates.
 
         $('#orderdropdown').change(function()
         {
+            if($('#orderdropdown').attr('value')!=""){
             this.form.action='order?getOrders';
             this.form.submit();
+            }
         });
 
     });
@@ -37,7 +39,7 @@ To change this template use File | Settings | File Templates.
     function GetItemDetail(button){
         var count=$('#family #tabletr').length;
         var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
-        alert(rowid);
+        
         var flag=true;
         var check=$('#productName'+rowid+'').val();
         for(var i=1;i<=count;i++)
@@ -52,7 +54,7 @@ To change this template use File | Settings | File Templates.
                 flag=false;
                 --rowid;
                 alert("This Product has been already added. Please select another product.");
-                $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
+                $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","");
                 $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
                 return false;
             }//end of if
@@ -76,7 +78,7 @@ To change this template use File | Settings | File Templates.
             var count=$('#family #tabletr').length;
             var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"))-1;
             $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
-            $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","0");
+            $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","");
         }
     }
     $(document).ready(function(){
@@ -84,7 +86,7 @@ To change this template use File | Settings | File Templates.
         $('#add').click(function(){
             var count=$('#family #tabletr').length+1;
             $('#family #tabletr:last').clone(true).insertAfter('#family #tabletr:last');
-            $('#family #tabletr:last select:eq(0)').attr("value","0");
+            $('#family #tabletr:last select:eq(0)').attr("value","");
             $('#family #tabletr:last input').removeAttr("value");
             $('#family #tabletr:last select:eq(0)').attr("name","order.orderDetail["+count+"].product.id");
             $('#family #tabletr:last select:eq(0)').attr("id","productName"+count);
@@ -157,7 +159,7 @@ To change this template use File | Settings | File Templates.
 <s:form beanclass="com.inwise.action.OrderActionBean">
     <table width="50%" border="0">
         <tr>
-            <td width="16%" align="left" valign="top">
+            <td width="18%" align="left" valign="top">
                 <div align="left" style="margin-left: 2px;" class="labels">
                     <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
                 </div></td>
@@ -185,8 +187,8 @@ To change this template use File | Settings | File Templates.
 
             </td>
         </tr></table>
-    <table width="50%" border="0"><tr><td width="16%" align="left" valign="top">
-        <div align="right" style="margin-left: 1px;" class="labels">Customer Order Number<span style="color:#FF0000"> *</span></div></td>
+    <table width="50%" border="0"><tr><td width="18%" align="left" valign="top">
+        <div align="left" style="margin-left: 1px;" class="labels">Customer Order Number<span style="color:#FF0000"> *</span></div></td>
         <td width="21%" align="left" valign="top" >
             <s:select name="id" id="orderdropdown" class="dropdown">
                 <option value="">---Select Customer Order No---</option>
@@ -207,7 +209,7 @@ To change this template use File | Settings | File Templates.
 
         </td>
 
-        <td width="30%" align="left" valign="top" ><%-- <s:submit name="getOrders" id="getOrders" value="Get"/>--%></td>
+        <td width="30%" align="left" valign="top" ></td>
     </tr></table>        </s:form>
 
 <c:if test="${orderBean.order!=null}">

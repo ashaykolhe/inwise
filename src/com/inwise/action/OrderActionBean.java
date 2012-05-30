@@ -124,6 +124,7 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution addressAjax(){
+        System.out.println("id "+id);
         return new JavaScriptResolution(customerDao.find(id).getAddressList());
     }
 
