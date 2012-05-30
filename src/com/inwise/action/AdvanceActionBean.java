@@ -1,43 +1,51 @@
 package com.inwise.action;
 
-import com.google.inject.Inject;
-import com.inwise.dao.OrderDao;
-import com.inwise.dao.CustomerDao;
-import com.inwise.dao.AdvanceDao;
 import com.inwise.pojo.Order;
-import com.inwise.pojo.Customer;
-import com.inwise.pojo.OrderDetail;
-import com.inwise.pojo.Advance;
-import net.sourceforge.stripes.action.Resolution;
-import net.sourceforge.stripes.action.ForwardResolution;
-import net.sourceforge.stripes.action.RedirectResolution;
-import net.sourceforge.stripes.ajax.JavaScriptResolution;
 
-import java.util.List;
+import net.sourceforge.stripes.action.*;
+import com.inwise.pojo.*;
+import com.inwise.dao.OrderDao;
+import com.inwise.dao.AdvanceDao;
+import com.inwise.dao.PaymentModeDao;
+import com.inwise.dao.CustomerDao;
+import com.google.inject.Inject;
+
 import java.util.Iterator;
-import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
 
 /**
  * Created by IntelliJ IDEA.
- * User: Atul
- * Date: May 23, 2012
- * Time: 10:46:02 AM
+ * User: Ashay
+ * Date: May 22, 2012
+ * Time: 12:09:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AdvanceActionBean extends BaseActionBean
-{
+@UrlBinding("/advance")
+public class AdvanceActionBean extends BaseActionBean{
+    private static final String ADVANCE="jsp/advance.jsp";
+    private static final String ADDADVANCE="jsp/addAdvance.jsp";
+    private static final String ADVANCERECEIPT="jsp/receipt/advanceReceipt.jsp";
     @Inject
-        protected CustomerDao customerDao;
-    @Inject
-        protected OrderDao orderDao;
-    @Inject
-        protected AdvanceDao advanceDao;
+    AdvanceDao advanceDao;
 
-    private static final String ADVANCE="jsp/addAdvance.jsp";
+    @Inject
+    PaymentModeDao paymentModeDao;
+
+    @Inject
+    CustomerDao customerDao ;
+
+    @Inject
+    OrderDao orderDao;
+
+    private Advance advance;
+    private boolean redirectAdvance;
+    private boolean popup;
+    private List<PaymentMode> paymentModeList=new ArrayList<PaymentMode>();
 
     private String checkAdvanceMade;
     private Double total;
-    private Advance advance;
     private Integer id1;
     private String id2;
     private Customer cust;
@@ -48,29 +56,36 @@ public class AdvanceActionBean extends BaseActionBean
     List<Order> orderNoList;
     List<OrderDetail> customerOrderList;
 
-
-    public String getCheckAdvanceMade() {
-        return checkAdvanceMade;
+    public AdvanceDao getAdvanceDao() {
+        return advanceDao;
     }
 
-    public void setCheckAdvanceMade(String checkAdvanceMade) {
-        this.checkAdvanceMade = checkAdvanceMade;
+    public void setAdvanceDao(AdvanceDao advanceDao) {
+        this.advanceDao = advanceDao;
     }
 
-    public List<Object> getCustNameIdList() {
-        return custNameIdList;
+    public PaymentModeDao getPaymentModeDao() {
+        return paymentModeDao;
     }
 
-    public void setCustNameIdList(List<Object> custNameIdList) {
-        this.custNameIdList = custNameIdList;
+    public void setPaymentModeDao(PaymentModeDao paymentModeDao) {
+        this.paymentModeDao = paymentModeDao;
     }
 
-    public Double getTotal() {
-        return total;
+    public CustomerDao getCustomerDao() {
+        return customerDao;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setCustomerDao(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
+
+    public OrderDao getOrderDao() {
+        return orderDao;
+    }
+
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
     }
 
     public Advance getAdvance() {
@@ -81,20 +96,28 @@ public class AdvanceActionBean extends BaseActionBean
         this.advance = advance;
     }
 
-    public Order getO() {
-        return o;
+    public List<PaymentMode> getPaymentModeList() {
+        return paymentModeList;
     }
 
-    public void setO(Order o) {
-        this.o = o;
+    public void setPaymentModeList(List<PaymentMode> paymentModeList) {
+        this.paymentModeList = paymentModeList;
     }
 
-    public String getId2() {
-        return id2;
+    public String getCheckAdvanceMade() {
+        return checkAdvanceMade;
     }
 
-    public void setId2(String id2) {
-        this.id2 = id2;
+    public void setCheckAdvanceMade(String checkAdvanceMade) {
+        this.checkAdvanceMade = checkAdvanceMade;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public Integer getId1() {
@@ -105,6 +128,14 @@ public class AdvanceActionBean extends BaseActionBean
         this.id1 = id1;
     }
 
+    public String getId2() {
+        return id2;
+    }
+
+    public void setId2(String id2) {
+        this.id2 = id2;
+    }
+
     public Customer getCust() {
         return cust;
     }
@@ -113,12 +144,20 @@ public class AdvanceActionBean extends BaseActionBean
         this.cust = cust;
     }
 
-    public List<OrderDetail> getCustomerOrderList() {
-        return customerOrderList;
+    public Order getO() {
+        return o;
     }
 
-    public void setCustomerOrderList(List<OrderDetail> customerOrderList) {
-        this.customerOrderList = customerOrderList;
+    public void setO(Order o) {
+        this.o = o;
+    }
+
+    public List<Object> getCustNameIdList() {
+        return custNameIdList;
+    }
+
+    public void setCustNameIdList(List<Object> custNameIdList) {
+        this.custNameIdList = custNameIdList;
     }
 
     public List<Order> getOrderNoList() {
@@ -129,7 +168,15 @@ public class AdvanceActionBean extends BaseActionBean
         this.orderNoList = orderNoList;
     }
 
-      public Resolution advanceLink()
+    public List<OrderDetail> getCustomerOrderList() {
+        return customerOrderList;
+    }
+
+    public void setCustomerOrderList(List<OrderDetail> customerOrderList) {
+        this.customerOrderList = customerOrderList;
+    }
+
+    public Resolution advanceLink()
     {
         System.out.println("in advance lin resolution");
         custNameIdList=orderDao.getCustomerForAdvance();
@@ -178,7 +225,7 @@ public class AdvanceActionBean extends BaseActionBean
         }
          orderNoList=orderDao.getCustomerOrderNo(cust.getId());
 
-        return new ForwardResolution(ADVANCE);
+        return new ForwardResolution(ADDADVANCE);
     }
     public Resolution addAdvance()
     {
@@ -187,4 +234,45 @@ public class AdvanceActionBean extends BaseActionBean
         advanceDao.save(advance);
         return new RedirectResolution(AdvanceActionBean.class,"advanceLink");
     }
+    public boolean isRedirectAdvance() {
+        return redirectAdvance;
+    }
+
+    public void setRedirectAdvance(boolean redirectAdvance) {
+        this.redirectAdvance = redirectAdvance;
+    }
+
+    public boolean isPopup() {
+        return popup;
+    }
+
+    public void setPopup(boolean popup) {
+        this.popup = popup;
+    }
+
+    @DefaultHandler
+    public Resolution pre(){
+        
+        return new ForwardResolution(ADVANCE);
+    }
+
+    public Resolution redirectAdvance(){
+        paymentModeList=paymentModeDao.listAll();
+        id=orderDao.latestOrderId();
+        redirectAdvance=true;
+        return new ForwardResolution(ADVANCE);
+    }
+
+    public Resolution saveAdvance(){
+        advanceDao.save(advance);
+        popup=true;
+        return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance").addParameter("popup",popup);
+    }
+
+    public Resolution advancePopup()
+   {
+       advance = advanceDao.latestAdvanceReceipt();
+       return new ForwardResolution(ADVANCERECEIPT);
+   }
+    
 }

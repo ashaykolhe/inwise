@@ -1,124 +1,157 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Atul
-  Date: May 23, 2012
-  Time: 10:52:57 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/includes/_taglibInclude.jsp" %>
-<link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+<link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
+<s:useActionBean beanclass="com.inwise.action.AdvanceActionBean" var="advanceBean" event="pre"/>
+<c:if test="${advanceBean.popup eq true}">
+    <script type="text/javascript">
+        function OpenPopup(){
+            var w = 800;
+            var h = 480;
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+            var page = "advance?advancePopup";
+            var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
+                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+            window.open(page, "Popup", windowprops);
+
+        }
+        window.onload =OpenPopup();
+    </script>
+</c:if >
 <script type="text/javascript">
+    $(document).ready(function(){
+        $('#paymentmodedropdown').change(function(){
 
+            if($('#paymentmodedropdown').attr("value")=="1"){
 
+                $('.hid').css({
+                    display:"inline"
+                });
+                $('#ddOrCheque').html("DD <span style=\"color:#FF0000\">*</span>");
+            }else if($('#paymentmodedropdown').attr("value")=="2"){
 
-$(document).ready(function()
-{
-    $('#selectorderno').change(function()
-        {
-            this.form.action='Advance.action?getCustomerOrder';
-            this.form.submit();
+                $('.hid').css({
+                    display:"inline"
+                });
+                $('#ddOrCheque').html("Cheque <span style=\"color:#FF0000\">*</span>");
+            }else{
+                $('.hid').css({
+                    display:"none"
+                });
+                $('#ddOrCheque').html("");
+            }
         });
-    
-    $('#selectcutomername').change(function()
-        {
-                
-            this.form.action='Advance.action?getOrderNumbers';
-            this.form.submit();
+
+        $('#saveAdvance').click(function(){
+            if($('#amountReceived').attr("value").trim()==""){
+                alert("enter amount");
+                $('#amountReceived').focus();
+                return false;
+            }
+            if($('#createDate').attr("value").trim()==""){
+                alert("enter date");
+                $('#createDate').focus();
+                return false;
+            }
+            if($('#paymentmodedropdown').attr("value").trim()==""){
+                alert("select payment mode");
+                $('#paymentmodedropdown').focus();
+                return false;
+            }
+            if($('#ddOrCheque').attr("value").trim()==""){
+                alert("select DD/Cheque No");
+                $('#ddOrCheque').focus();
+                return false;
+            }
+
         });
-});
+
+    });
 </script>
-<s:useActionBean beanclass="com.inwise.action.AdvanceActionBean" event="getCustomerOrder" var="listvar"></s:useActionBean>
-<% request.setAttribute("orderlist",listvar.getCustomerOrderList());
-%>
 
 <s:layout-render name="/layout/_base.jsp">
+
     <s:layout-component name="body">
-    <s:form id="formid" beanclass="com.inwise.action.AdvanceActionBean">
+
         <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-        <tr valign="top"><td >&nbsp;</td>   </tr>
-        <tr>
-            <td align="left" class="pageheading" valign="top">
-            <strong>Advance</strong>
-            </td>
-        </tr>
-        <tr valign="top"><td align="center">&nbsp;</td></tr>
+            <tr valign="top"><td >&nbsp;
+            </td></tr>
+            <tr><td align="left" class="pageheading" valign="top">
+                Order > Advance
+            </td></tr>
+            <tr valign="top"><td align="center">&nbsp;
+            </td></tr>
         </table>
 
+        <c:choose>
+            <c:when test="${advanceBean.redirectAdvance eq true}">
+                <%-- ------------------------------------------------------------------------------------redirect to advance-------------------------------------------------------------- --%>
+                <s:form beanclass="com.inwise.action.AdvanceActionBean">
+                    <table width="50%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC" id="itemupdate_table">
+                        <tr>
+                            <td align="left">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 
-        <table bordercolor="#FF6600" width="77%" border="1">
-        <tr>
-            <td width="70%" height="124">
-    <table width="100%" cellspacing="1">
-                <tr>
-                <td width="20%" align="left" valign="top">Please Get Order First</td>
-                <td width="1%" align="left" valign="top"></td>
-                <td  align="left" width="20%"  valign="top"></td>
-                <td width="1%" align="left" valign="top"></td>
-                <td align="left"valign="top" width="20%"></td>
-                    <td></td>
-                </tr>
-           <tr>
-                <td width="20%" align="left" valign="top"></td>
 
-              <td colspan="5">
-                <div id="selectnamediv"align="left" style="margin-left: 2px;"  class="labels">Please Select Customer <span style="color:#FF0000"> *</span>
+                                    <tr>
+                                        <td width="20%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Amount<span style="color:#FF0000"> *</span></div>     </td>
+                                        <td width="30%" align="left" valign="top"><div align="left"><s:text name="advance.amountReceived" id="amountReceived" class="textbox"/>
+                                            <s:hidden name="advance.deleted" value="0"/>
+                                            <s:hidden name="advance.order.id" value="${advanceBean.id}"/>
+                                        </div> </td>
+                                        <td width="2%" align="left" valign="top" ></td>
 
-                 <s:select id="selectcutomername" name="id1"  class="dropdown">
-                        <option  value="0">---Select Customer---</option>
-                        <c:forEach items="${actionBean.orderList}" var="orderno" varStatus="loop" >
-                        <c:choose>
-                        <c:when test="${actionBean.id1 eq orderno.customer.id}">
-			            <option value ="<c:out value="${actionBean.id}"/>" selected="selected"> <c:out value="${actionBean.cust.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                        <option value ="${orderno.customer.id}"><c:out value="${orderno.customer.name}"/></option>
-                        </c:otherwise>
-                        </c:choose>
-		                </c:forEach>
-                  </s:select>
-                 </div>
-                </td>
-            </tr>
+                                        <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Date<span style="color:#FF0000"> *</span></div></td>
+                                        <td align="left" valign="top"><div align="left"><s:text name="advance.createDate" class="textbox" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"/></div></td>
 
-      <tr>
-          <td width="20%" align="left" valign="top"></td>
 
-          <td colspan="5">
-        <c:if test="${actionBean.id1!=null}">
-             <div id="selectorderdiv"align="left" style="margin-left: 2px;" class="labels">please Select Order No. <span style="color:#FF0000"> *</span>
-                     <s:select id="selectorderno" name="id2"  class="dropdown">
-                    <option  value="0">---Select Order No.---</option>
-                        <c:forEach items="${actionBean.orderNoList}" var="orderno" varStatus="loop" >
-                        <c:choose>
-                        <c:when test="${actionBean.id2 eq orderno.customerOrderNo}">
-			       <option value ="<c:out value="${actionBean.id}"/>" selected="selected"> <c:out value="${actionBean.cust.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                   <option value ="${orderno.id}"><c:out value="${orderno.customerOrderNo}"/></option>
-                        </c:otherwise>
-                        </c:choose>
-		                </c:forEach>
-                </s:select>
-                 </c:if>
-            </div>
-          </td>
-      </tr>
-      </table>
-        </td>
-        </tr>
 
-   </table>
-         <table width="100%"  id="ordertable"><tr><td>
-             <c:if test="${actionBean.customerOrderList!=null}">
-                    <d:table name="orderlist" pagesize="10" class="disp"  requestURI="/Print.action">
-                    <d:column property="id" title="Order Id"/>
-                    <d:column property="customerOrderNo" title="Order No"/>
-                    </d:table>
-            </c:if>
-            </td></tr></table>
-    </s:form>
+                                    <tr>
+                                        <td align="right" valign="top">
+                                            <div align="right" style="margin-left: 2px;" class="labels">Payment Mode<span style="color:#FF0000"> *</span>
+                                            </div>
+                                        </td>
+                                        <td align="left" valign="top" >
+                                            <div>
+                                                <s:select name="advance.paymentMode.id" id="paymentmodedropdown" class="dropdown">
+                                                    <option value="">---Payment Mode---</option>
+                                                    <c:forEach items="${advanceBean.paymentModeList}" var="paymentMode" varStatus="loop" >
+                                                        <option value ="<c:out value="${paymentMode.id}"/>"> <c:out value="${paymentMode.mode}"/></option>
+                                                    </c:forEach>
+                                                </s:select>
+                                            </div>
+                                        </td>
+                                        <td width="2%" align="left" valign="top" ></td>
+                                        <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels" id="ddOrCheque"></div></td>
+                                        <td align="left" valign="top" ><div align="left" ><s:text name="advance.chequeOrDDNo" class="textbox hid" id="chequeOrDDNo" style="display:none;"/></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        <td  colspan="2" align="left" >
+                                            <div>
+                                                <s:submit name="saveAdvance" value="Pay" id="saveAdvance"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <s:reset name="reset" value="Reset"/>   &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <s:submit name="cancel" value="Cancel"/>
+                                            </div>
+                                        </td>
+                                        <td width="14%" align="left" valign="top" ></td>
+                                        <td width="28%" align="left" valign="top" ></td>
 
-        </s:layout-component>
-</s:layout-render>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                    </table> </tr>
+                    </table>     </s:form>
+
+                <%-- ------------------------------------------------------------------------------------redirect to advance-------------------------------------------------------------- --%>
+            </c:when>
+            <c:otherwise>
+
+            </c:otherwise>
+        </c:choose>
+
+
+    </s:layout-component></s:layout-render>

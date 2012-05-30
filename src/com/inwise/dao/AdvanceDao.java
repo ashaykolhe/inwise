@@ -17,6 +17,7 @@ public class AdvanceDao extends BaseDao<Advance,Integer>{
     public Advance latestAdvanceReceipt(){
         return (Advance)sessionProvider.get().createQuery("from Advance where id=(select max(id) from Advance)").uniqueResult();
     }
+
     public boolean advanceMadeOrNot(Integer id)
     {
         
