@@ -10,7 +10,9 @@ To change this template use File | Settings | File Templates.
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 
+
 <c:set var = "TR1" value="receiptOrderSlip"/>
+
 <c:if test="${actionBean.hdnvalue eq TR1}">
     <script type="text/javascript">
         function OpenPopup(){
@@ -153,6 +155,7 @@ function fillsubmenu(){
                 $('#myDiv3').hide();
                 $('#myDiv2').show();
                 $('#myDiv1').hide();
+
             }
             //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
             else if($('#submenu').val() == 'orderCustomerOrderNumber'){

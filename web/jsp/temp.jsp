@@ -28,13 +28,13 @@
 
 
      function jqCheckAll1(name)  {
-         
+
         if($('#allbox').attr('checked'))
     {
         $('#'+name+'[type="checkbox"]').attr('checked', true);
         //var countl = document.getElementById('inCount').value;
         var countl =$('#inCount').html();
-        
+
 	for(q=0;q<countl;q++)
 	{
     var chkid="chkbx"+q;
@@ -87,7 +87,7 @@
 
       document.getElementById("inTotalAmount").value="0.0";
       document.getElementById("inValue"+a).value="0.0";
-        
+
         }
    }
      }
@@ -564,7 +564,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
 
             $('#'+inValue).val("0.0");
             $('#'+inDisp).val("Enter Dispaching Qty");
-            
+
             }
     else
     {
@@ -574,12 +574,9 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
          calinTotalAmount=calinTotalAmount +calinValue;
 
          $('#'+inValue).val(calinValue);
-         $('#inTotalAmount').val(calinTotalAmount.toFixed(2));
+         $('#inTotalAmount').val(calinTotalAmount);
 
     }
-
-    document.getElementById("inExcise").value = ((calinTotalAmount * 4)/100).toFixed(2);
-
  var dropdownname=$("#inProType"+d+" option:selected").text().trim().toString();
 
 var inCal = "inCal"+d;
