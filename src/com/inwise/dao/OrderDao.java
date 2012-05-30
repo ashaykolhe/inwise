@@ -6,6 +6,8 @@ import com.inwise.pojo.Customer;
 
 import java.util.List;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import org.hibernate.criterion.Restrictions;
 
@@ -24,7 +26,20 @@ public class OrderDao extends BaseDao<Order,Integer> {
         
          return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"'").list();
     }
+    public List<Object> getCustomerForAdvance() {
 
+         List<Object> custNameIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT c.id ,c.name from customer c inner JOIN order_master o on c.id=o.customer_id ").list();
+        return custNameIdList;
+    }
+/*
+    this method is for getting order nos for those advance is not made.....
+    public List<Object> getOrderForAdvance(Integer id)
+    {
+        List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,o.customer_id from order_master o INNER JOIN advance a on o.id!=a.order_id where customer_id="+id).list();
+         Iterator<Object> it=custOrderIdList.iterator();
+         return custOrderIdList;
+    }
+*/
 
 
     public List<String> getOrderCustomerOrderNumber() {
@@ -59,9 +74,13 @@ public class OrderDao extends BaseDao<Order,Integer> {
     public boolean customerOrderNoAlreadyPresent(Integer customerOrderNo){
         return sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult()==null ? false : true;
     }
-    public List<Order> findOrderByOrderNo(Integer customerOrderNo)
+    public Order findOrderByOrderNo(String customerOrderNo)
     {
-        return (List<Order>)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).list();
+        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo);
+    }
+    public Order findAOrderByOrderNo(String customerOrderNo)
+    {
+        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult();
     }
    
      

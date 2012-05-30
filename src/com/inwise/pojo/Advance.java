@@ -16,10 +16,11 @@ public class Advance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "receipt_no",length = 20,nullable = false)
     private Integer id;
     
-    @Column(name = "receipt_no",length = 20,nullable = false)
-    private String receiptNo;
+
+
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
@@ -53,13 +54,7 @@ public class Advance {
         this.id = id;
     }
 
-    public String getReceiptNo() {
-        return receiptNo;
-    }
 
-    public void setReceiptNo(String receiptNo) {
-        this.receiptNo = receiptNo;
-    }
 
     public Date getCreate_date() {
         return create_date;
@@ -121,7 +116,6 @@ public class Advance {
     public String toString() {
         return "Advance{" +
                 "id=" + id +
-                ", receiptNo='" + receiptNo + '\'' +
                 ", create_date=" + create_date +
                 ", amountReceived=" + amountReceived +
                 ", amountRemained=" + amountRemained +

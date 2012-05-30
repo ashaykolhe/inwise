@@ -3,13 +3,19 @@ package com.inwise.action;
 import com.google.inject.Inject;
 import com.inwise.dao.OrderDao;
 import com.inwise.dao.CustomerDao;
+import com.inwise.dao.AdvanceDao;
 import com.inwise.pojo.Order;
 import com.inwise.pojo.Customer;
+import com.inwise.pojo.OrderDetail;
+import com.inwise.pojo.Advance;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.ForwardResolution;
+import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 
 import java.util.List;
+import java.util.Iterator;
+import java.util.HashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,16 +30,64 @@ public class AdvanceActionBean extends BaseActionBean
         protected CustomerDao customerDao;
     @Inject
         protected OrderDao orderDao;
-    
-    private static final String ADVANCE="jsp/advance.jsp";
+    @Inject
+        protected AdvanceDao advanceDao;
 
+    private static final String ADVANCE="jsp/addAdvance.jsp";
+
+    private String checkAdvanceMade;
+    private Double total;
+    private Advance advance;
     private Integer id1;
     private String id2;
-    List<Order> orderList;
-    List<Order> orderNoList;
-    List<Order> customerOrderList;
     private Customer cust;
+    private Order o;
 
+
+    List<Object> custNameIdList;
+    List<Order> orderNoList;
+    List<OrderDetail> customerOrderList;
+
+
+    public String getCheckAdvanceMade() {
+        return checkAdvanceMade;
+    }
+
+    public void setCheckAdvanceMade(String checkAdvanceMade) {
+        this.checkAdvanceMade = checkAdvanceMade;
+    }
+
+    public List<Object> getCustNameIdList() {
+        return custNameIdList;
+    }
+
+    public void setCustNameIdList(List<Object> custNameIdList) {
+        this.custNameIdList = custNameIdList;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public Advance getAdvance() {
+        return advance;
+    }
+
+    public void setAdvance(Advance advance) {
+        this.advance = advance;
+    }
+
+    public Order getO() {
+        return o;
+    }
+
+    public void setO(Order o) {
+        this.o = o;
+    }
 
     public String getId2() {
         return id2;
@@ -59,11 +113,11 @@ public class AdvanceActionBean extends BaseActionBean
         this.cust = cust;
     }
 
-    public List<Order> getCustomerOrderList() {
+    public List<OrderDetail> getCustomerOrderList() {
         return customerOrderList;
     }
 
-    public void setCustomerOrderList(List<Order> customerOrderList) {
+    public void setCustomerOrderList(List<OrderDetail> customerOrderList) {
         this.customerOrderList = customerOrderList;
     }
 
@@ -75,34 +129,62 @@ public class AdvanceActionBean extends BaseActionBean
         this.orderNoList = orderNoList;
     }
 
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
-    }
-
-    public Resolution advanceLink()
+      public Resolution advanceLink()
     {
         System.out.println("in advance lin resolution");
-        orderList= orderDao.listAll();
+        custNameIdList=orderDao.getCustomerForAdvance();
+       // orderDao.getOrderForAdvance(2);
+/*
+        Iterator<Object> it=custNameIdList.iterator();
+        while(it.hasNext())
+        {
+            Object[] t=(Object[])it.next();
+            System.out.println(t[0]+" "+t[1]);
+        }
+*/
+
+        //orderList= orderDao.listAll();
       return new ForwardResolution(ADVANCE);
     }
      public Resolution getOrderNumbers()
     {
-        orderList= orderDao.listAll();
-        orderNoList=orderDao.getCustomerOrderNo(id1);
+        custNameIdList=orderDao.getCustomerForAdvance();
+       // System.out.println("iiiiiiiiiddddddddddd"+id1);
+       orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
         return new ForwardResolution(ADVANCE);
     }
     public Resolution getCustomerOrder()
     {
-        System.out.println(id2);
-        orderList= orderDao.listAll();
-     //   Order o=orderDao.
-       // cust=customerDao.find(id1);
-        customerOrderList=orderDao.findOrderByOrderNo(id2);
-      return new ForwardResolution(ADVANCE);
+        total=0.0;
+        custNameIdList=orderDao.getCustomerForAdvance();
+        o=orderDao.findAOrderByOrderNo(id2);
+        setCust(o.getCustomer());
+       // System.out.println("advance made or naot...."+advanceDao.advanceMadeOrNot(o.getId()));
+        if(advanceDao.advanceMadeOrNot(o.getId()))
+        {
+           checkAdvanceMade="yes"; 
+        }
+        else
+        {
+                customerOrderList=o.getOrderDetail();
+                Iterator<OrderDetail> itr=customerOrderList.iterator();
+                while (itr.hasNext())
+               {
+                   OrderDetail temp=itr.next();
+                   total=total+temp.getOrderedQuantity()*temp.getProduct().getProductCost();
+
+               }
+        }
+         orderNoList=orderDao.getCustomerOrderNo(cust.getId());
+
+        return new ForwardResolution(ADVANCE);
+    }
+    public Resolution addAdvance()
+    {
+        System.out.println(advance);
+        advance.setAmountRemained(total-advance.getAmountReceived());
+        advanceDao.save(advance);
+        return new RedirectResolution(AdvanceActionBean.class,"advanceLink");
     }
 }
