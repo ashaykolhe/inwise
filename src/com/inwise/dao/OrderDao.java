@@ -2,7 +2,7 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Order;
-import com.inwise.pojo.User;
+import com.inwise.pojo.Invoice;
 import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
@@ -48,7 +48,6 @@ public class OrderDao extends BaseDao<Order,Integer> {
     }
 
 
-
     public List<Order> findByOrderDate(String sdate) {
         sdate=sdate.replace("/","-");
         try{
@@ -90,4 +89,11 @@ public void remove(Integer id) {
     
 
 
+    public List<Invoice> findInvoiceByCustomerOrderNumber(String name) {
+        return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+name+"'").list();
+    }
+
+    public List<Invoice> findInvoiceByCustomerName(String name) {
+         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.customer.name='"+name+"'").list();
+    }
 }
