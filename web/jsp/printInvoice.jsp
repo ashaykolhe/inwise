@@ -40,10 +40,8 @@ $(document).ready(function()
         {
            $('#selectnamediv').show();
            $('#selectorderdiv').hide();
-            $('#selectcutomername').val(0);
-            $('#invoicetable').hide();
-
-
+           $('#selectcutomername').val(0);
+           $('#invoicetable').hide();
         });
 
         $('#selectorderno').change(function()

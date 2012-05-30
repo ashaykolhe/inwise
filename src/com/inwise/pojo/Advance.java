@@ -51,7 +51,6 @@ public class Advance {
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Date getCreateDate() {
         return createDate;
     }

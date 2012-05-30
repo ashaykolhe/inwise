@@ -1,13 +1,17 @@
 package com.inwise.dao;
 
 import com.inwise.pojo.Invoice;
+import com.inwise.pojo.Payment;
 import com.inwise.dao.BaseDao;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Iterator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+
+import org.hibernate.Criteria;
 
 /**
  * Created by IntelliJ IDEA.
@@ -76,4 +80,50 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         }
         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate LIKE '"+sdate+"%'").list();
     }
-}
+      public List<Invoice> findByInvoiceCustomerId(Integer id) {
+         return (List<Invoice>)sessionProvider.get().createQuery("select distinct i from Invoice i WHERE i.customer.id='"+id+"'").list();
+    }
+     public List<Invoice> listAllwithDueAmount(List<Invoice> invoicelst,List<Payment> paymentList) {
+
+     for(Iterator<Invoice> ird=invoicelst.iterator();ird.hasNext();){
+         Double temp=0.00,a;
+         Invoice rd=ird.next();
+         rd.setDueQuantity(rd.getNetPayable());
+         for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();){
+             Payment pay=ipay.next();
+             if(rd.getId().equals(pay.getInvoice().getId())){
+                 a=pay.getReceivedAmount();
+                 temp=temp+a;
+                  rd.setDueQuantity(rd.getNetPayable()-temp);
+                 System.out.println("zzzzzzzzzzzzzzzzzzzzzz"+temp);
+                //rd.setDueQuantity(rd.getNetPayable()-pay.getReceivedAmount());
+                // break;
+             }
+
+
+         }
+        }
+        return invoicelst;
+    }
+      public Invoice listwithDueAmount(Invoice invoice,List<Payment> paymentList) {
+
+         Double temp=0.00,a;
+         invoice.setDueQuantity(invoice.getNetPayable());
+         for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();){
+             Payment pay=ipay.next();
+             if(invoice.getId().equals(pay.getInvoice().getId())){
+                a=pay.getReceivedAmount();
+                 temp=temp+a;
+                  invoice.setDueQuantity(invoice.getNetPayable()-temp);
+                // System.out.println("zzzzzzzzzzzzzzzzzzzzzz"+temp);
+                //rd.setDueQuantity(rd.getNetPayable()-pay.getReceivedAmount());
+                // break;
+             }
+
+
+         }
+
+        return invoice;
+    }
+  }
+

@@ -1,10 +1,3 @@
-<%--
-Created by IntelliJ IDEA.
-User: Admin
-Date: Feb 21, 2012
-Time: 10:56:47 AM
-To change this template use File | Settings | File Templates.
---%>
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <s:useActionBean beanclass="com.inwise.action.AdvanceActionBean" var="advanceBean" event="pre"/>
