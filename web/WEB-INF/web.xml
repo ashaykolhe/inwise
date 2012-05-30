@@ -126,9 +126,12 @@
         <url-pattern>/order</url-pattern>
         <url-pattern>/product</url-pattern>
         <url-pattern>/search</url-pattern>
-
-        <url-pattern>/paymentstatus</url-pattern>
-
+         <url-pattern>/payment</url-pattern>
+        <url-pattern>/address</url-pattern>
+         <url-pattern>/addresstype</url-pattern>
+         
+         <url-pattern>/invoice</url-pattern>
+          <url-pattern>/paymentstatus</url-pattern>
         <url-pattern>/advance</url-pattern>
 
     </servlet-mapping>

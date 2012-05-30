@@ -66,6 +66,7 @@ public class CustomerActionBean extends BaseActionBean
     {
 
             customer.setAddressList(addresslst);
+        System.out.println("avzahvhvhjjvjvkjkkkkkkkkkk"+customer);
         customerDao.save(customer);
 
         return new RedirectResolution(CustomerActionBean.class,"pageDirect");

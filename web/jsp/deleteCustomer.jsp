@@ -48,7 +48,7 @@ Customer > Delete Customer
 
                               <s:link beanclass="com.inwise.action.CustomerActionBean" event="delete" onclick="return show_confirm();" >
                                 <s:param name="id" value="${customer1.id}"></s:param>
-                                <img src="/images/Close-2-icon.png" />   </s:link>
+                                <img src="images/Close-2-icon.png" />   </s:link>
 
                                 </d:column>
 
