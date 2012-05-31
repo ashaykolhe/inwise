@@ -38,15 +38,22 @@ public class OrderDao extends BaseDao<Order,Integer> {
          List<Object> custNameIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT c.id ,c.name from customer c inner JOIN order_master o on c.id=o.customer_id ").list();
         return custNameIdList;
     }
-/*
-    this method is for getting order nos for those advance is not made.....
-    public List<Object> getOrderForAdvance(Integer id)
+
+  /*-----------------  this method is for getting order nos for those advance is made-------------*/
+    public List<Object> getOrderForPrint(Integer id)
     {
-        List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,o.customer_id from order_master o INNER JOIN advance a on o.id!=a.order_id where customer_id="+id).list();
+        List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,a.receipt_no,a.amount_received,o.customer_id from order_master o INNER JOIN advance a on o.id=a.order_id where customer_id="+id).list();
          Iterator<Object> it=custOrderIdList.iterator();
          return custOrderIdList;
     }
-*/
+   /*------------------this method is for getting the order no..for those advance is not made*/
+    public List<Object> getOrderForAdvance(Integer id)
+       {
+           List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,o.customer_id from order_master o INNER JOIN advance a on o.id!=a.order_id where customer_id="+id).list();
+            Iterator<Object> it=custOrderIdList.iterator();
+            return custOrderIdList;
+       }
+
 
 
     public List<String> getOrderCustomerOrderNumber() {

@@ -178,7 +178,7 @@ public class AdvanceActionBean extends BaseActionBean{
 
     public Resolution advanceLink()
     {
-        System.out.println("in advance lin resolution");
+        System.out.println("in advance link resolution");
         custNameIdList=orderDao.getCustomerForAdvance();
        // orderDao.getOrderForAdvance(2);
 /*
@@ -191,7 +191,7 @@ public class AdvanceActionBean extends BaseActionBean{
 */
 
         //orderList= orderDao.listAll();
-      return new ForwardResolution(ADVANCE);
+      return new ForwardResolution(ADDADVANCE);
     }
      public Resolution getOrderNumbers()
     {
@@ -199,7 +199,7 @@ public class AdvanceActionBean extends BaseActionBean{
        // System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
-        return new ForwardResolution(ADVANCE);
+        return new ForwardResolution(ADDADVANCE);
     }
     public Resolution getCustomerOrder()
     {
@@ -210,7 +210,8 @@ public class AdvanceActionBean extends BaseActionBean{
        // System.out.println("advance made or naot...."+advanceDao.advanceMadeOrNot(o.getId()));
         if(advanceDao.advanceMadeOrNot(o.getId()))
         {
-           checkAdvanceMade="yes"; 
+           checkAdvanceMade="yes";
+            getContext().getMessages().add(new SimpleMessage("Advance is already made"));
         }
         else
         {
@@ -232,7 +233,8 @@ public class AdvanceActionBean extends BaseActionBean{
         System.out.println(advance);
         advance.setAmountRemained(total-advance.getAmountReceived());
         advanceDao.save(advance);
-        return new RedirectResolution(AdvanceActionBean.class,"advanceLink");
+        popup=true;
+        return new RedirectResolution(AdvanceActionBean.class,"advanceLink").addParameter("popup",popup);
     }
     public boolean isRedirectAdvance() {
         return redirectAdvance;
@@ -271,8 +273,17 @@ public class AdvanceActionBean extends BaseActionBean{
 
     public Resolution advancePopup()
    {
+       System.out.println("advance popup resoltuin");
        advance = advanceDao.latestAdvanceReceipt();
+       System.out.println(advance);
        return new ForwardResolution(ADVANCERECEIPT);
    }
-    
+
+        public Resolution advancePopupViaReceiptNo()
+   {
+       System.out.println("advance popup resoltuin");
+       advance = advanceDao.find(id);
+       System.out.println(advance);
+       return new ForwardResolution(ADVANCERECEIPT);
+   }
 }

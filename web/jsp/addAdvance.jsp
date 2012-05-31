@@ -1,3 +1,4 @@
+<%@ taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="com.inwise.pojo.Customer" %>
@@ -12,6 +13,25 @@
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+<s:useActionBean beanclass="com.inwise.action.AdvanceActionBean" var="advanceBean" event="advanceLink"/>
+<c:if test="${advanceBean.popup eq true}">
+    <script type="text/javascript">
+        function OpenPopup(){
+            var w = 800;
+            var h = 480;
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+            var page = "advance?advancePopup";
+            var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
+                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+            window.open(page, "Popup", windowprops);
+
+        }
+        window.onload =OpenPopup();
+    </script>
+</c:if >
 <script type="text/javascript">
 
 
@@ -71,14 +91,14 @@ $(document).ready(function()
         });
     $('#selectorderno').change(function()
         {
-            this.form.action='Advance.action?getCustomerOrder';
+            this.form.action='advance?getCustomerOrder';
             this.form.submit();
         });
     
     $('#selectcutomername').change(function()
         {
                 
-            this.form.action='Advance.action?getOrderNumbers';
+            this.form.action='advance?getOrderNumbers';
             this.form.submit();
         });
 });
@@ -212,7 +232,7 @@ $(document).ready(function()
                             <td width="18%" align="left"> <div align="left" style="margin-left: 2px;" class="labels">Amount<span style="color:#FF0000"> *</span></div>     </td>
                             <td width="15%" align="left" valign="top"><div align="left"><s:text name="advance.amountReceived" id="advanceamount" class="textbox"></s:text></div> </td>
                             <td width="15%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Advance Date<span style="color:#FF0000"> *</span></div></td>
-                            <td width="20%" align="left" valign="bottom"><div align="left" ><s:text id="advancedate"  name="advance.create_date" onFocus="showCalendarControl(this);" class="textbox"></s:text>
+                            <td width="20%" align="left" valign="bottom"><div align="left" ><s:text id="advancedate"  name="advance.createDate" onFocus="showCalendarControl(this);" class="textbox"></s:text>
                       </tr>
 
                        <tr>
@@ -254,6 +274,8 @@ $(document).ready(function()
 
         </c:if>
         <c:if test="${actionBean.checkAdvanceMade!=null}">
+            <div style="margin-top:25px;margin-left:200px;font-size:13px;font-family:Verdana;color:red;">
+             <stripes:messages/>  </div>
             <script type="text/javascript">
                 alert("Advance Already Made");
             </script>

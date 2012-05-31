@@ -133,6 +133,7 @@
          <url-pattern>/invoice</url-pattern>
           <url-pattern>/paymentstatus</url-pattern>
         <url-pattern>/advance</url-pattern>
+        <url-pattern>/print</url-pattern>
 
     </servlet-mapping>
 <welcome-file-list>
