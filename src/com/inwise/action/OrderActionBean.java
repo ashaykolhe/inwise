@@ -11,6 +11,7 @@ import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -116,27 +117,21 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution updateOrder(){
-        System.out.println("----------------------------------order------------------------------------");
-        System.out.println(order);
-        System.out.println("----------------------------------order------------------------------------");
+        order.setAmendmentDate(new Date());
         orderDao.save(order);
         return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
     }
 
     public Resolution addressAjax(){
-        System.out.println("id "+id);
         return new JavaScriptResolution(customerDao.find(id).getAddressList());
-
     }
+    
     public Resolution InvoiceToAddressAjax(){
-
         return new JavaScriptResolution(orderDao.find(id).getOrderAddress().get(0).getAddress());
-
     }
-public Resolution ShipmentToAddressAjax(){
 
+    public Resolution ShipmentToAddressAjax(){
         return new JavaScriptResolution(orderDao.find(id).getOrderAddress().get(1).getAddress());
-
     }
 
 
@@ -161,7 +156,6 @@ public Resolution ShipmentToAddressAjax(){
 
         //delete user
     public Resolution delete(){
-
         orderDao.remove(id);
         return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
     }

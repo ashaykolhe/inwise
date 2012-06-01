@@ -270,17 +270,16 @@ To change this template use File | Settings | File Templates.
                                 <c:forEach items="${orderBean.addressList}" var="address" varStatus="loop" >
                                     <c:choose>
                                         <c:when test="${orderBean.order.orderAddress[0].address.id eq address.id}">
-                                            <option value ="<c:out value="${address.id}"/>" selected="selected"> <c:out value="${address.line1}"/></option>
+                                            <option value ="<c:out value="${address.id}"/>" selected="selected"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}  </option>
                                         </c:when>
 
                                         <c:otherwise>
-                                            <option value ="<c:out value="${address.id}"/>"> <c:out value="${address.line1}"/></option>
+                                            <option value ="<c:out value="${address.id}"/>"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
                                         </c:otherwise>
                                     </c:choose>
-
-                                </c:forEach>
+                                </c:forEach>                                                                     
                             </s:select>
-                        </div>      <%--+', '+address.line2+', 'address.city+'-'+address.zip+', 'address.state+', '+address.country--%>
+                        </div>
                     </td>
                     <td width="24%" align="left" valign="top">
                         <div align="left" style="margin-left: 2px;" class="labels">
@@ -295,11 +294,11 @@ To change this template use File | Settings | File Templates.
                                 <c:forEach items="${orderBean.addressList}" var="address" varStatus="loop" >
                                     <c:choose>
                                         <c:when test="${orderBean.order.orderAddress[1].address.id eq address.id}">
-                                            <option value ="<c:out value="${address.id}"/>" selected="selected"> <c:out value="${address.line1}"/></option>
+                                            <option value ="<c:out value="${address.id}"/>" selected="selected"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
                                         </c:when>
 
                                         <c:otherwise>
-                                            <option value ="<c:out value="${address.id}"/>"> <c:out value="${address.line1}"/></option>
+                                            <option value ="<c:out value="${address.id}"/>"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
                                         </c:otherwise>
                                     </c:choose>
 
