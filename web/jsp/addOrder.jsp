@@ -25,19 +25,29 @@ To change this template use File | Settings | File Templates.
 <script src="js/popup.js" type="text/javascript"/>
 <script type="text/javascript">
     $(document).ready(function(){
-     
+
     }
-       );
+            );
 </script>
 <s:useActionBean beanclass="com.inwise.action.OrderActionBean" var="orderBean" event="pre"/>
 <script type="text/javascript">
 
-    $(document).ready(function(){   
+    $(document).ready(function(){
         $('#customerName').change(function(){
-
-                alert("customer id 1 "+$(this).attr("value"));
             var custid=$(this).attr("value");
-            $.get("order?addressAjax",{id:$(this).attr("value")}, function (result) {
+            if(custid!=""){
+                $('#addAddress').removeAttr("disabled");
+                $('#addAddress').css({
+                    color:"red"
+                });
+            }else{
+                $('#addAddress').attr("disabled","disabled");
+                $('#addAddress').css({
+                    color:"grey"
+                });
+            }
+
+            $.get("order?addressAjax",{id:custid}, function (result) {
                 var data=eval(result);
                 var options = '<option value="0">---Select Address---</option>';
                 for (var i = 0; i < data.length; i++) {
@@ -45,20 +55,15 @@ To change this template use File | Settings | File Templates.
                 }
                 $("#invoiceAddress").html(options);
                 $("#shipmentAddress").html(options);
-                alert("customer id 2 "+custid);
-                $("#customerIdForAddress").attr("value",$(this).attr("value"));
-
-
+                $("#customerIdForAddress").attr("value",custid);
             });
-
-
         });
     });
 
 </script>
 <script type="text/javascript">
 function submitForm(button) {
-
+    button.disabled=true;
     var form = button.form;
     var resolution=button.name;
     var params = $(form).serializeArray();
@@ -257,7 +262,7 @@ $(document).ready(function(){
     //Click the x event!
     $("#popupContactClose").click(function(){
         disablePopup();
-        
+
     });
     //Click out event!
     /*
@@ -375,7 +380,7 @@ $(document).ready(function(){
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
-                <td><s:button name="addAddress" class="links" id="addAddress" value="Add Address"/></td>
+                <td><s:button name="addAddress" class="links" id="addAddress" value="Add Address" disabled="disabled" style="color : grey;"/></td>
             </tr>
             <tr>
                 <td colspan="4"><br><div align="left" style="margin-left:10px;">
@@ -460,7 +465,7 @@ $(document).ready(function(){
 <div id="popupContact">
     <a id="popupContactClose">x</a>
 
-    <h1>Add Address</h1>
+    <h1>Add Another Address</h1>
     <p id="contactArea">
         <s:form beanclass="com.inwise.action.CustomerActionBean" id="saverole">
     <table width="100%" border="0">
@@ -470,7 +475,7 @@ $(document).ready(function(){
                 <s:hidden name="id" id="customerIdForAddress"/>
             </td>
             <td colspan="3" width="27%" align="left" valign="top" >
-                <s:text name="address.line1"  id="line1" class="textbox" style="width:400px;"/>
+                <s:text name="address.line1"  id="line1" class="textbox" style="width:100%;"/>
 
             </td>
         </tr>
@@ -479,7 +484,7 @@ $(document).ready(function(){
                 <span style="color:#FF0000">Line2 *</span>
             </td>
             <td colspan="3" width="27%" align="left" valign="top" >
-                <s:text name="address.line2"  id="line2" class="textbox"  style="width:400px;"/>
+                <s:text name="address.line2"  id="line2" class="textbox"  style="width:100%;"/>
 
             </td>
         </tr>
@@ -518,7 +523,7 @@ $(document).ready(function(){
         <tr>
             <td colspan="2">&nbsp;</td>
             <td colspan="2" id="saverolebtn">
-                <s:submit name="saveAddress"  value="Save"  onclick= "return submitForm(this);"/>
+                <s:submit name="saveAddress" value="Save"  onclick= "return submitForm(this);"/>
 
             </td>
         </tr>
