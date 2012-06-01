@@ -145,10 +145,11 @@ function calculateBalance(p,i){
             alert('please Enter Numeric value for quantity');
             --rowid;
             $('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
-            $('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
+            $('#family #tabletr:eq('+rowid+') input:eq(4)').val("");
             $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
         }//end of chk loop
         else if($('#orderedQuantity'+rowid+'').val().trim()!=""){
+            $('#remainingQuantity'+rowid+'').attr("value",$('#orderedQuantity'+rowid+'').val().trim());
             var cost=$('#cost'+rowid+'').val();
             var valueset=parseFloat(p.value)*parseFloat(cost);
             $('#amount'+rowid+'').attr("value",valueset);
@@ -163,7 +164,7 @@ function calculateBalance(p,i){
         --rowid;
         alert("Please enter valid quantity");
         $('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
-        $('#family #tabletr:eq('+rowid+') input:eq(3)').val("");
+        $('#family #tabletr:eq('+rowid+') input:eq(4)').val("");
         $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
     }
 
@@ -193,10 +194,12 @@ $(document).ready(function(){
         $('#family #tabletr:last input:eq(0)').attr("id","cost"+count);
         $('#family #tabletr:last input:eq(1)').attr("id","productMeasurementType"+count);
         $('#family #tabletr:last input:eq(2)').attr("name","order.orderDetail["+count+"].orderedQuantity");
-        $('#family #tabletr:last input:eq(2)').attr("id","ordqty"+count);
-        $('#family #tabletr:last input:eq(3)').attr("id","amount"+count);
-        $('#family #tabletr:last input:eq(4)').attr("name","delete["+count+"]");
-        $('#family #tabletr:last input:eq(4)').attr("id","delete"+count);
+        $('#family #tabletr:last input:eq(2)').attr("id","orderedQuantity"+count);
+        $('#family #tabletr:last input:eq(3)').attr("name","order.orderDetail["+count+"].remainingQuantity");
+        $('#family #tabletr:last input:eq(3)').attr("id","remainingQuantity"+count);
+        $('#family #tabletr:last input:eq(4)').attr("id","amount"+count);
+        $('#family #tabletr:last input:eq(5)').attr("name","delete["+count+"]");
+        $('#family #tabletr:last input:eq(5)').attr("id","delete"+count);
     });
     $("#addOrder").click(function(){
         var numeric = /^[0-9]+$/;
@@ -421,6 +424,7 @@ $(document).ready(function(){
                                     <div align="left" style="margin-left:4px;">
                                         <div align="right">
                                             <s:text name="order.orderDetail[${i}].orderedQuantity" id="orderedQuantity${i}" onchange="return calculateBalance(this,${i})"  style="text-align:right;margin-right:2px;width:100px; "/>
+                                            <s:hidden name="order.orderDetail[${i}].remainingQuantity" id="remainingQuantity${i}" style="text-align:right;margin-right:2px;width:100px; "/>
                                         </div></div></td>
                                 <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                     <div align="left" style="margin-left:4px;">
@@ -530,7 +534,8 @@ $(document).ready(function(){
     </table>
     </s:form>
     </p>
-</div>
+    </div>
+
 <div id="backgroundPopup"></div>
 
 </s:layout-component>
