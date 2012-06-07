@@ -1,3 +1,4 @@
+<%@ taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld" %>
 <%@ page import="com.inwise.pojo.Customer" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
@@ -83,6 +84,7 @@ $(document).ready(function()
            $('#selectorderdiv').hide();
            $('#selectcutomername').val(0);
            $('#invoicetable').hide();
+            $('#msgtable').hide();
         });
 
         $('#selectorderno').change(function()
@@ -186,6 +188,7 @@ $(document).ready(function()
                         <%}%>
                     </s:select>
                  </div>
+
                 </td>
             </tr>
      
@@ -223,25 +226,27 @@ $(document).ready(function()
             <td width="70%" >
                 <table width="100%" cellspacing="1">
                     <tr>
-                        <s:messages></s:messages>
+                        <div style="margin-top:05px;margin-left:150px;font-size:13px;font-family:Verdana;">
+             <stripes:messages/>  </div>
+                        
                     </tr>
                 </table>
             </td>
            </tr>
          </table>
-        <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
-       <table bordercolor="#FF6600" width="77%" border="1" id="ordertable">
-        <tr>
-            <td width="70%" >
+
+      
+                <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
                 <table width="100%" cellspacing="1">
                     <tr>
-                        <table border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family" width="100%">
+
+                        <table border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="ordertable" width="77%">
                     <tr>
                         <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Order No.</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Receipt No.</span></strong></div></td>
                         <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Advance Amount</span></strong></div></td>
-                        <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">View</span></strong></div></td>
+                        <td width="10%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">View</span></strong></div></td>
 
                        </tr>
 
@@ -258,7 +263,7 @@ $(document).ready(function()
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><%=obj[0]%></span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><%=obj[1]%></span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><%=obj[2]%></span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printAdvanceReceipt">
+                            <td width="10%" style=""><div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printAdvanceReceipt">
                                 <s:param name="id" value="<%=obj[3]%>"/>
                                 <s:param name="receiptNumber" value="<%=obj[1]%>"/>
                                 <img src="images/view.gif" alt=""></s:link></strong></div>
@@ -271,16 +276,14 @@ $(document).ready(function()
 
                     </tr>
                 </table>
-            </td>
-        </tr>
-       </table>
+
         </c:if>
              <c:if test="${actionBean.visibleInvoiceTable!=null}">
 
         
                 <table width="100%" cellspacing="1">
                     <tr>
-                        <table border="0"width="77%" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="invfamily" width="100%">
+                        <table border="0"width="77%" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="invoicetable" width="100%">
                     <tr>
                         <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Invoice No.</span></strong></div></td>

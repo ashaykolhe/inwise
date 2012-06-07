@@ -229,7 +229,13 @@ public class PrintActionBean extends BaseActionBean
         {
             visibleInvoiceTable="yes";
         }
+        if(invoiceList.size()==0)
+        {
+         getContext().getMessages().add(new SimpleMessage("  Invoice is not generated for this order.   Please Generate the Invoice First.."));   
+        }
+        else{
         getContext().getMessages().add(new SimpleMessage(invoiceList.size()+"  Items found, Displying all"));
+        }
         showdropdown="yes";
         cust=customerDao.find(id);
         return new ForwardResolution(PRINTINVOICE);
