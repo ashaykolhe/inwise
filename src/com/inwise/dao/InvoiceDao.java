@@ -56,7 +56,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
        Invoice ii=null;
         try{
            ii= (Invoice)sessionProvider.get().createQuery("select distinct i from Invoice i WHERE i.invoiceNumber='"+id+"'").uniqueResult();
-            System.out.println("ii from dao :"+ii);
+            
         }
         catch (Exception e)
         {
@@ -122,9 +122,6 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
                 a=pay.getReceivedAmount();
                  temp=temp+a;
                   invoice.setDueQuantity(invoice.getNetPayable()-temp);
-                // System.out.println("zzzzzzzzzzzzzzzzzzzzzz"+temp);
-                //rd.setDueQuantity(rd.getNetPayable()-pay.getReceivedAmount());
-                // break;
              }
 
 
@@ -132,5 +129,11 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
 
         return invoice;
     }
-  }
+
+    public Integer getMaxInvoiceNumber() {
+        System.out.println("innnnnnnnnnnnnnnnnnvoice   :"+(Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult());
+        return (Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult(); 
+
+    }
+}
 

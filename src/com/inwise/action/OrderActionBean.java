@@ -41,6 +41,24 @@ public class OrderActionBean extends BaseActionBean{
     private List<Product> productList=new ArrayList<Product>();
     private List<Address> addressList=new ArrayList<Address>();
     private List<Order> orderlst;
+    private int invoiceToAddressId;
+    private int shipmentToAddressId;
+
+    public int getInvoiceToAddressId() {
+        return invoiceToAddressId;
+    }
+
+    public void setInvoiceToAddressId(int invoiceToAddressId) {
+        this.invoiceToAddressId = invoiceToAddressId;
+    }
+
+    public int getShipmentToAddressId() {
+        return shipmentToAddressId;
+    }
+
+    public void setShipmentToAddressId(int shipmentToAddressId) {
+        this.shipmentToAddressId = shipmentToAddressId;
+    }
 
     public List<Order> getOrderlst() {
         return orderlst;
@@ -127,11 +145,11 @@ public class OrderActionBean extends BaseActionBean{
     }
     
     public Resolution InvoiceToAddressAjax(){
-        return new JavaScriptResolution(orderDao.find(id).getOrderAddress().get(0).getAddress());
+        return new JavaScriptResolution(orderDao.find(invoiceToAddressId).getOrderAddress().get(0).getAddress());
     }
 
     public Resolution ShipmentToAddressAjax(){
-        return new JavaScriptResolution(orderDao.find(id).getOrderAddress().get(1).getAddress());
+        return new JavaScriptResolution(orderDao.find(shipmentToAddressId).getOrderAddress().get(1).getAddress());
     }
 
 

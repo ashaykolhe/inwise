@@ -11,6 +11,7 @@
  <%@ taglib prefix="ajax" uri="http://ajaxtags.sourceforge.net/tags/ajaxtags" %>
 <script type="text/javascript" src="js/jquery.js"></script>
 <link href="css/CalendarControl.css" rel="stylesheet" type="text/css">
+<link href="css/jquery-ui.css" rel="stylesheet" type="text/css"> <%--css use for autocompete for text field for search,report,etc--%>
 <link type="text/css" rel="stylesheet" href="css/ui.autocomplete.css" />
      <%--<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>--%>
         <script type="text/javascript" src="js/ui.core.min.js"></script>
@@ -19,4 +20,5 @@
  <script type="text/javascript" src="js/script.js"></script>
  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
  <script type="text/javascript" src="js/jquery-ui.js"></script>
-<link type="text/css" rel="stylesheet" href="css/jquery-ui.css" />
+ <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+<link type="text/css" rel="stylesheet" href="css/jquery-ui-timepicker-addon.css" />
