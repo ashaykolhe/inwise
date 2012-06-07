@@ -200,7 +200,8 @@ public class AdvanceActionBean extends BaseActionBean
        System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
-        System.out.println("in get order numbers....");
+
+
         return new ForwardResolution(ADDADVANCE);
     }
     public Resolution getCustomerOrder()

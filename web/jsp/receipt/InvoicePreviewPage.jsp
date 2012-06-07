@@ -767,6 +767,7 @@
                        <c:forEach items="${invoice.invoiceDetail}" var="invoicedetail" varStatus="loop" >
                 <c:forEach items="${invoice.order.orderDetail}" var="orderdetail" varStatus="loop1"  >
                     <c:if test="${invoicedetail.product.id eq orderdetail.product.id}">
+
 						<tr style="border-left:1px solid #000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;height:50px">
 	                    	<td valign="top" style="background:#ffffff; border-right:1px solid #000000;border-left:1px solid #000000; ">
 								<div align="center" style="margin-top:7px; font-family:Verdana; font-size:9px">
@@ -820,6 +821,7 @@
 							</td>
 						</tr>
                       </c:if>
+                    
                 </c:forEach></c:forEach>
 				</table>
 			</td>
@@ -1109,23 +1111,21 @@
 		                        	<tr>
 		                        		<td valign="middle" style="height: 26px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-
-													-
-
+                                                    ${invoiceBean.advance.chequeOrDDNo}
 											</div>
 		                        		</td>
 		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
 
-													-
+											<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.advance.createDate}"/></b>
 
 											</div>
 		                        		</td>
 		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
-													-
+												${invoiceBean.advance.amountReceived}
 
 											</div>
 		                        		</td>
@@ -1139,7 +1139,7 @@
 							</td>
 							<td valign="middle" style="height: 25px; background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 								<strong><div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-									
+									 ${invoice.amountDetect}
 								</div></strong>
 							</td>
 						</tr>
@@ -1400,6 +1400,7 @@
                      <s:hidden name="content" id="content"/>
 					   <s:hidden name="pdfinvoicenumber" value="${invoice.invoiceNumber}"/>
 					   <s:hidden name="id" value="${invoice.id}"/>
+					   <s:hidden name="ad" value="${invoiceBean.advance.id}"/>
 
                     <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
                     <s:submit name="editinvoice" value="Edit"/>
