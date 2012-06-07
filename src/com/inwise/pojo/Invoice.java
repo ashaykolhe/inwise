@@ -45,6 +45,9 @@ public class Invoice {
     @Column(name = "sales_rep_code",length = 50)
     private String salesRepCode;
 
+    @Column(name = "amount_detect",length = 10,precision = 8)
+        private Double amountDetect;
+
     @Column(name = "total_amount",length = 10,precision = 8)
     private Double totalAmount;
 
@@ -146,12 +149,22 @@ public class Invoice {
     @Column(name = "deleted",length = 2)
     private Integer deleted;
 
+
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "invoice_has_invoicedetail",
     joinColumns = { @JoinColumn(name = "invoice_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_detail_id") })
     private List<InvoiceDetail> invoiceDetail=new ArrayList<InvoiceDetail>();
 
-   @Transient
+    public Double getAmountDetect() {
+        return amountDetect;
+    }
+
+    public void setAmountDetect(Double amountDetect) {
+        this.amountDetect = amountDetect;
+    }
+
+    @Transient
     private Double dueQuantity;
 
     public Double getDueQuantity() {
@@ -509,6 +522,7 @@ public class Invoice {
                 ", customer=" + customer +
                 ", order=" + order +
                 ", salesRepCode='" + salesRepCode + '\'' +
+                ", amountDetect=" + amountDetect +
                 ", totalAmount=" + totalAmount +
                 ", excise=" + excise +
                 ", exciseTax=" + exciseTax +

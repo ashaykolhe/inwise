@@ -39,7 +39,15 @@ public class InvoiceActionBean extends BaseActionBean{
         private Invoice invoice;
     private Advance advance;
     private String incname;
-    private int in;
+    private int in,ad;
+
+    public int getAd() {
+        return ad;
+    }
+
+    public void setAd(int ad) {
+        this.ad = ad;
+    }
 
     public int getIn() {
         return in;
@@ -166,6 +174,7 @@ public Resolution getTax(){
        System.out.println("invoice Detail :"+invoicedetail);
 
        invoiceDao.save(invoice);
+       advanceDao.save(advance);
 
      return new RedirectResolution(InvoiceActionBean.class,"pre");
    }
@@ -201,24 +210,41 @@ public Resolution getTax(){
             invoice.setDebitEntryNo("d12");
             invoice.setInvoiceDetail(invoicedetail);
             in=invoice.getInvoiceNumber();
-        
+            ad=advance.getId();
             invoiceDao.save(invoice);
-
-            return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in);
+            advanceDao.save(advance);
+            return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in).addParameter("ad",ad);
     }
     public Resolution redirectpreview()
     {
         int no=Integer.parseInt(getContext().getRequest().getParameter("in"));
+        int adid=Integer.parseInt(getContext().getRequest().getParameter("ad"));
         System.out.println("nooooooo"+no);
             invoice=invoiceDao.findByInvoiceNumber(no);
+            advance=advanceDao.find(adid);
+        List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
+                InvoiceDetail id=null;
+                   for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
+                       id=(InvoiceDetail)i.next();
+                       if(id==null){
+                           i.remove();
+                           continue;
+                       }
+                       else if(id.getDispatched()==0)
+                       {
+                           i.remove();
+                           continue;
+                       }
+                    }
+                    
         return new ForwardResolution("jsp/receipt/InvoicePreviewPage.jsp");
     }
     public Resolution editinvoice()
     {
         
-        invoice=invoiceDao.find(52);
+        invoice=invoiceDao.find(getId());
         
-        //advance=advanceDao.getAdvancedByOrderId(1);
+        advance=advanceDao.find(ad);
         return new ForwardResolution("jsp/updateInvoice.jsp");
     }
     public Resolution reviewupdate()
@@ -239,7 +265,8 @@ public Resolution getTax(){
                 invoice.setInvoiceDetail(invoicedetail);
                 in=invoice.getInvoiceNumber();
                 invoiceDao.save(invoice);
+                advanceDao.save(advance);
         System.out.println("in :"+in);
-        return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in);
+        return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in).addParameter("ad",ad);
     }
 }

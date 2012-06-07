@@ -1155,7 +1155,7 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="advance.advanceDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1177,7 +1177,7 @@ Rate</b>
 								<div align="center" class="labels" style="margin-top: 10px;">
 									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
 								&nbsp;&nbsp;
-									<s:text name="advance.amountReceived" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="advance.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 								</div>&nbsp;
 							</td>
 						</tr>
@@ -1312,6 +1312,7 @@ Rate</b>
                       <s:hidden name="invoice.order.id" value="${invoiceBean.invoice.order.id}"/>
                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
                       <s:hidden name="invoice.id" value="${invoiceBean.invoice.id}"/>
+                      <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
 							<s:submit name="reviewupdate" value="Update" />

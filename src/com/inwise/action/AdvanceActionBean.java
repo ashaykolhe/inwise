@@ -191,7 +191,7 @@ public class AdvanceActionBean extends BaseActionBean{
 */
 
         //orderList= orderDao.listAll();
-      return new ForwardResolution(ADVANCE);
+      return new ForwardResolution(ADDADVANCE);
     }
      public Resolution getOrderNumbers()
     {
@@ -199,7 +199,7 @@ public class AdvanceActionBean extends BaseActionBean{
        // System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
-        return new ForwardResolution(ADVANCE);
+        return new ForwardResolution(ADDADVANCE);
     }
     public Resolution getCustomerOrder()
     {
