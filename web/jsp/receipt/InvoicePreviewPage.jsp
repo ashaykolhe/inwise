@@ -1,11 +1,348 @@
+
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<s:useActionBean beanclass="com.inwise.action.SearchActionBean" event="redirectorderpopup" var="in"></s:useActionBean>
-<%
-    request.setAttribute("invoice",in.getInvoice());
-%>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/toword.js"></script>
+<link rel="stylesheet" type="text/css" href="css/dropdown.css" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="redirectpreview" ></s:useActionBean>
+<%
+    request.setAttribute("invoice",invoiceBean.getInvoice());
+%>
+<script type="text/javascript" >
+        $(document).ready(function() {
+       $("#ecess").html(amtInWords(${invoice.educationCessTax}));
+       $("#enhcess").html(amtInWords(${invoice.secondaryHigherEducationCessTax}));
+       $("#excise").html(amtInWords(${invoice.exciseTax}));
+       $("#net").html(amtInWords(${invoice.netPayable}));
+    });
+    function amtInWords(amt)
+{
+
+	var decAmount=amt;
+	var sUnits=new Array(20);
+	var sTens=new Array(8);
+	var sHundreds=new Array(6);
+	var sAmount;
+	var i,iLenAmount,iDecPart,iIntegerPart;
+
+	sUnits[1]  = '';
+	sUnits[2]  = 'One';
+	sUnits[3]  = 'Two';
+	sUnits[4]  = 'Three';
+	sUnits[5]  = 'Four';
+	sUnits[6]  = 'Five';
+	sUnits[7]  = 'Six';
+	sUnits[8]  = 'Seven';
+	sUnits[9]  = 'Eight';
+	sUnits[10] = 'Nine';
+	sUnits[11] = 'Ten';
+	sUnits[12] = 'Eleven';
+	sUnits[13] = 'Twelve';
+	sUnits[14] = 'Thirteen';
+	sUnits[15] = 'Fourteen';
+	sUnits[16] = 'Fifteen';
+	sUnits[17] = 'Sixteen';
+	sUnits[18] = 'Seventeen';
+	sUnits[19] = 'Eighteen';
+	sUnits[20] = 'Ninteen';
+	sTens[1]   = 'Twenty';
+	sTens[2]   = 'Thirty';
+	sTens[3]   = 'Forty';
+	sTens[4]   = 'Fifty';
+	sTens[5]   = 'Sixty';
+	sTens[6]   = 'Seventy';
+	sTens[7]   = 'Eighty';
+	sTens[8]   = 'Ninety';
+	sHundreds[1] = 'Hundred';
+	sHundreds[2] = 'Thousand';
+	sHundreds[3] = 'Lac';
+	sHundreds[4] = 'Crore';
+	sHundreds[5] = 'Arab';
+	sHundreds[6] = 'Kharab';
+
+	if (decAmount == 10000000000000)
+	{
+		decAmount = 9999999999999.99;
+	}
+	if (decAmount  == 0)
+	{
+		return "";
+	}
+
+	iDecPart = (decAmount -  Math.round(decAmount)) * 100;
+	iDecPart=Math.round(iDecPart);
+
+	//Because Math.round results .50,.52,.53.......98,.99 in negative values
+
+	if(iDecPart<0)
+	{
+		iDecPart=100+iDecPart;
+	}
+
+	if( iDecPart == 0)
+	{
+		decAmount = decAmount;
+	}
+	else
+	{
+		decAmount =Math.round(decAmount - (iDecPart/100));
+	}
+
+	iLenAmount = ((String)(decAmount)).length;
+
+	if (iLenAmount == 1)
+	{
+		var index=parseInt(decAmount)+1;
+		sAmount = sUnits[index];
+	}
+	else
+	{
+		for(i=iLenAmount;i>0;i--)
+		{
+			if (i==13 || i==12)
+			{
+				iIntegerPart = parseInt(decAmount/100000000000);
+				decAmount = parseInt(decAmount % 100000000000);
+				if(iIntegerPart==0)
+				{
+					sAmount = sAmount;
+				}
+				else
+				{
+					if(iIntegerPart<20)
+					{
+						sAmount = sUnits[iIntegerPart + 1] +" "+ sHundreds[6]+" ";
+					}
+					else
+					{
+					  sAmount = sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[6]+" "
+					}
+				}
+			}
+			else if (i==11 || i==10)
+			{
+				iIntegerPart = parseInt(decAmount/1000000000);
+				decAmount = parseInt(decAmount % 1000000000);
+				if(iIntegerPart==0)
+				{
+					sAmount = sAmount;
+				}
+				else
+				{
+					if(iIntegerPart<20)
+					{
+						if(sAmount == null)
+						{
+							sAmount = sUnits[iIntegerPart + 1] +" "+ sHundreds[5]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sUnits[iIntegerPart + 1] +" "+ sHundreds[5]+" ";
+						}
+					}
+					else
+					{
+						if(sAmount == null)
+						{
+							sAmount = sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[5]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[5]+" ";
+						}
+					}
+				}
+			}
+			else if (i==9 || i==8)
+			{
+				iIntegerPart = parseInt(decAmount/10000000);
+				decAmount = parseInt(decAmount % 10000000);
+				if(iIntegerPart==0)
+				{
+				  sAmount = sAmount;
+				}
+				else
+				{
+					if(iIntegerPart<20)
+					{
+						if(sAmount == null)
+						{
+							sAmount = sUnits[iIntegerPart + 1] +" "+ sHundreds[4]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sUnits[iIntegerPart + 1] +" "+ sHundreds[4]+" ";
+						}
+					}
+					else
+					{
+						if(sAmount == null)
+						{
+							  sAmount = sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[4]+" ";
+						}
+						else
+						{
+							  sAmount = sAmount+" "+sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[4]+" ";
+						}
+					}
+				}
+			}
+			else if(i==7 || i==6)
+			{
+				iIntegerPart = parseInt(decAmount/100000);
+				decAmount = (decAmount % 100000);
+				if(iIntegerPart==0)
+				{
+					sAmount = sAmount;
+				}
+				else
+				{
+					if(iIntegerPart < 20)
+					{
+						if(sAmount == null)
+						{
+							sAmount =sUnits[iIntegerPart + 1]+" "+ sHundreds[3]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sUnits[iIntegerPart + 1]+" "+ sHundreds[3]+" ";
+						}
+					}
+					else
+					{
+						if(sAmount == null)
+						{
+							sAmount = sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[3]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1] +" "+ sHundreds[3]+" ";
+						}
+					}
+				}
+			}
+			else if(i==5 || i==4)
+			{
+				iIntegerPart = parseInt(decAmount/1000);
+				decAmount = (decAmount % 1000);
+				if(iIntegerPart==0)
+				{
+					sAmount = sAmount;
+				}
+				else
+				{
+					if(iIntegerPart < 20)
+					{
+						if(sAmount == null)
+						{
+							sAmount = sUnits[iIntegerPart + 1]+" "+ sHundreds[2]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sUnits[iIntegerPart + 1]+" "+ sHundreds[2]+" ";
+						}
+					}
+					else
+					{
+						if(sAmount == null)
+						{
+							sAmount = sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1]+" "+ sHundreds[2]+" ";
+						}
+						else
+						{
+							sAmount = sAmount+" "+sTens[parseInt(iIntegerPart/10) - 1] +" "+ sUnits[(iIntegerPart - parseInt(iIntegerPart/10)*10) + 1]+" "+ sHundreds[2]+" ";
+						}
+					}
+				}
+			}
+            else if(i==3)
+			{
+				iIntegerPart = parseInt(decAmount/100);
+				decAmount = (decAmount % 100);
+				if(iIntegerPart==0)
+				{
+					sAmount = sAmount;
+				}
+				else
+				{
+					var index;
+					index=parseInt(iIntegerPart)+1;
+					if (sAmount == null)
+					{
+						sAmount = sUnits[index] +" "+ sHundreds[1]+" ";
+					}
+					else
+					{
+						sAmount = sAmount+" "+sUnits[index] +" "+ sHundreds[1]+" ";
+					}
+				}
+			}
+			else if(i==2)
+			{
+				decAmount=parseInt(eval(decAmount));
+				if(decAmount<20)
+				{
+					var index=parseInt(decAmount)+1;
+					if (sAmount == null)
+					{
+						sAmount = sUnits[index];
+					}
+					else
+					{
+						sAmount = sAmount+" "+sUnits[index];
+					}
+				}
+				else
+				{
+					var a=parseInt(((decAmount/10) - 1));
+					var b=(decAmount%10) + 1;
+					if (sAmount == null)
+					{
+						sAmount = sTens[a] +" "+ sUnits[b];
+					}
+					else
+					{
+						sAmount = sAmount+" "+sTens[a] +" "+ sUnits[b];
+					}
+				}
+			}
+		}
+	}
+	if(iDecPart==0)
+	{
+		sAmount =  sAmount;
+	}
+	else if(sAmount=="")
+	{
+		sAmount = "Paise ";
+	}
+	else
+	{
+		sAmount = sAmount+" And Paise";
+	}
+
+	if(iDecPart < 20)
+	{
+		sAmount = sAmount+" "+sUnits[iDecPart + 1]+" ";
+	}
+	else
+	{
+		var fi = parseInt(((iDecPart/10) - 1));
+		var fii = parseInt((iDecPart % 10))+1;
+		sAmount = sAmount+" "+sTens[fi] +" "+ sUnits[fii]+" " ;
+	}
+
+        sAmount = sAmount + " Only";
+
+        return sAmount;
+
+}
+</script><s:layout-render name="/layout/_base.jsp">
+<s:layout-component name="body">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -77,10 +414,10 @@
 
 </script>
 </head>
-<body style="margin-left:50px;">
+<body style="margin-left:1px;">
 
 <div align="center" style="margin-left:2px;" id="printContent">
-	<s:form beanclass="com.inwise.action.SearchActionBean">
+	<s:form beanclass="com.inwise.action.InvoiceActionBean">
 			<table width="760px" align="center" cellspacing="0" cellpadding="0" border="0" style="color:#000000;">
 			<tr>
 				<td colspan="6">
@@ -127,7 +464,7 @@
 							</td>
 							<td nowrap style="background:#ffffff; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000; border-top:2px  solid #000000;">
 								<div align="center" style="font-family:Verdana; font-size:9px">
-									<b>24/05/2012</b>
+									<b>blank</b>
 								</div>
 							</td>
 						</tr>
@@ -140,7 +477,7 @@
 							<td nowrap style="background:#ffffff; height:25px; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
 								<div align="center" style="font-family:Times New Roman; font-size:9px">
 
-										<b>11:00 AM</b>
+										<b>${invoiceBean.invoice.issueTime}</b>
 
 								</div>
 							</td>
@@ -154,7 +491,7 @@
 							<td nowrap style="background:#ffffff; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
 								<div align="center" style="font-family:Times New Roman; font-size:9px">
 
-										<b>12:00 AM</b>
+										<b>${invoice.removalTime}</b>
 
 								</div>
 							</td>
@@ -191,12 +528,23 @@
 					<table width="100%"  align="center" cellspacing="0" cellpadding="0" border="0">
 						<tr>
 							<td width="353px" valign="top" style="background:#ffffff; height:37px; color:#000000; height:100px; border-left:2px solid #000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
-								<div align="left" style="margin-left:7px; margin-top:5px; font-family:Times New Roman; font-size:9px">
+								<div align="left" style="margin-left:7px; margin-top:4px; font-family:Times New Roman; font-size:9px">
 									INVOICE TO :
 									<div align="left" style="margin-left:60px; margin-right:7px; font-family:Verdana; font-size:9px;">
-										<b>blank</b>
+										<b>${invoice.order.orderAddress[0].address.line1}
+                                           <br>
+                                           ${invoice.order.orderAddress[0].address.line2} 
+                                        <br>
+                                           ${invoice.order.orderAddress[0].address.city}
+                                        <br>
+                                           ${invoice.order.orderAddress[0].address.state}
+                                        <br>
+                                           ${invoice.order.orderAddress[0].address.country}
+                                        <br>
+                                           ${invoice.order.orderAddress[0].address.zip} 
+                                        </b>
 									</div>
-									<div align="left" style="margin-left:68px; margin-top:5px; font-family:Times New Roman; font-size:9px">
+									<div align="left" style="margin-left:68px; margin-top:4px; font-family:Times New Roman; font-size:9px">
 									Tin No :
 									<div align="left" style="margin-left:45px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
 										<b>
@@ -303,7 +651,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td width="100%" colspan="6">
+				<td width="100%" colspan="6" style="border-left:1px solid #000000;border-right:1px solid #000000;">
 					<table width="100%"  align="center" cellspacing="0" cellpadding="0" border="0">
 						<tr>
 							<td width="186" valign="top" style="background:#ffffff; height:37px; color:#000000; border-left:1px solid #000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
@@ -333,7 +681,7 @@
 								<div align="right" style="margin-right:7px; margin-left:140px; margin-top:-15px; font-family:Verdana; font-size:9px; ">
 									<b>${invoice.order.customerOrderNo}</b>
 								</div>
-								<div align="left" style="margin-left:7px; margin-top:7px; font-family:Times New Roman; font-size:9px">
+								<div align="left" style="margin-left:7px; margin-top:15px; font-family:Times New Roman; font-size:9px">
 									DATE :
 								</div>
 
@@ -343,7 +691,9 @@
 							</td>
 
                               <td width="250" valign="top" style="background:#ffffff; height:37px; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
-<div align="left" style="margin-left:7px; margin-top:5px; font-family:Times New Roman; font-size:9px; ">AMENDMENT NO. :
+
+                                  <div align="left" style="margin-left:7px; margin-top:5px; font-family:Times New Roman; font-size:9px; ">
+                                      AMENDMENT NO. :
 								</div>
 								<div align="right" style="margin-right:7px; margin-left:140px; margin-top:-15px; font-family:Verdana; font-size:9px; ">
 
@@ -351,7 +701,7 @@
 
 										</div>
 
-								<div align="left" style="margin-left:7px; margin-top:7px; font-family:Times New Roman; font-size:9px">
+								<div align="left" style="margin-left:7px; margin-top:15px; font-family:Times New Roman; font-size:9px">
 									AMENDMENT DATE :
 								</div>
 								<div align="right" style="margin-right:7px; margin-top:-15px; font-family:Verdana; font-size:9px; ">
@@ -440,7 +790,7 @@
 							</td>
 							<td nowrap valign="top" style="background:#ffffff; border-right:1px solid #000000;">
 								<div align="center" style="margin-top:7px; font-family:Verdana; font-size:9px">
-									${invoicedetail.dispatching}
+									${invoicedetail.dispatched}
                                     <c:if test="${invoicedetail.product.productMeasurementType.measurementType eq 'MT'}">
                                         <span style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">MT</span>
                                     </c:if>
@@ -463,7 +813,7 @@
 								<div align="right" style="margin-right:1px; margin-left:1px; margin-top:7px; font-family:Verdana; font-size:9px">
 								<strong	>
 
-								${invoicedetail.dispatching * invoicedetail.productCost}
+								${invoicedetail.dispatched * invoicedetail.productCost}
 
 </strong>
 								</div>
@@ -480,9 +830,7 @@
 					<b>* Remarks :</b>
                  </div>
 				<div align="left" style="margin-top: -12px; margin-left:75px; font-family:Verdana; font-size:9px;">
-
-											nill
-
+                        ${invoice.remark}
 				</div>
 			</td>
 		</tr>
@@ -506,7 +854,7 @@
                       		EXCISE<br>PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:2px; font-family:Verdana; font-size:9px">
-                      		1.0%
+                      		${invoice.excise}%
                       	</div>
                     </td>
                     <td width="78px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -514,7 +862,7 @@
                  	  		E.CESS PAYABLE
                  	  	</div>
                  	  	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:2px; font-family:Verdana; font-size:9px">
-                 	  		2.0%
+                 	  		${invoice.educationCess}%
                  	  	</div>
                  	  </td>
                  	  <td width="75px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -522,7 +870,7 @@
                       		S&H EDU CESS PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:0px; font-family:Verdana; font-size:9px">
-                      		3.0%
+                      		${invoice.secondaryHigherEducationCess}%
                       	</div>
                       </td>
                       <td width="92px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -539,7 +887,7 @@
                       		<br>PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                      		6.0%
+                      		${invoice.cstOvat}%
                       	</div>
                       </td>
                       <td width="90px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -549,7 +897,7 @@
                       </td>
                       <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                       <strong>	<div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px; font-family:Verdana; font-size:9px">
-                      		10000
+                                   ${invoice.totalAmount}
                       	</div></strong>
                       </td>
                 </tr>
@@ -557,32 +905,32 @@
                     <td rowspan="2" valign="center" width="116px" style="background:#ffffff; border-left:2px solid #000000; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-top:5px; font-family:Verdana; font-size:9px">
                     		<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
-                    			10000
+                    			blank
                     	</div>
                    </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                    <div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-	                    	0
+	                    	${invoice.exciseTax}
 	                    </div>
 	                </td>
 	                <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		0
+                    		${invoice.educationCessTax}
                     	</div>
                     </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		0
+                    		${invoice.secondaryHigherEducationCessTax}
                     	</div>
                     </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		10000
+                    		${invoice.taxCharges}
                     	</div>
                     </td>
                     <td style="background:#ffffff; height:25px; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		600
+                    		${invoice.cstOvatTax}
                     	</div>
                    </td>
                    <td rowspan="2" width="84px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -592,7 +940,7 @@
                     </td>
                     <td rowspan="2" valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                     	  <strong><div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px; font-family:Verdana; font-size:9px">
-                    		1342
+                    		${invoice.otherCharges}
                     	</div></strong>
                     </td>
                   </tr>
@@ -615,7 +963,7 @@
                     		FREIGHT
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		0.0
+                    		${invoice.freight}
                     	</div>
                     </td>
 					<td width="72px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -623,7 +971,7 @@
                     		INSURANCE
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		0.0
+                    		${invoice.insurance}
                     	</div>
                     </td>
                     <td width="80px" colspan="2" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -631,15 +979,15 @@
                     		OTHERS
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:0px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		0.0
+                    		${invoice.others}
                     	</div>
                     </td>
                     <td valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="left" style="margin-left:7px; margin-top:10px; font-family:Times New Roman; font-size:9px">
-                    		ENTRY TAX&nbsp;&nbsp;7.0%
+                    		ENTRY TAX&nbsp;&nbsp;${invoice.inEntryTaxGiven}%
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		742.0
+                    		${invoice.entry}
                     	</div>
                     </td>
                     <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -649,7 +997,7 @@
                     </td>
                     <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                     	  <strong><div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px;  font-family:Verdana; font-size:9px;">
-                    		11342
+                    		${invoice.grandTotal}
                     	</div></strong>
                     </td>
                  </tr>
@@ -666,26 +1014,22 @@
 	                       	  	DEBIT ENTRY NO.
 	                       	  </div>
 	                       	  <div align="right" style="margin-right:1px; margin-left:1px; margin-top:2px; font-family:Verdana; font-size:9px">
-
-										1
-
-	                    		</div>
+                                 ${invoice.debitEntryNo}
+                                 </div>
 	                        </td>
 	                    	<td width="88px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                    		<div align="left" style="margin-left:2px; margin-top:2px; font-family:Times New Roman; font-size:9px">
 	                    			DATE
 	                    		</div>
 	                    		<div align="right" style="margin-right:1px; margin-left:1px; margin-top:2px; font-family:Verdana; font-size:9px">
-
-										2012/05/24
-
+                                        blank
 	                    		</div>
 	                   		</td>
 	                        <td style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 	                    		<div align="left" style="margin-right:1px; margin-top:2px; font-family:Verdana; font-size:9px">
 	                    			<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
 	                    			&nbsp;&nbsp;&nbsp;&nbsp;
-	                    		<strong>	 Eleven Thousand Three Hundred and Forty Two Only</strong>
+	                    		<strong><span id="net"></span> </strong>
 	                    		</div>
 	                   		</td>
 						</tr>
@@ -795,7 +1139,7 @@
 							</td>
 							<td valign="middle" style="height: 25px; background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 								<strong><div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-									0.0
+									
 								</div></strong>
 							</td>
 						</tr>
@@ -823,7 +1167,7 @@
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:2px solid #000000;">
 	                       	 <strong> <div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-	                       	  	11342
+	                       	  	${invoice.netPayable}
 	                       	  </div></strong>
 	                        </td>
 	                    </tr>
@@ -906,8 +1250,7 @@
 	                </div>
 	                <div align="left" style="margin-left:90px; margin-right:1px; margin-top:-13px; font-family:Verdana; font-size:9px">
 	                	<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
-	                	&nbsp;&nbsp;&nbsp;&nbsp;
-	                	<strong> Only</strong>
+	                	 <span id="excise"></span>
 	            	</div>
 	            </td>
 			</tr>
@@ -918,8 +1261,8 @@
 	                </div>
 	                <div align="left" style="margin-left:90px; margin-right:1px; margin-top:-13px; font-family:Verdana; font-size:9px">
 	                	<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
-	                	&nbsp;&nbsp;&nbsp;&nbsp;
-	                	<strong> Only</strong>
+                           <span id="ecess"></span>
+
 	            	</div>
 	            </td>
 			</tr>
@@ -930,8 +1273,8 @@
 	                </div>
 	                <div align="left" style="margin-left:90px; margin-right:1px; margin-top:-13px; font-family:Verdana; font-size:9px">
 	                	<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
-	                	&nbsp;&nbsp;&nbsp;&nbsp;
-	                	<strong> Only</strong>
+
+                              <span id="enhcess"></span>
 	            	</div>
 	            </td>
 			</tr>
@@ -1055,10 +1398,11 @@
 			<tr id="hide">
 				<td colspan="6" align="right">
                      <s:hidden name="content" id="content"/>
-					   <s:hidden name="invoicenumber" value="${invoice.invoiceNumber}"/>
+					   <s:hidden name="pdfinvoicenumber" value="${invoice.invoiceNumber}"/>
+					   <s:hidden name="id" value="${invoice.id}"/>
 
-                    <s:submit name="printpdf" value="Print" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:button name="Cancel" value="Cancel" onclick="javascript:window.close();"></s:button>
+                    <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="editinvoice" value="Edit"/>
 				</td>
 			</tr>
 		</table>
@@ -1066,3 +1410,5 @@
 </div>
 </body>
 </html>
+</s:layout-component>
+</s:layout-render>

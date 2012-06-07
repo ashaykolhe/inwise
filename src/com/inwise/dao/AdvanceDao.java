@@ -23,4 +23,8 @@ public class AdvanceDao extends BaseDao<Advance,Integer>{
         
         return sessionProvider.get().createQuery("from Advance where order.id="+id).uniqueResult()==null ? false : true;
     }
+
+    public Advance getAdvancedByOrderId(Integer id) {
+        return (Advance) sessionProvider.get().createQuery("select a From Advance a where a.order.id='"+id+"'").uniqueResult();  //To change body of created methods use File | Settings | File Templates.
+    }
 }

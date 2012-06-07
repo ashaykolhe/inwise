@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ashay
- * Date: May 11, 2012
- * Time: 10:23:01 AM
- * To change this template use File | Settings | File Templates.
- */
+* Created by IntelliJ IDEA.
+* User: Ashay
+* Date: May 11, 2012
+* Time: 10:23:01 AM
+* To change this template use File | Settings | File Templates.
+*/
 @Entity
 @Table(name = "invoice")
 public class Invoice {
@@ -26,13 +26,13 @@ public class Invoice {
     @Column(name = "create_date")
     private Date createDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "issue_time")
-    private Date issueTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "issue_time")
+    private String issueTime;
+
+
     @Column(name = "removal_time")
-    private Date removalTime;
+    private String removalTime;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -186,19 +186,19 @@ public class Invoice {
         this.createDate = createDate;
     }
 
-    public Date getIssueTime() {
+    public String getIssueTime() {
         return issueTime;
     }
 
-    public void setIssueTime(Date issueTime) {
+    public void setIssueTime(String issueTime) {
         this.issueTime = issueTime;
     }
 
-    public Date getRemovalTime() {
+    public String getRemovalTime() {
         return removalTime;
     }
 
-    public void setRemovalTime(Date removalTime) {
+    public void setRemovalTime(String removalTime) {
         this.removalTime = removalTime;
     }
 
@@ -504,8 +504,8 @@ public class Invoice {
                 "id=" + id +
                 ", invoiceNumber=" + invoiceNumber +
                 ", createDate=" + createDate +
-                ", issueTime=" + issueTime +
-                ", removalTime=" + removalTime +
+                ", issueTime='" + issueTime + '\'' +
+                ", removalTime='" + removalTime + '\'' +
                 ", customer=" + customer +
                 ", order=" + order +
                 ", salesRepCode='" + salesRepCode + '\'' +
@@ -543,6 +543,7 @@ public class Invoice {
                 ", inEntryTaxGiven=" + inEntryTaxGiven +
                 ", deleted=" + deleted +
                 ", invoiceDetail=" + invoiceDetail +
+                ", dueQuantity=" + dueQuantity +
                 '}';
     }
 }
