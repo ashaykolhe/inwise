@@ -23,7 +23,8 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 @UrlBinding("/advance")
-public class AdvanceActionBean extends BaseActionBean{
+public class AdvanceActionBean extends BaseActionBean
+{
     private static final String ADVANCE="jsp/advance.jsp";
     private static final String ADDADVANCE="jsp/addAdvance.jsp";
     private static final String ADVANCERECEIPT="jsp/receipt/advanceReceipt.jsp";
@@ -193,21 +194,26 @@ public class AdvanceActionBean extends BaseActionBean{
         //orderList= orderDao.listAll();
       return new ForwardResolution(ADDADVANCE);
     }
-     public Resolution getOrderNumbers()
+    public Resolution getOrderNumbers()
     {
         custNameIdList=orderDao.getCustomerForAdvance();
-       // System.out.println("iiiiiiiiiddddddddddd"+id1);
+       System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
+        System.out.println("in get order numbers....");
         return new ForwardResolution(ADDADVANCE);
     }
     public Resolution getCustomerOrder()
     {
         total=0.0;
         custNameIdList=orderDao.getCustomerForAdvance();
+
         o=orderDao.findAOrderByOrderNo(id2);
+        System.out.println(o);
+        System.out.println(id2);
         setCust(o.getCustomer());
        // System.out.println("advance made or naot...."+advanceDao.advanceMadeOrNot(o.getId()));
+
         if(advanceDao.advanceMadeOrNot(o.getId()))
         {
            checkAdvanceMade="yes";
@@ -279,7 +285,7 @@ public class AdvanceActionBean extends BaseActionBean{
        return new ForwardResolution(ADVANCERECEIPT);
    }
 
-        public Resolution advancePopupViaReceiptNo()
+    public Resolution advancePopupViaReceiptNo()
    {
        System.out.println("advance popup resoltuin");
        advance = advanceDao.find(id);

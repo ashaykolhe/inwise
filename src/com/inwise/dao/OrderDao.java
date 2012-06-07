@@ -124,7 +124,7 @@ public void remove(Integer id) {
     }
     public Order findAOrderByOrderNo(String customerOrderNo)
     {
-        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo).uniqueResult();
+        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult();
     }
    
      

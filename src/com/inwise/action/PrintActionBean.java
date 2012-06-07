@@ -37,24 +37,52 @@ public class PrintActionBean extends BaseActionBean
 
 
     List<Order> orderNoList;
-    List<Invoice> invoiceList;
+     List<Invoice> invoiceList;
     List<Object> custNameIdList;
     List<Object> orderFromAdvance;
     private Advance advance;
     private Customer cust;
     private Integer customerOrderNo;
     private Integer receiptNumber;
+    private Integer inviceNumber;
     private String showdropdown;
     private boolean popup;
     private String printBy;
-
+    private String setVisibleAdvanceTable;
+    private String visibleInvoiceTable;
+    private Invoice invoice;
 
      private static final String PRINTINVOICE="jsp/printInvoice.jsp";
      private static final String ADVANCERECEIPT="jsp/receipt/advanceReceipt.jsp";
+     private static final String INVOICERECEIPT="jsp/receipt/viewOrderSlip.jsp";
 
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public String getVisibleInvoiceTable() {
+        return visibleInvoiceTable;
+    }
+
+    public void setVisibleInvoiceTable(String visibleInvoiceTable) {
+        this.visibleInvoiceTable = visibleInvoiceTable;
+    }
 
     public Advance getAdvance() {
         return advance;
+    }
+
+    public Integer getInviceNumber() {
+        return inviceNumber;
+    }
+
+    public void setInviceNumber(Integer inviceNumber) {
+        this.inviceNumber = inviceNumber;
     }
 
     public void setAdvance(Advance advance) {
@@ -79,6 +107,14 @@ public class PrintActionBean extends BaseActionBean
 
     public boolean isPopup() {
         return popup;
+    }
+
+    public CustomerDao getCustomerDao() {
+        return customerDao;
+    }
+
+    public void setCustomerDao(CustomerDao customerDao) {
+        this.customerDao = customerDao;
     }
 
     public void setPopup(boolean popup) {
@@ -140,12 +176,22 @@ public class PrintActionBean extends BaseActionBean
     public void setOrderNoList(List<Order> orderNoList) {
         this.orderNoList = orderNoList;
     }
+
+    public String getSetVisibleAdvanceTable() {
+        return setVisibleAdvanceTable;
+    }
+
+    public void setSetVisibleAdvanceTable(String setVisibleAdvanceTable) {
+        this.setVisibleAdvanceTable = setVisibleAdvanceTable;
+    }
+
     public Resolution printInvoiceLink()
     {
         System.out.println("in print invoice resolution");
         custNameIdList=orderDao.getCustomerForAdvance();
         return new ForwardResolution(PRINTINVOICE);
     }
+
     public Resolution getOrderDropDown()
     {
         custNameIdList=orderDao.getCustomerForAdvance();
@@ -160,21 +206,32 @@ public class PrintActionBean extends BaseActionBean
     {
          printBy="byReceipt";
         custNameIdList=orderDao.getCustomerForAdvance();
-         System.out.println("in lst method"+id);
-        getContext().getMessages().add(new SimpleMessage(custNameIdList.size()+"  Items are found all are displying"));
         orderFromAdvance=orderDao.getOrderForPrint(id);
+        if(orderFromAdvance.size()>0)
+        {
+            setVisibleAdvanceTable="yes";
+            System.out.println(orderFromAdvance.size());
+        }
+        getContext().getMessages().add(new SimpleMessage(orderFromAdvance.size()+"  Items are found all are displying"));
         cust=customerDao.find(id);
-
         return new ForwardResolution(PRINTINVOICE);
     }
+
+
     public Resolution invoiceLst()
     {
+        System.out.println("in invoice lst...................");
+         printBy="byInvoice";
         custNameIdList=orderDao.getCustomerForAdvance();
         orderNoList=orderDao.getCustomerOrderNo(id);
-        invoiceList=invoiceDao.findByOrderNo(customerOrderNo);
+        invoiceList=invoiceDao.findByOrderId(customerOrderNo);
+        if(invoiceList.size()>0)
+        {
+            visibleInvoiceTable="yes";
+        }
+        getContext().getMessages().add(new SimpleMessage(invoiceList.size()+"  Items found, Displying all"));
         showdropdown="yes";
         cust=customerDao.find(id);
-
         return new ForwardResolution(PRINTINVOICE);
     }
     public Resolution printAdvanceReceipt()
@@ -184,6 +241,22 @@ public class PrintActionBean extends BaseActionBean
         return new RedirectResolution(PrintActionBean.class,"lst").addParameter("popup",popup).addParameter("id",id).addParameter("receiptNumber",receiptNumber);
      
     }
+    public Resolution printInvoiceReceipt()
+    {
+        popup=true;
+         System.out.println("advance popup resoltuin"+"cust id"+id+"invoice no"+inviceNumber+"order id"+customerOrderNo);
+        System.out.println("in print invoice receipt");
+        return new RedirectResolution(PrintActionBean.class,"invoiceLst").addParameter("popup",popup).addParameter("id",id).addParameter("inviceNumber",inviceNumber).addParameter("customerOrderNo",customerOrderNo);
+       
+    }
+    public Resolution invoicePopup()
+   {
+
+       System.out.println("in invoice popup....................");
+       invoice=invoiceDao.findByInvoiceNumber(id);
+       System.out.println(invoice);
+       return new ForwardResolution(INVOICERECEIPT);
+   }
 
 
 }

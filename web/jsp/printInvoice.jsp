@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <s:useActionBean beanclass="com.inwise.action.PrintActionBean" var="printBean" event="lst"/>
-<c:if test="${printBean.popup eq true}">
+<c:if test="${printBean.receiptNumber ne null}">
     <script type="text/javascript">
         function OpenPopup(){
             var w = 800;
@@ -22,7 +22,26 @@
             var wint = (screen.height-h)/2;
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
-            var page = "advance?advancePopupViaReceiptNo=&id="+${printBean.receiptNumber};
+           var page = "advance?advancePopupViaReceiptNo=&id="+${printBean.receiptNumber};
+            
+            var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
+                    + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+            window.open(page, "Popup", windowprops);
+
+        }
+        window.onload =OpenPopup();
+    </script>
+</c:if >
+<c:if test="${printBean.inviceNumber ne null}">
+    <script type="text/javascript">
+        function OpenPopup(){
+            var w = 800;
+            var h = 480;
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+            var page = "print?invoicePopup=&id="+${printBean.inviceNumber};
             var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
@@ -105,7 +124,7 @@ $(document).ready(function()
 
 </script>                                      
 <s:useActionBean beanclass="com.inwise.action.PrintActionBean" event="lst" var="listvar"></s:useActionBean>
-<%  request.setAttribute("invoicelist",listvar.getInvoiceList());
+<% 
     request.setAttribute("customerNameForAdvance",listvar.getCustNameIdList());
     request.setAttribute("orederListFromAdvance",listvar.getOrderFromAdvance());
  request.setAttribute("cust",listvar.getCust());
@@ -166,22 +185,6 @@ $(document).ready(function()
                             <%}%>
                         <%}%>
                     </s:select>
-
-
-                  <%--<s:select id="selectcutomername" name="id"  class="dropdown"  onchange="showorderdropdown();">
-                        <option  value="0">---Select Customer---</option>
-                        <c:forEach items="${actionBean.orderList}" var="orderno" varStatus="loop" >
-                        <c:choose>
-                        <c:when test="${actionBean.id eq orderno.customer.id}">
-			            <option value ="<c:out value="${actionBean.id}"/>" selected="selected"> <c:out value="${actionBean.cust.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                        <option value ="${orderno.customer.id}"><c:out value="${orderno.customer.name}"/></option>
-                        </c:otherwise>
-                        </c:choose>
-		                </c:forEach>
-                  </s:select>--%>
-
                  </div>
                 </td>
             </tr>
@@ -196,11 +199,11 @@ $(document).ready(function()
                     <option  value="0">---Select Order No.---</option>
                         <c:forEach items="${actionBean.orderNoList}" var="orderno" varStatus="loop" >
                         <c:choose>
-                        <c:when test="${actionBean.customerOrderNo eq orderno.customerOrderNo}">
-			       <option value ="<c:out value="${actionBean.id}"/>" selected="selected"> <c:out value="${orderno.customerOrderNo}"/></option>
+                        <c:when test="${actionBean.customerOrderNo eq orderno.id}">
+			       <option value ="<c:out value="${actionBean.customerOrderNo}"/>" selected="selected"> <c:out value="${orderno.customerOrderNo}"/></option>
                         </c:when>
                         <c:otherwise>
-                   <option value ="${orderno.customerOrderNo}"><c:out value="${orderno.customerOrderNo}"/></option>
+                   <option value ="${orderno.id}"><c:out value="${orderno.customerOrderNo}"/></option>
                         </c:otherwise>
                         </c:choose>
 		                </c:forEach>
@@ -214,7 +217,7 @@ $(document).ready(function()
         </tr>
    
    </table>
-        <c:if test="${actionBean.orderFromAdvance!=null}">
+
         <table bordercolor="#FF6600" width="77%" id="msgtable">
         <tr>
             <td width="70%" >
@@ -226,7 +229,7 @@ $(document).ready(function()
             </td>
            </tr>
          </table>
-
+        <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
        <table bordercolor="#FF6600" width="77%" border="1" id="ordertable">
         <tr>
             <td width="70%" >
@@ -272,24 +275,48 @@ $(document).ready(function()
         </tr>
        </table>
         </c:if>
+             <c:if test="${actionBean.visibleInvoiceTable!=null}">
 
-       <%-- <table width="100%"  id="ordertable"><tr><td>
-             <c:if test="${actionBean.selectedOrderList!=null}">
-                    <d:table name="orderlist" pagesize="10" class="disp"  requestURI="/Print.action">
-                    <d:column property="id" title="Order Id"/>
-                    <d:column property="customerOrderNo" title="Order No"/>
-                    </d:table>
-            </c:if>
-            </td></tr></table>--%>
-            <table width="100%"  id="invoicetable"><tr><td>
-             <c:if test="${actionBean.invoiceList!=null}">
-                    <d:table name="invoicelist" pagesize="10" class="disp"  requestURI="/Print.action">
-                    <d:column property="id" title="Invoice Id"/>
-                    <d:column property="invoiceNumber" title="Invoice No"/>
-                    </d:table>
+        
+                <table width="100%" cellspacing="1">
+                    <tr>
+                        <table border="0"width="77%" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="invfamily" width="100%">
+                    <tr>
+                        <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
+                        <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Invoice No.</span></strong></div></td>
+                        <td width="10%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Invoice Date</span></strong></div></td>
+                        <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Invoice Amount</span></strong></div></td>
+                        <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Due Amount</span></strong></div></td>
+                        <td width="10%"  style="background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">View</span></strong></div></td>
+
+                       </tr>
+
+                          <c:forEach items="${actionBean.invoiceList}" var="invoices" varStatus="loop" >
+
+                    <tr>
+                            <td width="5%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;" >${loop.index+1}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.invoiceNumber}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.createDate}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.totalAmount}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.netPayable}</span></strong></div></td>
+                            <td width="10%" style=""><div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceReceipt">
+                                <s:param name="id" value="${invoices.customer.id}"/>
+                                <s:param name="customerOrderNo" value="${invoices.order.id}"/>
+                                <s:param name="inviceNumber" value="${invoices.invoiceNumber}"/>
+                                <img src="images/view.gif" alt=""></s:link></strong></div>
+
+                            </td>
+                   </tr>
+                     </c:forEach>
+                            </table>
+                    </tr>
+                </table>
+
+
+
             </c:if>
 
-        </td></tr></table>
+        
         </s:form>
         
         </s:layout-component>

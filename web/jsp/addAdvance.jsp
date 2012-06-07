@@ -160,18 +160,6 @@ $(document).ready(function()
                      <%}%>
                      <%}%>
                      
-<%--
-                     <c:forEach items="${actionBean.orderList}" var="orderno" varStatus="loop" >
-                        <c:choose>
-                        <c:when test="${actionBean.cust.id eq orderno.customer.id}">
-			            <option value ="<c:out value="${actionBean.id}"/>" selected="selected"> <c:out value="${actionBean.cust.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                        <option value ="${orderno.customer.id}"><c:out value="${orderno.customer.name}"/></option>
-                        </c:otherwise>
-                        </c:choose>
-		                </c:forEach>
---%>
                   </s:select>
                  </div>
                 </td>
@@ -208,7 +196,7 @@ $(document).ready(function()
                         <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product Name</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Ordered Quantity</span></strong></div></td>
                         <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Rate</span></strong></div></td>
-                        <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Total</span></strong></div></td>    
+                        <td width="10%"  style="background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Total</span></strong></div></td>    
 
                        </tr>
                     <c:forEach var="orders" items="${actionBean.customerOrderList}" varStatus="loop">
@@ -217,13 +205,13 @@ $(document).ready(function()
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productName}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.orderedQuantity}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productCost}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productCost*orders.orderedQuantity}</span></strong></div></td>
+                            <td width="10%" style=""><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productCost*orders.orderedQuantity}</span></strong></div></td>
                    </tr>
                     </c:forEach>
                    <tr>
                             <td colspan="3" style="border-right:1px solid #000000; border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" ></span></strong></div></td>
                             <td width="5%" style="border-right:1px solid #000000;border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Total</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
+                            <td width="10%" style="border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
                    </tr>
                 </table>
                 <table>
