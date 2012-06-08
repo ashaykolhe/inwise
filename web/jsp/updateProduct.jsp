@@ -60,6 +60,15 @@
 
                                 return true;
                             });
+           $("#getproductbutton").click(function(){
+
+                       if ($("#productdropdown1").val()=="0"){
+                                       alert("Select the product name");
+
+                                       return false;
+                                   }
+                  });
+
        })
        function checkProduct() {
 

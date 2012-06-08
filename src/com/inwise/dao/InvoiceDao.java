@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 
 /**
  * Created by IntelliJ IDEA.
@@ -116,7 +117,8 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
 
          Double temp=0.00,a;
          invoice.setDueQuantity(invoice.getNetPayable());
-         for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();){
+         for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();)
+         {
              Payment pay=ipay.next();
              if(invoice.getId().equals(pay.getInvoice().getId())){
                 a=pay.getReceivedAmount();
@@ -130,10 +132,94 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         return invoice;
     }
 
+
     public Integer getMaxInvoiceNumber() {
         System.out.println("innnnnnnnnnnnnnnnnnvoice   :"+(Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult());
         return (Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult(); 
 
     }
-}
 
+
+     public List<Invoice> findByInvoiceTodayDate() {
+
+        return (List<Invoice>)sessionProvider.get().createQuery("from Invoice WHERE createDate LIKE '"+new SimpleDateFormat("yyyy-MM-dd").format(new Date())+"%'").list();
+    }
+     public List<Invoice> getInvoiceMonth(int month, int year,String name) {
+
+        if(month<=9)
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE (i.customer.name='"+name+"') AND i.createDate LIKE '"+year+"-"+0+month+"%'").list();
+        else
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE (i.customer.name='"+name+"') AND i.createDate LIKE '"+year+"-"+month+"%'").list();
+
+    }
+       public List<Invoice> getInvoiceYear( int year,String name) {
+
+
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE (i.customer.name='"+name+"') AND i.createDate LIKE '"+year+"%'").list();
+
+    }
+     public List<Invoice> getByFromToCust(String fromdate, String todate,String name) {
+
+       List<Invoice> invoicelst=(List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE (i.customer.name='"+name+"') AND (i.createDate BETWEEN '"+fromdate+"%' AND '"+todate+"%')").list();
+           System.out.println("pppppprrrrooooodddduuuucttttttllllllssssssssstttttinvoicelst"+invoicelst);
+         return invoicelst;
+    }
+    public List getInvoiceprodbyyear(String name,int year)
+    {
+   Integer ii=(Integer)sessionProvider.get().createSQLQuery("select id from product where product_name='"+name+"'").uniqueResult();
+        System.out.println("iiiiiiiiddddddd"+ii);
+    //List in= sessionProvider.get().createSQLQuery("select i.create_date,i.net_payable,i.invoice_number from invoice i left join invoice_has_invoicedetail ih on ih.invoice_id=i.id left join invoice_detail ida on ih.invoice_detail_id=ida.id where ida.product_id='"+ii+"' and i.create_date LIKE '"+year+"%'").list() ;
+    //List<Invoice> in= (List<Invoice>)sessionProvider.get().createQuery ("select i from Invoice i  where i.invoiceDetail.product.id='"+i+"' and i.createDate LIKE '"+year+"%'").list() ;
+     String sql="select i.create_date,i.net_payable,i.invoice_number,i.excise,i.education_cess,i.secondary_higher_education_cess_tax,i.cst_ovat from invoice i left join invoice_has_invoicedetail ih on ih.invoice_id=i.id left join invoice_detail ida on ih.invoice_detail_id=ida.id where ida.product_id='"+ii+"' and i.create_date LIKE '"+year+"%'";
+        Query query = sessionProvider.get().createSQLQuery(sql);
+            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List results = query.list();
+            return results;
+      }
+      public List getInvoiceprodbymonth(String name,int month,int year)
+    {
+   Integer ii=(Integer)sessionProvider.get().createSQLQuery("select id from product where product_name='"+name+"'").uniqueResult();
+        System.out.println("iiiiiiiiddddddd"+ii);
+        String sql=null;
+         if(month<=9)
+           sql=  "select i.create_date,i.net_payable,i.invoice_number,i.excise,i.education_cess,i.secondary_higher_education_cess_tax,i.cst_ovat from invoice i left join invoice_has_invoicedetail ih on ih.invoice_id=i.id left join invoice_detail ida on ih.invoice_detail_id=ida.id where ida.product_id='"+ii+"' AND i.create_date LIKE '"+year+"-"+0+month+"%'";
+        else
+         sql=  "select i.create_date,i.net_payable,i.invoice_number from invoice i left join invoice_has_invoicedetail ih on ih.invoice_id=i.id left join invoice_detail ida on ih.invoice_detail_id=ida.id where ida.product_id='"+ii+"' AND i.create_date LIKE '"+year+"-"+month+"%'";
+        Query query = sessionProvider.get().createSQLQuery(sql);
+            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List results = query.list();
+            return results;
+      }
+       public List getInvoiceprodbyfromto(String fromdate, String todate,String name)
+    {
+   Integer ii=(Integer)sessionProvider.get().createSQLQuery("select id from product where product_name='"+name+"'").uniqueResult();
+        System.out.println("iiiiiiiiddddddd"+ii);
+        String sql="select i.create_date,i.net_payable,i.invoice_number,i.excise,i.education_cess,i.secondary_higher_education_cess_tax,i.cst_ovat from invoice i left join invoice_has_invoicedetail ih on ih.invoice_id=i.id left join invoice_detail ida on ih.invoice_detail_id=ida.id where ida.product_id='"+ii+"'AND (i.create_date BETWEEN '"+fromdate+"%' AND '"+todate+"%')";
+        Query query = sessionProvider.get().createSQLQuery(sql);
+            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+            List results = query.list();
+            return results;
+      }
+      public List<Invoice> getInvoiceYearalltax( int year) {
+
+
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate LIKE '"+year+"%'").list();
+
+    }
+      public List<Invoice> getInvoiceMonthalltax(int month, int year) {
+
+        if(month<=9)
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate LIKE '"+year+"-"+0+month+"%'").list();
+        else
+            return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE  i.createDate LIKE '"+year+"-"+month+"%'").list();
+
+    }
+       public List<Invoice> getByFromToalltax(String fromdate, String todate) {
+
+       List<Invoice> invoicelst=(List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE  i.createDate BETWEEN '"+fromdate+"%' AND '"+todate+"%'").list();
+          //System.out.println("pppppprrrrooooodddduuuucttttttllllllssssssssstttttinvoicelst"+invoicelst);
+         return invoicelst;
+    }
+
+
+   }
