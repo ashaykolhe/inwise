@@ -1155,7 +1155,7 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="invoice.advanceDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1310,14 +1310,21 @@ Rate</b>
 							<%--<input type="button" value="Preview" class="buttons" name="inpreview" id="inpreview"  style="width:80px; margin-left: 60px;" onClick="return ValidateInvoice('Preview');">--%>
                     
                       <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
-                      <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
+
                       <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
+                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+                      <s:hidden name="advance.deleted" value="${invoiceBean.advance.deleted}"/>
+                      <s:hidden name="advance.createDate" value="${invoiceBean.advance.createDate}"/>
+                    <s:hidden name="advance.chequeOrDDNo" value="${invoiceBean.advance.chequeOrDDNo}"/>
+                     <s:hidden name="advance.paymentMode" value="${invoiceBean.advance.paymentMode}"/>
+
+                      <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
 
 							<s:submit name="generate" value="Generate" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 						
-                            &nbsp;&nbsp; <s:submit name="preview" value="Preview"></s:submit>
+                            &nbsp;&nbsp; <s:submit name="addpreview" value="Preview"></s:submit>
                         </td>
 
 				</tr>    

@@ -115,71 +115,62 @@ public class InvoiceActionBean extends BaseActionBean{
 
     @DefaultHandler
     public Resolution pre(){
-     customerlst=customerDao.listAll();
+        customerlst=customerDao.listAll();
         orderlst=orderDao.listAll();
-           taxlst=taxDao.listAll();
-
-     return new ForwardResolution("jsp/addInvoice.jsp");
+         System.out.println("advance after get :"+advance);
+        return new ForwardResolution("jsp/addInvoice.jsp");
     }
      public Resolution getOrderDetail(){
          
         order=orderDao.find(id);
         advance=advanceDao.getAdvancedByOrderId(id);
-       
-       return new ForwardResolution(InvoiceActionBean.class,"pre");
+
+        return new ForwardResolution(InvoiceActionBean.class,"pre");
     }
-public Resolution getTax(){
-
-
-        taxlst=taxDao.listAll();
-    
+    public Resolution getTax(){
+       taxlst=taxDao.listAll();
        return new JavaScriptResolution(taxlst);
     }
 
-   public Resolution generate()
-   {
-       
-
-            Integer invoicenum=null;
-         if(invoice!=null){
-                if (invoice.getCreateDate() == null)
-                {
-                    invoice.setCreateDate(new Date());
-                  
-                }
-        invoicenum=invoiceDao.getMaxInvoiceNumber();
-             
-                if(invoicenum==null)
-                {
-                    invoice.setInvoiceNumber(1000);
-                }
-                else
-                {
-                        invoice.setInvoiceNumber(invoicenum+1);
-                }
-         }
-       List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
-      InvoiceDetail id=null;
-            for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
-                id=(InvoiceDetail)i.next();
-                if(id==null){
-                    i.remove();
-                    continue;
-                }
-             }
-        invoice.setDeleted(0);
-       invoice.setDebitEntryDate(new Date());
-       invoice.setDebitEntryNo("d12");
-       invoice.setInvoiceDetail(invoicedetail);
-       System.out.println("invoice Detail :"+invoicedetail);
-
-       invoiceDao.save(invoice);
-       advanceDao.save(advance);
-
-     return new RedirectResolution(InvoiceActionBean.class,"pre");
-   }
-    public Resolution preview()
+    public Resolution generate()
     {
+        Integer invoicenum=null;
+        if(invoice!=null){
+            if (invoice.getCreateDate() == null)
+            {
+                invoice.setCreateDate(new Date());
+            }
+            invoicenum=invoiceDao.getMaxInvoiceNumber();
+            if(invoicenum==null)
+            {
+                invoice.setInvoiceNumber(1000);
+            }
+            else
+            {
+                invoice.setInvoiceNumber(invoicenum+1);
+            }
+        }
+        List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
+        InvoiceDetail id=null;
+        for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
+            id=(InvoiceDetail)i.next();
+            if(id==null){
+                i.remove();
+                continue;
+            }
+        }
+        invoice.setDeleted(0);
+        invoice.setDebitEntryDate(new Date());
+        invoice.setDebitEntryNo("d12");
+        invoice.setInvoiceDetail(invoicedetail);
+        System.out.println("invoice Detail :"+invoicedetail);
+        invoiceDao.save(invoice);
+        advanceDao.save(advance);
+        return new RedirectResolution(InvoiceActionBean.class,"pre");
+   }
+    public Resolution addpreview()
+    {
+        System.out.println("preview madhe aala ka......");
         Integer invoicenum=null;
             if(invoice!=null){
                    if (invoice.getCreateDate() == null)
@@ -213,6 +204,28 @@ public Resolution getTax(){
             ad=advance.getId();
             invoiceDao.save(invoice);
             advanceDao.save(advance);
+            return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in).addParameter("ad",ad);
+    }
+    public Resolution updatepreview()
+    {
+        List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
+                   InvoiceDetail id=null;
+                      for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
+                          id=(InvoiceDetail)i.next();
+                          if(id==null){
+                              i.remove();
+                              continue;
+                          }
+                       }
+                   invoice.setDeleted(0);
+                   invoice.setDebitEntryDate(new Date());
+                   invoice.setDebitEntryNo("d12");
+                   invoice.setInvoiceDetail(invoicedetail);
+                   in=invoice.getInvoiceNumber();
+                   ad=advance.getId();
+                   invoiceDao.save(invoice);
+                   advanceDao.save(advance);
+                       
             return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",in).addParameter("ad",ad);
     }
     public Resolution redirectpreview()

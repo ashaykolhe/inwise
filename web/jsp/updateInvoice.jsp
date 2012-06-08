@@ -34,6 +34,12 @@
      $(document).ready(function() {
          $('#inCSTSval').hide();
          calinTotalAmount=parseFloat(document.getElementById("inTotalAmount").value);
+
+            calinAdvance=parseFloat(document.getElementById("inAdvanceRemain").value);
+            document.getElementById("inAdvance").value=calinAdvance;
+         calinNetPayable=parseFloat(document.getElementById("inNetPayable").value);
+         calinGrandTotal=parseFloat(document.getElementById("inGrandTotal").value);
+        
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
@@ -1312,14 +1318,20 @@ Rate</b>
                       <s:hidden name="invoice.order.id" value="${invoiceBean.invoice.order.id}"/>
                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
                       <s:hidden name="invoice.id" value="${invoiceBean.invoice.id}"/>
-                      <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
+
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
+                       <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
+                       <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+                       <s:hidden name="advance.createDate" value="${invoiceBean.advance.createDate}"/>
+                       <s:hidden name="advance.chequeOrDDNo" value="${invoiceBean.advance.chequeOrDDNo}"/>
+                       <s:hidden name="advance.paymentMode" value="${invoiceBean.advance.paymentMode}"/>
+                       <s:hidden name="advance.deleted" value="${invoiceBean.advance.deleted}"/>
 							<s:submit name="reviewupdate" value="Update" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 
-                            &nbsp;&nbsp; <s:submit name="preview" value="Preview"></s:submit>
+                            &nbsp;&nbsp; <s:submit name="updatepreview" value="Preview"></s:submit>
                         </td>
 
 				</tr>

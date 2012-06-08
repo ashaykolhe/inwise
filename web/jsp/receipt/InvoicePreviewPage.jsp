@@ -1139,7 +1139,7 @@
 							</td>
 							<td valign="middle" style="height: 25px; background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 								<strong><div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-									 ${invoice.amountDetect}
+									 ${invoiceBean.invoice.amountDetect}
 								</div></strong>
 							</td>
 						</tr>
@@ -1401,6 +1401,7 @@
 					   <s:hidden name="pdfinvoicenumber" value="${invoice.invoiceNumber}"/>
 					   <s:hidden name="id" value="${invoice.id}"/>
 					   <s:hidden name="ad" value="${invoiceBean.advance.id}"/>
+                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
 
                     <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
                     <s:submit name="editinvoice" value="Edit"/>
