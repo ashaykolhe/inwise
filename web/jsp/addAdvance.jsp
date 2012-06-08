@@ -71,14 +71,14 @@ $(document).ready(function()
         });
     $('#selectorderno').change(function()
         {
-            this.form.action='Advance.action?getCustomerOrder';
+            this.form.action='advance?getCustomerOrder';
             this.form.submit();
         });
     
     $('#selectcutomername').change(function()
         {
                 
-            this.form.action='Advance.action?getOrderNumbers';
+            this.form.action='advance?getOrderNumbers';
             this.form.submit();
         });
 });

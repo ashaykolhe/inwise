@@ -158,11 +158,11 @@ To change this template use File | Settings | File Templates.
 </table>
 <s:form beanclass="com.inwise.action.OrderActionBean">
     <table width="50%" border="0">
-        <tr>
-            <td width="18%" align="left" valign="top">
+        <tr> <td width="3%"></td>
+            <td width="22%" align="left" valign="top">
                 <div align="left" style="margin-left: 2px;" class="labels">
-                    <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
-                </div></td>
+                    Name of Customer<span style="color:#FF0000"> *</span></div>
+                </td>
             <td width="21%" align="left" valign="top"><div align="left">
                 <s:select id="customerName" name="order.customer.id" class="dropdown">
                     <option  value="0">---Select Customer---</option>
@@ -187,7 +187,7 @@ To change this template use File | Settings | File Templates.
 
             </td>
         </tr></table>
-    <table width="50%" border="0"><tr><td width="18%" align="left" valign="top">
+    <table width="50%" border="0"><tr><td width="3%"></td><td width="22%" align="left" valign="top">
         <div align="left" style="margin-left: 1px;" class="labels">Customer Order Number<span style="color:#FF0000"> *</span></div></td>
         <td width="21%" align="left" valign="top" >
             <s:select name="id" id="orderdropdown" class="dropdown">

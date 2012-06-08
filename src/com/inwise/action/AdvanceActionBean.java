@@ -180,6 +180,7 @@ public class AdvanceActionBean extends BaseActionBean{
     {
         System.out.println("in advance lin resolution");
         custNameIdList=orderDao.getCustomerForAdvance();
+        System.out.println(custNameIdList);
        // orderDao.getOrderForAdvance(2);
 /*
         Iterator<Object> it=custNameIdList.iterator();
@@ -191,7 +192,7 @@ public class AdvanceActionBean extends BaseActionBean{
 */
 
         //orderList= orderDao.listAll();
-      return new ForwardResolution(ADVANCE);
+      return new ForwardResolution(ADDADVANCE);
     }
      public Resolution getOrderNumbers()
     {
@@ -199,7 +200,7 @@ public class AdvanceActionBean extends BaseActionBean{
        // System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
-        return new ForwardResolution(ADVANCE);
+        return new ForwardResolution(ADDADVANCE);
     }
     public Resolution getCustomerOrder()
     {
@@ -253,7 +254,7 @@ public class AdvanceActionBean extends BaseActionBean{
     @DefaultHandler
     public Resolution pre(){
         
-        return new ForwardResolution(ADVANCE);
+        return new ForwardResolution(ADDADVANCE);
     }
 
     public Resolution redirectAdvance(){

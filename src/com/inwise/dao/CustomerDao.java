@@ -2,6 +2,7 @@ package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Customer;
+import com.inwise.pojo.Product;
 import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
@@ -101,4 +102,8 @@ public class CustomerDao extends BaseDao<Customer,Integer>
         }
         return (Customer) sessionProvider.get().merge(customer);
 }
+      public List<Customer> listallcustomername()
+    {
+          return (List<Customer>)sessionProvider.get().createSQLQuery("Select name from customer").list();
+    }
 }

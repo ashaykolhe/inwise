@@ -100,9 +100,8 @@ public class CustomerActionBean extends BaseActionBean
     public Resolution updateCustomer()
     {
 
-
+        System.out.println("id in customer issssssssss"+id);
         customer = customerDao.find(id);
-
         return new ForwardResolution(CustomerActionBean.class,"updateCustomerLink");
     }
     public Resolution update()

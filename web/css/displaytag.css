@@ -141,3 +141,12 @@ span.pagelinks {
 .grandtotal-row {
     border-top: 2px solid black;
 }
+.total{
+   font-weight:bold;
+   color:BLACK;
+ background-color: lightgoldenrodyellow;
+}
+
+.total td{
+  font-weight:bold;
+}

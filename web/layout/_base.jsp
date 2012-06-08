@@ -103,7 +103,7 @@
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
                                                      <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
-                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="pre">Advance Payment</s:link></li>
+                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
                                                  </ul>
                                              </li>
                         <li><a class="hide" href="#">Invoice</a>
@@ -132,7 +132,7 @@
                             </ul>
                         </li>
 
-                           <li><a class="hide" href="#">Report</a>
+                           <li><s:link beanclass="com.inwise.action.ReportActionBean" event="addreportlink">Report</s:link> 
 
                                              </li>
                         
