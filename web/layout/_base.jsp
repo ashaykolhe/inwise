@@ -132,7 +132,7 @@
                             </ul>
                         </li>
 
-                           <li><a class="hide" href="#">Report</a>
+                           <li><s:link beanclass="com.inwise.action.ReportActionBean" event="addreportlink">Report</s:link> 
 
                                              </li>
                         
