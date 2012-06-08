@@ -195,6 +195,7 @@ public class AdvanceActionBean extends BaseActionBean{
     }
      public Resolution getOrderNumbers()
     {
+        System.out.println("in get order no resolution");
         custNameIdList=orderDao.getCustomerForAdvance();
        // System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
@@ -203,6 +204,7 @@ public class AdvanceActionBean extends BaseActionBean{
     }
     public Resolution getCustomerOrder()
     {
+        System.out.println("in get cust order order no resolution");
         total=0.0;
         custNameIdList=orderDao.getCustomerForAdvance();
         o=orderDao.findAOrderByOrderNo(id2);
