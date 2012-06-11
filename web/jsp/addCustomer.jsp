@@ -132,8 +132,8 @@ To change this template use File | Settings | File Templates.
 
            </tr> --%>
             <tr>
-                <td width="18%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
-                <td width="32%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>
+                <td width="21%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
+                <td width="29%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>
                 <td width="18%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department<span style="color:#FF0000"> </span></div></td>
 
                 <td width="32%" align="left" valign="bottom"><div align="left" ><s:text id="addcustomerdepartment"  name="customer.department" class="textbox"></s:text>
