@@ -41,7 +41,6 @@ public class AdvanceActionBean extends BaseActionBean
     OrderDao orderDao;
 
     private Advance advance;
-    private boolean redirectAdvance;
     private boolean popup;
     private List<PaymentMode> paymentModeList=new ArrayList<PaymentMode>();
 
@@ -243,13 +242,6 @@ public class AdvanceActionBean extends BaseActionBean
         popup=true;
         return new RedirectResolution(AdvanceActionBean.class,"advanceLink").addParameter("popup",popup);
     }
-    public boolean isRedirectAdvance() {
-        return redirectAdvance;
-    }
-
-    public void setRedirectAdvance(boolean redirectAdvance) {
-        this.redirectAdvance = redirectAdvance;
-    }
 
     public boolean isPopup() {
         return popup;
@@ -268,11 +260,11 @@ public class AdvanceActionBean extends BaseActionBean
     public Resolution redirectAdvance(){
         paymentModeList=paymentModeDao.listAll();
         id=orderDao.latestOrderId();
-        redirectAdvance=true;
         return new ForwardResolution(ADVANCE);
     }
 
     public Resolution saveAdvance(){
+        advance.setAmountRemained(advance.getAmountReceived());
         advanceDao.save(advance);
         popup=true;
         return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance").addParameter("popup",popup);
@@ -293,4 +285,8 @@ public class AdvanceActionBean extends BaseActionBean
        System.out.println(advance);
        return new ForwardResolution(ADVANCERECEIPT);
    }
+
+    public Resolution cancel(){
+        return new RedirectResolution(OrderActionBean.class);
+    }
 }
