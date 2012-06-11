@@ -177,4 +177,8 @@ public class OrderActionBean extends BaseActionBean{
         orderDao.remove(id);
         return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
     }
+
+    public Resolution checkInvoiceForThisOrderDispatched(){
+        return new JavaScriptResolution(orderDao.checkInvoiceForThisOrderDispatched(id));
+    }
 }
