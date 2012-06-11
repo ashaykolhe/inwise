@@ -45,8 +45,6 @@ public class Invoice {
     @Column(name = "sales_rep_code",length = 50)
     private String salesRepCode;
 
-    @Column(name = "amount_detect",length = 10,precision = 8)
-        private Double amountDetect;
 
     @Column(name = "total_amount",length = 10,precision = 8)
     private Double totalAmount;
@@ -143,18 +141,41 @@ public class Invoice {
     @Column(name = "remark")
     private String remark;
 
-    @Column(name = "in_entry_tax_given",length = 20)
-    private Double inEntryTaxGiven;
+    @Column(name = "amount_remained",length = 10,precision = 8)
+    private Double amountRemained;
 
+    @Column(name = "amount_received",length = 10,precision = 8)
+    private Double amountReceived;
+
+    @Column(name = "amount_detect",length = 10,precision = 8)
+    private Double amountDetect;
+    
     @Column(name = "deleted",length = 2)
     private Integer deleted;
 
-
+    @Column(name = "",length = 20)
+    private Double inEntryTaxGiven;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "invoice_has_invoicedetail",
     joinColumns = { @JoinColumn(name = "invoice_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_detail_id") })
     private List<InvoiceDetail> invoiceDetail=new ArrayList<InvoiceDetail>();
+
+    public Double getAmountReceived() {
+        return amountReceived;
+    }
+
+    public void setAmountReceived(Double amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    public Double getAmountRemained() {
+        return amountRemained;
+    }
+
+    public void setAmountRemained(Double amountRemained) {
+        this.amountRemained = amountRemained;
+    }
 
     public Double getAmountDetect() {
         return amountDetect;
@@ -554,8 +575,10 @@ public class Invoice {
                 ", debitEntryDate=" + debitEntryDate +
                 ", documentsThrough='" + documentsThrough + '\'' +
                 ", remark='" + remark + '\'' +
-                ", inEntryTaxGiven=" + inEntryTaxGiven +
+                ", amountRemained=" + amountRemained +
+                ", amountReceived=" + amountReceived +
                 ", deleted=" + deleted +
+                ", inEntryTaxGiven=" + inEntryTaxGiven +
                 ", invoiceDetail=" + invoiceDetail +
                 ", dueQuantity=" + dueQuantity +
                 '}';

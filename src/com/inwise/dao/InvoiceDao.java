@@ -134,7 +134,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
 
 
     public Integer getMaxInvoiceNumber() {
-        System.out.println("innnnnnnnnnnnnnnnnnvoice   :"+(Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult());
+        
         return (Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult(); 
 
     }
