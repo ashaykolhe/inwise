@@ -5,6 +5,7 @@ import com.inwise.pojo.Address;
 import com.inwise.dao.CustomerDao;
 import com.google.inject.Inject;
 import net.sourceforge.stripes.action.*;
+import net.sourceforge.stripes.ajax.JavaScriptResolution;
 
 import java.util.List;
 
@@ -27,9 +28,17 @@ public class CustomerActionBean extends BaseActionBean
     CustomerDao customerDao;
 
     private Customer customer;
+    private Address address;
     private List<Customer> customerlst;
     private List<Address> addresslst;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public List<Address> getAddresslst() {
         return addresslst;
@@ -91,9 +100,8 @@ public class CustomerActionBean extends BaseActionBean
     public Resolution updateCustomer()
     {
 
-
+        System.out.println("id in customer issssssssss"+id);
         customer = customerDao.find(id);
-
         return new ForwardResolution(CustomerActionBean.class,"updateCustomerLink");
     }
     public Resolution update()
@@ -102,5 +110,12 @@ public class CustomerActionBean extends BaseActionBean
               customerDao.save(customer);
 
         return new RedirectResolution(CustomerActionBean.class,"updateCustomerLink");
+    }
+
+    public Resolution saveAddress(){
+        Customer customer=customerDao.find(id);
+        customer.getAddressList().add(address);
+        customerDao.save(customer);
+        return new JavaScriptResolution("done",customer);
     }
 }

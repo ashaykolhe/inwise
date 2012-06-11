@@ -39,7 +39,7 @@ User Management > Delete User
  </td></tr>
  </table>
               <table width="100%"><tr><td>
-                    <d:table name="userlst" id="user1" pagesize="10" class="disp" requestURI="/User.action">
+                    <d:table name="userlst" id="user1" pagesize="10" class="disp" requestURI="/user">
                  <d:column property="id" title="Id"/>
                  <d:column property="username" title="User Name"  />
                  <d:column title="Delete" class="delete">

@@ -16,23 +16,22 @@ public class Advance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "receipt_no",length = 20)
     private Integer id;
-    
-    @Column(name = "receipt_no",length = 20,nullable = false)
-    private String receiptNo;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date")
-    private Date create_date;
+    private Date createDate;
     
     @Column(name = "amount_received",length = 10,precision = 8,nullable = false)
     private Double amountReceived;
 
-    @Column(name = "amount_remained",length = 10,precision = 8,nullable = false)
+    @Column(name = "amount_remained",length = 10,precision = 8)
     private Double amountRemained;
 
-    @Column(name = "payment_mode",length = 10)
-    private String paymentMode;
+    @ManyToOne
+    @JoinColumn(name = "payment_mode")
+    private PaymentMode paymentMode;
     
     @Column(name = "cheque_or_dd_no",length = 20)
     private String chequeOrDDNo;
@@ -52,21 +51,12 @@ public class Advance {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getReceiptNo() {
-        return receiptNo;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setReceiptNo(String receiptNo) {
-        this.receiptNo = receiptNo;
-    }
-
-    public Date getCreate_date() {
-        return create_date;
-    }
-
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public Double getAmountReceived() {
@@ -85,11 +75,11 @@ public class Advance {
         this.amountRemained = amountRemained;
     }
 
-    public String getPaymentMode() {
+    public PaymentMode getPaymentMode() {
         return paymentMode;
     }
 
-    public void setPaymentMode(String paymentMode) {
+    public void setPaymentMode(PaymentMode paymentMode) {
         this.paymentMode = paymentMode;
     }
 
@@ -121,8 +111,7 @@ public class Advance {
     public String toString() {
         return "Advance{" +
                 "id=" + id +
-                ", receiptNo='" + receiptNo + '\'' +
-                ", create_date=" + create_date +
+                ", createDate=" + createDate +
                 ", amountReceived=" + amountReceived +
                 ", amountRemained=" + amountRemained +
                 ", paymentMode='" + paymentMode + '\'' +

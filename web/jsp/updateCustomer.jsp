@@ -99,7 +99,7 @@
     });
 
 </script>
-<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean" event="updateCustomerLink"/> 
+<s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="customerBean" event="updateCustomerLink"/>
     <%
         request.setAttribute("customerlst",customerBean.getCustomerlst());
 
@@ -126,17 +126,18 @@ Customer > Update Customer
                         <option  value="0">---Select Customer---</option>
               <c:forEach items="${customerlst}" var="customer" varStatus="loop" >
                     <c:choose>
-                  <c:when test="${customerBean.customer.name eq customer.name}">
+                  <c:when test="${customerBean.customer.id eq customer.id}">
 			            <option value ="<c:out value="${actionBean.customer.id}"/>" selected="selected"> <c:out value="${actionBean.customer.name}"/></option>
-                  </c:when>
+                      </c:when>
                   <c:otherwise>
                <option value ="${customer.id}"><c:out value="${customer.name}"/></option>
                   </c:otherwise>
                   </c:choose>
 		      </c:forEach>
-           </s:select>
-	        </td>
-		  <td width="30%" align="left" valign="top" > <s:submit name="updateCustomer" id="getcustomerbutton"  value="Get"/></td>
+           </s:select> </td>
+
+		  <td width="30%" align="left" valign="top" > <s:submit name="updateCustomer" id="getcustomerbutton"  value="Get"/>
+    
 						</tr></table>
            </s:form>
               <c:if test="${actionBean.customer!=null}">
@@ -148,7 +149,7 @@ Customer > Update Customer
             <tr>
                 <td width="18%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
                 <td width="32%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="updatecustomername" class="textbox"></s:text></div> </td>
-                <td width="18%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department<span style="color:#FF0000"> *</span></div></td>
+                <td width="18%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department</div></td>
 
                 <td width="32%" align="left" valign="bottom"><div align="left" ><s:text id="updatecustomerdepartment"  name="customer.department" class="textbox"></s:text>
                     <s:hidden name="customer.deleted" value="1"/>
@@ -273,7 +274,8 @@ Customer > Update Customer
         <tr>
             <td >&nbsp;</td>
             <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>      &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>
+                <s:hidden name="customer.customerCode" value="${customerBean.customer.customerCode}"/>&nbsp;&nbsp;&nbsp;&nbsp;
                 <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
                 <s:submit name="cancel" value="Cancel"></s:submit></div></td>
             <td >&nbsp;</td>

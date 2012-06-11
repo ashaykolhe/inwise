@@ -12,7 +12,7 @@ To change this template use File | Settings | File Templates.
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <script type="text/javascript">
-    
+
     $(document).ready(function(){
     var phoneval = /^([0-9]{0,10})$/;
 
@@ -25,7 +25,7 @@ To change this template use File | Settings | File Templates.
              $("#addcustomername").focus() ;
             return false;
         }
-    
+
 
         if ($("#addressline11").val().trim() =="")
           {
@@ -58,17 +58,31 @@ To change this template use File | Settings | File Templates.
                               $("#addresscountry1").focus() ;
                               return false;
           }
-          if ($("#addresszip1").val().trim() !=""&&!phoneval.test($('#addresszip1').val()))
+         if ($("#addresszip1").val().trim() =="")
           {
-                              alert("please enter the zip in numeric  only");
+                              alert("please enter zip code");
+                            $("#addresszip1").focus() ;
+                              return false;
+          }
+          else if ($("#addresszip1").val().trim() !=""&&!phoneval.test($('#addresszip1').val()))
+          {
+                              alert("please enter the zip in numeric only");
                               $("#addresszip1").focus() ;
+                              $("#addresszip1").val("") ;
+                              return false;
+          }
+            else if ($("#addresszip2").val().trim() !=""&&!phoneval.test($('#addresszip2').val()))
+          {
+                              alert("please enter the zip in numeric only for address 2");
+                              $("#addresszip2").focus() ;
+                              $("#addresszip2").val("") ;
                               return false;
           }
 
        if ($("#addcustomerphnno1").val().trim() !="")
        {
 
-            if(!phoneval.test($('#addcustomerphnno1').val())||$('#addcustomerphnno1').val().length!=10)
+            if(!phoneval.test($('#addcustomerphnno1').val()) || $('#addcustomerphnno1').val().trim().length !=10)
              {
 
 
@@ -79,7 +93,7 @@ To change this template use File | Settings | File Templates.
                     return false;
             }
      }
-      if ($("#addcustomerphnno2").val().trim() !="")
+     if ($("#addcustomerphnno2").val().trim() !="")
       {
 
             if(!phoneval.test($('#addcustomerphnno2').val())||$('#addcustomerphnno2').val().length!=10)
@@ -103,11 +117,12 @@ To change this template use File | Settings | File Templates.
              }
 
 
-         
 
-     
+
+
      });
      });
+
 
 </script>
 
@@ -125,12 +140,6 @@ To change this template use File | Settings | File Templates.
             </table>
             <table border="1" width="66%" bgcolor="#FCFCFC" ><tr><td>
             <table width="100%" border="0" cellspacing="1" bordercolor="#FCFCFC">
-            <%-- <tr>
-           <td align="left"  valign="top" colspan="2"><div align="left" class="labels" style="margin-left:2px"><span style="border-bottom-color:#000">Vendor</span></div></td>
-
-           <td align="left" valign="top" colspan="2"><div align="left" class="labels" style="margin-left:2px">Product Supplied</div></td>
-
-           </tr> --%>
             <tr>
                 <td width="21%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
                 <td width="29%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>

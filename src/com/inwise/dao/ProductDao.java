@@ -58,4 +58,10 @@ public class ProductDao extends BaseDao<Product,Integer> {
          Criteria criteria = sessionProvider.get().createCriteria(Product.class).add(Restrictions.eq("deleted",0));
     return criteria.list();
     }
+
+    public List<Product> listallprodname()
+    {
+          return (List<Product>)sessionProvider.get().createSQLQuery("Select product_name from product").list();
+    }
+
 }

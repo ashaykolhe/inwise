@@ -41,10 +41,10 @@ public class Customer
     private String customerCode;
 
     @Column(name = "contact_no1",length = 10)
-    private Integer contactNo1;
+    private Long contactNo1;
 
     @Column(name = "contact_no2",length = 10)
-    private Integer contactNo2;
+    private Long contactNo2;
 
     @Column(name = "deleted")
     private Integer deleted;
@@ -120,19 +120,19 @@ public class Customer
         this.customerCode = customerCode;
     }
 
-    public Integer getContactNo1() {
+    public Long getContactNo1() {
         return contactNo1;
     }
 
-    public void setContactNo1(Integer contactNo1) {
+    public void setContactNo1(Long contactNo1) {
         this.contactNo1 = contactNo1;
     }
 
-    public Integer getContactNo2() {
+    public Long getContactNo2() {
         return contactNo2;
     }
 
-    public void setContactNo2(Integer contactNo2) {
+    public void setContactNo2(Long contactNo2) {
         this.contactNo2 = contactNo2;
     }
 

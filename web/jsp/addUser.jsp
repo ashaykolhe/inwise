@@ -137,7 +137,7 @@ loadPopup();
 //Click the x event!
 $("#popupContactClose").click(function(){
 disablePopup();
-    $.get("/Role.action?paginationRole", function (result) {
+    $.get("/role?paginationRole", function (result) {
         var data=eval(result);
         var options = '<option value="0">---Select Role---</option>';
                             for (var i = 0; i < data.length; i++) {

@@ -11,6 +11,7 @@ import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +25,7 @@ public class OrderActionBean extends BaseActionBean{
 
     private static final String ADDORDER="jsp/addOrder.jsp";
     private static final String UPDATEORDER="jsp/updateOrder.jsp";
+    private static final String DELETEORDER="jsp/deleteOrder.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -34,10 +36,29 @@ public class OrderActionBean extends BaseActionBean{
     ProductDao productDao;
 
     private Order order;
+    private String customerOrderNumber;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
     private List<Address> addressList=new ArrayList<Address>();
     private List<Order> orderlst;
+    private int invoiceToAddressId;
+    private int shipmentToAddressId;
+
+    public int getInvoiceToAddressId() {
+        return invoiceToAddressId;
+    }
+
+    public void setInvoiceToAddressId(int invoiceToAddressId) {
+        this.invoiceToAddressId = invoiceToAddressId;
+    }
+
+    public int getShipmentToAddressId() {
+        return shipmentToAddressId;
+    }
+
+    public void setShipmentToAddressId(int shipmentToAddressId) {
+        this.shipmentToAddressId = shipmentToAddressId;
+    }
 
     public List<Order> getOrderlst() {
         return orderlst;
@@ -79,6 +100,14 @@ public class OrderActionBean extends BaseActionBean{
         this.order = order;
     }
 
+    public String getCustomerOrderNumber() {
+        return customerOrderNumber;
+    }
+
+    public void setCustomerOrderNumber(String customerOrderNumber) {
+        this.customerOrderNumber = customerOrderNumber;
+    }
+
     @DefaultHandler
     public Resolution pre(){
         customerList=customerDao.listAll();
@@ -87,7 +116,7 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution updateOrderLink(){
-        orderlst=orderDao.listAll();
+        
         customerList=customerDao.listAll();
         productList=productDao.listAll();
         return new ForwardResolution(UPDATEORDER);
@@ -95,19 +124,18 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution addOrder(){
         orderDao.save(order);
-        return new RedirectResolution(OrderActionBean.class,"pre");
+        return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
     }
 
     public Resolution getOrders(){
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
+        orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
         return updateOrderLink();
     }
 
     public Resolution updateOrder(){
-        System.out.println("----------------------------------order------------------------------------");
-        System.out.println(order);
-        System.out.println("----------------------------------order------------------------------------");
+        order.setAmendmentDate(new Date());
         orderDao.save(order);
         return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
     }
@@ -115,6 +143,15 @@ public class OrderActionBean extends BaseActionBean{
     public Resolution addressAjax(){
         return new JavaScriptResolution(customerDao.find(id).getAddressList());
     }
+    
+    public Resolution InvoiceToAddressAjax(){
+        return new JavaScriptResolution(orderDao.find(invoiceToAddressId).getOrderAddress().get(0).getAddress());
+    }
+
+    public Resolution ShipmentToAddressAjax(){
+        return new JavaScriptResolution(orderDao.find(shipmentToAddressId).getOrderAddress().get(1).getAddress());
+    }
+
 
     public Resolution productDetailsAjax(){
         return new JavaScriptResolution(productDao.find(id));
@@ -127,8 +164,17 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution customerOrderNoAlreadyPresent()
     {
-        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(id));
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber));
     }
 
+    public Resolution deleteOrderLink(){
+        orderlst=orderDao.getOrderList();
+        return new ForwardResolution(DELETEORDER);
+    }
 
+        //delete user
+    public Resolution delete(){
+        orderDao.remove(id);
+        return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
+    }
 }

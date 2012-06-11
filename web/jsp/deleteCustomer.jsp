@@ -39,7 +39,7 @@ Customer > Delete Customer
  </td></tr>
  </table>
               <table width="100%"><tr><td>
-                    <d:table name="customerlst" id="customer1" pagesize="10" class="disp" requestURI="/Customer.action">
+                    <d:table name="customerlst" id="customer1" pagesize="10" class="disp" requestURI="/customer">
                  <d:column property="name" title="Customer Name"/>
                  <d:column property="department" title="Department"  />
                   <d:column property="email" title="Email Id" />
@@ -48,7 +48,7 @@ Customer > Delete Customer
 
                               <s:link beanclass="com.inwise.action.CustomerActionBean" event="delete" onclick="return show_confirm();" >
                                 <s:param name="id" value="${customer1.id}"></s:param>
-                                <img src="/images/Close-2-icon.png" />   </s:link>
+                                <img src="images/Close-2-icon.png" />   </s:link>
 
                                 </d:column>
 
