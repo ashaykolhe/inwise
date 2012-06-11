@@ -112,7 +112,7 @@
           });
 
     }
-    
+
      function Adv()
      {
          
@@ -137,6 +137,7 @@
              document.getElementById("inAdvanceEntered").focus();
              return false;
          }
+         
          
          calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
          document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
@@ -1132,7 +1133,7 @@ Rate</b>
 									<b><u>Advance Available</u> &nbsp;</b>
 									<img src="images/Rupee.JPG"/>&nbsp;
 									
-									<s:text name="advance.amountReceived" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountReceived" value="${invoiceBean.advance.amountRemained}" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 
 								</div>
 							</td>
@@ -1177,7 +1178,7 @@ Rate</b>
 								<div align="center" class="labels" style="margin-top: 10px;">
 									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
 								&nbsp;&nbsp;
-									<s:text name="advance.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 								</div>&nbsp;
 							</td>
 						</tr>
@@ -1311,13 +1312,10 @@ Rate</b>
                     
                       <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
 
-                      <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
-                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
-                      <s:hidden name="advance.deleted" value="${invoiceBean.advance.deleted}"/>
-                      <s:hidden name="advance.createDate" value="${invoiceBean.advance.createDate}"/>
-                    <s:hidden name="advance.chequeOrDDNo" value="${invoiceBean.advance.chequeOrDDNo}"/>
-                     <s:hidden name="advance.paymentMode" value="${invoiceBean.advance.paymentMode}"/>
 
+                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+
+                                
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
 
 							<s:submit name="generate" value="Generate" />

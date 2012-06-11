@@ -544,17 +544,17 @@
                                            ${invoice.order.orderAddress[0].address.zip} 
                                         </b>
 									</div>
-									<div align="left" style="margin-left:68px; margin-top:4px; font-family:Times New Roman; font-size:9px">
+									<div align="left" style="margin-left:7px; margin-top:4px; font-family:Times New Roman; font-size:9px">
 									Tin No :
-									<div align="left" style="margin-left:45px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
+									<div align="left" style="margin-left:60px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
 										<b>
 															<b>${invoice.customer.tinNo}</b>
 														</b>
 									</div>
 								</div>
-								<div align="left" style="margin-left:68px; margin-top:5px; font-family:Times New Roman; font-size:9px">
+								<div align="left" style="margin-left:7px; margin-top:5px; font-family:Times New Roman; font-size:9px">
 									Ecc No :
-									<div align="left" style="margin-left:45px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
+									<div align="left" style="margin-left:60px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
 										<b>
 															<b>${invoice.customer.eccNo}</b>
 														</b>
@@ -570,7 +570,18 @@
 
 									</div>
 									<div align="left" style="margin-left:55px; font-family:Verdana; font-size:9px;">
-										<b>blank</b>
+										<b>${invoice.order.orderAddress[1].address.line1}
+                                           <br>
+                                           ${invoice.order.orderAddress[1].address.line2}
+                                        <br>
+                                           ${invoice.order.orderAddress[1].address.city}
+                                        <br>
+                                           ${invoice.order.orderAddress[1].address.state}
+                                        <br>
+                                           ${invoice.order.orderAddress[1].address.country}
+                                        <br>
+                                           ${invoice.order.orderAddress[1].address.zip}
+                                        </b>
 									</div>
 								</div>
 							</td>
@@ -578,7 +589,7 @@
 								<div align="left">
 									<table cellspacing="0" cellpadding="0" border="0" width="100%">
 										<tr>
-											<td width="50%" nowrap style="background:#ffffff; height:50px; color:#000000; border-right:2px solid #000000;">
+											<td width="50%" nowrap style="background:#ffffff; height:60px; color:#000000; border-right:2px solid #000000;">
 												<div align="left" style="margin-left:7px; font-family:Times New Roman; font-size:9px">
 													Des. Adv. No.
 													<div align="right" style="margin-right:7px; margin-top:5px; font-family:Times New Roman; font-size:9px;">
@@ -590,7 +601,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td width="50%" nowrap style="background:#ffffff; height:50px; color:#000000; border-right:2px solid #000000; border-bottom:1px  solid #000000;">
+											<td width="50%" nowrap style="background:#ffffff; height:60px; color:#000000; border-right:2px solid #000000; border-bottom:1px  solid #000000;">
 												<div align="left" style="margin-left:7px; font-family:Times New Roman; font-size:9px">
 													Date
 													<div align="right" style="margin-right:1px; margin-top:5px; font-family:Verdana; font-size:9px;">
@@ -599,6 +610,7 @@
 												</div>
 											</td>
 										</tr>
+									
 									</table>
 								</div>
 							</td>
@@ -827,8 +839,8 @@
 			</td>
             </tr>
 		<tr>
-			<td colspan="6" valign="top" style="background:#ffffff; height:24px; border-left:1px solid #000000;border-top:1px solid #000000; border-right:1px solid #000000; border-bottom:2px  solid #000000;">
-				<div align="left" style="margin-left:7px; margin-top:2px; font-family:Verdana; font-size:9px">
+			<td colspan="6" valign="top" style="background:#ffffff; height:24px; color:#000000; border-left:1px solid #000000; border-right:1px solid #000000; border-top:1px solid #000000; border-bottom:2px  solid #000000;">
+				<div align="left" style="margin-left:7px; margin-top:2px;  font-family:Verdana; font-size:9px">
 					<b>* Remarks :</b>
                  </div>
 				<div align="left" style="margin-top: -12px; margin-left:75px; font-family:Verdana; font-size:9px;">
@@ -1111,7 +1123,7 @@
 		                        	<tr>
 		                        		<td valign="middle" style="height: 26px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-                                                    ${invoiceBean.advance.chequeOrDDNo}
+                                                    ${invoiceBean.advance.id}
 											</div>
 		                        		</td>
 		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -1156,7 +1168,7 @@
 	                       	  </div>
 	                       	  <div align="left" style="margin-right:1px; margin-left:120px; margin-top:-13px; font-family:Verdana; font-size:9px">
 
-										90&nbsp;
+										${invoiceBean.invoice.documentsThrough}&nbsp;
 
 	                    		</div>
 	                        </td>
@@ -1208,34 +1220,34 @@
 	                		<td width="122PX" valign="middle" style="height:25px; background:#ffffff; border-right:1px solid #000000; border-left:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
-										hi&nbsp;
+										${invoiceBean.invoice.modeOfDispatch}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td width="104px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
-										10&nbsp;
+										${invoiceBean.invoice.noOfPackages}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td width="112px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
-										n123&nbsp;
+										${invoiceBean.invoice.vehicleNo}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
-										lj&nbsp;
+										${invoiceBean.invoice.rrgcnNo}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-	                       	  	24/05/2012
+	                       	  	<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.contNoteDate}"/></b>
 	                       	  </div>
 	                        </td>
 	                    </tr>
@@ -1246,7 +1258,7 @@
 
 	        	<td colspan="6" valign="middle" style="height:22px; background:#ffffff;border-left:2px solid #000000;border-top:1px solid #000000; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 	           		<div align="left" style="margin-left:1px; margin-left:1px; margin-top:0px; font-family:Times New Roman; font-size:9px">
-	            		EXCISE	::
+	            		EXCISE	:
 	                </div>
 	                <div align="left" style="margin-left:90px; margin-right:1px; margin-top:-13px; font-family:Verdana; font-size:9px">
 	                	<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
@@ -1400,7 +1412,7 @@
                      <s:hidden name="content" id="content"/>
 					   <s:hidden name="pdfinvoicenumber" value="${invoice.invoiceNumber}"/>
 					   <s:hidden name="id" value="${invoice.id}"/>
-					   <s:hidden name="ad" value="${invoiceBean.advance.id}"/>
+					   <s:hidden name="ad" value="${invoiceBean.advance.order.id}"/>
                        <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
 
                     <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;

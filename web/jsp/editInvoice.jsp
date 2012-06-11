@@ -39,7 +39,7 @@
             document.getElementById("inAdvance").value=calinAdvance;*/
          calinNetPayable=parseFloat(document.getElementById("inNetPayable").value);
          calinGrandTotal=parseFloat(document.getElementById("inGrandTotal").value);
-
+        
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
@@ -59,7 +59,7 @@
                             if(j==6){document.getElementById("inEntryTaxGiven").value=data[j].taxPercentage;}
              }
             });
-
+                    
          $('#inIssue').timepicker({
 	            ampm: true,
 	            hourMin:00,
@@ -73,10 +73,12 @@
       });
 
 
-
+/*
     function getCustomerOrder(){
-
-
+   */
+/*     this.form.action='order?getCustomerOrderNo';
+        this.form.submit();*/
+/*
         $('.trid').show();
         $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
 
@@ -91,24 +93,7 @@
 
     }
 
-function getInvoiceNumber(){
-
-         
-        $('.trid1').show();
-        $.get("invoice?getinvoicenumber", {orid:$('#inoid').val()}, function (result) {
-
-             var data=eval(result);
-             var options = '<option value="">---Select Invoice Number---</option>';
-                     for (var i = 0; i < data.length; i++) {
-
-                         options += '<option value="' + data[i].id + '">' + data[i].invoiceNumber + '</option>';
-                     }
-                     $("#inid").html(options);
-          });
-
-    }
-
-
+*/
      function Adv()
      {
 
@@ -464,7 +449,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
             }
     else
     {
-
+       
         //This is beccause all variable are globally declared so when onchange of dispached text field data result in adding old total along with new one
                             /*////////////////////////////////////////////////////////////////////////////*/
                             /*////*/        if(parseFloat(calinValue)>0){
@@ -624,78 +609,11 @@ Update Invoice
  <tr valign="top"><td align="center">&nbsp;
  </td></tr>
  </table>
-              
-<table width="70%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC"  >
+
+  <table width="70%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC"  >
   <tr>
     <td align="left">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
-
- 	<tr>
-			<td colspan="4" align="left">
-				<div align="left" style="margin-left:15px;" class="labels">
-					Please Enter Order Details ::				</div>			</td>
-		</tr>
-
-		<tr>
-			<td width="19%" align="right" valign="top">
-			  <div align="right"  class="labels">
-			    Customer Name				</div>			</td>
-	  <td width="27%" align="left" valign="top">
-          <s:select id="incname"  name="invoice.customer.id" class="dropdown" onchange="getCustomerOrder()">
-                <option  value="0">---Select Customer Name---</option>
-                <c:forEach items="${invoiceBean.customerlst}" var="orderloop" varStatus="loop" >
-                    <c:choose>
-                        <c:when test="${invoiceBean.order.customer.id eq orderloop.id}">
-                            <option value ="<c:out value="${invoiceBean.order.customer.id}"/>" selected="selected"> <c:out value="${invoiceBean.order.customer.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value ="<c:out value="${orderloop.id}"/>"> <c:out value="${orderloop.name}"/></option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </s:select>
-     </td>
-          <td width="15%" align="right" valign="top">&nbsp;</td>
-            <td width="39%">&nbsp;</td>
-		</tr>
-
-		<tr style="display :none;" class="trid">
-			<td width="19%" align="right" valign="top">
-            <div align="right">
-            <span class="labels" style="margin-left:15px;">Customer Order No.</span></div></td>
-	  <td width="27%" align="left" valign="top">
-              <s:select id="inoid" name="id" class="dropdown" onchange="getInvoiceNumber()">
-                             <option  value="0">---Select Customer Order No---</option>
-                        </s:select>
-  <input type="hidden" name="sendorderid" id="sendorderid" value="">
-	    </td>
-
-                 <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
-			 <span style="display:none;"  id="custodid" >${invoiceBean.id}</span>
-
-	  
-		</tr>
-
-        <tr style="display :none;" class="trid1">
-			<td width="19%" align="right" valign="top">
-            <div align="right">
-            <span class="labels" style="margin-left:15px;">Invoice Number </span></div></td>
-	  <td width="27%" align="left" valign="top">
-              <s:select id="inid" name="inid" class="dropdown" onchange="this.form.action='invoice?getinvoicedetail';this.form.submit();">
-                             <option  value="0">---Select Invoice Number---</option>
-                        </s:select>
-
-	    </td>
-
-
-
-		</tr>
-
-           </table>
-
-
           </s:form>
-
            <c:if test="${actionBean.invoice!=null}">
                     <script type="text/javascript">
                         $(document).ready(function() {
@@ -728,7 +646,7 @@ Update Invoice
                             var calinDisp = parseFloat(document.getElementById(inDisp).value);
                             var inProdCost="inProdCost"+d;
                             var calinProdCost = parseFloat(document.getElementById(inProdCost).value);
-
+                          
                             if(parseFloat(calinDisp)==0)
                             {
                                 var chkid="chkbx"+d;
@@ -765,7 +683,7 @@ Update Invoice
                                   document.getElementById(selectid).disabled = false;
                                 var calinValue=calinDisp * calinProdCost;
                                                    $('#'+inValue).val(calinValue);
-
+                                  
 
                             }
 
@@ -773,15 +691,12 @@ Update Invoice
                          });
                  </script>
                   <s:form beanclass="com.inwise.action.InvoiceActionBean">
-  <table width="70%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC"  >
-  <tr>
-    <td align="left">
           <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 
 
-    <%--             <span style="display:none;"  id="custorno" >${invoiceBean.invoice.order.customerOrderNo}</span>
+                 <span style="display:none;"  id="custorno" >${invoiceBean.invoice.order.customerOrderNo}</span>
 			 <span style="display:none;"  id="custodid" >${invoiceBean.invoice.order.id}</span>
---%>
+
            <tr>
                 <td>
                <div align="right" style="margin-left:15px;" class="labels">
@@ -1405,7 +1320,7 @@ Rate</b>
 
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
-
+                     
                        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
 							<s:submit name="reviewupdate" value="Update" />
