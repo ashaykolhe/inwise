@@ -112,7 +112,7 @@
           });
 
     }
-    
+
      function Adv()
      {
          
@@ -137,6 +137,7 @@
              document.getElementById("inAdvanceEntered").focus();
              return false;
          }
+         
          
          calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
          document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
@@ -1132,7 +1133,7 @@ Rate</b>
 									<b><u>Advance Available</u> &nbsp;</b>
 									<img src="images/Rupee.JPG"/>&nbsp;
 									
-									<s:text name="advance.amountReceived" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountReceived" value="${invoiceBean.advance.amountRemained}" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 
 								</div>
 							</td>
@@ -1155,7 +1156,7 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="invoice.advanceDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1177,7 +1178,7 @@ Rate</b>
 								<div align="center" class="labels" style="margin-top: 10px;">
 									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
 								&nbsp;&nbsp;
-									<s:text name="advance.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 								</div>&nbsp;
 							</td>
 						</tr>
@@ -1310,14 +1311,18 @@ Rate</b>
 							<%--<input type="button" value="Preview" class="buttons" name="inpreview" id="inpreview"  style="width:80px; margin-left: 60px;" onClick="return ValidateInvoice('Preview');">--%>
                     
                       <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
+
+
+                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+
+                                
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
-                      <s:hidden name="advance.id" value="${invoiceBean.advance.id}"/>
 
 							<s:submit name="generate" value="Generate" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 						
-                            &nbsp;&nbsp; <s:submit name="preview" value="Preview"></s:submit>
+                            &nbsp;&nbsp; <s:submit name="addpreview" value="Preview"></s:submit>
                         </td>
 
 				</tr>    

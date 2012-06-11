@@ -136,6 +136,8 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution updateOrder(){
         order.setAmendmentDate(new Date());
+        System.out.println("------------------------------------------");
+        System.out.println(order);
         orderDao.save(order);
         return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
     }
