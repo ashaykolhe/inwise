@@ -24,8 +24,7 @@ public class InjectorFactory {
         PersistenceService.usingHibernate()
             .across(UnitOfWork.REQUEST)
             .forAll(Matchers.any()).buildModule(),
-        new HibernateModuleImpl(HibernateListener.hibernateConfig),
-            new InwiseModule()
+        new HibernateModuleImpl(HibernateListener.hibernateConfig)
         );
   }
 

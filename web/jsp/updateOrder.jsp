@@ -23,8 +23,7 @@ To change this template use File | Settings | File Templates.
             });
         });
 
-        $('#orderdropdown').change(function()
-        {
+        $('#orderdropdown').change(function(){
             if($('#orderdropdown').attr('value')!=""){
             this.form.action='order?getOrders';
             this.form.submit();
