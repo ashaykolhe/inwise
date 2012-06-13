@@ -14,7 +14,6 @@
             var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
-
         }
         window.onload =OpenPopup();
     </script>
@@ -84,9 +83,6 @@
             </td></tr>
         </table>
 
-        <c:choose>
-            <c:when test="${advanceBean.redirectAdvance eq true}">
-                <%-- ------------------------------------------------------------------------------------redirect to advance-------------------------------------------------------------- --%>
                 <s:form beanclass="com.inwise.action.AdvanceActionBean">
                     <table width="50%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC" id="itemupdate_table">
                         <tr>
@@ -146,12 +142,6 @@
                     </table> </tr>
                     </table>     </s:form>
 
-                <%-- ------------------------------------------------------------------------------------redirect to advance-------------------------------------------------------------- --%>
-            </c:when>
-            <c:otherwise>
-
-            </c:otherwise>
-        </c:choose>
 
 
     </s:layout-component></s:layout-render>
