@@ -464,7 +464,7 @@
 							</td>
 							<td nowrap style="background:#ffffff; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000; border-top:2px  solid #000000;">
 								<div align="center" style="font-family:Verdana; font-size:9px">
-									<b>blank</b>
+										<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.createDate}"/></b>
 								</div>
 							</td>
 						</tr>
@@ -605,7 +605,7 @@
 												<div align="left" style="margin-left:7px; font-family:Times New Roman; font-size:9px">
 													Date
 													<div align="right" style="margin-right:1px; margin-top:5px; font-family:Verdana; font-size:9px;">
-														<b>blank</b>
+															<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.createDate}"/></b>
 													</div>
 												</div>
 											</td>
@@ -1036,7 +1036,7 @@
 	                    			DATE
 	                    		</div>
 	                    		<div align="right" style="margin-right:1px; margin-left:1px; margin-top:2px; font-family:Verdana; font-size:9px">
-                                        blank
+                                        	<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.debitEntryDate}"/></b>
 	                    		</div>
 	                   		</td>
 	                        <td style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
@@ -1411,9 +1411,11 @@
 				<td colspan="6" align="right">
                      <s:hidden name="content" id="content"/>
 					   <s:hidden name="pdfinvoicenumber" value="${invoice.invoiceNumber}"/>
+
 					   <s:hidden name="id" value="${invoice.id}"/>
 					   <s:hidden name="ad" value="${invoiceBean.advance.order.id}"/>
                        <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
+                       <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
 
                     <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
                     <s:submit name="editinvoice" value="Edit"/>

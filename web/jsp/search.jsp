@@ -463,7 +463,7 @@ $(document).ready(function() {
                             <c:if test="${products.product.id eq invoiceorder.product.id}">
                                 <tr>
 
-                                    <td>${invoiceorder.dispatchedQuantity}</td>
+                                    <td>${products.dispatched}</td>
                                 </tr>
                             </c:if>
                         </c:forEach></c:forEach>

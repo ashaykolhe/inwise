@@ -21,7 +21,7 @@
     var calinOthers=0.0;
     var calinGrandTotal=0.0;
     var calinNetPayable=0.0;
-    var calinAdvance=0.0;
+    var calinAdvanceRemain=0.0;
     var inTaxChargesTax=0.0;
     var inOtherChargesTax=0.0;
     var inExciseTax=0.0;
@@ -32,34 +32,85 @@
     var dropdownname='';
     var floatExp = /^[0-9.]+$/;
      $(document).ready(function() {
-         $('#inCSTSval').hide();
+                   $('#inCSTSval').hide();
          calinTotalAmount=parseFloat(document.getElementById("inTotalAmount").value);
+          calinFright=parseFloat(document.getElementById("inFright").value);
+          calinInsurance=parseFloat(document.getElementById("inInsurance").value);
+          calinOthers=parseFloat(document.getElementById("inOthers").value);
+         inExciseTax=parseFloat(document.getElementById("inExcise").value);
+            inEducationCessTax=parseFloat(document.getElementById("inEducationCess").value);
+            inSecTax=parseFloat(document.getElementById("inSec").value);
 
-           /* calinAdvance=parseFloat(document.getElementById("inAdvanceRemain").value);
-            document.getElementById("inAdvance").value=calinAdvance;*/
+
+
          calinNetPayable=parseFloat(document.getElementById("inNetPayable").value);
          calinGrandTotal=parseFloat(document.getElementById("inGrandTotal").value);
-        
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
+               var ooid=document.getElementById("inCSTSval");
+                    var options=ooid.getElementsByTagName("option");
                  for (var i = 0; i <= data.length; i++) {
+
+
+
                             if(i==0){t1=data[i].taxPercentage;$("#t"+1+"").html(t1);}
                             if(i==1){t2=data[i].taxPercentage;$("#t"+2+"").html(t2);}
                             if(i==2){t3=data[i].taxPercentage;$("#t"+3+"").html(t3);}
-                            if(i==3){t4=data[i].taxPercentage;$("#t"+4+"").html(t4);}
-                            if(i==4){t5=data[i].taxPercentage;$("#t"+5+"").html(t5);}
+                            if(i==3){t4=data[i].taxPercentage;$("#t"+4+"").html(t4);ooid.options[0]=new Option(t4,t4);}
+                            if(i==4){t5=data[i].taxPercentage;$("#t"+5+"").html(t5);ooid.options[1]=new Option(t5,t5);}
                             if(i==5){t6=data[i].taxPercentage;$("#t"+6+"").html(t6);}
                             if(i==6){t7=data[i].taxPercentage;$("#t"+7+"").html(t7);}
              }for (var j = 0; j <= data.length; j++) {
                             if(j==0){document.getElementById("excise").value=data[j].taxPercentage;}
                             if(j==1){document.getElementById("educationCess").value=data[j].taxPercentage;}
                             if(j==2){document.getElementById("secondaryHigherEducationCess").value=data[j].taxPercentage}
-                            if(j==5){document.getElementById("cstOvat").value=data[j].taxPercentage;}
+                            if(j==3 || j==4){
+                                   var c=$('#cstvaluebox').html();
+                                   if(t4==parseFloat(c))
+                                                 {
+                                                     $('#inCSTSval').show();
+                                                     $('#t6').hide();
+                                                     ooid.options[0]=new Option(t4,t4,false,true);
+
+                                                 }
+                                                    if(t5==parseFloat(c))
+                                                    {
+                                                        $('#inCSTSval').show();
+                                                        $('#t6').hide();
+                                                        ooid.options[1]=new Option(t5,t5,false,true);
+
+                                                    }
+                            }
+
+                            if(j==5){
+                                document.getElementById("cstOvat").value=data[j].taxPercentage;
+                                
+                            }
                             if(j==6){document.getElementById("inEntryTaxGiven").value=data[j].taxPercentage;}
              }
             });
-                    
+        /* if($('#cstovatbox').html()=="CST")
+         {
+         $('#inCSTSval').show();
+             var data=eval(result);
+             var options = "";
+                     for (var i = 0; i < data.length; i++) {
+
+                         options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
+                     }
+                     $("#inoid").html(options);
+
+         }
+         else
+         $('#inCSTSval').hide();
+
+         document.getElementById("inCSTS").value=$('#cstovatbox').html();
+
+*/
+
+               document.getElementById("inCSTS").value=$('#cstovatbox').html();
+
          $('#inIssue').timepicker({
 	            ampm: true,
 	            hourMin:00,
@@ -109,19 +160,19 @@
          }
 
          var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-          calinAdvance = parseFloat(document.getElementById("inAdvance").value);
+          calinAdvanceRemain = parseFloat(document.getElementById("inAdvanceRemain").value);
 
-         if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvance))
+         if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvanceRemain))
          {
              alert("Entered value is larger than 'Advance Available'");
-             document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
+             /*document.getElementById("inAdvanceEntered").value=(0).toFixed(2);*/
              document.getElementById("inAdvanceEntered").focus();
              return false;
          }
 
          calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-         document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
-         document.getElementById("inNetPayable").value = ((parseFloat(calinGrandTotal) - parseFloat(calinAdvanceEntered))).toFixed(2);
+         document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvanceRemain) - parseFloat(calinAdvanceEntered))).toFixed(2);
+         document.getElementById("inNetPayable").value = ((parseFloat(calinNetPayable) - parseFloat(calinAdvanceEntered))).toFixed(2);
 
              return true;
      }
@@ -207,10 +258,8 @@
 
      function CST()
      {
-
-           var val=$('#inCSTSval').val();
-
-      inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
+            var val=$('#inCSTSval').val();
+          inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
               document.getElementById("inOvatnCst").value=inOvatnCstTax;
                   inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
                   document.getElementById("inTaxCharges").value=inTaxChargesTax;
@@ -218,14 +267,12 @@
                 document.getElementById("inOtherCharges").value=inOtherChargesTax;
          calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-            calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+    calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                document.getElementById("inNetPayable").value=calinNetPayable;
                }
 function CSTOVAT()
 {
                         var vat=$('#inCSTS').val().trim().toString();
-
                         if(vat=="CST")
                         {
                             $('#inCSTSval').show();
@@ -245,7 +292,7 @@ function CSTOVAT()
                             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                               calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                                   document.getElementById("inNetPayable").value=calinNetPayable;
 
 
@@ -261,13 +308,14 @@ function CSTOVAT()
          document.getElementById("inTaxCharges").value=inTaxChargesTax;
                             inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
                                     document.getElementById("inEntryTax").value=inEntryTaxT;
+                            alert(calinFright);
         inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
              document.getElementById("inOtherCharges").value=inOtherChargesTax;
 
                             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                                    calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                                   document.getElementById("inNetPayable").value=calinNetPayable;
 
 
@@ -362,7 +410,7 @@ function Selected(s)
                  document.getElementById("inInsurance").value=(0).toFixed(2);
                  document.getElementById("inOthers").value=(0).toFixed(2);
                  document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
-                  document.getElementById("inAdvanceRemain").value =calinAdvance;
+                  document.getElementById("inAdvanceRemain").value =$('#inAdvance').val();
                   }
               if($('#inCSTS').val()=="OVAT")
               {
@@ -604,7 +652,7 @@ function validateOthers()
  <tr valign="top"><td >&nbsp;
  </td></tr>
  <tr><td align="left" class="pageheading" valign="top">
-Update Invoice
+Edit Invoice
  </td></tr>
  <tr valign="top"><td align="center">&nbsp;
  </td></tr>
@@ -617,36 +665,27 @@ Update Invoice
            <c:if test="${actionBean.invoice!=null}">
                     <script type="text/javascript">
                         $(document).ready(function() {
+
                                  $.get("order?InvoiceToAddressAjax",{invoiceToAddressId:${invoiceBean.invoice.order.id}}, function (result) {
                         var data=eval(result);
                         var options='';
-                            options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+                            options += data.line1+","+ data.line2+","+ data.city+","+ data.state+","+ data.country+"-"+data.zip ;
                         $("#invoiceAddress").html(options);
                     });
                     $.get("order?ShipmentToAddressAjax",{shipmentToAddressId:${invoiceBean.invoice.order.id}}, function (result) {
                         var data=eval(result);
                         var options='';
-                            options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+                            options += data.line1+","+ data.line2+","+ data.city+","+ data.state+","+ data.country+"-"+data.zip ;
                         $("#shipmentAddress").html(options);
                     });
                              var countl =$('#inCount').html();
-
-
-
-
-
-
-      /*  $('#allbox').attr('checked', true);
-                      jqCheckAll1('chkbx');*/
                 for(var d=0;d<countl;d++)
                         {
-
                             var inValue="inValue"+d;
                             var inDisp="inDisp"+d;
                             var calinDisp = parseFloat(document.getElementById(inDisp).value);
                             var inProdCost="inProdCost"+d;
                             var calinProdCost = parseFloat(document.getElementById(inProdCost).value);
-                          
                             if(parseFloat(calinDisp)==0)
                             {
                                 var chkid="chkbx"+d;
@@ -666,7 +705,6 @@ Update Invoice
                                      document.getElementById(disp).disabled = true;
                                      document.getElementById(cshno).disabled = true;
                                      document.getElementById(selectid).disabled = true;
-
                             }
                             else if(parseFloat(calinDisp)>0)
                             {
@@ -674,9 +712,9 @@ Update Invoice
                                 $('chkbx"'+d).attr('checked', true);
                                $('#'+chkid+'[type="checkbox"]').attr('checked', true);
                                 var selectid="inProType"+d;
-                                                  var itemno="inDraw"+d;
-                                               var cshno="inCsh"+d;
-                                               var disp="inDisp"+d;
+                                var itemno="inDraw"+d;
+                                var cshno="inCsh"+d;
+                                var disp="inDisp"+d;
                                document.getElementById(itemno).disabled = false;
                                   document.getElementById(cshno).disabled = false;
                                   document.getElementById(disp).disabled = false;
@@ -1030,12 +1068,15 @@ Rate</b>
 						</s:select>
 
                         @
-                        <s:select name="inCSTSval" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
+                        <s:select name="invoice.cstOvat" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
 
 
 						</s:select>
+                        <span id="cstovatbox" style="display:none;">${invoiceBean.invoice.cstOvatType}</span> 
+                        <span id="cstvaluebox" style="display:none;">${invoiceBean.invoice.cstOvat}</span> 
                         <span id="t6"></span> %
 
+                        
 						<div id="ovatid" style="display: inline;">
 
 						</div>
@@ -1160,7 +1201,7 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"   id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1323,7 +1364,7 @@ Rate</b>
                      
                        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
-							<s:submit name="reviewupdate" value="Update" />
+							<s:submit name="reviewedit" value="Update" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 
