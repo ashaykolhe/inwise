@@ -33,7 +33,7 @@ public class AdvanceDao extends BaseDao<Advance,Integer>{
 
     @Transactional
     public void setAmountRemained(Double amt,Integer orderid) {
-        System.out.println("fff"+amt+"sssss"+orderid);
+        
 
                Advance advance=(Advance)sessionProvider.get().createCriteria(Advance.class).add(Restrictions.eq("order.id",orderid)).uniqueResult();
         advance.setAmountRemained(amt);

@@ -9,13 +9,9 @@
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" />
 <s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="editinvoice"></s:useActionBean>
-
-
-
   <script type="text/javascript">
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;
-
     var calinFright=0.0;
     var calinInsurance=0.0;
     var calinOthers=0.0;
@@ -33,33 +29,77 @@
     var floatExp = /^[0-9.]+$/;
      $(document).ready(function() {
          $('#inCSTSval').hide();
+
+         var orderselect=document.getElementById("inoid");
+                           var options=orderselect.getElementsByTagName("option");
+                                                         var cc=$('#custorno').html();
+         var dd=$('#custodid').html();
+
+                    orderselect.options[1]=new Option(cc,dd,false,true);
+
+         var invoiceselect=document.getElementById("inid");
+         var options=invoiceselect.getElementsByTagName("option");
+         var inno=$('#invoiceno').html();
+         var ind=$('#invoiceid').html();
+
+                    invoiceselect.options[1]=new Option(inno,ind,false,true);
+
+
          calinTotalAmount=parseFloat(document.getElementById("inTotalAmount").value);
 
-           /* calinAdvance=parseFloat(document.getElementById("inAdvanceRemain").value);
-            document.getElementById("inAdvance").value=calinAdvance;*/
+        
+          calinFright=parseFloat(document.getElementById("inFright").value);
+          calinInsurance=parseFloat(document.getElementById("inInsurance").value);
+          calinOthers=parseFloat(document.getElementById("inOthers").value);
+         inExciseTax=parseFloat(document.getElementById("inExcise").value);
+            inEducationCessTax=parseFloat(document.getElementById("inEducationCess").value);
+            inSecTax=parseFloat(document.getElementById("inSec").value);
+
          calinNetPayable=parseFloat(document.getElementById("inNetPayable").value);
          calinGrandTotal=parseFloat(document.getElementById("inGrandTotal").value);
 
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
+             var ooid=document.getElementById("inCSTSval");
+                        var options=ooid.getElementsByTagName("option");
+
                  for (var i = 0; i <= data.length; i++) {
                             if(i==0){t1=data[i].taxPercentage;$("#t"+1+"").html(t1);}
                             if(i==1){t2=data[i].taxPercentage;$("#t"+2+"").html(t2);}
                             if(i==2){t3=data[i].taxPercentage;$("#t"+3+"").html(t3);}
-                            if(i==3){t4=data[i].taxPercentage;$("#t"+4+"").html(t4);}
-                            if(i==4){t5=data[i].taxPercentage;$("#t"+5+"").html(t5);}
+                            if(i==3){t4=data[i].taxPercentage;$("#t"+4+"").html(t4);ooid.options[0]=new Option(t4,t4);}
+                            if(i==4){t5=data[i].taxPercentage;$("#t"+5+"").html(t5);ooid.options[1]=new Option(t5,t5);}
                             if(i==5){t6=data[i].taxPercentage;$("#t"+6+"").html(t6);}
                             if(i==6){t7=data[i].taxPercentage;$("#t"+7+"").html(t7);}
              }for (var j = 0; j <= data.length; j++) {
                             if(j==0){document.getElementById("excise").value=data[j].taxPercentage;}
                             if(j==1){document.getElementById("educationCess").value=data[j].taxPercentage;}
                             if(j==2){document.getElementById("secondaryHigherEducationCess").value=data[j].taxPercentage}
+                 if(j==3 || j==4){
+                                                    var c=$('#cstvaluebox').html();
+                                                
+                                                 if(t4==parseFloat(c))
+                                                 {
+                                                     $('#inCSTSval').show();
+                                                     $('#t6').hide();
+                                                     ooid.options[0]=new Option(t4,t4,false,true);
+
+                                                 }
+                                                    if(t5==parseFloat(c))
+                                                    {
+                                                        $('#inCSTSval').show();
+                                                        $('#t6').hide();
+                                                        ooid.options[1]=new Option(t5,t5,false,true);
+
+                                                    }
+                                             }
+                            
                             if(j==5){document.getElementById("cstOvat").value=data[j].taxPercentage;}
                             if(j==6){document.getElementById("inEntryTaxGiven").value=data[j].taxPercentage;}
              }
             });
-
+                                          document.getElementById("inCSTS").value=$('#cstovatbox').html();
          $('#inIssue').timepicker({
 	            ampm: true,
 	            hourMin:00,
@@ -70,6 +110,17 @@
 	            hourMin:00,
 	            hourMax: 24
             });
+
+
+           $("#updatebutton").click(function(){
+         var chk = /^[0-9]+$/.test($('#inpack').val());
+                    if (!chk) {
+                    alert('please Enter Numeric value for packages');
+                        $('#inpack').val("");
+                        $('#inpack').focus();
+                        return false;
+                    }
+           });
       });
 
 
@@ -77,15 +128,15 @@
     function getCustomerOrder(){
 
 
-        $('.trid').show();
+        $('.tridfororderno').show();
         $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
-
              var data=eval(result);
              var options = '<option value="">---Select Customer Order No---</option>';
                      for (var i = 0; i < data.length; i++) {
 
                          options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
                      }
+                        
                      $("#inoid").html(options);
           });
 
@@ -93,9 +144,9 @@
 
 function getInvoiceNumber(){
 
-         
-        $('.trid1').show();
-        $.get("invoice?getinvoicenumber", {orid:$('#inoid').val()}, function (result) {
+        
+        $('.tridforinvoiceno').show();
+        $.get("invoice?getinvoicenumber", {id:$('#inoid').val()}, function (result) {
 
              var data=eval(result);
              var options = '<option value="">---Select Invoice Number---</option>';
@@ -109,38 +160,38 @@ function getInvoiceNumber(){
     }
 
 
-     function Adv()
-     {
+    function Adv()
+        {
 
-         if(document.getElementById('inAdvanceEntered').value=="")
-         {
-             document.getElementById('inAdvanceEntered').value=(0).toFixed(2);
-         }
-         else if(!(document.getElementById('inAdvanceEntered').value.match(floatExp)))
-         {
-             alert("Please enter valid float number");
-             document.getElementById('inAdvanceEntered').focus();
-             return false;
-         }
+            if(document.getElementById('inAdvanceEntered').value=="")
+            {
+                document.getElementById('inAdvanceEntered').value=(0).toFixed(2);
+            }
+            else if(!(document.getElementById('inAdvanceEntered').value.match(floatExp)))
+            {
+                alert("Please enter valid float number");
+                document.getElementById('inAdvanceEntered').focus();
+                return false;
+            }
 
-         var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-          calinAdvance = parseFloat(document.getElementById("inAdvance").value);
+            var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
+             calinAdvanceRemain = parseFloat(document.getElementById("inAdvanceRemain").value);
 
-         if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvance))
-         {
-             alert("Entered value is larger than 'Advance Available'");
-             document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
-             document.getElementById("inAdvanceEntered").focus();
-             return false;
-         }
+            if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvanceRemain))
+            {
+                alert("Entered value is larger than 'Advance Available'");
+                /*document.getElementById("inAdvanceEntered").value=(0).toFixed(2);*/
+                document.getElementById("inAdvanceEntered").focus();
+                return false;
+            }
 
-         calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-         document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
-         document.getElementById("inNetPayable").value = ((parseFloat(calinGrandTotal) - parseFloat(calinAdvanceEntered))).toFixed(2);
+            calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
+            document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvanceRemain) - parseFloat(calinAdvanceEntered))).toFixed(2);
+            document.getElementById("inNetPayable").value = ((parseFloat(calinNetPayable) - parseFloat(calinAdvanceEntered))).toFixed(2);
 
-             return true;
-     }
-
+                return true;
+        }
+    
 
 
      function jqCheckAll1(name)  {
@@ -224,8 +275,7 @@ function getInvoiceNumber(){
      {
 
            var val=$('#inCSTSval').val();
-
-      inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
+          inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
               document.getElementById("inOvatnCst").value=inOvatnCstTax;
                   inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
                   document.getElementById("inTaxCharges").value=inTaxChargesTax;
@@ -233,14 +283,12 @@ function getInvoiceNumber(){
                 document.getElementById("inOtherCharges").value=inOtherChargesTax;
          calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-            calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+    calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                document.getElementById("inNetPayable").value=calinNetPayable;
                }
 function CSTOVAT()
 {
                         var vat=$('#inCSTS').val().trim().toString();
-
                         if(vat=="CST")
                         {
                             $('#inCSTSval').show();
@@ -260,7 +308,7 @@ function CSTOVAT()
                             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                               calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                                   document.getElementById("inNetPayable").value=calinNetPayable;
 
 
@@ -276,13 +324,14 @@ function CSTOVAT()
          document.getElementById("inTaxCharges").value=inTaxChargesTax;
                             inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
                                     document.getElementById("inEntryTax").value=inEntryTaxT;
+                            alert(calinFright);
         inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
              document.getElementById("inOtherCharges").value=inOtherChargesTax;
 
                             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                                    calinNetPayable=( parseFloat(calinGrandTotal) - parseFloat(document.getElementById("inAdvanceEntered").value) ).toFixed(2);
                                   document.getElementById("inNetPayable").value=calinNetPayable;
 
 
@@ -645,8 +694,8 @@ Update Invoice
                 <option  value="0">---Select Customer Name---</option>
                 <c:forEach items="${invoiceBean.customerlst}" var="orderloop" varStatus="loop" >
                     <c:choose>
-                        <c:when test="${invoiceBean.order.customer.id eq orderloop.id}">
-                            <option value ="<c:out value="${invoiceBean.order.customer.id}"/>" selected="selected"> <c:out value="${invoiceBean.order.customer.name}"/></option>
+                        <c:when test="${invoiceBean.invoice.order.customer.id eq orderloop.id}">
+                            <option value ="<c:out value="${invoiceBean.invoice.order.customer.id}"/>" selected="selected"> <c:out value="${invoiceBean.invoice.order.customer.name}"/></option>
                         </c:when>
                         <c:otherwise>
                             <option value ="<c:out value="${orderloop.id}"/>"> <c:out value="${orderloop.name}"/></option>
@@ -659,7 +708,7 @@ Update Invoice
             <td width="39%">&nbsp;</td>
 		</tr>
 
-		<tr style="display :none;" class="trid">
+		<tr style="display :none;" class="tridfororderno">
 			<td width="19%" align="right" valign="top">
             <div align="right">
             <span class="labels" style="margin-left:15px;">Customer Order No.</span></div></td>
@@ -667,16 +716,16 @@ Update Invoice
               <s:select id="inoid" name="id" class="dropdown" onchange="getInvoiceNumber()">
                              <option  value="0">---Select Customer Order No---</option>
                         </s:select>
-  <input type="hidden" name="sendorderid" id="sendorderid" value="">
+ 
 	    </td>
 
-                 <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
-			 <span style="display:none;"  id="custodid" >${invoiceBean.id}</span>
+                 <span style="display:none;"  id="custorno" >${invoiceBean.invoice.order.customerOrderNo}</span>
+			 <span style="display:none;"  id="custodid" >${invoiceBean.invoice.order.id}</span>
 
 	  
 		</tr>
 
-        <tr style="display :none;" class="trid1">
+        <tr style="display :none;" class="tridforinvoiceno">
 			<td width="19%" align="right" valign="top">
             <div align="right">
             <span class="labels" style="margin-left:15px;">Invoice Number </span></div></td>
@@ -686,6 +735,8 @@ Update Invoice
                         </s:select>
 
 	    </td>
+            <span style="display:none;"  id="invoiceno" >${invoiceBean.invoice.invoiceNumber}</span>
+                 <span style="display:none;"  id="invoiceid" >${invoiceBean.invoice.id}</span>
 
 
 
@@ -699,6 +750,10 @@ Update Invoice
            <c:if test="${actionBean.invoice!=null}">
                     <script type="text/javascript">
                         $(document).ready(function() {
+                            $('.tridfororderno').show();
+                        
+
+                            $('.tridforinvoiceno').show();
                                  $.get("order?InvoiceToAddressAjax",{invoiceToAddressId:${invoiceBean.invoice.order.id}}, function (result) {
                         var data=eval(result);
                         var options='';
@@ -1115,10 +1170,13 @@ Rate</b>
 						</s:select>
 
                         @
-                        <s:select name="inCSTSval" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
+                        <s:select name="invoice.cstOvat" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
 
 
 						</s:select>
+                        <span id="cstovatbox" style="display:none;">${invoiceBean.invoice.cstOvatType}</span>
+                               <span id="cstvaluebox" style="display:none;">${invoiceBean.invoice.cstOvat}</span>
+
                         <span id="t6"></span> %
 
 						<div id="ovatid" style="display: inline;">
@@ -1344,7 +1402,7 @@ Rate</b>
 						No. of Packages					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.noOfPackages" id="inpack"  value="" class="textbox"  size="22" style="text-align:right;"/>				</div>				</td>
+						<s:text name="invoice.noOfPackages" id="inpack"   class="textbox"  size="22" style="text-align:right;"/>				</div>				</td>
 			</tr>
 			<tr>
 				<td align="right" valign="top">
@@ -1402,20 +1460,21 @@ Rate</b>
                       <s:hidden name="invoice.order.id" value="${invoiceBean.invoice.order.id}"/>
                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
                       <s:hidden name="invoice.id" value="${invoiceBean.invoice.id}"/>
+                      <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
 
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
 
                        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
-							<s:submit name="reviewupdate" value="Update" />
+							<s:submit id="updatebutton" name="update" value="Update" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 
                             &nbsp;&nbsp; <s:submit name="updatepreview" value="Preview"></s:submit>
                         </td>
 
-				</tr>
+				</tr>                                        
 </table>
 
  </s:form>

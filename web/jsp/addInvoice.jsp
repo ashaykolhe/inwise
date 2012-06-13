@@ -1025,7 +1025,7 @@ Rate</b>
 						</s:select>
 
                         @
-                        <s:select name="inCSTSval" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
+                        <s:select name="invoice.cstOvat" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
 
 
 						</s:select>
@@ -1318,7 +1318,7 @@ Rate</b>
                                 
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
 
-							<s:submit name="generate" value="Generate" />
+							<s:submit name="addgenerate" value="Generate" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 						
