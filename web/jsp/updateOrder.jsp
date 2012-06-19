@@ -23,11 +23,25 @@ To change this template use File | Settings | File Templates.
             });
         });
 
-        $('#orderdropdown').change(function()
-        {
+        $('#orderdropdown').change(function(){
             if($('#orderdropdown').attr('value')!=""){
-            this.form.action='order?getOrders';
-            this.form.submit();
+                var current=this;
+                var orderId=$(this).attr("value");
+                $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
+                var data=eval(result);
+                    if(data){
+                        current.form.action='order?getOrders';
+                        current.form.submit();
+                    }else{
+                        $('#hide').html("order "+orderId+" cannot be updated till completely dispatched.");
+                        $('#hide').css({
+                            align:"right",
+                            color:"red"   
+                        });
+
+                    }
+            });
+
             }
         });
 
@@ -212,7 +226,9 @@ To change this template use File | Settings | File Templates.
         <td width="30%" align="left" valign="top" ></td>
     </tr></table>        </s:form>
 
+<div id="hide">
 <c:if test="${orderBean.order!=null}">
+
     <s:form beanclass="com.inwise.action.OrderActionBean">
         <table border="1" width="78%" bgcolor="#FCFCFC" ><tr><td>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -400,6 +416,6 @@ To change this template use File | Settings | File Templates.
                     </div></td>
                     <td width="3%" align="left">&nbsp;</td>
                 </tr>
-            </table></td></tr></table></s:form>   </c:if>
+            </table></td></tr></table></s:form>   </c:if></div>
 
 </s:layout-component></s:layout-render>

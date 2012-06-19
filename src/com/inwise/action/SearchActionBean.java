@@ -2,9 +2,11 @@ package com.inwise.action;
 import com.inwise.dao.OrderDao;
 import com.inwise.dao.CustomerDao;
 import com.inwise.dao.InvoiceDao;
+import com.inwise.dao.AdvanceDao;
 import com.inwise.pojo.Invoice;
 import com.inwise.pojo.Order;
 import com.inwise.pojo.Customer;
+import com.inwise.pojo.Advance;
 import com.inwise.utils.Converter;
 
 import javax.inject.Inject;
@@ -34,6 +36,8 @@ public class SearchActionBean extends BaseActionBean{
     @Inject
     OrderDao orderDao;
     @Inject
+    AdvanceDao advanceDao;
+    @Inject
     InvoiceDao invoiceDao;
     private List<Invoice> invoicelst;
     private List<Integer> Integerlst;
@@ -45,6 +49,15 @@ public class SearchActionBean extends BaseActionBean{
     private Order order;
     private String searchMenu,searchSubmenu,name,content,ajaxSubmenu,hdnvalue,invoicenumber;
     private String date;
+    private Advance advance;
+
+    public Advance getAdvance() {
+        return advance;
+    }
+
+    public void setAdvance(Advance advance) {
+        this.advance = advance;
+    }
 
     public String getContent() {
         return content;
@@ -282,11 +295,15 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution printpdf()
     {
-        System.out.println("content :"+content);
-        String path=null;
+         invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(invoicenumber));
+         advance=advanceDao.getAdvancedByOrderId(invoice.getOrder().getId());
+       String path=invoiceDao.createPdf(invoice,advance);
+        System.out.println("ppppppaaaaaaaattttttttthhhhhhhh"+path);
+
+        
         FileInputStream sis=null;
         try{
-            path= Converter.convert(content,"Invoice :"+invoicenumber);
+           
             sis=new FileInputStream(path);
         }catch(Exception e){
             System.out.println("achtung "+e.getMessage());
@@ -294,11 +311,13 @@ public class SearchActionBean extends BaseActionBean{
 
 
         return new StreamingResolution("application/pdf",sis);
+
     }
     public Resolution redirectorderpopup()
     {
         invoice=invoiceDao.findByInvoiceNumber(getId());
-        return new ForwardResolution("jsp/receipt/viewOrderSlip.jsp");
+        advance=advanceDao.getAdvancedByOrderId(invoice.getOrder().getId());
+        return new ForwardResolution("/jsp/receipt/viewOrderSlip.jsp");
     }
 
 }

@@ -1,14 +1,13 @@
 package com.inwise.dao;
 
 import com.inwise.dao.BaseDao;
-import com.inwise.pojo.Order;
-import com.inwise.pojo.Customer;
 
 import java.util.List;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import com.inwise.pojo.Invoice;
+
+import com.inwise.pojo.*;
 import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
@@ -118,10 +117,7 @@ public void remove(Integer id) {
     public List<Invoice> findInvoiceByCustomerOrderNumber(String name) {
         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+name+"'").list();
     }
-    public Order findOrderByOrderNo(String customerOrderNo)
-    {
-        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo);
-    }
+    
     public Order findAOrderByOrderNo(String customerOrderNo)
     {
         return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult();
@@ -131,5 +127,12 @@ public void remove(Integer id) {
 
     public List<Invoice> findInvoiceByCustomerName(String name) {
          return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.customer.name='"+name+"'").list();
+    }
+
+    public Boolean checkInvoiceForThisOrderDispatched(Integer orderId){
+        System.out.println("hi "+orderId);
+        Double remainingQuantity=(Double)sessionProvider.get().createSQLQuery("select sum(od.remaining_quantity) from order_master o left join order_has_orderdetail ohod on o.id=ohod.order_id left join order_detail od on od.id=ohod.order_detail_id where o.id="+orderId).uniqueResult();
+        System.out.println("rem "+remainingQuantity);
+        return remainingQuantity==0.0;
     }
 }
