@@ -27,6 +27,9 @@ public class Payment {
     @Column(name = "transaction_status",length = 10)
     private String transactionStatus;
 
+     @Column(name = "chequeordd",length = 10)
+    private String chequeordd;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -49,6 +52,14 @@ public class Payment {
     @ManyToOne
     @JoinColumn(name = "payment_mode")
     private PaymentMode paymentMode;
+
+    public String getChequeordd() {
+        return chequeordd;
+    }
+
+    public void setChequeordd(String chequeordd) {
+        this.chequeordd = chequeordd;
+    }
 
     public Integer getId() {
         return id;
