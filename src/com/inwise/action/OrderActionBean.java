@@ -131,15 +131,51 @@ public class OrderActionBean extends BaseActionBean{
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
         orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
+        System.out.println("oooooooooooo"+order);
         return updateOrderLink();
     }
 
-    public Resolution updateOrder(){
+    public Resolution updateOrder() {
         order.setAmendmentDate(new Date());
-        System.out.println("------------------------------------------");
+
         System.out.println(order);
+        Order temp = order;
+        OrderDetail od = null;
+        for (Iterator<OrderDetail> ite = temp.getOrderDetail().iterator(); ite.hasNext();) {
+            od=ite.next();
+                   od.setRemainingQuantity(od.getAmendmentQuantity());
+            if (od.getAmendmentCost() == null)
+                od.setAmendmentCost(od.getProduct().getProductCost());
+            else
+                od.setAmendmentCost((od.getProduct().getProductCost()) + od.getAmendmentCost());
+
+
+        }
+
+          order.setOrderDetail(temp.getOrderDetail());
+       //order.getOrderDetail().add((OrderDetail) temp.getOrderDetail());
         orderDao.save(order);
-        return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
+        //  order =orderDao.find(order.getId());
+        /* order.setAmendmentDate(new Date());
+         System.out.println("------------------------------------------"+order.getId());
+         System.out.println(order);
+         Order temp=order;
+         System.out.println("tempppppppppp"+temp);
+         for(Iterator<OrderDetail> ite=temp.getOrderDetail().iterator();ite.hasNext();){
+             OrderDetail od=ite.next();
+             System.out.println("proct"+od.getProduct());
+             if( od.getAmendmentCost()==null)
+                 od.setAmendmentCost(od.getProduct().getProductCost());
+             else
+                 od.setAmendmentCost((od.getProduct().getProductCost())+od.getAmendmentCost());
+             System.out.println(order.getOrderDetail());
+             order.getOrderDetail().clear();
+             System.out.println(od);
+             order.getOrderDetail().add(od);
+         }
+         orderDao.save(order);
+        */
+        return new RedirectResolution(OrderActionBean.class, "updateOrderLink");
     }
 
     public Resolution addressAjax(){

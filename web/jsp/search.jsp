@@ -34,8 +34,7 @@ To change this template use File | Settings | File Templates.
 function combo(){
     var submenuvalue=$('#hiddenSubMenu').html();
     var aval=$('#autocompleteval').html();
-
-    if(blank !="")
+        if(blank !="")
         blank="";
     else
     {

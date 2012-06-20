@@ -37,7 +37,7 @@ public class AdvanceDao extends BaseDao<Advance,Integer>{
 
                Advance advance=(Advance)sessionProvider.get().createCriteria(Advance.class).add(Restrictions.eq("order.id",orderid)).uniqueResult();
         advance.setAmountRemained(amt);
-        System.out.println("advance "+advance);
+        
         super.save(advance);
                 
     }

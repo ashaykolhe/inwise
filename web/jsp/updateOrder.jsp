@@ -190,14 +190,10 @@ To change this template use File | Settings | File Templates.
                                 <option value ="${customer.id}"><c:out value="${customer.name}"/></option>
                             </c:otherwise>
                         </c:choose>
-
-                    </c:forEach>
-
-                </s:select>
-
+                </c:forEach>
+            </s:select>
             </div></td>
-
-            <td width="30%" align="left" valign="top" >
+        <td width="30%" align="left" valign="top" >
 
             </td>
         </tr></table>
@@ -364,13 +360,15 @@ To change this template use File | Settings | File Templates.
                                             </div></div></td>
                                     <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                         <div align="left" style="margin-left:4px;">
+
                                             <div align="right">
-                                                <s:text  name="productCost" id="cost${loop.index}" value="${orderDetail.product.productCost}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
+                                                       
+                                                <s:text  name="order.orderDetail[${loop.index}].product.productCost" id="cost${loop.index}" value="${orderDetail.product.productCost}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
                                             </div></div></td>
                                     <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                         <div align="left" style="margin-left:4px;">
                                             <div align="right">
-                                                <s:text name="productMeasurementType" id="productMeasurementType${loop.index}" value="${orderDetail.product.productMeasurementType.measurementType}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
+                                                <s:text name="order.orderDetail[${loop.index}].product.productMeasurementType.measurementType" id="productMeasurementType${loop.index}" value="${orderDetail.product.productMeasurementType.measurementType}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
                                             </div></div></td>
                                     <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
                                         <div align="left" style="margin-left:4px;">

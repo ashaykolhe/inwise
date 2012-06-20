@@ -97,7 +97,6 @@ $(document).ready(function()
     
     $('#selectcutomername').change(function()
         {
-                
             this.form.action='advance?getOrderNumbers';
             this.form.submit();
         });

@@ -1,5 +1,4 @@
 package com.inwise.dao;
-
 import com.inwise.dao.BaseDao;
 
 import java.util.List;
@@ -130,9 +129,36 @@ public void remove(Integer id) {
     }
 
     public Boolean checkInvoiceForThisOrderDispatched(Integer orderId){
-        System.out.println("hi "+orderId);
+
         Double remainingQuantity=(Double)sessionProvider.get().createSQLQuery("select sum(od.remaining_quantity) from order_master o left join order_has_orderdetail ohod on o.id=ohod.order_id left join order_detail od on od.id=ohod.order_detail_id where o.id="+orderId).uniqueResult();
-        System.out.println("rem "+remainingQuantity);
+
         return remainingQuantity==0.0;
+    }
+    @Transactional
+    public void setRemainingNDispatchedQtyForUpdateOrder(int id, List<InvoiceDetail> invoiceDetail) {
+        Order order= (Order) sessionProvider.get().createQuery("select o from Order o where o.id="+id+"").uniqueResult();
+              Iterator<OrderDetail> it=order.getOrderDetail().iterator();
+
+        for (Iterator<InvoiceDetail> invoiceDetailIterator = invoiceDetail.iterator(); invoiceDetailIterator.hasNext();) {
+            InvoiceDetail detail =  invoiceDetailIterator.next();
+                  if(it.hasNext())
+                  {
+                      OrderDetail orderdetail=it.next();
+                      if(orderdetail.getRemainingQuantity()==0.0)
+                      {
+                        
+                        continue;
+                      }
+                      else
+                      {
+                      orderdetail.setRemainingQuantity(orderdetail.getRemainingQuantity()-detail.getDispatched());
+                      orderdetail.setDispatchedQuantity(detail.getDispatched());
+                      }
+                  }
+
+      }
+        super.save(order);
+
+
     }
 }

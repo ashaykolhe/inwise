@@ -11,12 +11,32 @@
 <%
     request.setAttribute("invoice",invoiceBean.getInvoice());
 %>
+<c:set var = "TR1" value="invoicepdf"/>
+
+<c:if test="${invoiceBean.hiddenvalue eq TR1}">
+    <script type="text/javascript">
+        function OpenPopup(){
+            var w = 900;
+            var h = 700;
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+            var page = "invoice?printpdf=&id="+${invoiceBean.invoice.id}+"";
+            windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+            window.open(page, "Popup", windowprops);
+            return;
+        }
+        window.onLoad =OpenPopup();
+    </script>
+</c:if >
 <script type="text/javascript" >
         $(document).ready(function() {
        $("#ecess").html(amtInWords(${invoice.educationCessTax}));
        $("#enhcess").html(amtInWords(${invoice.secondaryHigherEducationCessTax}));
        $("#excise").html(amtInWords(${invoice.exciseTax}));
        $("#net").html(amtInWords(${invoice.netPayable}));
+            
     });
     function amtInWords(amt)
 {
@@ -348,6 +368,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>INVOICE</title>
 <script type="text/javascript" src="js/jquery.js"></script>
+<%--
 <script language="javascript">
 	function wait(msecs)
 	{
@@ -389,30 +410,31 @@
 		document.getElementById('inPrint').style.display='inline';
 		document.getElementById('inClose').style.display='inline';
 	}
-	function OpenPopuppdf(invoiceid){
-		var w = 850;
-		var h = 900;
-		var winl = (screen.width-w)/2;
-		var wint = (screen.height-h)/2;
-		if (winl < 0) winl = 0;
-		if (wint < 0) wint = 0;
-
-		var page = "PdfGenerateServlet?id="+invoiceid;
-		windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
-		+ "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
-		window.open(page, "Popup", windowprops);
-
-	}
+/*
     $(document).ready(function(){
             $('#printPDF').click(function(){
-                        alert("in pdf creation");
+             */
+/*           alert("in pdf creation");
+
                 $('#hide').css("display","none");
-                $('#content').attr("value",$('#printContent').html());
+                $('#content').attr("value",$('#printContent').html());*/
+/*
+                var w = 900;
+                        var h = 700;
+                        var winl = (screen.width-w)/2;
+                        var wint = (screen.height-h)/2;
+                        if (winl < 0) winl = 0;
+                        if (wint < 0) wint = 0;
+                        var page = "invoice?printpdf=&id="++"";
+                        windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+                        window.open(page, "Popup", windowprops);
 
             });
         });
+*/
 
 </script>
+--%>
 </head>
 <body style="margin-left:1px;">
 
@@ -1417,7 +1439,8 @@
                        <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
                        <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
 
-                    <s:submit name="generate" value="Generate" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="redirectinvoicepopup" value="print" id="printPDF"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="previewgenerate" value="Generate" ></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
                     <s:submit name="editinvoice" value="Edit"/>
 				</td>
 			</tr>
