@@ -179,6 +179,8 @@ public class AdvanceActionBean extends BaseActionBean
     public Resolution advanceLink()
     {
         System.out.println("in advance link resolution");
+         paymentModeList=paymentModeDao.listAll();
+        System.out.println(paymentModeList);
         custNameIdList=orderDao.getCustomerForAdvance();
         System.out.println(custNameIdList);
        // orderDao.getOrderForAdvance(2);
@@ -196,8 +198,10 @@ public class AdvanceActionBean extends BaseActionBean
     }
     public Resolution getOrderNumbers()
     {
-        System.out.println("in get order no resolution");
+
+
         custNameIdList=orderDao.getCustomerForAdvance();
+        paymentModeList=paymentModeDao.listAll();
        System.out.println("iiiiiiiiiddddddddddd"+id1);
        orderNoList=orderDao.getCustomerOrderNo(id1);
         cust=customerDao.find(id1);
@@ -209,7 +213,7 @@ public class AdvanceActionBean extends BaseActionBean
         System.out.println("in get cust order order no resolution");
         total=0.0;
         custNameIdList=orderDao.getCustomerForAdvance();
-
+        paymentModeList=paymentModeDao.listAll();
         o=orderDao.findAOrderByOrderNo(id2);
         System.out.println(o);
         System.out.println(id2);
@@ -238,9 +242,11 @@ public class AdvanceActionBean extends BaseActionBean
     }
     public Resolution addAdvance()
     {
-        System.out.println(advance);
-        advance.setAmountRemained(total-advance.getAmountReceived());
+       /* System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+advance.getId()+advance.getAmountReceived()+advance.getPaymentMode());*/
+        advance.setAmountRemained(advance.getAmountReceived());
+        
         advanceDao.save(advance);
+        System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
         popup=true;
         return new RedirectResolution(AdvanceActionBean.class,"advanceLink").addParameter("popup",popup);
     }

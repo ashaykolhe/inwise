@@ -74,8 +74,23 @@ $(document).ready(function()
 
 
       });
+    $('#paymentmodedropdown').change(function(){
 
-    $('#advancepaymode').change(function(){
+            if($('#paymentmodedropdown').attr("value")=="1"){
+
+                $('#chequeddlable').show();
+               $('#advancechequeddno').show();
+            }else if($('#paymentmodedropdown').attr("value")=="2"){
+
+                $('#chequeddlable').show();
+               $('#advancechequeddno').show();
+            }else{
+                $('#chequeddlable').hide();
+               $('#advancechequeddno').hide();
+            }
+        });
+
+    /*$('#advancepaymode').change(function(){
            if($('#advancepaymode').val()=="cheque"||$('#advancepaymode').val()=="dd")
            {
 
@@ -88,7 +103,7 @@ $(document).ready(function()
                $('#advancechequeddno').hide();
             }
 
-        });
+        });*/
     $('#selectorderno').change(function()
         {
             this.form.action='advance?getCustomerOrder';
@@ -226,12 +241,12 @@ $(document).ready(function()
                            <td width="20%" align="left"></td>
                            <td width="18%" align="left" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Payment Mode<span style="color:#FF0000"> *</span></div></td>
                             <td width="15%" align="left" valign="bottom"><div align="left" >
-                                <s:select name="advance.paymentMode" id="advancepaymode" class="dropdown">
-                                    <option value="0">---Select Payment Mode---</option>
-                                    <option value="cash">By Cash</option>
-                                     <option value="dd">By DD</option>
-                                     <option value="cheque">By Cheque</option>
-                                </s:select>
+                                 <s:select name="advance.paymentMode.id" id="paymentmodedropdown" class="dropdown">
+                                                    <option value="">---Payment Mode---</option>
+                                                    <c:forEach items="${advanceBean.paymentModeList}" var="paymentMode" varStatus="loop" >
+                                                        <option value ="<c:out value="${paymentMode.id}"/>"> <c:out value="${paymentMode.mode}"/></option>
+                                                    </c:forEach>
+                                                </s:select>
                                 </div>
 
                            <td width="15%" align="right"> <div   align="right" style="margin-left: 2px; display:none" id="chequeddlable" class="labels">Cheque/DD No. <span style="color:#FF0000"> *</span></div>     </td>
@@ -277,3 +292,12 @@ $(document).ready(function()
 
         </s:layout-component>
 </s:layout-render>
+<%--
+<div>
+                                                <s:select name="advance.paymentMode.id" id="paymentmodedropdown" class="dropdown">
+                                                    <option value="">---Payment Mode---</option>
+                                                    <c:forEach items="${advanceBean.paymentModeList}" var="paymentMode" varStatus="loop" >
+                                                        <option value ="<c:out value="${paymentMode.id}"/>"> <c:out value="${paymentMode.mode}"/></option>
+                                                    </c:forEach>
+                                                </s:select>
+                                            </div>--%>
