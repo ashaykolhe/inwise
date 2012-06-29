@@ -232,6 +232,7 @@ public class ReportActionBean extends BaseActionBean{
 
     public Resolution bytoday()
     {
+        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         if(stock.equalsIgnoreCase("byInvoice"))
         {
             System.out.println("fasgfdghasfd"+stock);

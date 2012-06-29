@@ -34,8 +34,7 @@ To change this template use File | Settings | File Templates.
 function combo(){
     var submenuvalue=$('#hiddenSubMenu').html();
     var aval=$('#autocompleteval').html();
-
-    if(blank !="")
+        if(blank !="")
         blank="";
     else
     {
@@ -264,25 +263,7 @@ $(document).ready(function() {
         }
 
     });
-    $("#dategetbtn").click(function(){
-        var varsubmenu=$("#submenu option:selected").val().trim().toString();
-
-               if(varsubmenu=='orderDate' || varsubmenu=='invoiceDate')
-               {
-                   if($('#date').val()=="")
-                   {
-                   alert("please select date");
-                   return false;
-                   }
-               }
-               var varsubmenu=$("#submenu option:selected").val().trim().toString();
-              if(varsubmenu=='none')
-               {
-               alert("Please,Select Search By Option");
-               return false;
-               }
-       
-    });
+    
 
 });
 </script>
@@ -358,7 +339,6 @@ $(document).ready(function() {
                                 <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
                             &nbsp;&nbsp;<s:text  style="border:1px solid #FFCC66;height: 23px; width: 173px;" name="name" id="autocomplete" value=""/>
                             <s:submit name="search" id="textgetbtn" value="Get" ></s:submit>
-
                         </div>
 
                         <div id="myDiv2"  align="left" style="display:none;" class="labels">
@@ -408,30 +388,100 @@ $(document).ready(function() {
             </d:table></td></tr></table>
     </c:if>
 </c:if>
-<c:if test="${actionBean.invoice!=null}">
-
+<c:if test="${actionBean.invoice!=null and fn:startsWith(actionBean.searchSubmenu,'invoice')}">
     <table class="t" id="grntable" width="100%"><tr><td>
         <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search?search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
             <d:column property="createDate" title="Invoice Date"/>
+             <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${c.invoiceNumber}"></s:param>
+                    <s:param name="hdnvalue" value="invoiceno"></s:param>
+                    <s:param name="name" value="${c.invoiceNumber}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
 
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
         </d:table></td></tr></table>
 </c:if>
-<c:if test="${actionBean.invoicelst!=null and fn:startsWith(actionBean.searchSubmenu,'invoice' )}">
+
+<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerName')}">
 
     <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="invoicelst" id="c" pagesize="10" class="disp" requestURI="search?search">
+        <d:table name="invoicelst" id="c1" pagesize="10"  class="disp" requestURI="search?search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
             <d:column property="createDate" title="Invoice Date"/>
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${c1.invoiceNumber}"></s:param>
+                    <s:param name="hdnvalue" value="invoicelst"></s:param>
+                    <s:param name="name" value="${c1.customer.name}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
 
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
         </d:table></td></tr></table>
 </c:if>
-<c:if test="${actionBean.invoicelst!=null and fn:startsWith(actionBean.searchSubmenu,'order')}">
+<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerOrderNo')}">
+
+    <table class="t" id="grntable" width="100%"><tr><td>
+        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search?search">
+            <d:column property="invoiceNumber" title="Invoice Number"/>
+            <d:column property="customer.name" title="Customer Name"/>
+            <d:column property="createDate" title="Invoice Date"/>
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${c.invoiceNumber}"></s:param>
+                    <s:param name="hdnvalue" value="invoicelst"></s:param>
+                    <s:param name="name" value="${c.order.customerOrderNo}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
+
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
+        </d:table></td></tr></table>
+</c:if>
+<c:if test="${actionBean.invoicelst!=null and fn:startsWith(actionBean.searchSubmenu,'invoiceDate' )}">
+
+    <table class="t" id="grntable" width="100%"><tr><td>
+        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search?search">
+            <d:column property="invoiceNumber" title="Invoice Number"/>
+            <d:column property="customer.name" title="Customer Name"/>
+            <d:column property="createDate" title="Invoice Date"/>
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${c.invoiceNumber}"></s:param>
+                    <s:param name="hdnvalue" value="invoicelst"></s:param>
+                    
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
+
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
+        </d:table></td></tr></table>
+</c:if>
+<%--<c:if test="${actionBean.orderlst!=null}">
+
+    <table class="t" id="grntable" width="100%"><tr><td>
+        <d:table name="orderlst" id="c" pagesize="10" class="disp" requestURI="search?search">
+            <d:column property="customerOrderNo" title="Customer Order Number"/>
+            <d:column property="customer.name" title="Customer Name"/>
+            <d:column property="createDate" title="Order Date"/>
+
+        </d:table></td></tr></table>
+</c:if>--%>
+<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerOrderNumber')}">
 
     <table  class="t" id="grntable" width="100%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search?search">
+        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -521,16 +571,193 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
-<c:if test="${actionBean.orderlst!=null}">
+<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerName')}">
 
-    <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="orderlst" id="c" pagesize="10" class="disp" requestURI="search?search">
-            <d:column property="customerOrderNo" title="Customer Order Number"/>
+    <table  class="t" id="grntable" width="100%"><tr><td>
+        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search?search">
+            <d:column property="invoiceNumber" title="Invoice Number"/>
+            <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Order Date"/>
+            <d:column title="Product Name">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <tr>
+                            <td>${products.product.productName}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+            <d:column title="Ordered Qty">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+                                    <td>${invoiceorder.orderedQuantity}</td>
+                                    <td>${invoiceorder.dispatchedQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="Dispatched Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
 
+                                    <td>${products.dispatched}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="remaining Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.remainingQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="amendment Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.amendmentQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="amendment Cost">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.amendmentCost}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
+                   
+                    <s:param name="name" value="${invoice.order.customer.name}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
+
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
         </d:table></td></tr></table>
 </c:if>
+<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderDate')}">
+
+    <table  class="t" id="grntable" width="100%"><tr><td>
+        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search?search">
+            <d:column property="invoiceNumber" title="Invoice Number"/>
+            <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+            <d:column property="customer.name" title="Customer Name"/>
+            <d:column title="Product Name">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <tr>
+                            <td>${products.product.productName}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+            <d:column title="Ordered Qty">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+                                    <td>${invoiceorder.orderedQuantity}</td>
+                                    <td>${invoiceorder.dispatchedQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="Dispatched Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${products.dispatched}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="remaining Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.remainingQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="amendment Quantity">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.amendmentQuantity}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="amendment Cost">
+                <table>
+                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
+                            <c:if test="${products.product.id eq invoiceorder.product.id}">
+                                <tr>
+
+                                    <td>${invoiceorder.amendmentCost}</td>
+                                </tr>
+                            </c:if>
+                        </c:forEach></c:forEach>
+                </table>
+            </d:column>
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
+
+                    <s:param name="name" value="${invoice.order.createDate}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
+
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
+        </d:table></td></tr></table>
+</c:if>
+
 </s:form>
 </s:layout-component>
 </s:layout-render>

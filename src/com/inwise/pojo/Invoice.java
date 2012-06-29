@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+
 /**
 * Created by IntelliJ IDEA.
 * User: Ashay
@@ -16,10 +17,9 @@ import java.util.ArrayList;
 @Table(name = "invoice")
 public class Invoice {
      @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "invoice_number",unique = true,nullable = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_number_generator")
+    @TableGenerator(name = "invoice_number_generator",allocationSize = 1000,initialValue = 999,pkColumnName = "invoice_number",valueColumnName = "value",pkColumnValue = "number")
+    @Column(name = "invoice_number")
     private Integer invoiceNumber;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -194,14 +194,6 @@ public class Invoice {
 
     public void setDueQuantity(Double dueQuantity) {
         this.dueQuantity = dueQuantity;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getInvoiceNumber() {
@@ -535,15 +527,13 @@ public class Invoice {
     @Override
     public String toString() {
         return "Invoice{" +
-                "id=" + id +
-                ", invoiceNumber=" + invoiceNumber +
+                "invoiceNumber=" + invoiceNumber +
                 ", createDate=" + createDate +
                 ", issueTime='" + issueTime + '\'' +
                 ", removalTime='" + removalTime + '\'' +
                 ", customer=" + customer +
                 ", order=" + order +
                 ", salesRepCode='" + salesRepCode + '\'' +
-                ", amountDetect=" + amountDetect +
                 ", totalAmount=" + totalAmount +
                 ", excise=" + excise +
                 ", exciseTax=" + exciseTax +
@@ -577,6 +567,7 @@ public class Invoice {
                 ", remark='" + remark + '\'' +
                 ", amountRemained=" + amountRemained +
                 ", amountReceived=" + amountReceived +
+                ", amountDetect=" + amountDetect +
                 ", deleted=" + deleted +
                 ", inEntryTaxGiven=" + inEntryTaxGiven +
                 ", invoiceDetail=" + invoiceDetail +

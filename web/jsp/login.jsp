@@ -15,13 +15,12 @@
 	<title>Login Page</title>
           <script type="text/javascript" src="js/jquery.js"></script>
 	<link rel="shortcut icon" href="images/favicon.ico"/>
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css"/>
      <script type="text/javascript">
       var userFocus = false;
       var passwordFocus = false;
       $(document).ready(function() {
-
-        $('#loginname').focus(function() {
+          $('#loginname').focus(function() {
           userFocus = true;
           passwordFocus = false;
         });
@@ -30,7 +29,7 @@
           userFocus = false;
         });
          if (!userFocus && !passwordFocus) {
-          if ($('#loginname').val().length > 0) $('#loginpassword').focus(); else $('#loginname').focus();
+         if ($('#loginname').val().length > 0) $('#loginpassword').focus(); else $('#loginname').focus();
         }
       });
     </script>
@@ -38,10 +37,7 @@
 
   <body>
   <stripes:form beanclass="com.inwise.action.UserActionBean" >
-
-
-            <fieldset >
-
+   <fieldset >
 			<legend>Log in</legend>
                    	<div class="clear"></div>
 			<label class="usernamelabel">Username</label>

@@ -51,11 +51,11 @@ public class CustomerDao extends BaseDao<Customer,Integer>
 
 	
     public List<String> getCustomerNameLst() {
-        return (List<String>)sessionProvider.get().createQuery("SELECT c.name from Customer c").list();
+        return (List<String>)sessionProvider.get().createQuery("SELECT distinct c.name from Customer c").list();
     }
 
     public List<String> getCustomerCodeLst() {
-         return (List<String>)sessionProvider.get().createQuery("SELECT c.customerCode from Customer c").list();
+         return (List<String>)sessionProvider.get().createQuery("SELECT distinct c.customerCode from Customer c").list();
     }
 
     public Customer findByCustomerName(String name) {

@@ -7,8 +7,8 @@
 --%>
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
-
-     <script type="text/javascript">
+<link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" />
+  <script type="text/javascript">
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;//parseFloat(document.getElementById("inTotalAmount").value);
     var calinFright=0.0;
@@ -28,12 +28,10 @@
     var floatExp = /^[0-9.]+$/;
      $(document).ready(function() {
          $('#inCSTSval').hide();
-         $.get("Invoice.action?getTax", function (result) {
+         $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
-
                  for (var i = 0; i <= data.length; i++) {
-
                             if(i==0){t1=data[i].taxPercentage;$("#t"+1+"").html(t1);}
                             if(i==1){t2=data[i].taxPercentage;$("#t"+2+"").html(t2);}
                             if(i==2){t3=data[i].taxPercentage;$("#t"+3+"").html(t3);}
@@ -41,12 +39,105 @@
                             if(i==4){t5=data[i].taxPercentage;$("#t"+5+"").html(t5);}
                             if(i==5){t6=data[i].taxPercentage;$("#t"+6+"").html(t6);}
                             if(i==6){t7=data[i].taxPercentage;$("#t"+7+"").html(t7);}
+             }for (var j = 0; j <= data.length; j++) {
+                            if(j==0){document.getElementById("excise").value=data[j].taxPercentage;}
+                            if(j==1){document.getElementById("educationCess").value=data[j].taxPercentage;}
+                            if(j==2){document.getElementById("secondaryHigherEducationCess").value=data[j].taxPercentage}
+                            if(j==5){document.getElementById("cstOvat").value=data[j].taxPercentage;}
+                            if(j==6){document.getElementById("inEntryTaxGiven").value=data[j].taxPercentage;}
              }
             });
+                    var oo=$('#custorno').html();
+                            var oid=$('#custodid').html();
+
+
+                            var ooid=document.getElementById("inoid");
+                            var options=ooid.getElementsByTagName("option");
+
+                            ooid.options[1]=new Option(oo,oid,false,true);
+
+                         $.get("order?InvoiceToAddressAjax",{invoiceToAddressId:$('#custodid').html()}, function (result) {
+                var data=eval(result);
+
+                var options='';
+
+                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+
+                $("#invoiceAddress").html(options);
+
+
+
+            });
+            $.get("order?ShipmentToAddressAjax",{shipmentToAddressId:$('#custodid').html()}, function (result) {
+                var data=eval(result);
+
+                var options='';
+
+                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+
+
+                $("#shipmentAddress").html(options);
+
+
+            });
+         $('#inIssue').timepicker({
+	            ampm: true,
+	            hourMin:00,
+	            hourMax: 24
+            });
+        $('#inRemoval').timepicker({
+	            ampm: true,
+	            hourMin:00,
+	            hourMax: 24
+            });
+         $('#inoid').change(function(){
+            if($('#inoid').attr('value')!=""){
+                var current=this;
+                var orderId=$(this).attr("value");
+                $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
+                var data=eval(result);
+                    if(data){
+                        $('#hide').html("Invoice of Order Id "+orderId+" is dispatched.");
+                                               $('#hide').css({
+                                                   align:"right",
+                                                   color:"red"
+                                               });
+
+
+                    }else{
+                       current.form.action='invoice?getOrderDetail';
+                        current.form.submit();
+
+                    }
+            });
+
+            }
+        });
+
+
       });
+
+
+    function getCustomerOrder(){
+   /*     this.form.action='order?getCustomerOrderNo';
+        this.form.submit();*/
+        $('.trid').show();
+        $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
+
+             var data=eval(result);
+             var options = '<option value="">---Select Customer Order No---</option>';
+                     for (var i = 0; i < data.length; i++) {
+
+                         options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
+                     }
+                     $("#inoid").html(options);
+          });
+
+    }
+
      function Adv()
      {
-         alert("in adv");
+
          if(document.getElementById('inAdvanceEntered').value=="")
          {
              document.getElementById('inAdvanceEntered').value=(0).toFixed(2);
@@ -61,33 +152,21 @@
          var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
           calinAdvance = parseFloat(document.getElementById("inAdvance").value);
 
-         if(calinAdvanceEntered>calinAdvance)
+         if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvance))
          {
              alert("Entered value is larger than 'Advance Available'");
-             document.getElementById("inAdvanceEntered").value=0.00;
+             document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
              document.getElementById("inAdvanceEntered").focus();
+             return false;
          }
+
+
          calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-         document.getElementById("inAdvanceRemain").value = ((calinAdvance - calinAdvanceEntered)).toFixed(2);
-         document.getElementById("inNetPayable").value = ((calinGrandTotal - calinAdvanceEntered)).toFixed(2);
-         return true;
+         document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
+         document.getElementById("inNetPayable").value = ((parseFloat(calinGrandTotal) - parseFloat(calinAdvanceEntered))).toFixed(2);
+
+             return true;
      }
-
-       function getCustomerOrder(){
-      /*     this.form.action='order?getCustomerOrderNo';
-           this.form.submit();*/
-
-           $.post("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
-
-                var data=eval(result);
-                var options = '<option value="">---Select Customer Order No---</option>';
-                        for (var i = 0; i < data.length; i++) {
-
-                            options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
-                        }
-                        $("#inoid").html(options);
-             });
-       }
 
 
 
@@ -141,7 +220,7 @@
      var emptydisp=document.getElementById(disp);
         emptydisp.value="Enter Dispaching Qty";
      var emptycsh=document.getElementById(cshno);
-        emptycsh.value="Enter CSH No";
+        emptycsh.value="Enter CSH No *";
         document.getElementById(itemno).disabled = true;
         document.getElementById(cshno).disabled = true;
         document.getElementById(disp).disabled = true;
@@ -276,7 +355,7 @@ function Selected(s)
       var emptydisp=document.getElementById(disp);
         emptydisp.value="Enter Dispaching Qty";
      var emptycsh=document.getElementById(cshno);
-        emptycsh.value="Enter CSH No";
+        emptycsh.value="Enter CSH No *";
         document.getElementById(itemno).disabled = true;
         document.getElementById(disp).disabled = true;
         document.getElementById(cshno).disabled = true;
@@ -433,7 +512,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
                 calinTotalAmount=0.0;
             }*/
     }
-     dropdownname=$("#inProType"+d+" option:selected").val().trim().toString();
+     dropdownname=$("#inProType"+d+" option:selected").text().trim().toString();
     if(dropdownname=="MFG & Supply" || dropdownname=="Sale" || dropdownname=="None")
     {
     inExciseTax = ((calinTotalAmount * t1)/100).toFixed(2);
@@ -555,10 +634,11 @@ function validateOthers()
 
 
 </script>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
  <s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>
-
+<%request.setAttribute("prodlst",invoiceBean.getProductcategory());%>
 
  <s:layout-render name="/layout/_base.jsp">
       <s:layout-component name="body">
@@ -588,7 +668,7 @@ Generate Invoice
 			  <div align="right"  class="labels">
 			    Customer Name				</div>			</td>
 	  <td width="27%" align="left" valign="top">
-          <s:select id="incname"  name="incname" class="dropdown" onchange="getCustomerOrder()">
+          <s:select id="incname"  name="invoice.customer.id" class="dropdown" onchange="getCustomerOrder()">
                 <option  value="0">---Select Customer Name---</option>
                 <c:forEach items="${invoiceBean.customerlst}" var="orderloop" varStatus="loop" >
                     <c:choose>
@@ -606,63 +686,33 @@ Generate Invoice
             <td width="39%">&nbsp;</td>
 		</tr>
 
-		<tr>
+		<tr style="display :none;" class="trid">
 			<td width="19%" align="right" valign="top">
             <div align="right">
             <span class="labels" style="margin-left:15px;">Customer Order No.</span></div></td>
 	  <td width="27%" align="left" valign="top">
-              <s:select id="inoid" name="id" class="dropdown" onchange="getOrderDetail()">
+              <s:select id="inoid" name="id" class="dropdown">
                              <option  value="0">---Select Customer Order No---</option>
                         </s:select>
   <input type="hidden" name="sendorderid" id="sendorderid" value="">
 	    </td>
-			<td width="15%" align="right" valign="top"  >
-			 <s:submit name="getOrderDetail" id="getOrderDetail"  value="Get"/>		</td>
-	  <td align="left" valign="top" style="margin-left:10px;" >
-			 <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
+
+                 <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
 			 <span style="display:none;"  id="custodid" >${invoiceBean.id}</span>
-			</td>
+
+
 		</tr>
-       </s:form>
+
            </table>
+          </s:form>
+            <div id="hide">
            <c:if test="${actionBean.order!=null}">
-                     <script type="text/javascript">
+                    <script type="text/javascript">
                         $(document).ready(function() {
-                            var oo=$('#custorno').html();
-                            var oid=$('#custodid').html();
-
-
-                            var ooid=document.getElementById("inoid");
-                            var options=ooid.getElementsByTagName("option");
-
-                            ooid.options[1]=new Option(oo,oid,false,true);
-
-                         $.get("order?InvoiceToAddressAjax",{id:$('#custodid').html()}, function (result) {
-                var data=eval(result);
-
-                var options='';
-
-                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
-
-                $("#invoiceAddress").html(options);
-
-
-
-            });
-            $.get("order?ShipmentToAddressAjax",{id:$('#custodid').html()}, function (result) {
-                var data=eval(result);
-
-                var options='';
-
-                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
-
-
-                $("#shipmentAddress").html(options);
-
-
-            });
-
-
+                            if($('#custodid').html()!=null)
+                                 {
+                                     $('.trid').show();
+                                 }
                          });
 
                      </script>
@@ -670,9 +720,7 @@ Generate Invoice
           <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 
 
-		<tr >
-			<td align="left" valign="top" colspan="4">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+
            <tr>
                 <td>
                <div align="right" style="margin-left:15px;" class="labels">
@@ -681,13 +729,8 @@ Generate Invoice
 	 		<td width="25%" align="left" valign="top">
 			<div align="left">
 
-				<%
-					String sst = null,stt=null;
 
-							/*	sst = (inrowData41[2].toString()).substring(0,10);
-								stt = sst.substring(8,10)+"/"+sst.substring(5,7)+"/"+sst.substring(0,4);*/
-					%>
-					<s:text  value="<%= stt %>" name="order.createDate" id="inodate" size="8" style="border:0px;background-color:#FCFCFC;" class="textbox"  readonly="readonly" />
+					<s:text  value="" name="order.createDate" id="inodate" size="8" style="border:0px;background-color:#FCFCFC;" class="textbox"  readonly="readonly" />
 
 				</div>
             </td>
@@ -707,7 +750,7 @@ Generate Invoice
 				</span></div>
 			</td>
 	 		<td width="24%" align="left" valign="top">
-				<s:text name="invoice.order.amendmentNo" id="txtamndNo" readonly="readonly" class="textbox"  style="border:0px;background-color:#FCFCFC;"/>
+				<s:text name="invoice.order.amendmentNo" value="${invoiceBean.order.amendmentNo}" id="txtamndNo" readonly="readonly" class="textbox"  style="border:0px;background-color:#FCFCFC;"/>
             </td>
 		 	<td width="19%">
 		  		<div align="right" style="margin-left:15px;" class="labels">
@@ -717,7 +760,7 @@ Generate Invoice
 
 			<td align="left" style="margin-left:10px;">
 				<div align="left">
-					<s:text name="invoice.order.amendmentDate" id="txtamnddate" class="textbox" size="8" style="border:0px;
+					<s:text name="invoice.order.amendmentDate" value="${invoiceBean.order.amendmentDate}" id="txtamnddate" class="textbox" size="8" style="border:0px;
 													background-color: #FCFCFC;" readonly="readonly"/>
 				</div>
 			</td>
@@ -732,7 +775,7 @@ Generate Invoice
             	<div align="right" style="margin-left:15px;" class="labels">
 					Sales Rep. Code.				</div>			</td>
 		  <td colspan="2" align="left" valign="top">
-				<s:text name="insrepcode" id="insrepcode" type="text" class="textbox" readonly="readonly" style="border:0px;background-color:#FCFCFC;"
+				<s:text name="invoice.salesRepCode" value="1" id="insrepcode" type="text" class="textbox" readonly="readonly" style="border:0px;background-color:#FCFCFC;"
 											   size="9"/>			</td>
 		</tr>
 
@@ -742,15 +785,17 @@ Generate Invoice
 			    Invoice To				</div>			</td>
 	  <td width="24%" align="left" valign="bottom">
 
-
-					<s:textarea readonly="readonly"  name="sdfs"  id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66"/>
+                       <s:hidden name="invoice.order.orderAddress[0].addressType.id" value="1"/>
+					<s:textarea readonly="readonly"  name="ksjkdf"  id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66"/>
 
 							</td>
 			<td width="19%" align="right" valign="top">
 			  <div align="right" style="margin-bottom:20px;margin-left:15px;" class="labels">
 			    Consignee					</div>				</td>
   <td width="39%" align="left" valign="bottom">
-  <div align="left"><s:textarea readonly="readonly" name="zfa" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66" />
+  <div align="left">
+                         <s:hidden name="invoice.order.orderAddress[1].addressType.id" value="2"/>
+      <s:textarea readonly="readonly" name="sdffgdsfg" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66" />
 
 
   </div>				</td>
@@ -806,13 +851,13 @@ Generate Invoice
 									<b>Ordered<br>Quantity</b>
 								</div>
 							</td>
- 							<td nowrap="nowrap" width="9%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+ 							<td nowrap="nowrap" width="6%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Remaining<br>Quantity</b>
 								</div>
 							</td>
 
-							<td nowrap="nowrap" width="8%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="12%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Product<br>Rate</b>
 								</div>
@@ -856,43 +901,66 @@ Rate</b>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
-								<s:text  id="inCsh${loop.index}" value="Enter CSH No" onFocus="if(this.value=='Enter CSH No'){this.value='';}"  name="invoice.invoiceDetail[${loop.index}].cshNo" disabled="disabled" size="15" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+								<s:text name="invoice.invoiceDetail[${loop.index}].cshNo" id="inCsh${loop.index}" value="Enter CSH No *" onFocus="if(this.value=='Enter CSH No *'){this.value='';}"   disabled="disabled" size="15" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
-								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
-							    <s:text name="orderdetailarray[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inDraw${loop.index}" size="15" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+
+                                <div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
+							        <s:hidden name="invoice.invoiceDetail[${loop.index}].product.id" value="${orderdetailarray.product.id}"/>
+                                    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inDraw${loop.index}" size="15" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px;  margin-left:1px; font-size: 12px;" class="labels">
-									<s:select id="inProType${loop.index}" name="inProType" disabled="disabled" style="width:100px; margin-left:0px; font-size: 12px;" onChange="javascript: CalculateAmount(${loop.index});">
+							<%--		<s:hidden name="invoice.invoiceDetail[${loop.index}].productCategory.id" value="1"/>
+                                    <s:select id="inProType${loop.index}" name="invoice.invoiceDetail[${loop.index}].productCategory.type" disabled="disabled" style="width:100px; margin-left:0px; font-size: 12px;" onChange="javascript: CalculateAmount(${loop.index});">
 										<option value="MFG & Supply">MFG. & Supply</option>
 										<option value="Sale">Sale</option>
 										<option value="Fabrication">Fabrication</option>
 										<option value="Reimbursement">Reimbursement</option>
 										<option value="None">None</option>
-									</s:select>
+									</s:select>--%>
+                                <s:select id="inProType${loop.index}" name="invoice.invoiceDetail[${loop.index}].productCategory.id" disabled="disabled" onChange="javascript: CalculateAmount(${loop.index});">
+
+
+                                                    <c:forEach items="${prodlst}" var="ploop" >
+
+                                                                   <c:choose>
+                                                                 <c:when test="${invoicedetail.productCategory.id eq ploop.id}">
+                                                                       <option value ="<c:out value="${invoicedetail.productCategory.id}"/>" selected="selected"> <c:out value="${invoicedetail.productCategory.type}"/></option>
+                                                                 </c:when>
+
+                                                                 <c:otherwise>
+                                                               <option value ="${ploop.id}"><c:out value="${ploop.type}"/></option>
+                                                                 </c:otherwise>
+                                                                 </c:choose>
+
+
+                                                             </c:forEach>
+
+
+                                          </s:select>
+
+
 								</div>
 							</td>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-							      <s:text name="orderdetailarray[${loop.index}].orderedQuantity" value="${orderdetailarray.orderedQuantity}" id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-
+							      <s:text name="invoice.invoiceDetail[${loop.index}].dispatching" value="${orderdetailarray.orderedQuantity}" id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                                 </div>
-
-							</td>
+                        	</td>
    							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-								<s:text name="orderdetailarray[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+								<s:text name="invoice.order.orderDetail[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                                 </div>
 							</td>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                                <s:text name="orderdetailarray[${loop.index}].product.productCost" value="${orderdetailarray.product.productCost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                                <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.product.productCost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
                                     <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'MT'}">
                                         <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">MT</span>
@@ -904,19 +972,27 @@ Rate</b>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-								    <s:text name="orderdetailarray[${loop.index}].amendmentQuantity" value="${orderdetailarray.amendmentQuantity}" id="inAmdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+								    <s:text name="invoice.order.orderDetail[${loop.index}].amendmentQuantity" value="${orderdetailarray.amendmentQuantity}" id="inAmdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
 								</div>
 							</td>
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 							<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<s:text name="orderdetailarray[${loop.index}].amendmentCost" value="${orderdetailarray.amendmentCost}" id="inAmdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-								</div>
+									<s:text name="invoice.order.orderDetail[${loop.index}].amendmentCost" value="${orderdetailarray.amendmentCost}" id="inAmdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                                 <c:if test="${orderdetailarray.amendmentCost != null}">
+                                <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'MT'}">
+                                    <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">MT</span>
+                                </c:if>
+                                <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'unit'}">
+                                    <span id="utype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">unit</span>
+                                </c:if>
+                                   </c:if>
+									</div>
 							</td>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px; margin-left:1px; font-size: 12px;" class="labels">
-                            			<s:text name="orderdetailarray[${loop.index}].dispatchedQuantity" value="Enter Dispaching Qty" id="inDisp${loop.index}" size="20" onFocus="if(this.value=='Enter Dispaching Qty'){this.value='';}"
+                            			<s:text name="invoice.invoiceDetail[${loop.index}].dispatched" value="Enter Dispaching Qty" id="inDisp${loop.index}" size="20" onFocus="if(this.value=='Enter Dispaching Qty'){this.value='';}"
                                                 disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;" onchange="javascript: CalculateAmount(${loop.index});"/>
                                 </div>
 
@@ -924,7 +1000,7 @@ Rate</b>
 
 							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                                			<s:text name="avalue[${loop.index}]" value="0.00" id="inValue${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                                			<s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="0.00" id="inValue${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                         		<s:hidden name="inCount" id="inCount" value="${loop.index}"/>								</div>							</td>
 						</tr>
                               <c:if test="${loop.last}">
@@ -952,7 +1028,7 @@ Rate</b>
 							<td style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 
 								<div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-									<s:text name="inTotalAmount" id="inTotalAmount"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#FFCC66; border:0px; text-align:right;"/>
+									<s:text name="invoice.totalAmount" id="inTotalAmount"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#FFCC66; border:0px; text-align:right;"/>
 								</div>							</td>
 						</tr>
 					</table>
@@ -973,15 +1049,15 @@ Rate</b>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Excise @ <span id="t1"></span>%				</div>				</td>
               <td align="left" valign="top">
-					<s:text name="inExcise" id="inExcise" class="textbox" value="0.00"  size="22" readonly="readonly" style="text-align:right;" />
-					<s:hidden name="inExcisetax" id="inExcisetax"  size="5" readonly="readonly"/>				</td>
+					<s:text name="invoice.exciseTax" id="inExcise" class="textbox" value="0.00"  size="22" readonly="readonly" style="text-align:right;" />
+					<s:hidden name="invoice.excise" id="excise"/>				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Education_Cess @ <span id="t2"></span>%				</div>				</td>
 			  <td align="left" valign="top">
 					<div align="left">
-						<s:text name="inEducationCess" class="textbox" id="inEducationCess"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
-						<s:hidden name="inEducationCesstax" id="inEducationCesstax"  size="5" readonly="readonly"/>
+						<s:text name="invoice.educationCessTax" class="textbox" id="inEducationCess"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
+						<s:hidden name="invoice.educationCess" id="educationCess"/>
 					</div>				</td>
 			</tr>
 
@@ -990,17 +1066,17 @@ Rate</b>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Secondary & Higher <br>Edu_Cess @ <span id="t3"></span>	% </div>				</td>
               <td align="left">
-					<s:text name="inSec" id="inSec" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
-					<s:hidden name="inSectax" id="inSectax"  size="5" readonly="readonly"/>				</td>
+					<s:text name="invoice.secondaryHigherEducationCessTax" id="inSec" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
+					<s:hidden name="invoice.secondaryHigherEducationCess" id="secondaryHigherEducationCess"/>				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
-						<s:select name="inCSTS" id="inCSTS"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CSTOVAT();">
+						<s:select name="invoice.cstOvatType" id="inCSTS"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CSTOVAT();">
 										<option value="OVAT">OVAT</option>
 										<option value="CST">CST</option>
 						</s:select>
 
                         @
-                        <s:select name="inCSTSval" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
+                        <s:select name="invoice.cstOvat" id="inCSTSval"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CST();">
 
 
 						</s:select>
@@ -1012,7 +1088,9 @@ Rate</b>
 
 											</div>				</td>
               <td align="left" valign="top">
-					    <s:text name="inOvatnCst" id="inOvatnCst" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
+                           <s:hidden name="invoice.cstOvat" id="cstOvat"/>
+
+					    <s:text name="invoice.cstOvatTax" id="inOvatnCst" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
 							</td>
 			</tr>
 
@@ -1023,7 +1101,7 @@ Rate</b>
 					<div align="right" style="margin-left:15px;" class="labels">
 						<b>Tax Charges ( B )<br> (Sum of Taxes)</b>					</div>				</td>
 			  <td colspan="3" align="left" valign="top" >
-					<s:text name="inTaxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#FFCC66; "  class="textbox" readonly="readonly" value="0.00"/>				</td>
+					<s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#FFCC66; "  class="textbox" readonly="readonly" value="0.00"/>				</td>
 			</tr>
 
 			<tr>
@@ -1033,7 +1111,8 @@ Rate</b>
 					</div>
 				</td>
                 <td align="left" valign="top">
-					<s:text name="inEntryTax" class="textbox" id="inEntryTax"  value="0.00" readonly="readonly" size="22" style="text-align:right;"/>
+                    <s:hidden name="invoice.inEntryTaxGiven" id="inEntryTaxGiven"/>
+					<s:text name="invoice.entry" class="textbox" id="inEntryTax"  value="0.00" readonly="readonly" size="22" style="text-align:right;"/>
 				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
@@ -1042,7 +1121,7 @@ Rate</b>
 				</td>
                 <td align="left">
 					<div align="left">
-						<s:text name="inFright" class="textbox" id="inFright"  value="0.00" size="22" onchange="return validateFreight();" style="text-align:right;"/>
+						<s:text name="invoice.freight" class="textbox" id="inFright"  value="0.00" size="22" onchange="return validateFreight();" style="text-align:right;"/>
 					</div>
 				</td>
 			</tr>
@@ -1054,7 +1133,7 @@ Rate</b>
 					</div>
 				</td>
                 <td align="left" valign="top">
-					<s:text name="inInsurance" class="textbox" id="inInsurance"  value="0.00" size="22" onchange="return validateInsurance();" style="text-align:right;"/>
+					<s:text name="invoice.insurance" class="textbox" id="inInsurance"  value="0.00" size="22" onchange="return validateInsurance();" style="text-align:right;"/>
 				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
@@ -1063,7 +1142,7 @@ Rate</b>
 				</td>
                 <td align="left">
 					<div align="left">
-						<s:text name="inOthers" id="inOthers" class="textbox"  value="0.00" size="22" onchange="return validateOthers();" style="text-align:right;"/>
+						<s:text name="invoice.others" id="inOthers" class="textbox"  value="0.00" size="22" onchange="return validateOthers();" style="text-align:right;"/>
 					</div>
 				</td>
 			</tr>
@@ -1081,7 +1160,7 @@ Rate</b>
 					</div>
 				</td>
 				<td align="left" colspan="3" >
-					<s:text name="inOtherCharges" id="inOtherCharges"  class="textbox" type="text" size="22" readonly="readonly" value="0.00"  style="text-align:right;background-color:#FFCC66;"/>
+					<s:text name="invoice.otherCharges" id="inOtherCharges"  class="textbox" type="text" size="22" readonly="readonly" value="0.00"  style="text-align:right;background-color:#FFCC66;"/>
 				</td>
 			</tr>
 
@@ -1105,7 +1184,7 @@ Rate</b>
 									<b><u>Advance Available</u> &nbsp;</b>
 									<img src="images/Rupee.JPG"/>&nbsp;
 
-									<s:text name="advance.amountReceived" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountReceived" value="${invoiceBean.advance.amountRemained}" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 
 								</div>
 							</td>
@@ -1120,7 +1199,7 @@ Rate</b>
 							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
 								<div align="center">
 
-									<s:text name="inGrandTotal" id="inGrandTotal"  class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+									<s:text name="invoice.grandTotal" id="inGrandTotal"  class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1128,14 +1207,14 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="advanceDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
 							</td>
 							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
 								<div align="center">
-        		<s:text name="inNetPayable" class="textbox" id="inNetPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+        		<s:text name="invoice.netPayable" class="textbox" id="inNetPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
 								</div>
 							</td>
 						</tr>
@@ -1150,7 +1229,7 @@ Rate</b>
 								<div align="center" class="labels" style="margin-top: 10px;">
 									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
 								&nbsp;&nbsp;
-									<s:text name="advance.amountReceived" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+									<s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
 								</div>&nbsp;
 							</td>
 						</tr>
@@ -1167,25 +1246,15 @@ Rate</b>
 						Issue Time					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="inIssue" id="inIssue" class="textbox"  size="12" style="text-align:right;"/>
-						<s:select name="inIssueAMPM" class="dropdown" id="inIssueAMPM" style="width:58px; margin-left:0px;">
-							<option value="AM">
-								AM							</option>
-							<option value="PM">
-								PM							</option>
-						</s:select>					</div>				</td>
+						<s:text name="invoice.issueTime" id="inIssue" class="textbox" readonly="readonly"   style="text-align:right;"/>
+								</div>				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Removal Time					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="inRemoval" class="textbox"  id="inRemoval" type="text" size="12" style="text-align:right;"/>
-						<s:select name="inRemovalAMPM" class="dropdown" id="inRemovalAMPM" style="width:58px; margin-left:0px;">
-							<option value="AM">
-								AM							</option>
-							<option value="PM">
-								PM							</option>
-						</s:select>					</div>				</td>
+						<s:text name="invoice.removalTime" class="textbox"  id="inRemoval" readonly="readonly"  style="text-align:right;"/>
+										</div>				</td>
 			</tr>
 
 			<tr>
@@ -1200,7 +1269,7 @@ Rate</b>
 						Station To					</div>				</td>
 			  <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="inst" class="textbox"  id="inst"  size="22" value=""/>				</div>				</td>
+						<s:text name="invoice.stationto" class="textbox"  id="inst"  size="22" value=""/>				</div>				</td>
 			</tr>
 
 			<tr>
@@ -1209,13 +1278,13 @@ Rate</b>
 						Des Adv No.					</div>				</td>
               <td align="left">
 						<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-							<s:text name="indesno" class="textbox"  id="indesno"  value="" size="22"/>					</div>					</td>
+							<s:text name="invoice.desAdvNo" class="textbox"  id="indesno"  value="" size="22"/>					</div>					</td>
 					<td>
 						<div align="right" style="margin-left:15px;" class="labels">
 						FGN No.					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="infgnno" class="textbox"  id="infgnno"  value="" size="22"/>				</div>				</td>
+						<s:text name="invoice.fgnNo" class="textbox"  id="infgnno"  value="" size="22"/>				</div>				</td>
 			</tr>
             <tr>
             	<td align="right" valign="top">
@@ -1223,13 +1292,13 @@ Rate</b>
 						Mode of Dispatch					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="inmode" id="inmode"  value="" size="22" class="textbox" />					</div>				</td>
+						<s:text name="invoice.modeOfDispatch" id="inmode"  value="" size="22" class="textbox" />					</div>				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Vehicle No.					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invehicle" id="invehicle" type="text" value=""  size="22" class="textbox" />					</div>				</td>
+						<s:text name="invoice.vehicleNo" id="invehicle" type="text" value=""  size="22" class="textbox" />					</div>				</td>
 			</tr>
             <tr>
 				<td align="right" valign="top">
@@ -1237,45 +1306,22 @@ Rate</b>
 						No. of Packages					</div>				</td>
               <td align="left">
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="inpack" id="inpack"  value="" class="textbox"  size="22" style="text-align:right;"/>				</div>				</td>
+						<s:text name="invoice.noOfPackages" id="inpack"  value="" class="textbox"  size="22" style="text-align:right;"/>				</div>				</td>
 			</tr>
-
-			<%-- <tr>
-				<td>
-					<div align="left" style="margin-left:15px;" class="labels">
-						Debit Entry No.					</div>				</td>
-                <td width="3%" align="center" valign="top">
-<div align="center" class="labels">
-						<b>:</b>					</div>				</td>
-<td align="left">
-					<div align="left">
-						<input name="inDebitEntry" id="inDebitEntry" type="text" value="" size="22">
-					</div>				</td>
-				<td>
-					<div align="left" style="margin-left:15px;" class="labels">
-						Date					</div>				</td>
-                <td width="3%" align="center" valign="top">
-<div align="center" class="labels">
-			  <b>:</b> </div>				</td>
-<td align="left">
-					<div align="left">
-	<input type="text" readonly="readonly" size="22" name="inDebitEntryDate" id="inDebitEntryDate" <% if(d1!=null){ %> value="<%= d1 %>" <% } %>>
-											</div>				</td>
-			</tr> --%>
 			<tr>
 				<td align="right" valign="top">
 					<div align="right" style="margin-left:15px;" class="labels">
 						Region & BR A/C Code					</div>				</td>
 			  <td align="left">
 					<div align="left">
-						<s:text name="inbrcode" id="inbrcode" class="textbox"   value="" size="22"/>
+						<s:text name="invoice.regBr" id="inbrcode" class="textbox"   value="" size="22"/>
 					</div>				</td>
 				<td>
 					<div align="right" style="margin-left:15px;" class="labels">
 						Contract Note No. & Date					</div>				</td>
               <td align="left">
 					<div align="left">
-						<s:text name="incontract" id="incontract" class="textbox"   value="" size="22"/>
+						<s:text name="invoice.contNoteDate" id="incontract" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox"  />
 					</div>				</td>
 			</tr>
             <tr>
@@ -1284,14 +1330,14 @@ Rate</b>
 						RR/GCN No.						</div>					</td>
 			  <td align="left">
 							<div align="left">
-								<s:text name="inrrgcn" id="inrrgcn" class="textbox"   value="" size="22"/>
+								<s:text name="invoice.rrgcnNo" id="inrrgcn" class="textbox"   value="" size="22"/>
 						</div>						</td>
 					<td>
 						<div align="right" style="margin-left:15px;" class="labels">
 							Documents Through							</div>						</td>
               <td align="left">
 							<div align="left">
-						  		<s:text name="inDocuments" class="textbox"  id="inDocuments"  value="" size="22"/>
+						  		<s:text name="invoice.documentsThrough" class="textbox"  id="inDocuments"  value="" size="22"/>
 			  	        </div>						</td>
 				</tr>
 					<tr>
@@ -1303,7 +1349,7 @@ Rate</b>
 				  Remarks						</div>					</td>
 				  <td align="left" colspan="3">
 
-						<s:textarea name="inremark" wrap="off" id="inremark" style="height: 60px; width:694px;border:1px solid #FFCC66; text-align: left;resize:none"/>
+						<s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:694px;border:1px solid #FFCC66; text-align: left;resize:none"/>
 												</td>
 					</tr>
 				  	<tr>
@@ -1312,19 +1358,30 @@ Rate</b>
 					<tr>
 						<td>&nbsp;						</td>
                         <td align="left" colspan="2">
-							<s:hidden  name="hdnAct" id="hdnAct" value=""/>
-							<input type="button" value="Preview" class="buttons" name="inpreview" id="inpreview"  style="width:80px; margin-left: 60px;" onClick="return ValidateInvoice('Preview');">
+							<%--<s:hidden  name="hdnAct" id="hdnAct" value=""/>--%>
+							<%--<input type="button" value="Preview" class="buttons" name="inpreview" id="inpreview"  style="width:80px; margin-left: 60px;" onClick="return ValidateInvoice('Preview');">--%>
 
-							<input type="button" value="Generate" class="buttons" name="ingenerate" id="ingenerate" style="width:80px; margin-left: 20px;" onClick="return ValidateInvoice('Print');">
+                      <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
+
+
+                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+
+
+                      <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
+
+							<s:submit name="addgenerate" value="Generate" />
 													&nbsp;&nbsp;
-							<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">
-						</td>
+							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 
-				</tr>    </table></td></tr>
+                            &nbsp;&nbsp; <s:submit name="addpreview" value="Preview"></s:submit>
+                        </td>
+
+				</tr>
 </table>
 
  </s:form>
           </c:if>
+      </div>
 
 </s:layout-component>
  </s:layout-render>

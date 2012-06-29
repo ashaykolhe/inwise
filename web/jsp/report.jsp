@@ -45,7 +45,7 @@ $(document).ready(function(){
          $("#fromtoradio").attr("checked", false);
      $("#yearlyradio").attr("checked", false);
          $("#monthlyradio").attr("checked", false);
- })
+ });
    $("#taxradio").click(function(){
   $(".byinvoice").show();
         $(".prodorcust").hide();
@@ -64,7 +64,7 @@ $(document).ready(function(){
          $("#fromtoradio").attr("checked", false);
      $("#yearlyradio").attr("checked", false);
          $("#monthlyradio").attr("checked", false);
- })
+ });
     $("#prodradio").click(function(){
   $(".autocompleteprod").show();
         $(".autocompletecust").hide();
@@ -79,7 +79,7 @@ $(document).ready(function(){
           if ($('input[name=radio]:checked').val() == "byyearly" ) {
              $(".textyear").show();
         }
- })
+ });
     /* $("#alltaxradio").click(function(){
   $(".autocompleteprod").hide();
         $(".autocompletecust").hide();
@@ -102,7 +102,7 @@ $(document).ready(function(){
           if ($('input[name=radio]:checked').val() == "byyearly" ) {
              $(".textyear").show();
         }
- })
+ });
      $('input:radio[name="prodorcust"]').change(function(){
           if($(this).val() == 'byprod'){
            // alert("Give the Item Name.");
@@ -125,7 +125,7 @@ $(document).ready(function(){
         $("input#autocompletec").autocomplete({
             source: availableTags
         });
-               })
+               });
           }
 //$('#autocompletep').change(function()
 //{
@@ -165,12 +165,12 @@ $(document).ready(function(){
            $("#radio8").attr("checked", false);
       }
 
- })
+ });
     $("#radio9").click(function(){
       $(".forselectdate").show();
      $("#dailytable").hide();
          $("#textboxh").val("");
-    })
+    });
     $("#radio8").click(function(){
       $(".forselectdate").hide();
 
@@ -205,7 +205,7 @@ $(document).ready(function(){
      $("#a").hide();
       }
 
- })
+ });
      $("#monthlyradio").click(function(){
 //   if ($('input[name=stock]:checked').val() == "byInvoice" )
   $(".textboxfromto").hide();
@@ -233,7 +233,7 @@ $(document).ready(function(){
      $("#a").hide();
       }
 
- })
+ });
 
     $("#yearlyradio").click(function(){
         // if ($('input[name=stock]:checked').val() == "byInvoice" )
@@ -265,7 +265,7 @@ $(document).ready(function(){
 
       }
 
- })
+ });
     $("#prodradio").click(function(){
 $("#autocompletep").val("");
          $("#fromto").val("");
@@ -277,7 +277,7 @@ $("#autocompletep").val("");
          $("#dailytable").hide();
          $("#alltaxtable").hide();
 
-})
+});
     $("#custradio").click(function(){
         $("#autocompletec").val("");
          $("#fromto").val("");
@@ -288,7 +288,7 @@ $("#autocompletep").val("");
         $("#producttable").hide();
          $("#dailytable").hide();
          $("#alltaxtable").hide();
-})
+});
     $("#alltaxradio").click(function(){
          $(".autocompleteprod").hide();
         $(".autocompletecust").hide();
@@ -326,7 +326,7 @@ $("#autocompletep").val("");
            $("#dailytable").hide();
           $("#producttable").hide();
      }
-    })
+    });
 
     //for validation.....
      $("#getselectbydatebtn").click(function()
@@ -479,16 +479,17 @@ Report
               <tr class="fortodaydate" style="display:none; border-bottom:1 ">
                    <td width="8%"  align="left" valign="top"></td>
                    <td width="1%"  align="right" valign="top">
-                  <div id="inv" style="display:none;"> <s:link beanclass="com.inwise.action.ReportActionBean" event="bytoday">
+                  <div id="inv" style="display:none;">
+                      <s:link beanclass="com.inwise.action.ReportActionBean" event="bytoday">
 
                       <s:param name="stock" value="byInvoice"></s:param>
                        <s:radio  value="byToday" id="radio8"  name="daily"></s:radio>
                        </s:link></div>
-                        <div id="inta" style="display:none;"> <s:link beanclass="com.inwise.action.ReportActionBean" event="bytoday">
+                        <%--<div id="inta" style="display:none;"> <s:link beanclass="com.inwise.action.ReportActionBean" event="bytoday">
 
                             <s:param name="stock" value="byTax"></s:param>
                        <s:radio  value="byToday" id="radio8"  name="daily"></s:radio>
-                       </s:link></div>
+                       </s:link></div>--%>
                    </td>
                    <td width="8%"  align="left" valign="top">By Today</td>
                    <td width="1%">&nbsp;</td>

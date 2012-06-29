@@ -1,5 +1,4 @@
 package com.inwise.dao;
-
 import com.inwise.pojo.Advance;
 import com.inwise.pojo.Order;
 import com.wideplay.warp.persist.Transactional;
@@ -37,7 +36,7 @@ public class AdvanceDao extends BaseDao<Advance,Integer>{
 
                Advance advance=(Advance)sessionProvider.get().createCriteria(Advance.class).add(Restrictions.eq("order.id",orderid)).uniqueResult();
         advance.setAmountRemained(amt);
-        System.out.println("advance "+advance);
+        
         super.save(advance);
                 
     }
