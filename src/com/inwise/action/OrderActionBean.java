@@ -43,6 +43,15 @@ public class OrderActionBean extends BaseActionBean{
     private List<Order> orderlst;
     private int invoiceToAddressId;
     private int shipmentToAddressId;
+    private Integer invoicenum;
+
+    public Integer getInvoicenum() {
+        return invoicenum;
+    }
+
+    public void setInvoicenum(Integer invoicenum) {
+        this.invoicenum = invoicenum;
+    }
 
     public int getInvoiceToAddressId() {
         return invoiceToAddressId;
@@ -197,8 +206,14 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution getCustomerOrderNo(){
         orderlst=orderDao.getCustomerOrderNo(id);
+
         return new JavaScriptResolution(orderlst);
     }
+/*public Resolution getInvoiceNumber(){
+
+        invoicenum=orderDao.getInvoiceNumber();
+        return new JavaScriptResolution(invoicenum);
+    }*/
 
     public Resolution customerOrderNoAlreadyPresent()
     {

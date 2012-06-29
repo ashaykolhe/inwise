@@ -260,9 +260,9 @@ Payment Status
                      <tr>
                         <td>&nbsp;</td>
                     </tr>
-                    <tr><td><s:hidden name="payment.invoice.id" value="${statusBean.invoice.id}"></s:hidden> </td></tr>
+                    <tr><td><s:hidden name="payment.invoice.invoiceNumber" value="${statusBean.invoice.invoiceNumber}"></s:hidden> </td></tr>
                      <%--<tr><td><s:hidden name="payment.user" value="${user.id}"></s:hidden> </td></tr>--%>
-                    <tr><td><s:hidden name="id" value="${statusBean.invoice.id}"></s:hidden> </td>
+                    <tr><td><%--<s:hidden name="id" value="${statusBean.invoice.id}"></s:hidden> --%></td>
                     </tr>
                     <tr>
                         <td  colspan="4"><div align="center">

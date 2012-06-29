@@ -165,7 +165,7 @@ public class PaymentStatusActionBean extends BaseActionBean{
     }
     public Resolution print()
     {
-        invoice=invoiceDao.listwithDueAmount(invoiceDao.find(id),paymentdao.listAll()) ;
+        invoice=invoiceDao.listwithDueAmount(invoiceDao.findByInvoiceNumber(invoice.getInvoiceNumber()),paymentdao.listAll()) ;
        // customer=customerDao.find(id);
         customerlst=customerDao.listAll();
        paymentlst=paymentdao.listAll();
@@ -178,7 +178,7 @@ public class PaymentStatusActionBean extends BaseActionBean{
       
     public Resolution addPayment()
     {
-         System.out.println("add payment after get is aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+id);
+
         System.out.println("logged in user "+getContext().getUser());
         payment.setUser(getContext().getUser());
         //test=paymentdao.checkinvoiceid(id);

@@ -249,7 +249,7 @@ function getInvoiceNumber(){
              var options = '<option value="">---Select Invoice Number---</option>';
                      for (var i = 0; i <1; i++) {
 
-                         options += '<option value="' + data[i].id + '">' + data[i].invoiceNumber + '</option>';
+                         options += '<option value="' + data[i].invoiceNumber + '">' + data[i].invoiceNumber + '</option>';
                      }
                      $("#inid").html(options);
           });
@@ -894,7 +894,7 @@ Update Invoice
 
 	    </td>
             <span style="display:none;"  id="invoiceno" >${invoiceBean.invoice.invoiceNumber}</span>
-                 <span style="display:none;"  id="invoiceid" >${invoiceBean.invoice.id}</span>
+                 <span style="display:none;"  id="invoiceid" >${invoiceBean.invoice.invoiceNumber}</span>
 
 
 
@@ -1657,7 +1657,7 @@ Rate</b>
 
                       <s:hidden name="invoice.order.id" value="${invoiceBean.invoice.order.id}"/>
                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
-                      <s:hidden name="invoice.id" value="${invoiceBean.invoice.id}"/>
+                    
                       <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
 
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>

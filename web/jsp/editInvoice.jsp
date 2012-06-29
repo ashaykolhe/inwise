@@ -71,6 +71,8 @@
                                                  {
                                                      $('#inCSTSval').show();
                                                      $('#t6').hide();
+                                                     $('#cstOvat').hide();
+
                                                      ooid.options[0]=new Option(t4,t4,false,true);
 
                                                  }
@@ -78,6 +80,7 @@
                                                     {
                                                         $('#inCSTSval').show();
                                                         $('#t6').hide();
+                                                        $('#cstOvat').hide();
                                                         ooid.options[1]=new Option(t5,t5,false,true);
 
                                                     }
@@ -91,6 +94,9 @@
                             }
 
                             if(j==5){
+                                
+
+
                                 document.getElementById("cstOvat").value=data[j].taxPercentage;
                                 
                             }
@@ -378,6 +384,8 @@ function CSTOVAT()
                            else
                         {
                           $('#inCSTSval').hide();
+
+
                         $('#t6').show();
                             inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
      document.getElementById("inOvatnCst").value=inOvatnCstTax;
@@ -385,7 +393,7 @@ function CSTOVAT()
          document.getElementById("inTaxCharges").value=inTaxChargesTax;
                             inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
                                     document.getElementById("inEntryTax").value=inEntryTaxT;
-                            alert(calinFright);
+
         inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
              document.getElementById("inOtherCharges").value=inOtherChargesTax;
 
@@ -1218,7 +1226,6 @@ Rate</b>
 
 											</div>				</td>
               <td align="left" valign="top">
-                           <s:hidden name="invoice.cstOvat" id="cstOvat"/>
 
 					    <s:text name="invoice.cstOvatTax" id="inOvatnCst" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
 							</td>
@@ -1492,14 +1499,14 @@ Rate</b>
 
                       <s:hidden name="invoice.order.id" value="${invoiceBean.invoice.order.id}"/>
                       <s:hidden name="invoice.invoiceNumber" value="${invoiceBean.invoice.invoiceNumber}"/>
-                      <s:hidden name="invoice.id" value="${invoiceBean.invoice.id}"/>
+
                          <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
                      
                        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
-							<s:submit class="previewnupdatebtn" name="editupdate" value="Update" />
+							<s:submit class="previewnupdatebtn" name="editgenerate" value="Generate" />
 													&nbsp;&nbsp;
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 

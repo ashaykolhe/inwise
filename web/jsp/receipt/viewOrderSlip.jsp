@@ -404,7 +404,7 @@
 	}
     $(document).ready(function(){
             $('#printPDF').click(function(){
-                        alert("in pdf creation");
+                      
                 $('#hide').css("display","none");
                 $('#content').attr("value",$('#printContent').html());
 
@@ -463,7 +463,7 @@
 							</td>
 							<td nowrap style="background:#ffffff; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000; border-top:2px  solid #000000;">
 								<div align="center" style="font-family:Verdana; font-size:9px">
-								<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.contNoteDate}"/></b>
+								<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.createDate}"/></b>
 								</div>
 							</td>
 						</tr>
@@ -475,8 +475,15 @@
 							</td>
 							<td nowrap style="background:#ffffff; height:25px; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
 								<div align="center" style="font-family:Times New Roman; font-size:9px">
+                                     <c:choose>
+                                         <c:when test="${invoiceBean.invoice.issueTime != null}">
+                                              <b>${invoiceBean.invoice.issueTime}</b>
+                                         </c:when>
+                                         <c:otherwise>
+                                             <b>-</b>
+                                         </c:otherwise>
+                                     </c:choose>
 
-										<b>${invoiceBean.invoice.issueTime}</b>
 
 								</div>
 							</td>
@@ -489,8 +496,14 @@
 							</td>
 							<td nowrap style="background:#ffffff; color:#000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
 								<div align="center" style="font-family:Times New Roman; font-size:9px">
-
-										<b>${invoice.removalTime}</b>
+                                         <c:choose>
+                                         <c:when test="${invoiceBean.invoice.removalTime != null}">
+                                              <b>${invoiceBean.invoice.removalTime}</b>
+                                         </c:when>
+                                         <c:otherwise>
+                                             <b>-</b>
+                                         </c:otherwise>
+                                     </c:choose>
 
 								</div>
 							</td>
@@ -514,7 +527,9 @@
 								<div align="left" style="margin-left:2px; font-family:Times New Roman; font-size:9px">
 									DATE
 									<div align="right" style="margin-right:1px; font-family:Verdana; font-size:9px;">
-										<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.createDate}"/></b>
+
+                                        <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.createDate}"/></b>
+
 									</div>
 								</div>
 							</td>
@@ -546,17 +561,28 @@
 									<div align="left" style="margin-left:7px; margin-top:4px; font-family:Times New Roman; font-size:9px">
 									Tin No :
 									<div align="left" style="margin-left:60px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
-										<b>
-															<b>${invoice.customer.tinNo}</b>
-														</b>
+									         <c:choose>
+                                         <c:when test="${invoice.customer.tinNo != null}">
+                                              <b><b>${invoice.customer.tinNo}</b></b>
+                                         </c:when>
+                                         <c:otherwise>
+                                             <b>-</b>
+                                         </c:otherwise>
+                                     </c:choose>
+
 									</div>
 								</div>
 								<div align="left" style="margin-left:7px; margin-top:5px; font-family:Times New Roman; font-size:9px">
 									Ecc No :
 									<div align="left" style="margin-left:60px;  margin-top:-14px; margin-right:7px; font-family:Verdana; font-size:9px;">
-										<b>
-															<b>${invoice.customer.eccNo}</b>
-														</b>
+                                        <c:choose>
+                                            <c:when test="${invoice.customer.eccNo != null}">
+                                                 <b><b>${invoice.customer.eccNo}</b></b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 									</div>
 								</div>
 								</div>
@@ -592,8 +618,15 @@
 												<div align="left" style="margin-left:7px; font-family:Times New Roman; font-size:9px">
 													Des. Adv. No.
 													<div align="right" style="margin-right:7px; margin-top:5px; font-family:Times New Roman; font-size:9px;">
+                                                        <c:choose>
+                                                            <c:when test="${invoice.desAdvNo!= null}">
+                                                                <b>${invoice.desAdvNo}</b>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <b>-</b>
+                                                            </c:otherwise>
+                                                        </c:choose>
 
-															<b>${invoice.desAdvNo}</b>
 
 													</div>
 												</div>
@@ -604,7 +637,15 @@
 												<div align="left" style="margin-left:7px; font-family:Times New Roman; font-size:9px">
 													Date
 													<div align="right" style="margin-right:1px; margin-top:5px; font-family:Verdana; font-size:9px;">
-														<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.createDate}"/></b>
+														                                                        <c:choose>
+                                                            <c:when test="${invoiceBean.invoice.createDate != null}">
+                                                        <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.createDate}"/></b>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <b>-</b>
+                                                            </c:otherwise>
+                                                        </c:choose>
+
 													</div>
 												</div>
 											</td>
@@ -625,7 +666,15 @@
 								<div align="left" style="margin-left:7px; margin-top:2px; font-family:Times New Roman; font-size:9px">
 									SALES REP CODE :
 									<div align="right" style="margin-right:3px; font-family:Verdana; font-size:9px">
-										 ${invoice.salesRepCode}
+										  <c:choose>
+                                                            <c:when test="${invoice.salesRepCode!= null}">
+                                                                <b>${invoice.salesRepCode}</b>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <b>-</b>
+                                                            </c:otherwise>
+                                                        </c:choose>
+
 									</div>
 								</div>
 							</td>
@@ -641,8 +690,15 @@
 								<div align="left" style="margin-left:7px; margin-top:2px; font-family:Times New Roman; font-size:9px; ">
 									STATION TO :
 									<div align="right" style="margin-right:3px; font-family:Verdana; font-size:9px;">
+                                       <c:choose>
+                                                            <c:when test="${invoice.stationto!= null}">
+                                                                	<b>${invoice.stationto}</b>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <b>-</b>
+                                                            </c:otherwise>
+                                                        </c:choose>
 
-											<b>${invoice.stationto}</b>
 
 									</div>
 								</div>
@@ -651,8 +707,15 @@
 								<div align="left" style="margin-left:7px; margin-top:2px; font-family:Times New Roman; font-size:9px">
 									FGN No.
 									<div align="right" style="margin-right:3px; font-family:Times New Roman; font-size:9px;">
+                                          <c:choose>
+                                                            <c:when test="${invoice.fgnNo!= null}">
+                                                                <b>${invoice.fgnNo}</b>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <b>-</b>
+                                                            </c:otherwise>
+                                                        </c:choose>
 
-											<b>${invoice.fgnNo}</b>
 
 									</div>
 								</div>
@@ -669,11 +732,14 @@
 						  <div align="center" style="margin-left:0px; margin-right:0px; margin-top:5px; font-family:Times New Roman; font-size:9px">
 									REGION & BR A/C CODE
 									<div align="right" style="margin-left:1px; margin-right:1px; font-family:Verdana; font-size:9px;">
-
-
-												${invoice.regBr}
-
-
+                                        <c:choose>
+                                            <c:when test="${invoice.regBr!= null}">
+                                                <b>${invoice.regBr}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 									</div>
 								</div>
 							</td>
@@ -707,8 +773,15 @@
                                       AMENDMENT NO. :
 								</div>
 								<div align="right" style="margin-right:7px; margin-left:140px; margin-top:-15px; font-family:Verdana; font-size:9px; ">
+                                           <c:choose>
+                                            <c:when test="${invoice.order.amendmentNo!= null}">
+                                                <b>${invoice.order.amendmentNo}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 
-											${invoice.order.amendmentNo}
 
 										</div>
 
@@ -716,8 +789,15 @@
 									AMENDMENT DATE :
 								</div>
 								<div align="right" style="margin-right:7px; margin-top:-15px; font-family:Verdana; font-size:9px; ">
+                                         <c:choose>
+                                            <c:when test="${invoice.order.amendmentDate!= null}">
+                                               <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.order.amendmentDate}"/></b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 
-										<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.order.amendmentDate}"/></b>
 
 								</div>
 							</td>
@@ -726,8 +806,15 @@
 <div align="left" style="margin-left:7px; margin-right:7px; margin-top:5px; font-family:Times New Roman; font-size:9px">
 									CONTRACT NOTE No. & DATE
 									<div align="right" style="margin-top:5px; font-family:Verdana; font-size:9px">
+                                       <c:choose>
+                                            <c:when test="${invoice.contNoteDate!= null}">
+                                             <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.contNoteDate}"/></b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 
-											<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoice.contNoteDate}"/></b>
 
 									</div>
 								</div>
@@ -782,8 +869,14 @@
 						<tr style="border-left:1px solid #000000; border-right:1px solid #000000; border-bottom:1px  solid #000000;height:50px">
 	                    	<td valign="top" style="background:#ffffff; border-right:1px solid #000000;border-left:1px solid #000000; ">
 								<div align="center" style="margin-top:7px; font-family:Verdana; font-size:9px">
-
-											${invoicedetail.drawingNo}
+<c:choose>
+                                            <c:when test="${invoicedetail.drawingNo!= null}">
+                                             <b>${invoicedetail.drawingNo}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
 
 								</div>
 							</td>
@@ -814,9 +907,14 @@
 							</td>
 	                    	<td nowrap valign="top" style="background:#ffffff; border-right:1px solid #000000; ">
 								<div align="center" style="margin-right:1px; margin-left:1px; margin-top:7px; font-family:Verdana; font-size:9px">
-
-
-									 ${invoicedetail.productCost}
+                                        <c:choose>
+                                        <c:when test="${orderdetail.amendmentQuantity > 0}">
+                                                       ${orderdetail.amendmentCost}
+                                        </c:when>
+                                        <c:otherwise>
+                                                    ${invoicedetail.productCost}
+                                        </c:otherwise>
+                                    </c:choose>
 
 
 								</div>
@@ -824,8 +922,17 @@
 							<td valign="top" nowrap style="background:#ffffff; border-right:1px solid #000000; ">
 								<div align="right" style="margin-right:1px; margin-left:1px; margin-top:7px; font-family:Verdana; font-size:9px">
 								<strong	>
+                                    <c:choose>
+                                                                           <c:when test="${orderdetail.amendmentQuantity > 0}">
+                                                                               ${invoicedetail.dispatched * orderdetail.amendmentCost}
+                                                                           </c:when>
+                                                                           <c:otherwise>
+                                                                                   ${invoicedetail.dispatched * invoicedetail.productCost}
 
-								${invoicedetail.dispatched * invoicedetail.productCost}
+                                                                           </c:otherwise>
+                                                                       </c:choose>
+
+
 
 </strong>
 								</div>
@@ -846,7 +953,15 @@
 					<b>* Remarks :</b>
                  </div>
 				<div align="left" style="margin-top: -12px; margin-left:75px; font-family:Verdana; font-size:9px;">
-                        ${invoice.remark}
+                        <c:choose>
+                                            <c:when test="${invoice.remark!= null}">
+                                             <b>${invoice.remark}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
 				</div>
 			</td>
 	                    </tr>
@@ -874,7 +989,14 @@
                       		EXCISE<br>PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:2px; font-family:Verdana; font-size:9px">
-                      		${invoice.excise}%
+                      		<c:choose>
+                                                                         <c:when test="${invoice.excise!= null}">
+                                                                         <b>${invoice.excise}%</b>
+                                                                         </c:when>
+                                                                         <c:otherwise>
+                                                                             <b>-</b>
+                                                                         </c:otherwise>
+                                                                     </c:choose>
                       	</div>
                     </td>
                     <td width="78px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -882,7 +1004,15 @@
                  	  		E.CESS PAYABLE
                  	  	</div>
                  	  	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:2px; font-family:Verdana; font-size:9px">
-                 	  		${invoice.educationCess}%
+                 	  	     <c:choose>
+                                            <c:when test="${invoice.educationCess!= null}">
+                                            <b> ${invoice.educationCess}%</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
                  	  	</div>
                  	  </td>
                  	  <td width="75px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -890,7 +1020,15 @@
                       		S&H EDU CESS PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-top:2px; margin-bottom:0px; font-family:Verdana; font-size:9px">
-                      		${invoice.secondaryHigherEducationCess}%
+                      		<c:choose>
+                                            <c:when test="${invoice.secondaryHigherEducationCess!= null}">
+                                      <b>  ${invoice.secondaryHigherEducationCess}%</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
                       	</div>
                       </td>
                       <td width="92px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -907,7 +1045,15 @@
                       		<br>PAYABLE
                       	</div>
                       	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                      		${invoice.cstOvat}%
+                      		<c:choose>
+                                            <c:when test="${invoice.cstOvat!= null}">
+                                            <b> ${invoice.cstOvat}%</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
                       	</div>
                       </td>
                       <td width="90px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -917,7 +1063,15 @@
                       </td>
                       <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                       <strong>	<div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px; font-family:Verdana; font-size:9px">
-                                   ${invoice.totalAmount}
+                                   <c:choose>
+                                            <c:when test="${invoice.totalAmount!= null}">
+                                            <b>  ${invoice.totalAmount}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
                       	</div></strong>
                       </td>
                 </tr>
@@ -925,32 +1079,80 @@
                     <td rowspan="2" valign="center" width="116px" style="background:#ffffff; border-left:2px solid #000000; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-top:5px; font-family:Verdana; font-size:9px">
                     		<img align="left" style="margin-left:1px;" src="images/Rupee.JPG" width="10" height="13">
-                    			blank
+                    		 <c:choose>
+                                            <c:when test="${invoice.totalAmount!= null}">
+                                            <b>  ${invoice.totalAmount}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
                     	</div>
                    </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                    <div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-	                    	${invoice.exciseTax}
+	                    	 <c:choose>
+                                            <c:when test="${invoice.exciseTax!= null}">
+                                            <b>${invoice.exciseTax}</b>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <b>-</b>
+                                            </c:otherwise>
+                                        </c:choose>
+
 	                    </div>
 	                </td>
 	                <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		${invoice.educationCessTax}
+                            <c:choose>
+                                <c:when test="${invoice.educationCessTax!= null}">
+                                <b>		${invoice.educationCessTax}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
+
                     	</div>
                     </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		${invoice.secondaryHigherEducationCessTax}
+                    		<c:choose>
+                                <c:when test="${invoice.secondaryHigherEducationCessTax!= null}">
+                                <b>	${invoice.secondaryHigherEducationCessTax}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
                     <td style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px  solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		${invoice.taxCharges}
+                    		<c:choose>
+                                <c:when test="${invoice.taxCharges!= null}">
+                                <b>	${invoice.taxCharges}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
                     <td style="background:#ffffff; height:25px; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="right" style="margin-right:1px; margin-left:1px; font-family:Verdana; font-size:9px">
-                    		${invoice.cstOvatTax}
+                    		<c:choose>
+                                <c:when test="${invoice.cstOvatTax!= null}">
+                                <b>	${invoice.cstOvatTax}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                    </td>
                    <td rowspan="2" width="84px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -960,7 +1162,15 @@
                     </td>
                     <td rowspan="2" valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                     	  <strong><div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px; font-family:Verdana; font-size:9px">
-                    		${invoice.otherCharges}
+                            <c:choose>
+                                <c:when test="${invoice.otherCharges!= null}">
+                                <b>	${invoice.otherCharges}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div></strong>
                     </td>
                   </tr>
@@ -983,7 +1193,15 @@
                     		FREIGHT
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		${invoice.freight}
+                    		<c:choose>
+                                <c:when test="${invoice.freight!= null}">
+                                <b>	${invoice.freight}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
 					<td width="72px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -991,7 +1209,15 @@
                     		INSURANCE
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		${invoice.insurance}
+                    		<c:choose>
+                                <c:when test="${invoice.insurance!= null}">
+                                <b>${invoice.insurance}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
                     <td width="80px" colspan="2" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -999,15 +1225,39 @@
                     		OTHERS
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:0px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		${invoice.others}
+                    		<c:choose>
+                                <c:when test="${invoice.others!= null}">
+                                <b>	${invoice.others}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
                     <td valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
                     	<div align="left" style="margin-left:7px; margin-top:10px; font-family:Times New Roman; font-size:9px">
-                    		ENTRY TAX&nbsp;&nbsp;${invoice.inEntryTaxGiven}%
+                    		ENTRY TAX&nbsp;&nbsp;
+                    		<c:choose>
+                                <c:when test="${invoice.inEntryTaxGiven!= null}">
+                                <b>	${invoice.inEntryTaxGiven}%</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
                     	</div>
                     	<div align="right" style="margin-right:1px; margin-left:1px; margin-top:5px; font-family:Verdana; font-size:9px">
-                    		${invoice.entry}
+                    		<c:choose>
+                                <c:when test="${invoice.entry!= null}">
+                                <b>	${invoice.entry}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div>
                     </td>
                     <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -1017,7 +1267,15 @@
                     </td>
                     <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
                     	  <strong><div align="right" style="margin-right:0px; margin-top:0px; margin-bottom:1px;  font-family:Verdana; font-size:9px;">
-                    		${invoice.grandTotal}
+                    		<c:choose>
+                                <c:when test="${invoice.grandTotal!= null}">
+                                <b>${invoice.grandTotal}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                     	</div></strong>
                     </td>
                  </tr>
@@ -1034,7 +1292,15 @@
 	                       	  	DEBIT ENTRY NO.
 	                       	  </div>
 	                       	  <div align="right" style="margin-right:1px; margin-left:1px; margin-top:2px; font-family:Verdana; font-size:9px">
-                                 ${invoice.debitEntryNo}
+                                 <c:choose>
+                                <c:when test="${invoice.debitEntryNo!= null}">
+                                <b>	${invoice.debitEntryNo}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
                                  </div>
 	                        </td>
 	                    	<td width="88px" valign="top" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
@@ -1042,7 +1308,15 @@
 	                    			DATE
 	                    		</div>
 	                    		<div align="right" style="margin-right:1px; margin-left:1px; margin-top:2px; font-family:Verdana; font-size:9px">
-                                        <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.debitEntryDate}"/></b>
+                                       <c:choose>
+                                <c:when test="${invoiceBean.invoice.debitEntryDate!= null}">
+                            <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.debitEntryDate}"/></b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
 	                    		</div>
 	                   		</td>
 	                        <td style="background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
@@ -1129,21 +1403,44 @@
 		                        	<tr>
 		                        		<td valign="middle" style="height: 26px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-                                                    ${invoiceBean.advance.id}
+                                             <c:choose>
+                                <c:when test="${invoiceBean.advance.id!= null}">
+                                <b>${invoiceBean.advance.id}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
+											</div>
+		                        		</td>
+		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
+		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
+                                                <c:choose>
+                                <c:when test="${invoiceBean.advance.createDate!= null}">
+                                <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.advance.createDate}"/></b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
+
+
 											</div>
 		                        		</td>
 		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
 
+                                                <c:choose>
+                                <c:when test="${invoiceBean.advance.amountReceived!= null}">
+                                <b>	${invoiceBean.advance.amountReceived}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-											<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.advance.createDate}"/></b>
-
-											</div>
-		                        		</td>
-		                        		<td valign="middle" style="height: 25px; background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
-		                        			<div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-
-												${invoiceBean.advance.amountReceived}
 
 											</div>
 		                        		</td>
@@ -1157,7 +1454,15 @@
 							</td>
 							<td valign="middle" style="height: 25px; background:#ffffff; border-right:2px solid #000000; border-bottom:1px solid #000000;">
 								<strong><div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-									 ${invoiceBean.invoice.amountDetect}
+									 <c:choose>
+                                <c:when test="${invoiceBean.invoice.amountDetect!= null}">
+                                <b>	${invoiceBean.invoice.amountDetect}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
 								</div></strong>
 							</td>
 						</tr>
@@ -1173,8 +1478,15 @@
 	                       	  	DOCUMENTS THROUGH :
 	                       	  </div>
 	                       	  <div align="left" style="margin-right:1px; margin-left:120px; margin-top:-13px; font-family:Verdana; font-size:9px">
+                                        <c:choose>
+                                <c:when test="${invoiceBean.invoice.documentsThrough!= null}">
+                                <b>	${invoiceBean.invoice.documentsThrough}&nbsp;</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-										${invoiceBean.invoice.documentsThrough}&nbsp;
 
 	                    		</div>
 	                        </td>
@@ -1185,7 +1497,15 @@
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:2px solid #000000; border-bottom:2px solid #000000;">
 	                       	 <strong> <div align="right" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-	                       	  	${invoice.netPayable}
+	                       	            <c:choose>
+                                <c:when test="${invoice.netPayable!= null}">
+                                <b>	${invoice.netPayable}</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
 	                       	  </div></strong>
 	                        </td>
 	                    </tr>
@@ -1225,35 +1545,71 @@
 	                    <tr>
 	                		<td width="122PX" valign="middle" style="height:25px; background:#ffffff; border-right:1px solid #000000; border-left:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
+                                         <c:choose>
+                                <c:when test="${invoiceBean.invoice.modeOfDispatch!= null}">
+                                <b>	${invoiceBean.invoice.modeOfDispatch}&nbsp;</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-										${invoiceBean.invoice.modeOfDispatch}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td width="104px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
+                                        <c:choose>
+                                <c:when test="${invoiceBean.invoice.noOfPackages != null}">
+                                <b>	${invoiceBean.invoice.noOfPackages}&nbsp;</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-										${invoiceBean.invoice.noOfPackages}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td width="112px" valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
+                                          <c:choose>
+                                <c:when test="${invoiceBean.invoice.vehicleNo!= null}">
+                                <b>	${invoiceBean.invoice.vehicleNo}&nbsp;</b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-										${invoiceBean.invoice.vehicleNo}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
+                                         <c:choose>
+                                <c:when test="${invoiceBean.invoice.rrgcnNo!= null}">
+                                ${invoiceBean.invoice.rrgcnNo}&nbsp;
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
 
-										${invoiceBean.invoice.rrgcnNo}&nbsp;
 
 	                       	  </div>
 	                        </td>
 	                        <td valign="middle" style="background:#ffffff; border-right:1px solid #000000; border-bottom:1px solid #000000;">
 	                       	  <div align="center" style="margin-left:1px; margin-right:1px; margin-top:0px; font-family:Verdana; font-size:9px">
-	                       	  	<b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.contNoteDate}"/></b>
+	                       	        <c:choose>
+                                <c:when test="${invoiceBean.invoice.contNoteDate!= null}">
+                                <b><fmt:formatDate pattern="yyyy-MM-dd" value="${invoiceBean.invoice.contNoteDate}"/></b>
+                                </c:when>
+                                <c:otherwise>
+                                    <b>-</b>
+                                </c:otherwise>
+                            </c:choose>
+
 	                       	  </div>
 	                        </td>
 	                    </tr>
@@ -1413,7 +1769,7 @@
 					</div>
 				</td>
 			</tr>
-			<tr id="hide">
+
 				<td colspan="6" align="right">
                     <s:hidden name="content" id="content"/>
 					   <s:hidden name="invoicenumber" value="${invoice.invoiceNumber}"/>

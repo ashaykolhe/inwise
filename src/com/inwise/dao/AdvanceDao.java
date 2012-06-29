@@ -1,5 +1,4 @@
 package com.inwise.dao;
-
 import com.inwise.pojo.Advance;
 import com.inwise.pojo.Order;
 import com.wideplay.warp.persist.Transactional;

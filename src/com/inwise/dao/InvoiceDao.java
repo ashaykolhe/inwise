@@ -6,6 +6,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
 import java.util.Date;
@@ -99,6 +100,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         {
             System.out.println("Exception :"+e);
         }
+         
         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.createDate LIKE '"+sdate+"%'").list();
     }
     public List<Invoice> findByInvoiceCustomerId(Integer id) {
@@ -112,7 +114,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
             rd.setDueQuantity(rd.getNetPayable());
             for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();){
                 Payment pay=ipay.next();
-                if(rd.getId().equals(pay.getInvoice().getId())){
+                if(rd.getInvoiceNumber().equals(pay.getInvoice().getInvoiceNumber())){
                     a=pay.getReceivedAmount();
                     temp=temp+a;
                     rd.setDueQuantity(rd.getNetPayable()-temp);
@@ -133,7 +135,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         for(Iterator<Payment> ipay=paymentList.iterator();ipay.hasNext();)
         {
             Payment pay=ipay.next();
-            if(invoice.getId().equals(pay.getInvoice().getId())){
+            if(invoice.getInvoiceNumber().equals(pay.getInvoice().getInvoiceNumber())){
                 a=pay.getReceivedAmount();
                 temp=temp+a;
                 invoice.setDueQuantity(invoice.getNetPayable()-temp);
@@ -146,9 +148,12 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
     }
 
 
-    public Integer getMaxInvoiceNumber() {
+    public Long getMaxInvoiceNumber() {
+        //return (Integer)sessionProvider.get().createSQLQuery("select invoice_number from invoice order by invoice_number desc").setMaxResults(1).uniqueResult();
 
-        return (Integer)sessionProvider.get().createQuery("select max(invoiceNumber) from Invoice").uniqueResult();
+        Long i=(Long)sessionProvider.get().createQuery("select max(invoice.invoiceNumber)from Invoice invoice").uniqueResult();
+        return i;
+
 
     }
 
@@ -778,10 +783,12 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
             cntrtcell.setBorder(Rectangle.NO_BORDER);
             cntrtcell.setFixedHeight(15f);
             contrttable.addCell(cntrtcell );
-            String contractdate;
-            contractdate = (advance.getCreateDate().toString()).substring(0,10);
+             String contractdate=null;
+                if(invoice.getContNoteDate()!=null)
+                {
+         contractdate = (invoice.getContNoteDate().toString()).substring(0,10);
             contractdate = contractdate.substring(8,10)+"/"+contractdate.substring(5,7)+"/"+contractdate.substring(0,4);
-
+                }
 
             if(contractdate!=null && !contractdate.equals("")){
             PdfPCell cntrtcellval = new PdfPCell(new Phrase(contractdate, FontFactory.getFont(FontFactory.TIMES_ROMAN, 8)));
@@ -839,12 +846,12 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
 //START OF 6ND ROW
             PdfPTable sxthrwmntable=new PdfPTable(table6width);
 
-
+             Iterator<OrderDetail> iterateorder1 = invoice.getOrder().getOrderDetail().iterator();
             Iterator<InvoiceDetail> iterateinvoice1 = invoice.getInvoiceDetail().iterator();
 
             while(iterateinvoice1.hasNext())
             {
-
+                OrderDetail orderdetail=iterateorder1.next();
                 InvoiceDetail invoicedetail=iterateinvoice1.next();
                 String sid=null;
                 if(invoicedetail!=null)
@@ -870,14 +877,32 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                 Double idispatching= invoicedetail.getDispatching();
                 String sdispatching = idispatching.toString();
 
-                Double ipcost= invoicedetail.getProductCost();
+                String spcost;
+                String samount;
+                Double iamendment= orderdetail.getAmendmentQuantity();
+
+                if(iamendment>0)
+                {
+                String samendment = iamendment.toString();
+
+                Double ipcost= orderdetail.getAmendmentCost();
                 NumberFormat ipcostformatter = new DecimalFormat("#0.00");
-                String spcost = ipcostformatter.format(ipcost);
+                 spcost = ipcostformatter.format(ipcost);
 
                 Double iamount= idispatched * ipcost;
                 NumberFormat iamountformatter = new DecimalFormat("#0.00");
-                String samount = iamountformatter.format(iamount);
+                 samount = iamountformatter.format(iamount);
+                }
+                else
+                {
+                   Double ipcost= invoicedetail.getProductCost();
+                NumberFormat ipcostformatter = new DecimalFormat("#0.00");
+                spcost = ipcostformatter.format(ipcost);
 
+                Double iamount= idispatched * ipcost;
+                NumberFormat iamountformatter = new DecimalFormat("#0.00");
+                 samount = iamountformatter.format(iamount);
+                }
                 if(invoice.getInvoiceDetail().size()==1)
                 {
                     PdfPCell itmcellval = new PdfPCell(new Phrase(sid, FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
@@ -905,13 +930,13 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                     PdfPCell desccellval = new PdfPCell(producttable);
                     desccellval.setHorizontalAlignment(Element.ALIGN_LEFT);
                     sxthrwmntable.addCell(desccellval);
-                    if(productbywght.equals("perkg")){
-                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatching+"  MT", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
+                    if(productbywght.equals("MT")){
+                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatched+"  MT", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
                         descell2val.setHorizontalAlignment(Element.ALIGN_CENTER);
                         sxthrwmntable.addCell(descell2val);
                     }
                     else{
-                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatching, FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
+                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatched, FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
                         descell2val.setHorizontalAlignment(Element.ALIGN_CENTER);
                         sxthrwmntable.addCell(descell2val);
                     }
@@ -951,13 +976,13 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                     PdfPCell desccellval = new PdfPCell(producttable);
                     desccellval.setHorizontalAlignment(Element.ALIGN_LEFT);
                     sxthrwmntable.addCell(desccellval);
-                    if(productbywght.equals("perkg")){
-                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatching+"  MT", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
+                    if(productbywght.equals("unit")){
+                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatched+"  unit", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
                         descell2val.setHorizontalAlignment(Element.ALIGN_CENTER);
                         sxthrwmntable.addCell(descell2val);
                     }
                     else{
-                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatching, FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
+                        PdfPCell descell2val = new PdfPCell(new Phrase(sdispatched, FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
                         descell2val.setHorizontalAlignment(Element.ALIGN_CENTER);
                         sxthrwmntable.addCell(descell2val);
                     }
@@ -1450,7 +1475,7 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
             amtcell.setBorder(Rectangle.BOTTOM);
             recipttable.addCell(amtcell);
 
-            if(invoice.getTotalAmount()!=0)
+            if(invoice.getAmountRemained()!=0)
             {
                 int irno = advance.getId();
                 String srno = new Integer(irno).toString();
@@ -1467,7 +1492,7 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                 recipttable.addCell(repcellval);
             }
 
-            if(advance.getCreateDate()!=null)
+             if(invoice.getAmountRemained()!=0)
             {
 
                 String sst,stt;
@@ -1488,7 +1513,7 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
 
             }
 
-            if(advance.getAmountReceived()!=0)
+             if(invoice.getAmountRemained()!=0)
             {
                 double iadvanceamount = advance.getAmountReceived();
                 NumberFormat iadvanceformatter = new DecimalFormat("#0.00");
@@ -2039,5 +2064,20 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
 
     public List<ProductCategory> getProductCategorylst() {
         return (List<ProductCategory>) sessionProvider.get().createQuery("from ProductCategory").list();
+    }
+
+    public List<Invoice> findInvoiceByOrderDate(String sdate) {
+         sdate=sdate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(sdate);
+            sdate = formatter.format(date);
+
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.createDate LIKE '"+sdate+"%'").list();
     }
 }

@@ -8,6 +8,24 @@
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" />
+<c:set var = "TR1" value="invoicereceipt"/>
+<c:if test="${actionBean.hiddenvalue eq TR1}">
+    <script type="text/javascript">
+        function OpenPopup(){
+            var w = 900;
+            var h = 700;
+            var winl = (screen.width-w)/2;
+            var wint = (screen.height-h)/2;
+            if (winl < 0) winl = 0;
+            if (wint < 0) wint = 0;
+            var page = "invoice?redirectorderpopup=&id="+${actionBean.id}+"";
+            windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no," + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
+            window.open(page, "Popup", windowprops);
+            return;
+        }
+        window.onLoad =OpenPopup();
+    </script>
+</c:if >
   <script type="text/javascript">
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;//parseFloat(document.getElementById("inTotalAmount").value);
@@ -28,6 +46,7 @@
     var floatExp = /^[0-9.]+$/;
      $(document).ready(function() {
          $('#inCSTSval').hide();
+  
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
@@ -183,10 +202,11 @@
     function getCustomerOrder(){
    /*     this.form.action='order?getCustomerOrderNo';
         this.form.submit();*/
-        $('.trid').show();
+
         $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
 
              var data=eval(result);
+
              var options = '<option value="">---Select Customer Order No---</option>';
                      for (var i = 0; i < data.length; i++) {
 
@@ -194,6 +214,7 @@
                      }
                      $("#inoid").html(options);
           });
+           $('.trid').show();
 
     }
 
@@ -805,6 +826,7 @@ Generate Invoice
                                  {
                                      $('.trid').show();
                                  }
+
                          });
 
                      </script>
@@ -913,13 +935,13 @@ Generate Invoice
 							</td>
 							<td nowrap="nowrap" width="5%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
-									<b>ITEM NO.</b>
+									<b>Item No.</b>
 									<br>&nbsp;
 								</div>
 							</td>
 							<td nowrap="nowrap" width="9%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
 								<div align="center" style="margin-top:5px; margin-bottom:5px;  margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
-									<b>TARIFF ITEM No.</b>
+									<b>Tariff Item No.</b>
 									<br>&nbsp;
 								</div>
 							</td>
@@ -1272,9 +1294,14 @@ Rate</b>
 								<div align="center" class="labels">
 									<b><u>Advance Available</u> &nbsp;</b>
 									<img src="images/Rupee.JPG"/>&nbsp;
-									
-									<s:text name="invoice.amountReceived" value="${invoiceBean.advance.amountRemained}" id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
-
+									<c:choose>
+                                     <c:when test="${invoiceBean.advance.amountRemained != null}">
+									<s:text name="invoice.amountReceived"   value="${invoiceBean.advance.amountRemained}"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                                    </c:when>
+                                        <c:otherwise>
+                                    <s:text name="invoice.amountReceived"   value="0.00"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                                        </c:otherwise>
+                                    </c:choose>
 								</div>
 							</td>
 							<td width="2%" align="left" valign="top">
@@ -1317,8 +1344,14 @@ Rate</b>
 							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
 								<div align="center" class="labels" style="margin-top: 10px;">
 									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
-								&nbsp;&nbsp;
+                                    <c:choose>
+                                <c:when test="${invoiceBean.advance.amountRemained != null}">
 									<s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                      <s:text name="invoice.amountRemained" id="inAdvanceRemain" value="0.00"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                                    </c:otherwise>
+                                    </c:choose>
 								</div>&nbsp;
 							</td>
 						</tr>
@@ -1453,6 +1486,7 @@ Rate</b>
                       <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
 
 
+
                       <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
                                 
@@ -1463,6 +1497,8 @@ Rate</b>
 							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
 						
                             &nbsp;&nbsp; <s:submit class="generatenpreviewbtn" name="addpreview" value="Preview"></s:submit>
+                            &nbsp;&nbsp; <s:submit name="cancel" value="Cancel"/>
+
                         </td>
 
 				</tr>    
