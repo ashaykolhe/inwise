@@ -29,6 +29,9 @@ public class InvoiceActionBean extends BaseActionBean{
      InvoiceDao  invoiceDao;
     @Inject
     AdvanceDao advanceDao;
+    @Inject
+    InvoiceNumberDao invoiceNumberDao;
+
 
 
      @Inject
@@ -214,6 +217,9 @@ public String getCustomerOrderNo() {
                    {
                        invoice.setCreateDate(new Date());
                    }
+                Integer invoicenum=invoiceNumberDao.find(1).getValue();
+                              ++invoicenum;
+                invoice.setInvoiceNumber(invoicenum);
 
             }
             List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
@@ -279,20 +285,34 @@ public String getCustomerOrderNo() {
                    {
                        invoice.setCreateDate(new Date());
                    }
+                InvoiceNumber inNum=invoiceNumberDao.find(1);
+                Integer invoicenum=inNum.getValue();
+                              invoicenum=invoicenum+1;
+                invoice.setInvoiceNumber(invoicenum);
 
-            }
+                inNum.setValue(invoicenum);
+
+                invoiceNumberDao.save(inNum);
+             }
         invoice=invoiceDao.save(invoice);
     return new RedirectResolution(InvoiceActionBean.class,"pre").addParameter("id",invoice.getInvoiceNumber()).addParameter("hiddenvalue","invoicereceipt");
     }
     public Resolution previewgenerate()
     {
-
-        invoice=invoiceDao.find(invoice.getInvoiceNumber());
+        invoice=invoiceDao.findByInvoiceNumber(invoice.getInvoiceNumber());
+      
         if(invoice!=null){
             if (invoice.getCreateDate() == null)
             {
                 invoice.setCreateDate(new Date());
+
             }
+            InvoiceNumber inNum=invoiceNumberDao.find(1);
+                Integer invoicenum=inNum.getValue();
+                 invoicenum=invoicenum+1;
+                inNum.setValue(invoicenum);
+
+                invoiceNumberDao.save(inNum);
 
         }
         List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
@@ -391,6 +411,15 @@ public String getCustomerOrderNo() {
                            continue;
                        }
                     }
+        if(invoice!=null)
+        {
+        InvoiceNumber inNum=invoiceNumberDao.find(1);
+                        Integer invoicenum=inNum.getValue();
+                         invoicenum=invoicenum+1;
+                        inNum.setValue(invoicenum);
+
+                        invoiceNumberDao.save(inNum);
+        }
                 invoice.setDeleted(0);
                 invoice.setDebitEntryDate(new Date());
                 invoice.setDebitEntryNo("d12");
@@ -477,7 +506,7 @@ public String getCustomerOrderNo() {
     public Resolution printpdf()
     {
 
-        invoice=invoiceDao.findByInvoiceNumber(invoice.getInvoiceNumber());
+        invoice=invoiceDao.findByInvoiceNumber(getId());
         List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
                 InvoiceDetail id=null;
                    for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
@@ -512,6 +541,7 @@ public String getCustomerOrderNo() {
     }
     public Resolution redirectorderpopup()
     {
+
           hiddenvalue="invoicepdf";
         invoice=invoiceDao.findByInvoiceNumber(getId());
         

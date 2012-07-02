@@ -2,10 +2,7 @@ package com.inwise.action;
 
 import com.google.inject.Inject;
 
-import com.inwise.dao.OrderDao;
-import com.inwise.dao.CustomerDao;
-import com.inwise.dao.InvoiceDao;
-import com.inwise.dao.AdvanceDao;
+import com.inwise.dao.*;
 import com.inwise.pojo.Customer;
 import com.inwise.pojo.Order;
 import com.inwise.pojo.Invoice;
@@ -34,6 +31,8 @@ public class PrintActionBean extends BaseActionBean
     InvoiceDao invoiceDao;
     @Inject
     AdvanceDao advanceDao;
+     @Inject
+     PaymentDao paymentdao;
 
 
     List<Order> orderNoList;
@@ -224,7 +223,7 @@ public class PrintActionBean extends BaseActionBean
          printBy="byInvoice";
         custNameIdList=orderDao.getCustomerForAdvance();
         orderNoList=orderDao.getCustomerOrderNo(id);
-        invoiceList=invoiceDao.findByOrderId(customerOrderNo);
+       invoiceList=invoiceDao.listAllwithDueAmount(invoiceDao.findByOrderId(customerOrderNo),paymentdao.listAll());
         if(invoiceList.size()>0)
         {
             visibleInvoiceTable="yes";

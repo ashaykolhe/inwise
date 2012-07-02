@@ -23,6 +23,7 @@
         <mapping class="com.inwise.pojo.Advance"/>
         <mapping class="com.inwise.pojo.Customer"/>
         <mapping class="com.inwise.pojo.Invoice"/>
+        <mapping class="com.inwise.pojo.InvoiceNumber"/>
         <mapping class="com.inwise.pojo.InvoiceDetail"/>
         <mapping class="com.inwise.pojo.Order"/>
         <mapping class="com.inwise.pojo.OrderDetail"/>

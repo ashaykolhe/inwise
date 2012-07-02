@@ -881,7 +881,7 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                 String samount;
                 Double iamendment= orderdetail.getAmendmentQuantity();
 
-                if(iamendment>0)
+                if(iamendment !=null)
                 {
                 String samendment = iamendment.toString();
 

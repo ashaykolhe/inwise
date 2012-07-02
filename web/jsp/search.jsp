@@ -365,9 +365,10 @@ $(document).ready(function() {
 <c:if test="${actionBean.customer!=null}">
     <c:if test="${actionBean.searchSubmenu eq 'custName'}">
         <table class="t" id="grntable" width="100%"><tr><td>
-            <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
+            <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
                 <d:column property="name" title="Name"/>
+                <d:column property="createDate" title="Create Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
                 <d:column property="contactPerson" title="Contact Person Name"/>
                 <d:column property="contactNo1" title="Contact No :1"/>
                 <d:column property="contactNo2" title="Contact No :2"/>
@@ -377,9 +378,10 @@ $(document).ready(function() {
     </c:if>
     <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
         <table class="t" id="grntable" width="100%"><tr><td>
-            <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search?search">
+            <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
                 <d:column property="name" title="Name"/>
+             <d:column property="createDate" title="Create Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
                 <d:column property="contactPerson" title="Contact Person Name"/>
                 <d:column property="contactNo1" title="Contact No :1"/>
                 <d:column property="contactNo2" title="Contact No :2"/>
@@ -390,10 +392,10 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${actionBean.invoice!=null and fn:startsWith(actionBean.searchSubmenu,'invoice')}">
     <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search?search">
+        <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Invoice Date"/>
+            <d:column property="createDate" title="Invoice Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
              <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${c.invoiceNumber}"></s:param>
@@ -411,10 +413,10 @@ $(document).ready(function() {
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerName')}">
 
     <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="invoicelst" id="c1" pagesize="10"  class="disp" requestURI="search?search">
+        <d:table name="invoicelst" id="c1" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Invoice Date"/>
+            <d:column property="createDate" title="Invoice Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${c1.invoiceNumber}"></s:param>
@@ -431,10 +433,10 @@ $(document).ready(function() {
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerOrderNo')}">
 
     <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search?search">
+        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Invoice Date"/>
+            <d:column property="createDate" title="Invoice Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${c.invoiceNumber}"></s:param>
@@ -451,10 +453,10 @@ $(document).ready(function() {
 <c:if test="${actionBean.invoicelst!=null and fn:startsWith(actionBean.searchSubmenu,'invoiceDate' )}">
 
     <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search?search">
+        <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Invoice Date"/>
+            <d:column property="createDate" title="Invoice Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${c.invoiceNumber}"></s:param>
@@ -468,16 +470,7 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
-<%--<c:if test="${actionBean.orderlst!=null}">
 
-    <table class="t" id="grntable" width="100%"><tr><td>
-        <d:table name="orderlst" id="c" pagesize="10" class="disp" requestURI="search?search">
-            <d:column property="customerOrderNo" title="Customer Order Number"/>
-            <d:column property="customer.name" title="Customer Name"/>
-            <d:column property="createDate" title="Order Date"/>
-
-        </d:table></td></tr></table>
-</c:if>--%>
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerOrderNumber')}">
 
     <table  class="t" id="grntable" width="100%"><tr><td>
@@ -574,7 +567,7 @@ $(document).ready(function() {
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerName')}">
 
     <table  class="t" id="grntable" width="100%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search?search">
+        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -667,7 +660,7 @@ $(document).ready(function() {
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderDate')}">
 
     <table  class="t" id="grntable" width="100%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search?search">
+        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -747,7 +740,6 @@ $(document).ready(function() {
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
-
                     <s:param name="name" value="${invoice.order.createDate}"></s:param>
                     <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
                     <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>

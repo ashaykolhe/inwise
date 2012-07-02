@@ -300,8 +300,8 @@ $(document).ready(function()
                             <td width="5%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;" >${loop.index+1}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.invoiceNumber}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.createDate}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.totalAmount}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.netPayable}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><fmt:formatNumber type="number" pattern="##.##" value="${invoices.netPayable}"/></span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><fmt:formatNumber type="number" pattern="##.##" value="${invoices.dueQuantity}"/></span></strong></div></td>
                             <td width="10%" style=""><div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceReceipt">
                                 <s:param name="id" value="${invoices.customer.id}"/>
                                 <s:param name="customerOrderNo" value="${invoices.order.id}"/>

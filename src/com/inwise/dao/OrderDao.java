@@ -75,7 +75,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
 
 
     public List<Order> findByOrderDate(String sdate) {
-        sdate=sdate.replace("/","-");
+        sdate=sdate.replace("/","-");                                          
         try{
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = (Date)formatter.parse(sdate);
