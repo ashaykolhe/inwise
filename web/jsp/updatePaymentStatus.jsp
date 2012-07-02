@@ -189,7 +189,7 @@ Payment Status
                         </td>
                         <td width="30%" align="left" valign="top">
                             <div align="left">
-                              <s:select  name="mode" id="modedropdown" class="dropdown">
+                              <s:select  name="payment.paymentMode.id" id="modedropdown" class="dropdown">
                         <option value="">---Select mode---</option>
 
 				<c:forEach items="${paymodelst}" var="paymode" varStatus="loop" >
@@ -221,8 +221,8 @@ Payment Status
                         </td>
                         <td width="30%" align="left" valign="top">
                             <div align="left">
-                               <s:text name="payment.paymentMode.id" class="textbox" id="paymentmode" ></s:text>
-                                <%--<s:hidden name="payment.id" />--%>
+                               <s:text name="payment.chequeordd" class="textbox" id="paymentmode" ></s:text>
+                               
                             </div>
                         </td>
                          <tr>
@@ -260,9 +260,9 @@ Payment Status
                      <tr>
                         <td>&nbsp;</td>
                     </tr>
-                    <tr><td><s:hidden name="payment.invoice.id" value="${statusBean.invoice.id}"></s:hidden> </td></tr>
+                    <tr><td><s:hidden name="payment.invoice.invoiceNumber" value="${statusBean.invoice.invoiceNumber}"></s:hidden> </td></tr>
                      <%--<tr><td><s:hidden name="payment.user" value="${user.id}"></s:hidden> </td></tr>--%>
-                    <tr><td><s:hidden name="id" value="${statusBean.invoice.id}"></s:hidden> </td>
+                    <tr><td><%--<s:hidden name="id" value="${statusBean.invoice.id}"></s:hidden> --%></td>
                     </tr>
                     <tr>
                         <td  colspan="4"><div align="center">

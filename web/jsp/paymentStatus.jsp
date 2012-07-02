@@ -14,7 +14,7 @@
 {
 this.form.action='paymentstatus?getStatus';
 this.form.submit();
-}); })
+}); });
  </script>
 <s:useActionBean beanclass="com.inwise.action.PaymentStatusActionBean" var="payStatusBean" event="page" ></s:useActionBean>
  <%--<%
@@ -85,7 +85,7 @@ Payment Status
 
                  <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
              <table class="t" id="invoicetable" width="100%"><tr><td>
-        <d:table name="invoicelst" pagesize="10" class="disp" id="inwise" requestURI="/PaymentStatus.action?">
+        <d:table name="invoicelst" pagesize="10" class="disp" id="inwise" requestURI="paymentstatus">
             <d:column property="invoiceNumber" title="Invoice Number"   />
             <d:column property="customer.name" title="Customer Name"   />
                <d:column property="createDate" title="Invoice Date"   format="{0,date,yyyy-MM-dd}"   />
@@ -93,7 +93,7 @@ Payment Status
               <d:column property="dueQuantity" title="Due Amount"   />
              <d:column title="Change Status" class="delete" >
              <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
-                    <s:param name="id" value="${inwise.id}"></s:param>
+                    <s:param name="invoice.invoiceNumber" value="${inwise.invoiceNumber}"></s:param>
                     <s:param name="hdnvalue" value="test"></s:param>
                    <%-- <s:param name="name" value="${purchase.purchaseOrderNo}"></s:param> --%>
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+
 /**
 * Created by IntelliJ IDEA.
 * User: Ashay
@@ -16,10 +17,9 @@ import java.util.ArrayList;
 @Table(name = "invoice")
 public class Invoice {
      @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "invoice_number",unique = true,nullable = false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_number_generator")
+    @TableGenerator(name = "invoice_number_generator",allocationSize = 1000,initialValue = 999,pkColumnName = "invoice_number",valueColumnName = "value",pkColumnValue = "number")
+    @Column(name = "invoice_number")
     private Integer invoiceNumber;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,8 +45,6 @@ public class Invoice {
     @Column(name = "sales_rep_code",length = 50)
     private String salesRepCode;
 
-    @Column(name = "amount_detect",length = 10,precision = 8)
-        private Double amountDetect;
 
     @Column(name = "total_amount",length = 10,precision = 8)
     private Double totalAmount;
@@ -143,18 +141,41 @@ public class Invoice {
     @Column(name = "remark")
     private String remark;
 
-    @Column(name = "in_entry_tax_given",length = 20)
-    private Double inEntryTaxGiven;
+    @Column(name = "amount_remained",length = 10,precision = 8)
+    private Double amountRemained;
 
+    @Column(name = "amount_received",length = 10,precision = 8)
+    private Double amountReceived;
+
+    @Column(name = "amount_detect",length = 10,precision = 8)
+    private Double amountDetect;
+    
     @Column(name = "deleted",length = 2)
     private Integer deleted;
 
-
+    @Column(name = "",length = 20)
+    private Double inEntryTaxGiven;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "invoice_has_invoicedetail",
     joinColumns = { @JoinColumn(name = "invoice_id") }, inverseJoinColumns = { @JoinColumn(name = "invoice_detail_id") })
     private List<InvoiceDetail> invoiceDetail=new ArrayList<InvoiceDetail>();
+
+    public Double getAmountReceived() {
+        return amountReceived;
+    }
+
+    public void setAmountReceived(Double amountReceived) {
+        this.amountReceived = amountReceived;
+    }
+
+    public Double getAmountRemained() {
+        return amountRemained;
+    }
+
+    public void setAmountRemained(Double amountRemained) {
+        this.amountRemained = amountRemained;
+    }
 
     public Double getAmountDetect() {
         return amountDetect;
@@ -173,14 +194,6 @@ public class Invoice {
 
     public void setDueQuantity(Double dueQuantity) {
         this.dueQuantity = dueQuantity;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getInvoiceNumber() {
@@ -514,15 +527,13 @@ public class Invoice {
     @Override
     public String toString() {
         return "Invoice{" +
-                "id=" + id +
-                ", invoiceNumber=" + invoiceNumber +
+                "invoiceNumber=" + invoiceNumber +
                 ", createDate=" + createDate +
                 ", issueTime='" + issueTime + '\'' +
                 ", removalTime='" + removalTime + '\'' +
                 ", customer=" + customer +
                 ", order=" + order +
                 ", salesRepCode='" + salesRepCode + '\'' +
-                ", amountDetect=" + amountDetect +
                 ", totalAmount=" + totalAmount +
                 ", excise=" + excise +
                 ", exciseTax=" + exciseTax +
@@ -554,8 +565,11 @@ public class Invoice {
                 ", debitEntryDate=" + debitEntryDate +
                 ", documentsThrough='" + documentsThrough + '\'' +
                 ", remark='" + remark + '\'' +
-                ", inEntryTaxGiven=" + inEntryTaxGiven +
+                ", amountRemained=" + amountRemained +
+                ", amountReceived=" + amountReceived +
+                ", amountDetect=" + amountDetect +
                 ", deleted=" + deleted +
+                ", inEntryTaxGiven=" + inEntryTaxGiven +
                 ", invoiceDetail=" + invoiceDetail +
                 ", dueQuantity=" + dueQuantity +
                 '}';

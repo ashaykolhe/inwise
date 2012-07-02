@@ -2,9 +2,11 @@ package com.inwise.action;
 import com.inwise.dao.OrderDao;
 import com.inwise.dao.CustomerDao;
 import com.inwise.dao.InvoiceDao;
+import com.inwise.dao.AdvanceDao;
 import com.inwise.pojo.Invoice;
 import com.inwise.pojo.Order;
 import com.inwise.pojo.Customer;
+import com.inwise.pojo.Advance;
 import com.inwise.utils.Converter;
 
 import javax.inject.Inject;
@@ -18,7 +20,11 @@ import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Date;
 import java.io.FileInputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,6 +40,8 @@ public class SearchActionBean extends BaseActionBean{
     @Inject
     OrderDao orderDao;
     @Inject
+    AdvanceDao advanceDao;
+    @Inject
     InvoiceDao invoiceDao;
     private List<Invoice> invoicelst;
     private List<Integer> Integerlst;
@@ -45,6 +53,15 @@ public class SearchActionBean extends BaseActionBean{
     private Order order;
     private String searchMenu,searchSubmenu,name,content,ajaxSubmenu,hdnvalue,invoicenumber;
     private String date;
+    private Advance advance;
+
+    public Advance getAdvance() {
+        return advance;
+    }
+
+    public void setAdvance(Advance advance) {
+        this.advance = advance;
+    }
 
     public String getContent() {
         return content;
@@ -180,7 +197,7 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution search()
     {
-        System.out.println("from search "+getDate());
+
 //Customer
 //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
@@ -197,13 +214,10 @@ public class SearchActionBean extends BaseActionBean{
             invoicelst=invoiceDao.findByInvoiceCustomerName(getName());
         if(searchSubmenu.equalsIgnoreCase("invoiceDate"))
         {
-
             invoicelst=invoiceDao.findByInvoiceDate(getDate());
-            System.out.println("lst :"+getInvoicelst());
-//Order
-//"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
+         //Order
+        //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
         }
-
         if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
 
         {
@@ -214,12 +228,13 @@ public class SearchActionBean extends BaseActionBean{
         if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
         {
             System.out.println("name  :"+getName());
-            order=orderDao.findByOrderCustomerName(getName());
+            orderlst=orderDao.findByOrderCustomerName(getName());
             invoicelst=orderDao.findInvoiceByCustomerName(getName());
             System.out.println("oooooooooooo"+getOrder());
         }
         if(searchSubmenu.equalsIgnoreCase("orderDate"))
-            orderlst=orderDao.findByOrderDate(getDate());
+              invoicelst=invoiceDao.findInvoiceByOrderDate(getDate());
+            //orderlst=orderDao.findByOrderDate(getDate());
         return new ForwardResolution("jsp/search.jsp");
     }
     public Resolution autoinvoice()
@@ -271,22 +286,85 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution print()
     {
-        if(hdnvalue.equalsIgnoreCase("orderCustomerOrderNumber"))
+        //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
+        System.out.println("search sub menu "+searchSubmenu);
+        System.out.println("in print"+getName());
+        if(searchSubmenu.equalsIgnoreCase("orderCustomerOrderNumber"))
         {
             hdnvalue="receiptOrderSlip";
-            searchSubmenu="orderCustomerOrderNumber";
+
             invoicelst=invoiceDao.findByInvoiceCustomerOrderNo(getName());
             order=orderDao.findByOrderCustomerOrderNumber(getName());
+        }
+        if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
+        {
+            hdnvalue="receiptOrderSlip";
+
+            invoicelst=invoiceDao.findByInvoiceCustomerName(getName());//InvoiceCustomerOrderNo(getName());
+            order=orderDao.findByOrderCustomerOrderNumber(getName());
+        }
+        if(searchSubmenu.equalsIgnoreCase("orderDate"))
+        {
+            hdnvalue="receiptOrderSlip";
+            date=invoiceDao.findByInvoiceNumber(id).getCreateDate().toString();
+            invoicelst=invoiceDao.findInvoiceByOrderDate(date);
+            date=date.replace("-","/");
+            date=date.substring(0,10);
+            order=orderDao.findByOrderCustomerOrderNumber(getName());
+        }
+        if(searchSubmenu.equalsIgnoreCase("invoiceCustomerName"))
+        {
+            System.out.println("ddd"+getName());
+            hdnvalue="receiptOrderSlip";
+            
+            invoicelst=invoiceDao.findByInvoiceCustomerName(getName());
+            
+        }
+        if(searchSubmenu.equalsIgnoreCase("invoiceCustomerOrderNo"))
+        {
+            
+            hdnvalue="receiptOrderSlip";
+            System.out.println("dfgf");
+            invoicelst=invoiceDao.findByInvoiceCustomerOrderNo(getName());
+            System.out.println("iii"+invoicelst);
+
+        }
+         if(searchSubmenu.equalsIgnoreCase("invoiceDate"))
+        {
+            System.out.println("in date");
+            hdnvalue="receiptOrderSlip";
+
+             date=invoiceDao.findByInvoiceNumber(id).getCreateDate().toString();
+
+            System.out.println(date);
+            invoicelst=invoiceDao.findByInvoiceDate(date);
+           
+
+           date=date.replace("-","/");
+            date=date.substring(0,10);
+            System.out.println(date+"ddddddddddddddaaaaaaaaaaaaaateeeeeeeeeee");
+        }
+        if(searchSubmenu.equalsIgnoreCase("invoiceNumber"))
+        {
+          
+            hdnvalue="receiptOrderSlip";
+
+            invoice=invoiceDao.findByInvoiceNumber(id);
+            
         }
         return new ForwardResolution("jsp/search.jsp");
     }
     public Resolution printpdf()
     {
-        System.out.println("content :"+content);
-        String path=null;
+         invoice=invoiceDao.findByInvoiceNumber(Integer.parseInt(invoicenumber));
+         advance=advanceDao.getAdvancedByOrderId(invoice.getOrder().getId());
+       String path=invoiceDao.createPdf(invoice,advance);
+        System.out.println("ppppppaaaaaaaattttttttthhhhhhhh"+path);
+
+        
         FileInputStream sis=null;
         try{
-            path= Converter.convert(content,"Invoice :"+invoicenumber);
+           
             sis=new FileInputStream(path);
         }catch(Exception e){
             System.out.println("achtung "+e.getMessage());
@@ -294,11 +372,13 @@ public class SearchActionBean extends BaseActionBean{
 
 
         return new StreamingResolution("application/pdf",sis);
+
     }
     public Resolution redirectorderpopup()
     {
         invoice=invoiceDao.findByInvoiceNumber(getId());
-        return new ForwardResolution("jsp/receipt/viewOrderSlip.jsp");
+        advance=advanceDao.getAdvancedByOrderId(invoice.getOrder().getId());
+        return new ForwardResolution("/jsp/receipt/viewOrderSlip.jsp");
     }
 
 }

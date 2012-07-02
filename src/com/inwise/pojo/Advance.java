@@ -23,7 +23,7 @@ public class Advance {
     @Column(name = "date")
     private Date createDate;
     
-    @Column(name = "amount_received",length = 10,precision = 8,nullable = false)
+    @Column(name = "amount_received",length = 10,precision = 8,nullable = true)
     private Double amountReceived;
 
     @Column(name = "amount_remained",length = 10,precision = 8)

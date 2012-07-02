@@ -43,6 +43,15 @@ public class OrderActionBean extends BaseActionBean{
     private List<Order> orderlst;
     private int invoiceToAddressId;
     private int shipmentToAddressId;
+    private Integer invoicenum;
+
+    public Integer getInvoicenum() {
+        return invoicenum;
+    }
+
+    public void setInvoicenum(Integer invoicenum) {
+        this.invoicenum = invoicenum;
+    }
 
     public int getInvoiceToAddressId() {
         return invoiceToAddressId;
@@ -131,13 +140,51 @@ public class OrderActionBean extends BaseActionBean{
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
         orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
+        System.out.println("oooooooooooo"+order);
         return updateOrderLink();
     }
 
-    public Resolution updateOrder(){
+    public Resolution updateOrder() {
         order.setAmendmentDate(new Date());
+
+        System.out.println(order);
+        Order temp = order;
+        OrderDetail od = null;
+        for (Iterator<OrderDetail> ite = temp.getOrderDetail().iterator(); ite.hasNext();) {
+            od=ite.next();
+                   od.setRemainingQuantity(od.getAmendmentQuantity());
+            if (od.getAmendmentCost() == null)
+                od.setAmendmentCost(od.getProduct().getProductCost());
+            else
+                od.setAmendmentCost((od.getProduct().getProductCost()) + od.getAmendmentCost());
+
+
+        }
+
+          order.setOrderDetail(temp.getOrderDetail());
+       //order.getOrderDetail().add((OrderDetail) temp.getOrderDetail());
         orderDao.save(order);
-        return new RedirectResolution(OrderActionBean.class,"updateOrderLink");
+        //  order =orderDao.find(order.getId());
+        /* order.setAmendmentDate(new Date());
+         System.out.println("------------------------------------------"+order.getId());
+         System.out.println(order);
+         Order temp=order;
+         System.out.println("tempppppppppp"+temp);
+         for(Iterator<OrderDetail> ite=temp.getOrderDetail().iterator();ite.hasNext();){
+             OrderDetail od=ite.next();
+             System.out.println("proct"+od.getProduct());
+             if( od.getAmendmentCost()==null)
+                 od.setAmendmentCost(od.getProduct().getProductCost());
+             else
+                 od.setAmendmentCost((od.getProduct().getProductCost())+od.getAmendmentCost());
+             System.out.println(order.getOrderDetail());
+             order.getOrderDetail().clear();
+             System.out.println(od);
+             order.getOrderDetail().add(od);
+         }
+         orderDao.save(order);
+        */
+        return new RedirectResolution(OrderActionBean.class, "updateOrderLink");
     }
 
     public Resolution addressAjax(){
@@ -159,8 +206,14 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution getCustomerOrderNo(){
         orderlst=orderDao.getCustomerOrderNo(id);
+
         return new JavaScriptResolution(orderlst);
     }
+/*public Resolution getInvoiceNumber(){
+
+        invoicenum=orderDao.getInvoiceNumber();
+        return new JavaScriptResolution(invoicenum);
+    }*/
 
     public Resolution customerOrderNoAlreadyPresent()
     {
@@ -176,5 +229,9 @@ public class OrderActionBean extends BaseActionBean{
     public Resolution delete(){
         orderDao.remove(id);
         return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
+    }
+
+    public Resolution checkInvoiceForThisOrderDispatched(){
+        return new JavaScriptResolution(orderDao.checkInvoiceForThisOrderDispatched(id));
     }
 }

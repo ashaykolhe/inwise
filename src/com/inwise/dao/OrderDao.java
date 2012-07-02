@@ -1,14 +1,12 @@
 package com.inwise.dao;
-
 import com.inwise.dao.BaseDao;
-import com.inwise.pojo.Order;
-import com.inwise.pojo.Customer;
 
 import java.util.List;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import com.inwise.pojo.Invoice;
+
+import com.inwise.pojo.*;
 import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
@@ -31,8 +29,13 @@ public class OrderDao extends BaseDao<Order,Integer> {
         super(Order.class);
     }
 	public List<Order> getCustomerOrderNo(Integer id) {
+        
          return (List<Order>)sessionProvider.get().createQuery(" from Order o where o.customer.id='"+id+"' and deleted='0'").list();
     }
+    /*public Integer getInvoiceNumber()
+    {
+        return (Integer)sessionProvider.get().createSQLQuery("select invoice_number from invoice order by invoice_number desc").setMaxResults(1).uniqueResult();
+    }*/
     public List<Object> getCustomerForAdvance() {
 
          List<Object> custNameIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT c.id ,c.name from customer c inner JOIN order_master o on c.id=o.customer_id ").list();
@@ -53,23 +56,20 @@ public class OrderDao extends BaseDao<Order,Integer> {
             Iterator<Object> it=custOrderIdList.iterator();
             return custOrderIdList;
        }
-
-
-
     public List<String> getOrderCustomerOrderNumber() {
-         return (List<String>)sessionProvider.get().createQuery("SELECT o.customerOrderNo from Order o").list();
+         return (List<String>)sessionProvider.get().createQuery("SELECT distinct o.customerOrderNo from Order o").list();
     }
 
     public List<String> getOrderCustomerNameLst() {
-         return (List<String>)sessionProvider.get().createQuery("SELECT o.customer.name from Order o").list();
+         return (List<String>)sessionProvider.get().createQuery("SELECT distinct o.customer.name from Order o").list();
     }
 
     public Order findByOrderCustomerOrderNumber(String name) {
-     return (Order)sessionProvider.get().createQuery("select o from Order o WHERE o.customerOrderNo='"+name+"'").uniqueResult();
+     return (Order)sessionProvider.get().createQuery("select distinct o from Order o WHERE o.customerOrderNo='"+name+"'").uniqueResult();
     }
 
-    public Order findByOrderCustomerName(String name) {
-        return (Order) sessionProvider.get().createQuery("select o from Order o where o.customer.name='"+name+"'").uniqueResult();
+    public List<Order> findByOrderCustomerName(String name) {
+        return (List<Order>) sessionProvider.get().createQuery("select distinct o from Order o where o.customer.name='"+name+"'").list();
 
     }
 
@@ -86,7 +86,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
         {
             System.out.println("Exception :"+e);
         }
-        return (List<Order>)sessionProvider.get().createQuery("select o from Order o WHERE o.createDate LIKE '"+sdate+"%'").list();
+        return (List<Order>)sessionProvider.get().createQuery("select distinct o from Order o WHERE o.createDate LIKE '"+sdate+"%'").list();
     }
     public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
         return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
@@ -118,10 +118,7 @@ public void remove(Integer id) {
     public List<Invoice> findInvoiceByCustomerOrderNumber(String name) {
         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+name+"'").list();
     }
-    public Order findOrderByOrderNo(String customerOrderNo)
-    {
-        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo="+customerOrderNo);
-    }
+    
     public Order findAOrderByOrderNo(String customerOrderNo)
     {
         return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult();
@@ -131,5 +128,39 @@ public void remove(Integer id) {
 
     public List<Invoice> findInvoiceByCustomerName(String name) {
          return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.customer.name='"+name+"'").list();
+    }
+
+    public Boolean checkInvoiceForThisOrderDispatched(Integer orderId){
+
+        Double remainingQuantity=(Double)sessionProvider.get().createSQLQuery("select sum(od.remaining_quantity) from order_master o left join order_has_orderdetail ohod on o.id=ohod.order_id left join order_detail od on od.id=ohod.order_detail_id where o.id="+orderId).uniqueResult();
+
+        return remainingQuantity==0.0;
+    }
+    @Transactional
+    public void setRemainingNDispatchedQtyForUpdateOrder(int id, List<InvoiceDetail> invoiceDetail) {
+        Order order= (Order) sessionProvider.get().createQuery("select o from Order o where o.id="+id+"").uniqueResult();
+              Iterator<OrderDetail> it=order.getOrderDetail().iterator();
+
+        for (Iterator<InvoiceDetail> invoiceDetailIterator = invoiceDetail.iterator(); invoiceDetailIterator.hasNext();) {
+            InvoiceDetail detail =  invoiceDetailIterator.next();
+                  if(it.hasNext())
+                  {
+                      OrderDetail orderdetail=it.next();
+                      if(orderdetail.getRemainingQuantity()==0.0)
+                      {
+                        
+                        continue;
+                      }
+                      else
+                      {
+                      orderdetail.setRemainingQuantity(orderdetail.getRemainingQuantity()-detail.getDispatched());
+                      orderdetail.setDispatchedQuantity(detail.getDispatched());
+                      }
+                  }
+
+      }
+        super.save(order);
+
+
     }
 }
