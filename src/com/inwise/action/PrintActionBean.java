@@ -206,6 +206,7 @@ public class PrintActionBean extends BaseActionBean
          printBy="byReceipt";
         custNameIdList=orderDao.getCustomerForAdvance();
         orderFromAdvance=orderDao.getOrderForPrint(id);
+        System.out.println(orderFromAdvance);
         if(orderFromAdvance.size()>0)
         {
             setVisibleAdvanceTable="yes";
@@ -241,6 +242,7 @@ public class PrintActionBean extends BaseActionBean
     }
     public Resolution printAdvanceReceipt()
     {
+        System.out.println("in print advance receiptyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
          popup=true;
         System.out.println("in printadv receipt"+id);
         return new RedirectResolution(PrintActionBean.class,"lst").addParameter("popup",popup).addParameter("id",id).addParameter("receiptNumber",receiptNumber);
