@@ -364,16 +364,15 @@ $(document).ready(function() {
 </table>
 <c:if test="${actionBean.customer!=null}">
     <c:if test="${actionBean.searchSubmenu eq 'custName'}">
+        
         <table class="t" id="grntable" width="100%"><tr><td>
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
-                <d:column property="name" title="Name"/>
-                <d:column property="createDate" title="Create Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+               <d:column property="name" title="Name"/>
+
                 <d:column property="contactPerson" title="Contact Person Name"/>
                 <d:column property="contactNo1" title="Contact No :1"/>
                 <d:column property="contactNo2" title="Contact No :2"/>
-
-
             </d:table></td></tr></table>
     </c:if>
     <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
@@ -381,12 +380,10 @@ $(document).ready(function() {
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
                 <d:column property="name" title="Name"/>
-             <d:column property="createDate" title="Create Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+             
                 <d:column property="contactPerson" title="Contact Person Name"/>
                 <d:column property="contactNo1" title="Contact No :1"/>
                 <d:column property="contactNo2" title="Contact No :2"/>
-
-
             </d:table></td></tr></table>
     </c:if>
 </c:if>

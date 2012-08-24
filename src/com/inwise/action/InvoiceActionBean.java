@@ -190,6 +190,7 @@ public String getCustomerOrderNo() {
 
         customerlst=customerDao.listAll();
         orderlst=orderDao.listAll();
+        System.out.println("iiiiiiiiiiiiiiiddddddddddddd "+id);
         productcategory=invoiceDao.getProductCategorylst();
         return new ForwardResolution("jsp/addInvoice.jsp");
     }
@@ -566,7 +567,7 @@ public String getCustomerOrderNo() {
               Date tdate = new Date();
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             today = formatter.format(tdate);
-        return new ForwardResolution("/jsp/receipt/invoicepreview.jsp");
+        return new ForwardResolution("jsp/receipt/InvoicePreview.jsp");
     }
 
 }

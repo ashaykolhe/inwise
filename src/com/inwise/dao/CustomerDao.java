@@ -59,11 +59,11 @@ public class CustomerDao extends BaseDao<Customer,Integer>
     }
 
     public Customer findByCustomerName(String name) {
-        return (Customer) sessionProvider.get().createQuery("SELECT c from Customer c where c.name='"+name+"' " ).uniqueResult();
+        return (Customer) sessionProvider.get().createQuery("SELECT distinct c from Customer c where c.name='"+name+"' " ).uniqueResult();
     }
 
     public Customer findByCustomerCode(String name) {
-    return (Customer) sessionProvider.get().createQuery("SELECT c from Customer c where c.customerCode='"+name+"' " ).uniqueResult();
+    return (Customer) sessionProvider.get().createQuery("SELECT distinct c from Customer c where c.customerCode='"+name+"' " ).uniqueResult();
     }
 
 /*    public boolean updateCustomer(Customer customer)

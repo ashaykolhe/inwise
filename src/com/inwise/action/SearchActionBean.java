@@ -202,7 +202,10 @@ public class SearchActionBean extends BaseActionBean{
 //Customer
 //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
+        {
             customer=customerDao.findByCustomerName(getName());
+            System.out.println("Cussssssssssttttttttooommmmmmmmmeeeerrrrrrrrrrr"+customer);
+        }
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
 //Invoice
