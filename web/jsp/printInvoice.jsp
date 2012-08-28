@@ -130,6 +130,7 @@ $(document).ready(function()
     request.setAttribute("customerNameForAdvance",listvar.getCustNameIdList());
     request.setAttribute("orederListFromAdvance",listvar.getOrderFromAdvance());
  request.setAttribute("cust",listvar.getCust());
+    request.setAttribute("invoiceLst",listvar.getInvoiceList());
 %>
 <%--<s:useActionBean beanclass="com.inwise.action.PrintActionBean" event="invoiceLst" var="listvar2"></s:useActionBean>
 <%
@@ -221,7 +222,7 @@ $(document).ready(function()
    
    </table>
 
-        <table bordercolor="#FF6600" width="77%" id="msgtable">
+        <%--<table bordercolor="#FF6600" width="77%" id="msgtable">
         <tr>
             <td width="70%" >
                 <table width="100%" cellspacing="1">
@@ -233,14 +234,29 @@ $(document).ready(function()
                 </table>
             </td>
            </tr>
-         </table>
+         </table>--%>
 
       
                 <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
-                <table width="100%" cellspacing="1">
+                <table width="77%" cellspacing="1">
                     <tr>
+                        <td>
+                            <d:table name="orederListFromAdvance" id="order" pagesize="10" class="disp" requestURI="/print">
 
-                        <table border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="ordertable" width="77%">
+                                <d:column property="customer_order_no" title="Order Number"/>
+                                <d:column property="receipt_no" title="Receipt Number"/>
+                                <d:column property="amount_received" title="Advance Amount"/>
+                                <d:column title="View">
+                                    <div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printAdvanceReceipt">
+                                <s:param name="id" value="${order.customer_id}"/>
+                                <s:param name="receiptNumber" value="${order.receipt_no}"/>
+                                <img src="images/view.gif" alt=""></s:link></strong></div>
+
+                                </d:column>
+                            </d:table>
+                        </td>
+
+                        <%--<table border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="ordertable" width="77%">
                     <tr>
                         <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Order No.</span></strong></div></td>
@@ -272,7 +288,7 @@ $(document).ready(function()
                    </tr>
                             <% i++;}%>
                     
-                            </table>
+                            </table>--%>
 
                     </tr>
                 </table>
@@ -281,9 +297,26 @@ $(document).ready(function()
              <c:if test="${actionBean.visibleInvoiceTable!=null}">
 
         
-                <table width="100%" cellspacing="1">
+                <table width="77%" cellspacing="1">
                     <tr>
-                        <table border="0"width="77%" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="invoicetable" width="100%">
+                        <td>
+                             <d:table name="invoiceLst" id="invoice" pagesize="10" class="disp" requestURI="/print">
+
+                                <d:column property="invoiceNumber" title="Invoice Number"/>
+                                <d:column property="createDate" title="Invoice Date"/>
+                                <d:column property="netPayable" title="Invoice Amount"/>
+                                <d:column property="dueQuantity" title="Due Amount"/>
+                                <d:column title="View">
+                                    <div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceReceipt">
+                                <s:param name="id" value="${invoice.customer.id}"/>
+                                <s:param name="customerOrderNo" value="${invoice.order.id}"/>
+                                <s:param name="inviceNumber" value="${invoice.invoiceNumber}"/>
+                                <img src="images/view.gif" alt=""></s:link></strong></div>
+
+                                </d:column>
+                            </d:table>
+                        </td>
+                        <%--<table border="0"width="77%" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="invoicetable" width="100%">
                     <tr>
                         <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
                         <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Invoice No.</span></strong></div></td>
@@ -300,8 +333,8 @@ $(document).ready(function()
                             <td width="5%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;" >${loop.index+1}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.invoiceNumber}</span></strong></div></td>
                             <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.createDate}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.totalAmount}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${invoices.netPayable}</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><fmt:formatNumber type="number" pattern="##.##" value="${invoices.netPayable}"/></span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;"><fmt:formatNumber type="number" pattern="##.##" value="${invoices.dueQuantity}"/></span></strong></div></td>
                             <td width="10%" style=""><div align="center"><strong><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceReceipt">
                                 <s:param name="id" value="${invoices.customer.id}"/>
                                 <s:param name="customerOrderNo" value="${invoices.order.id}"/>
@@ -311,7 +344,7 @@ $(document).ready(function()
                             </td>
                    </tr>
                      </c:forEach>
-                            </table>
+                            </table>--%>
                     </tr>
                 </table>
 

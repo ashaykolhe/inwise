@@ -797,7 +797,7 @@ Report
           <d:table name="invoicelst" id="v" pagesize="10" class="disp" requestURI="/report">
               <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column  property="createDate" format="{0,date,yyyy-MM-dd}" sortable="false" title="Create Date"/>
-              <d:column property="netPayable" title="Net Payable Amount"/>
+              <d:column property="netPayable" format="{0,number,0.00}" title="Net Payable Amount"/>
 
 
            </d:table></td></tr>
@@ -820,7 +820,7 @@ Report
           <d:table name="lst" id="v" pagesize="10" class="disp" requestURI="report">
                <d:column property="invoice_number" title="Invoice Number"/>
                   <d:column  property="create_date" format="{0,date,yyyy-MM-dd}" sortable="false" title="Create Date"/>
-              <d:column property="net_payable" title="Net Payable Amount"/>
+              <d:column property="net_payable" format="{0,number,0.00}" title="Net Payable Amount"/>
 
 
            </d:table></td></tr>
@@ -831,10 +831,10 @@ Report
           <d:table name="invoicelst" id="v" pagesize="10" class="disp" requestURI="/report" decorator="totals">
               <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column  property="createDate" format="{0,date,yyyy-MM-dd}" sortable="false" title="Create Date"/>
-              <d:column property="excise" title="Excise Tax" total="true" class="r"/>
-               <d:column property="educationCess" title="Education Cess" total="true" class="r"/>
-               <d:column property="secondaryHigherEducationCess" title="Secondary Higher Education Cess" total="true" class="r"/>
-               <d:column property="cstOvat" title="Cst Ovat" total="true" class="r"/>
+              <d:column property="excise" title="Excise Tax" format="{0,number,0.00}" total="true" class="r"/>
+               <d:column property="educationCess" title="Education Cess" format="{0,number,0.00}" total="true" class="r"/>
+               <d:column property="secondaryHigherEducationCess" format="{0,number,0.00}" title="Secondary Higher Education Cess" total="true" class="r"/>
+               <d:column property="cstOvat" format="{0,number,0.00}" title="Cst Ovat" total="true" class="r"/>
 
            </d:table></td></tr>
            </table>  </c:if>
@@ -844,10 +844,10 @@ Report
           <d:table name="lst" id="v" pagesize="10" class="disp" requestURI="/report" decorator="totals">
               <d:column property="invoice_number" title="Invoice Number" />
                   <d:column  property="create_date" format="{0,date,yyyy-MM-dd}" sortable="false" title="Create Date"/>
-              <d:column property="excise" title="Excise Tax" total="true" class="r"/>
-               <d:column property="education_cess" title="Education Cess" total="true" class="r"/>
-               <d:column property="secondary_higher_education_cess_tax" title="Secondary Higher Education Cess" total="true" class="r"/>
-               <d:column property="cst_ovat" title="Cst Ovat" total="true" class="r"/>
+              <d:column property="excise" title="Excise Tax" total="true" format="{0,number,0.00}" class="r"/>
+               <d:column property="education_cess" title="Education Cess" format="{0,number,0.00}" total="true" class="r"/>
+               <d:column property="secondary_higher_education_cess_tax" format="{0,number,0.00}" title="Secondary Higher Education Cess" total="true" class="r"/>
+               <d:column property="cst_ovat" title="Cst Ovat" format="{0,number,0.00}" total="true" class="r"/>
 
            </d:table></td></tr>
            </table>  </c:if>
@@ -856,10 +856,10 @@ Report
           <d:table name="invoicelst" id="v" pagesize="10" class="disp" requestURI="/report" decorator="totals">
               <d:column property="invoiceNumber" title="Invoice Number"/>
                   <d:column  property="createDate" format="{0,date,yyyy-MM-dd}" sortable="false" title="Create Date"/>
-              <d:column property="excise" title="Excise Tax" total="true" class="r"/>
-               <d:column property="educationCess" title="Education Cess" total="true" class="r"/>
-               <d:column property="secondaryHigherEducationCess" title="Secondary Higher Education Cess" total="true" class="r"/>
-               <d:column property="cstOvat" title="Cst Ovat" total="true" class="r"/>
+              <d:column property="excise" format="{0,number,0.00}" title="Excise Tax" total="true" class="r"/>
+               <d:column format="{0,number,0.00}" property="educationCess" title="Education Cess" total="true" class="r"/>
+               <d:column format="{0,number,0.00}" property="secondaryHigherEducationCess" title="Secondary Higher Education Cess" total="true" class="r"/>
+               <d:column property="cstOvat" format="{0,number,0.00}" title="Cst Ovat" total="true" class="r"/>
 
            </d:table></td></tr>
            </table>  </c:if>

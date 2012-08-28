@@ -89,8 +89,8 @@ Payment Status
             <d:column property="invoiceNumber" title="Invoice Number"   />
             <d:column property="customer.name" title="Customer Name"   />
                <d:column property="createDate" title="Invoice Date"   format="{0,date,yyyy-MM-dd}"   />
-             <d:column property="netPayable" title="Invoice Amount"   />
-              <d:column property="dueQuantity" title="Due Amount"   />
+             <d:column property="netPayable" format="{0,number,0.00}"  title="Invoice Amount"   />
+              <d:column property="dueQuantity" format="{0,number,0.00}" title="Due Amount"   />
              <d:column title="Change Status" class="delete" >
              <s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="print" >
                     <s:param name="invoice.invoiceNumber" value="${inwise.invoiceNumber}"></s:param>

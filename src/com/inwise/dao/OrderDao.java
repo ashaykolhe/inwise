@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
+import org.hibernate.Criteria;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,9 +47,14 @@ public class OrderDao extends BaseDao<Order,Integer> {
   /*-----------------  this method is for getting order nos for those advance is made-------------*/
     public List<Object> getOrderForPrint(Integer id)
     {
-        List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,a.receipt_no,a.amount_received,o.customer_id from order_master o INNER JOIN advance a on o.id=a.order_id where customer_id="+id).list();
-         Iterator<Object> it=custOrderIdList.iterator();
-         return custOrderIdList;
+        List results;
+       String sql="SELECT DISTINCT o.customer_order_no,a.receipt_no,a.amount_received,o.customer_id from order_master o INNER JOIN advance a on o.id=a.order_id where customer_id="+id;
+       Query query = sessionProvider.get().createSQLQuery(sql);
+        //List<Object> custOrderIdList=sessionProvider.get().createSQLQuery("SELECT DISTINCT o.customer_order_no,a.receipt_no,a.amount_received,o.customer_id from order_master o INNER JOIN advance a on o.id=a.order_id where customer_id="+id).list();
+       query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+       results = query.list();
+       return results;
+        
     }
    /*------------------this method is for getting the order no..for those advance is not made*/
     public List<Object> getOrderForAdvance(Integer id)
@@ -75,7 +82,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
 
 
     public List<Order> findByOrderDate(String sdate) {
-        sdate=sdate.replace("/","-");
+        sdate=sdate.replace("/","-");                                          
         try{
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = (Date)formatter.parse(sdate);

@@ -16,9 +16,7 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "invoice")
 public class Invoice {
-     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_number_generator")
-    @TableGenerator(name = "invoice_number_generator",allocationSize = 1000,initialValue = 999,pkColumnName = "invoice_number",valueColumnName = "value",pkColumnValue = "number")
+    @Id
     @Column(name = "invoice_number")
     private Integer invoiceNumber;
 

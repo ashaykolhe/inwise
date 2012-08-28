@@ -198,10 +198,14 @@ public class SearchActionBean extends BaseActionBean{
     public Resolution search()
     {
 
+        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 //Customer
 //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
+        {
             customer=customerDao.findByCustomerName(getName());
+            System.out.println("Cussssssssssttttttttooommmmmmmmmeeeerrrrrrrrrrr"+customer);
+        }
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
 //Invoice
@@ -286,6 +290,9 @@ public class SearchActionBean extends BaseActionBean{
     }
     public Resolution print()
     {
+
+
+                
         //"none","orderCustomerOrderNumber","orderCustomerName","orderProductName","orderDate"
         System.out.println("search sub menu "+searchSubmenu);
         System.out.println("in print"+getName());

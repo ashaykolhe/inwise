@@ -46,7 +46,6 @@
     var floatExp = /^[0-9.]+$/;
      $(document).ready(function() {
          $('#inCSTSval').hide();
-  
          $.get("invoice?getTax", function (result) {
                 var data=eval(result);
                   taxloop=data.length;
@@ -1140,7 +1139,7 @@ Rate</b>
 							<td style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
 
 								<div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-									<s:text name="invoice.totalAmount" id="inTotalAmount"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#FFCC66; border:0px; text-align:right;"/>
+                                    <s:text name="invoice.totalAmount" id="inTotalAmount" formatType="number" formatPattern="##.##"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#FFCC66; border:0px; text-align:right;"/>
 								</div>							</td>
 						</tr>
 					</table>
@@ -1315,7 +1314,7 @@ Rate</b>
 							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
 								<div align="center">
 
-									<s:text name="invoice.grandTotal" id="inGrandTotal"  class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+									<s:text name="invoice.grandTotal" id="inGrandTotal" formatType="number" formatPattern="##.##" class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
 								</div>
 							</td>
 							<td align="left" valign="top">

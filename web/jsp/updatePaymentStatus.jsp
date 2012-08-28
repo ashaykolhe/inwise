@@ -47,7 +47,7 @@
                  $("#save").click(function()
                             {
 
-                            var numericReg = /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/;
+                            var numericReg = /^\d*([0-9])(|.\d*[0-9]|,\d*[0-9])?$/;
 
 
                                 if ($("#modedropdown").val().trim() ==""){
