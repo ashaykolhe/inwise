@@ -243,9 +243,8 @@ $.post("product?productAlreadyPresent", {addProductName:$("#addproductname").val
                           <li>&nbsp;</li>
                       <li class="left_menu_heading">Product</li>
                      <li style="margin-top:35px">
-                             <li><s:link beanclass="com.inwise.action.ProductActionBean" event="addProductLink">Add</s:link></li>
-                             <li><s:link beanclass="com.inwise.action.ProductActionBean" event="updateProductLink">Update</s:link></li>
-                                        <li><s:link beanclass="com.inwise.action.ProductActionBean" event="deleteProductLink">Delete</s:link></li>
+                               <li><s:link beanclass="com.inwise.action.ProductActionBean" event="addProductLink">Add</s:link></li>
+                       <li><s:link beanclass="com.inwise.action.ProductActionBean" event="viewProductLink">View</s:link></li>
                   </ul>
 
          </s:layout-component>

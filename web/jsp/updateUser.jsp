@@ -208,18 +208,19 @@
     <% request.setAttribute("userlst",listofuser.getUserlst());
     %>
     <s:layout-render name="/layout/_base.jsp">
-            <s:layout-component name="left-menu">
+          <s:layout-component name="left-menu">
 
-             <ul>
-                 <li>&nbsp;</li>
-                  <li class="left_menu_heading">User Management</li>
-                  <li style="margin-top:35px">  <li> <s:link beanclass="com.inwise.action.UserActionBean" event="addUserLink">Add User</s:link></li>
-                <li><s:link beanclass="com.inwise.action.UserActionBean" event="updateUserLink" >Update</s:link></li>
-                          <li>   <s:link beanclass="com.inwise.action.UserActionBean" event="deleteUserLink" >Delete</s:link>
-                              </li>
-              </ul>
+                 <ul>
+                     <li>&nbsp;</li>
+                      <li class="left_menu_heading">Setting</li>
+                      <li style="margin-top:35px">  <li> <s:link beanclass="com.inwise.action.CompanyActionBean" event="pre">Setup</s:link></li>
+                      <li ><s:link beanclass="com.inwise.action.UserActionBean" event="addUserLink">User</s:link></li>
+                                 <li><s:link beanclass="com.inwise.action.TermActionBean" event="termsPageRedirect">Terms & Condition</s:link></li>
+                                <li><s:link beanclass="com.inwise.action.UserActionBean" event="changePasswordLink">Change Password</s:link></li>
+                                   <li><s:link beanclass="com.inwise.action.RestoreActionBean" event="restoreCustomerLink">Restore</s:link> </li>
+                  </ul>
 
-     </s:layout-component>
+         </s:layout-component>
     <s:layout-component name="body">
 
 
