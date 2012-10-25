@@ -90,15 +90,15 @@
                                                                 $('#inCSTSval').hide();
                                                                   $('#t6').show();
                                               }
-                                                 
+
                             }
 
                             if(j==5){
-                                
+
 
 
                                 document.getElementById("cstOvat").value=data[j].taxPercentage;
-                                
+
                             }
                             if(j==6){document.getElementById("inEntryTaxGiven").value=data[j].taxPercentage;}
              }
@@ -601,7 +601,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
          calinValue = parseFloat(document.getElementById(inValue).value);
 
               calinTotalAmount=parseFloat(calinTotalAmount)-parseFloat(calinValue);
-       
+
               document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
               unCheckedTax();
              $('#'+inValue).val("0.00");
@@ -609,7 +609,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
             }
     else
     {
-       
+
         //This is beccause all variable are globally declared so when onchange of dispached text field data result in adding old total along with new one
                             /*////////////////////////////////////////////////////////////////////////////*/
                             /*////*/        if(parseFloat(calinValue)>0){
@@ -621,7 +621,7 @@ var calinValue = parseFloat(document.getElementById(inValue).value);
                         calinValue=calinDisp * calinAmdCost;
                        else
                         calinValue=calinDisp * calinProdCost;
-        
+
 
 
          calinTotalAmount=calinTotalAmount +calinValue;
@@ -762,19 +762,32 @@ function validateOthers()
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
  <s:layout-render name="/layout/_base.jsp">
+ <s:layout-component name="left-menu">
+
+                 <ul>
+
+                      <li class="left_menu_heading">Invoice</li>
+                     <li style="margin-top:35px">
+                               <s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Generate</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="preupdate">Update</s:link></li>
+                                                      <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.InvoiceActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Edit Invoice
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
+   <br>
+    <table class="heading_table">
 
-  <table width="70%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC"  >
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Edit Invoice</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+     <table class="second_table"  ><tr><td>
+
+  <table width="100%"  border="0"  cellspacing="0" cellpadding="0"   align="left"  >
   <tr>
     <td align="left">
           </s:form>
@@ -842,7 +855,7 @@ Edit Invoice
                 else
                  var calinValue=calinDisp * calinProdCost;
                                                    $('#'+inValue).val(calinValue);
-                                  
+
 
                             }
 
@@ -921,7 +934,7 @@ Edit Invoice
 	  <td width="24%" align="left" valign="bottom">
 
                        <s:hidden name="invoice.order.orderAddress[0].addressType.id" value="1"/>
-					<s:textarea readonly="readonly"  name="ksjkdf"   id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66"/>
+					<s:textarea readonly="readonly"  name="ksjkdf"   id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #ccccff"/>
 
 							</td>
 			<td width="19%" align="right" valign="top">
@@ -930,7 +943,7 @@ Edit Invoice
   <td width="39%" align="left" valign="bottom">
   <div align="left">
                          <s:hidden name="invoice.order.orderAddress[1].addressType.id" value="2"/>
-      <s:textarea readonly="readonly" name="sdffgdsfg" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #FFCC66" />
+      <s:textarea readonly="readonly" name="sdffgdsfg" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #ccccff" />
 
 
   </div>				</td>
@@ -940,80 +953,76 @@ Edit Invoice
 				<td>&nbsp;				</td>
 			</tr>
 			<tr>
-				<td align="left" colspan="2">
-					<div align="left" style="margin-left:15px;" class="labels">
+				<td align="left" >
+					<div align="left" style="margin-right:23px" class="labels">
 						<b style="color:#888888;">(&nbsp;&nbsp;) fields are mandatory</b>					</div>
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:-10px; margin-left:19px;">
-						*					</div>				</td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
+					<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:-11px; margin-left:40px;">*</div>				</td>
+		<td>&nbsp;</td>	</tr>
 			<tr>
 				<td colspan="4">
 
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
-						<tr>
-							<td align="center" width="4%" style="border-right:1px solid #000000; border-left:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+					<table width="70%" border="0" cellpadding="0" cellspacing="0">
+						 <tr class="foreach_table">
+							<td align="center" width="3%"class="foreach_table_firstth">
 								<s:checkbox name="allbox" id="allbox" value="chekbx" onclick="jqCheckAll1('chkbx');"/>
 							</td>
-							<td nowrap="nowrap" width="5%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+								<td nowrap="nowrap" width="6%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
 									<b>ITEM NO.</b>
 									<br>&nbsp;
 								</div>
 							</td>
-							<td nowrap="nowrap" width="9%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+								<td nowrap="nowrap" width="10%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px;  margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
 									<b>TARIFF ITEM No.</b>
 									<br>&nbsp;
 								</div>
 							</td>
-							<td width="10%" nowrap="nowrap" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+								<td width="10%" nowrap="nowrap" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Product Name</b>
 									<br>&nbsp;
 								</div>
 							</td>
-							<td nowrap="nowrap" width="11%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+								<td nowrap="nowrap" width="11%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Product Type</b>
 									<br>&nbsp;
 								</div>
 							</td>
-							<td nowrap="nowrap" width="6%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="7%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Ordered<br>Quantity</b>
 								</div>
 							</td>
- 							<td nowrap="nowrap" width="6%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+ 							<td nowrap="nowrap" width="8%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Remaining<br>Quantity</b>
 								</div>
 							</td>
 
-							<td nowrap="nowrap" width="12%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="6%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Product<br>Rate</b>
 								</div>
 							</td>
-							<td nowrap="nowrap" width="7%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="9%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Amendment<br>Quantity</b>
 								</div>
 							</td>
-							<td nowrap="nowrap" width="9%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="9%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Amendment<br> Product<br>
 Rate</b>
 								</div>
 							</td>
-							<td nowrap="nowrap" width="11%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+							<td nowrap="nowrap" width="8%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Dispatching<br>Quantity</b>
 								</div>
 							</td>
-							<td nowrap="nowrap" width="11%" style="border-right:1px solid #000000; border-bottom:1px solid #000000; border-top:1px solid #000000; background:#FFCC66;">
+								<td nowrap="nowrap" width="13%" class="foreach_table_th">
 								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
 									<b>Assessable Value</b>
 									<br>&nbsp;
@@ -1025,31 +1034,31 @@ Rate</b>
                               <c:if test="${invoicedetail.product.id eq orderdetail.product.id}">
 
 						<tr>
-							<td align="center" valign="top" style="border-left:1px solid #000000; border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px;">
+								<td align="center" valign="top" class="foreach_table_firstth">
 								<div style="margin-top:5px;">
 
 									<s:checkbox name="chkbx" id="chkbx${loop.index}" onClick="return Selected(${loop.index});"/>
 								</div>
 							</td>
-							<td valign="top"  style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
 									<%--<input  name="orderdetailarray[${loop.index}].product.name" id="inDraw${loop.index}" type="text" size="5" disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;" value="Item No" onFocus="if(this.value=='Item No'){this.value='';}" >--%>
 								<s:text  id="inDraw${loop.index}" value="${invoicedetail.drawingNo}" name="invoice.invoiceDetail[${loop.index}].drawingNo" onFocus="if(this.value=='Item No'){this.value='';}" disabled="disabled" size="15" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
 								<s:text name="invoice.invoiceDetail[${loop.index}].cshNo" id="inCsh${loop.index}" value="${invoicedetail.cshNo}" onFocus="if(this.value=='Enter CSH No'){this.value='';}"   disabled="disabled" size="15" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 
                                 <div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
 							        <s:hidden name="invoice.invoiceDetail[${loop.index}].product.id" value="${orderdetailarray.product.id}"/>
                                     <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inProdName${loop.index}" size="15" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px;  margin-left:1px; font-size: 12px;" class="labels">
 				<%--					<s:hidden name="invoice.invoiceDetail[${loop.index}].productCategory.id" value="1"/>
                                     <s:select id="inProType${loop.index}" name="invoice.invoiceDetail[${loop.index}].productCategory.type" disabled="disabled" style="width:100px; margin-left:0px; font-size: 12px;" onChange="javascript: CalculateAmount(${loop.index});">
@@ -1084,7 +1093,7 @@ Rate</b>
 								</div>
 							</td>
 
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+						<td valign="top"  class="foreach_table_th">
 
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 							      <s:text name="invoice.invoiceDetail[${loop.index}].dispatching"  id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
@@ -1092,13 +1101,13 @@ Rate</b>
                                 </div>
 
 							</td>
-   							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+   							<td valign="top"  class="foreach_table_th">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 								<s:text name="remainingQuantity" value="${orderdetail.dispatchedQuantity+orderdetail.remainingQuantity}"  id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                                 </div>
 							</td>
 
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
                                 <s:text name="invoice.invoiceDetail[${loop.index}].productCost"  id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
@@ -1110,19 +1119,19 @@ Rate</b>
                                     </c:if>
                                 </div>
 							</td>
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 								    <s:text name="invoice.order.orderDetail[${loop.index}].amendmentQuantity" value="${orderdetailarray.amendmentQuantity}" id="inAmdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 
 								</div>
 							</td>
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 							<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 									<s:text name="invoice.order.orderDetail[${loop.index}].amendmentCost" value="${orderdetailarray.amendmentCost}" id="inAmdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
 								</div>
 							</td>
 
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px; margin-left:1px; font-size: 12px;" class="labels">
                             			<s:text name="invoice.invoiceDetail[${loop.index}].dispatched" value="Enter Dispaching Qty" id="inDisp${loop.index}" size="20" onFocus="if(this.value=='Enter Dispaching Qty'){this.value='';}"
                                                 disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;" onchange="javascript: CalculateAmount(${loop.index});"/>
@@ -1130,7 +1139,7 @@ Rate</b>
 
 							</td>
 
-							<td valign="top" style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td valign="top"  class="foreach_table_th">
 								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
                               <%--                                                                               <c:set value="${invoicedetail.productCost * invoicedetail.dispatched}" var="v"/>--%>
                                 			<s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="${v}"  id="inValue${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
@@ -1157,13 +1166,13 @@ Rate</b>
 							<td>&nbsp;							</td>
 							<td>&nbsp;							</td>
                             	<td>&nbsp;							</td>
-							<td colspan="2"  nowrap style="border-right:1px solid #000000">
+							<td colspan="2"  nowrap style="border-right:1px solid #edeeef">
 					        	<div align="center" class="labels">
 									<b>Total Amount ( A )</b>								</div>							</td>
-							<td style="border-right:1px solid #000000; border-bottom:1px solid #000000;height:24px; ">
+							<td style="border-right:1px solid #edeeef; border-bottom:1px solid #edeeef;height:24px; ">
 
 								<div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-									<s:text name="invoice.totalAmount" id="inTotalAmount"  size="20"  readonly="readonly" style="margin-top:0px ;background-color:#FFCC66; border:0px; text-align:right;"/>
+									<s:text name="invoice.totalAmount" id="inTotalAmount"  size="20"  readonly="readonly" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right;"/>
 								</div>							</td>
 						</tr>
 					</table>
@@ -1215,11 +1224,11 @@ Rate</b>
 
 
 						</s:select>
-                        <span id="cstovatbox" style="display:none;">${invoiceBean.invoice.cstOvatType}</span> 
-                        <span id="cstvaluebox" style="display:none;">${invoiceBean.invoice.cstOvat}</span> 
+                        <span id="cstovatbox" style="display:none;">${invoiceBean.invoice.cstOvatType}</span>
+                        <span id="cstvaluebox" style="display:none;">${invoiceBean.invoice.cstOvat}</span>
                         <span id="t6"></span> %
 
-                        
+
 						<div id="ovatid" style="display: inline;">
 
 						</div>
@@ -1238,7 +1247,7 @@ Rate</b>
 					<div align="right" style="margin-left:15px;" class="labels">
 						<b>Tax Charges ( B )<br> (Sum of Taxes)</b>					</div>				</td>
 			  <td colspan="3" align="left" valign="top" >
-					<s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#FFCC66; "  class="textbox" readonly="readonly" value="0.00"/>				</td>
+					<s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#ccccff; "  class="textbox" readonly="readonly" value="0.00"/>				</td>
 			</tr>
 
 			<tr>
@@ -1297,7 +1306,7 @@ Rate</b>
 					</div>
 				</td>
 				<td align="left" colspan="3" >
-					<s:text name="invoice.otherCharges" id="inOtherCharges"  class="textbox" type="text" size="22" readonly="readonly" value="0.00"  style="text-align:right;background-color:#FFCC66;"/>
+					<s:text name="invoice.otherCharges" id="inOtherCharges"  class="textbox" type="text" size="22" readonly="readonly" value="0.00"  style="text-align:right;background-color:#ccccff;"/>
 				</td>
 			</tr>
 
@@ -1343,7 +1352,7 @@ Rate</b>
 							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
 								<div align="center" class="labels">
 									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="invoice.amountDetect"   id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #FFCC66;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                    		<s:text name="invoice.amountDetect"   id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #ccccff;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
 								</div>
 							</td>
 							<td align="left" valign="top">
@@ -1485,7 +1494,7 @@ Rate</b>
 				  Remarks						</div>					</td>
 				  <td align="left" colspan="3">
 
-						<s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:694px;border:1px solid #FFCC66; text-align: left;resize:none"/>
+						<s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:694px;border:1px solid #ccccff; text-align: left;resize:none"/>
 												</td>
 					</tr>
 				  	<tr>
@@ -1503,7 +1512,7 @@ Rate</b>
                          <s:hidden name="invoice.createDate" value="${invoiceBean.invoice.createDate}"/>
                       <s:hidden name="invoice.customer.id" value="${invoiceBean.invoice.order.customer.id}"/>
 
-                     
+
                        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
 
 							<s:submit class="previewnupdatebtn" name="editgenerate" value="Generate" />

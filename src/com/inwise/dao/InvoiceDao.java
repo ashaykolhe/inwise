@@ -867,7 +867,7 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
                 String scshno = invoicedetail.getCshNo();
                 String ptype=invoicedetail.getProductCategory().getType();
                 String pname =invoicedetail.getProduct().getProductName();
-                String productbywght =invoicedetail.getProduct().getProductMeasurementType().getMeasurementType();
+                String productbywght =invoicedetail.getProduct().getUnit().getName();
                 Double ioqty=invoicedetail.getDispatching();
                 String soqty = ioqty.toString();
 

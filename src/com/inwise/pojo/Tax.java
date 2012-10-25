@@ -18,7 +18,7 @@ public class Tax {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name",length = 30)
+    @Column(name = "name",length = 100)
     private String name;
 
     @Column(name = "tax_percentage",length = 10,precision = 8)    

@@ -2,7 +2,7 @@ package com.inwise.pojo;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,26 +12,36 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "deleted",length = 2)
-    private Integer deleted;
     
-    @Column(name = "username",length = 50)
+    private Integer user_id;
+    private  int deleted;
+    @Column(length = 60)
+    private String name;
+    @Column(length = 60)
+    private String dep;
+    @Column(length = 60)
+    private String emailId;
+    @Column(length = 60)
+    private String empId;
+    @Column(length = 60)
     private String username;
-
-    @Column(name = "password",length = 50)
+    @Column(length = 60)
     private String password;
-
+    @Column(name = "create_date")
+    private Date createDate;
     @ManyToOne()
     @JoinColumn(name="role_id")
     private Role role;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<UserPermissions> userPermissions=new ArrayList<UserPermissions>();
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_has_userpermissions",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id")
+    )
+    private List<UserPermissions> userPermissions;
 
     public List<UserPermissions> getUserPermissions() {
         return userPermissions;
@@ -50,12 +60,12 @@ public class User {
     }
 
 
-    public Integer getId() {
-        return id;
+    public Integer getUser_id() {
+        return user_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public String getUsername() {
@@ -82,13 +92,58 @@ public class User {
         this.role = role;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDep() {
+        return dep;
+    }
+
+    public void setDep(String dep) {
+        this.dep = dep;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "user_id=" + user_id +
                 ", deleted=" + deleted +
+                ", name='" + name + '\'' +
+                ", dep='" + dep + '\'' +
+                ", emailId='" + emailId + '\'' +
+                ", empId='" + empId + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", createDate=" + createDate +
                 ", role=" + role +
                 ", userPermissions=" + userPermissions +
                 '}';

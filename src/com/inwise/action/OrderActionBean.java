@@ -26,6 +26,7 @@ public class OrderActionBean extends BaseActionBean{
     private static final String ADDORDER="jsp/addOrder.jsp";
     private static final String UPDATEORDER="jsp/updateOrder.jsp";
     private static final String DELETEORDER="jsp/deleteOrder.jsp";
+     private static final String VIEWORDER="jsp/viewOrder.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -44,6 +45,15 @@ public class OrderActionBean extends BaseActionBean{
     private int invoiceToAddressId;
     private int shipmentToAddressId;
     private Integer invoicenum;
+       private String hiddenvalue;
+
+    public String getHiddenvalue() {
+        return hiddenvalue;
+    }
+
+    public void setHiddenvalue(String hiddenvalue) {
+        this.hiddenvalue = hiddenvalue;
+    }
 
     public Integer getInvoicenum() {
         return invoicenum;
@@ -141,6 +151,7 @@ public class OrderActionBean extends BaseActionBean{
         addressList=order.getCustomer().getAddressList();
         orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
         System.out.println("oooooooooooo"+order);
+      
         return updateOrderLink();
     }
 
@@ -152,7 +163,10 @@ public class OrderActionBean extends BaseActionBean{
         OrderDetail od = null;
         for (Iterator<OrderDetail> ite = temp.getOrderDetail().iterator(); ite.hasNext();) {
             od=ite.next();
-                   od.setRemainingQuantity(od.getAmendmentQuantity());
+            if(od.getAmendmentQuantity()==null){
+                              od.setRemainingQuantity(0.0);
+            }
+             else      od.setRemainingQuantity(od.getAmendmentQuantity());
             if (od.getAmendmentCost() == null)
                 od.setAmendmentCost(od.getProduct().getProductCost());
             else
@@ -184,7 +198,7 @@ public class OrderActionBean extends BaseActionBean{
          }
          orderDao.save(order);
         */
-        return new RedirectResolution(OrderActionBean.class, "updateOrderLink");
+        return new RedirectResolution(OrderActionBean.class, "viewOrderLink");
     }
 
     public Resolution addressAjax(){
@@ -231,7 +245,26 @@ public class OrderActionBean extends BaseActionBean{
         return new RedirectResolution(OrderActionBean.class,"deleteOrderLink");
     }
 
+    public Resolution checkOrderDispatched(){
+
+                if(orderDao.checkInvoiceForThisOrderDispatched(id)){
+       return new RedirectResolution(OrderActionBean.class,"getOrders").addParameter("id",id);     
+        } else{
+
+                       hiddenvalue="alert";
+                      orderlst=orderDao.getOrderList();
+                     return new ForwardResolution(VIEWORDER);
+                }
+
+
+
+    }
     public Resolution checkInvoiceForThisOrderDispatched(){
         return new JavaScriptResolution(orderDao.checkInvoiceForThisOrderDispatched(id));
     }
+     public Resolution viewOrderLink(){
+        orderlst=orderDao.getOrderList();
+        return new ForwardResolution(VIEWORDER);
+    }
+
 }

@@ -1,26 +1,35 @@
 table.disp {
-	border: 1px solid #666;
+	border: 1px solid #cccccc;
+    
 	margin: 16px 0 20px 0 !important;
     width:100%;
     cellspacing:"1"; cellpadding:"1"  ;
 }
- 
+
+table.disp th {
+   font-weight:bold;
+    color:#666666;
+}
+
  th,td {
 	padding: 2px 4px 2px 4px !important;
 	text-align: center;
 	vertical-align: top;
+     color:#666666;
 }
 
 thead tr {
-	background-color: #FFCC66 ;
+    background-color:#edeeef;
+/*	background-color:#6666ff;*/
+     color:#666666;
 }
  
 th.sorted {
-	background-color: #FFCC66;
+	background-color: #edeeef;
 }
 
 th a,th a:visited {
-	color: black;
+	color: azure;
 }
 
 th a:hover {
@@ -51,7 +60,7 @@ tr.odd {
 }
 
 tr.tableRowEven,tr.even {
-	background-color: white;
+	background-color: whitesmoke;
 }
 
 div.exportlinks {
@@ -97,16 +106,18 @@ span.pagebanner {
 	margin-top: 10px;
 	display: block;
 	border-bottom: none;
+    
 }
 
 span.pagelinks {
 	background-color: #eee;
 	border: 1px dotted #999;
 	padding: 2px 4px 2px 4px;
-	width: 79%;
+	width: 91%;
 	display: block;
-	border-top: none;
+	  margin-top:5px;
 	margin-bottom: -5px;
+    text-align:right;
 }
 
 
@@ -120,7 +131,12 @@ span.pagelinks {
     border-top: 1px solid black;
 
 }
-.subtotal-sum, .grandtotal-sum {
+.subtotal-sum{
+    font-weight:bold;
+    text-align:right;
+}
+    
+.grandtotal-sum {
     font-weight:bold;
     text-align:right;
 }
@@ -140,13 +156,21 @@ span.pagelinks {
 }
 .grandtotal-row {
     border-top: 2px solid black;
+
 }
+
 .total{
-   font-weight:bold;
-   color:BLACK;
- background-color: lightgoldenrodyellow;
+    font-weight:bold;
+    color:BLACK;
+  background-color: #edeeef;
 }
 
 .total td{
-  font-weight:bold;
+   font-weight:bold;
+}
+table#tablecss tr.total:last-child{
+        color:#edeeef;
+          display:none;
+        border-top: 2px solid #edeeef;
+        background-color: #edeeef;
 }

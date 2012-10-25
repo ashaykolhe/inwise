@@ -1,10 +1,11 @@
 package com.inwise.dao;
 
-import com.wideplay.warp.persist.Transactional;
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.RolePermissions;
+import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,25 +14,30 @@ import java.util.List;
  * Time: 11:54:42 AM
  * To change this template use File | Settings | File Templates.
  */
-public class RolePermissionsDao extends BaseDao<RolePermissions,Integer> {
-
+public class RolePermissionsDao extends BaseDao <RolePermissions,Integer> {
     public RolePermissionsDao() {
         super(RolePermissions.class);
+    }
+
+    @Transactional
+    public void saveRolePermissions(List<RolePermissions> rolePermissions) {
+        try {
+            
+            for(Iterator<RolePermissions> i= rolePermissions.iterator();i.hasNext();){
+                sessionProvider.get().save(i.next());
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
     }
 
     //get all list
     @Transactional
     public List getRolePermissions(){
-        String hql="from RolePermissions where deleted='1' and name <> 'superadmin'";
-// List list=null;
-        try {
-            
-        }catch (Exception e){
-            e.printStackTrace();
-
-        }finally{
-//  s.close();
-        }
+        String hql="from RolePermissions where deleted='0' and name <> 'superadmin'";
+        
         return sessionProvider.get().createQuery(hql).list();
     }
 }

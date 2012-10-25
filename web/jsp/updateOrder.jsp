@@ -36,7 +36,7 @@ To change this template use File | Settings | File Templates.
                         $('#hide').html("order "+orderId+" cannot be updated till completely dispatched.");
                         $('#hide').css({
                             align:"right",
-                            color:"red"   
+                            color:"red"
                         });
 
                     }
@@ -53,7 +53,7 @@ To change this template use File | Settings | File Templates.
     function GetItemDetail(button){
         var count=$('#family #tabletr').length;
         var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
-        
+
         var flag=true;
         var check=$('#productName'+rowid+'').val();
         for(var i=1;i<=count;i++)
@@ -82,7 +82,7 @@ To change this template use File | Settings | File Templates.
             });//end of post funtion
         }//end of flag==true if
     } //end of getItem Funntion
-    
+
     function deletethis(p,a){
         var tr=$('#family #tabletr').length;
         if(tr==1){
@@ -159,25 +159,42 @@ To change this template use File | Settings | File Templates.
 
 <s:useActionBean beanclass="com.inwise.action.OrderActionBean" var="orderBean" event="pre"></s:useActionBean>
 <s:layout-render name="/layout/_base.jsp">
-<s:layout-component name="body">
+<s:layout-component name="left-menu">
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-    <tr valign="top"><td >&nbsp;
-    </td></tr>
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Order</li>
+                     <li style="margin-top:35px">
+                                                 <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
+                                      <li>     <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                                                                      <%--   <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
+                                                                         <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>--%>
+                                                                       <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
+                                      </ul>
+                   
+
+         </s:layout-component>
+<s:layout-component name="body">
+  <br>
+    <table class="heading_table">
+
     <tr><td align="left" class="pageheading" valign="top">
-        Order > Update Order
+      <div class="sub_heading" >Update Order</div>
     </td></tr>
-    <tr valign="top"><td align="center">&nbsp;
-    </td></tr>
-</table>
-<s:form beanclass="com.inwise.action.OrderActionBean">
-    <table width="50%" border="0">
-        <tr> <td width="3%"></td>
-            <td width="22%" align="left" valign="top">
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+
+
+      <table class="second_table"  >
+<%--<s:form beanclass="com.inwise.action.OrderActionBean">
+
+        <tr> <td width="8%"></td>
+            <td width="19%" align="left" valign="top">
                 <div align="left" style="margin-left: 2px;" class="labels">
                     Name of Customer<span style="color:#FF0000"> *</span></div>
                 </td>
-            <td width="21%" align="left" valign="top"><div align="left">
+            <td width="26%" align="left" valign="top"><div align="left">
                 <s:select id="customerName" name="order.customer.id" class="dropdown">
                     <option  value="0">---Select Customer---</option>
                     <c:forEach items="${orderBean.customerList}" var="customer" varStatus="loop" >
@@ -193,13 +210,13 @@ To change this template use File | Settings | File Templates.
                 </c:forEach>
             </s:select>
             </div></td>
-        <td width="30%" align="left" valign="top" >
+        <td width="47%" align="left" valign="top" >
 
             </td>
-        </tr></table>
-    <table width="50%" border="0"><tr><td width="3%"></td><td width="22%" align="left" valign="top">
+        </tr>
+   <tr><td width="8%"></td><td width="19%" align="left" valign="top">
         <div align="left" style="margin-left: 1px;" class="labels">Customer Order Number<span style="color:#FF0000"> *</span></div></td>
-        <td width="21%" align="left" valign="top" >
+        <td width="26%" align="left" valign="top" >
             <s:select name="id" id="orderdropdown" class="dropdown">
                 <option value="">---Select Customer Order No---</option>
 
@@ -219,15 +236,18 @@ To change this template use File | Settings | File Templates.
 
         </td>
 
-        <td width="30%" align="left" valign="top" ></td>
-    </tr></table>        </s:form>
+        <td width="47%" align="left" valign="top" ></td>
+    </tr></table>        </s:form>--%>
 
 <div id="hide">
 <c:if test="${orderBean.order!=null}">
 
     <s:form beanclass="com.inwise.action.OrderActionBean">
-        <table border="1" width="78%" bgcolor="#FCFCFC" ><tr><td>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="left">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
+
+           
                 <tr>
                     <td width="24%" align="left" valign="top">
                         <s:hidden name="order.deleted" value="0"/>
@@ -240,7 +260,7 @@ To change this template use File | Settings | File Templates.
                     </td>
                     <td width="30%" align="left" valign="top">
                         <div align="left">
-                            <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
+                            <s:text name="order.createDate" value="${orderBean.order.createDate}"  id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
                         </div>
                     </td>
                 </tr>
@@ -289,7 +309,7 @@ To change this template use File | Settings | File Templates.
                                             <option value ="<c:out value="${address.id}"/>"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
                                         </c:otherwise>
                                     </c:choose>
-                                </c:forEach>                                                                     
+                                </c:forEach>
                             </s:select>
                         </div>
                     </td>
@@ -323,23 +343,23 @@ To change this template use File | Settings | File Templates.
                 </tr>
                 <tr>
                     <td colspan="4"><br><div align="left" style="margin-left:10px;">
-                        <table width="95%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family">
-                            <tr>
-                                <td width="17%" height="28px" style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product</span></strong></div></td>
-                                <td width="21%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Cost</span></strong></div></td>
-                                <td width="18%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">UOM</span></strong></div></td>
-                                <td width="17%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Quantity</span></strong></div></td>
-                                <td width="20%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amendment Quantity</span></strong></div></td>
-                                <td width="20%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amendment Cost</span></strong></div></td>
-                                <td width="7%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"/></span></strong></div></td>
+                        <table width="95%" border="0"  cellspacing="0" cellpadding="0"  align="left" id="family">
+    <tr class="foreach_table">
+                                <td width="17%" class="foreach_table_firstth"><div align="center"><span class="foreach_th_span">Product</span></div></td>
+                                <td width="21%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Cost</span></div></td>
+                                <td width="18%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">UOM</span></div></td>
+                                <td width="17%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Quantity</span></div></td>
+                                <td width="20%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Amendment Quantity</span></div></td>
+                                <td width="20%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Amendment Cost</span></div></td>
+                                <td width="5%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span"><img src="images/delete.jpg"/></span></div></td>
                             </tr>
                             <c:forEach items="${orderBean.order.orderDetail}" var="orderDetail" varStatus="loop" >
                                 <tr id="tabletr">
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
+                                  <td class="foreach_table_firstth">
+    <div class="foreach_table_div">
                                             <s:hidden name="order.orderDetail[${loop.index}].id" id="orderDetailId${loop.index}"/>
                                             <div align="right">
-                                                <s:select id="productName${loop.index}" name="order.orderDetail[${loop.index}].product.id"  onchange= "return GetItemDetail(this);">
+                                                <s:select id="productName${loop.index}" name="order.orderDetail[${loop.index}].product.id" class="dropdowntable"  onchange= "return GetItemDetail(this);">
                                                     <option  value="">---Select Product---</option>
                                                     <c:forEach items="${orderBean.productList}" var="product" >
                                                         <c:choose>
@@ -358,45 +378,32 @@ To change this template use File | Settings | File Templates.
                                                 </s:select>
                                                     <%--               <c:set var="newIndex" value="${loop.index + 1}" scope="page"/>--%>
                                             </div></div></td>
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
+                                     <td class="foreach_table_th"><div class="foreach_table_div">
 
-                                            <div align="right">
-                                                       
-                                                <s:text  name="order.orderDetail[${loop.index}].product.productCost" id="cost${loop.index}" value="${orderDetail.product.productCost}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                            </div></div></td>
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
-                                            <div align="right">
-                                                <s:text name="order.orderDetail[${loop.index}].product.productMeasurementType.measurementType" id="productMeasurementType${loop.index}" value="${orderDetail.product.productMeasurementType.measurementType}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                            </div></div></td>
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
-                                            <div align="right">
-                                                <s:text name="order.orderDetail[${loop.index}].orderedQuantity" id="orderedQuantity${loop.index}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                            </div></div></td>
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
-                                            <div align="right">
-                                                <s:text name="order.orderDetail[${loop.index}].amendmentQuantity" id="amendmentQuantity${loop.index}" style="text-align:right;margin-right:2px;width:100px; "/>
-                                            </div></div></td>
-                                    <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                        <div align="left" style="margin-left:4px;">
-                                            <div align="right">
-                                                <s:text name="order.orderDetail[${loop.index}].amendmentCost" id="amendmentCost${loop.index}" style="text-align:right;margin-right:2px;width:100px; "/>
-                                            </div></div></td>
-                                    <td style="border-top:1px solid #000000;">
-                                        <div align="left" style="margin-left:0px;">
-                                            <div align="right">
-                                                <s:text name="delete[${loop.index}]" id="delete${loop.index}" class="delete" style="background:url('images/Cfthrow.gif') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
+                                                <s:text  name="order.orderDetail[${loop.index}].product.productCost" id="cost${loop.index}" value="${orderDetail.product.productCost}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                            </div></td>
+                                    <td class="foreach_table_th"><div class="foreach_table_div">
+                                                <s:text name="order.orderDetail[${loop.index}].product.productMeasurementType.measurementType" id="productMeasurementType${loop.index}" value="${orderDetail.product.productMeasurementType.measurementType}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                            </div></td>
+                                      <td class="foreach_table_th"><div class="foreach_table_div">
+                                                <s:text name="order.orderDetail[${loop.index}].orderedQuantity" id="orderedQuantity${loop.index}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                            </div></td>
+                                     <td class="foreach_table_th"><div class="foreach_table_div">
+                                                <s:text name="order.orderDetail[${loop.index}].amendmentQuantity" id="amendmentQuantity${loop.index}" class="foreach_table_td" style=" width:100px;"/>
+                                            </div></td>
+                                <td class="foreach_table_th"><div class="foreach_table_div">
+                                                <s:text name="order.orderDetail[${loop.index}].amendmentCost" id="amendmentCost${loop.index}" class="foreach_table_td" style=" width:100px;"/>
+                                            </div></td>
+                                     <td class="foreach_table_th"><div class="foreach_table_div">
+                                                <s:text name="delete[${loop.index}]" id="delete${loop.index}" class="delete" style="background:url('images/delete.jpg') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
 
-                                            </div></div></td>
+                                           </div></td>
 
                                 </tr>             </c:forEach>
                         </table>
-                        <tr><td colspan="4">
-                            <div style="text-align:right; cursor: pointer;" class="links"><span style="vertical-align: top;text-align: left;font-size:medium; " class="addRow" id="add" >Add row</span></div>
-                        </td></tr>
+                         <tr><td colspan="4">
+    <div style="text-align:right; cursor: pointer;" class="links"><span style="vertical-align: top;text-align: left; " class="addRow" id="add" >Add row</span></div>
+    </td></tr>
                     </div></td>
                 </tr>
                 <tr>
@@ -407,10 +414,10 @@ To change this template use File | Settings | File Templates.
                 <tr>
                     <td align="left">&nbsp;</td>
                     <td align="left" colspan="3"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;
-                        <s:submit name="updateOrder" value="Update" id="updateOrder"/>
+                        <s:submit name="updateOrder" value="Update" class="buttons" id="updateOrder"/>
 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <s:submit name="cancel" value="Cancel"/>
+                        <s:submit name="cancel" value="Cancel" class="buttons"/>
                     </div></td>
                     <td width="3%" align="left">&nbsp;</td>
                 </tr>

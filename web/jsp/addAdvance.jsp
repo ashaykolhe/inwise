@@ -42,7 +42,7 @@ $(document).ready(function()
 
       $('#addadvancebutton').click(function()
       {
-         
+
          if($('#advanceamount').val()==""||!phoneval.test($('#advanceamount').val()))
          {
              alert("please enter the amonut in numeric!");
@@ -109,7 +109,7 @@ $(document).ready(function()
             this.form.action='advance?getCustomerOrder';
             this.form.submit();
         });
-    
+
     $('#selectcutomername').change(function()
         {
             this.form.action='advance?getOrderNumbers';
@@ -124,37 +124,47 @@ $(document).ready(function()
 %>
 
 <s:layout-render name="/layout/_base.jsp">
+    <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Order</li>
+                     <li style="margin-top:35px">
+                             <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
+                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
+                  </ul>
+
+         </s:layout-component>
     <s:layout-component name="body">
     <s:form id="formid" beanclass="com.inwise.action.AdvanceActionBean">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-        <tr valign="top"><td >&nbsp;</td>   </tr>
-        <tr>
-            <td align="left" class="pageheading" valign="top">
-            <strong>Advance</strong>
-            </td>
-        </tr>
-        <tr valign="top"><td align="center">&nbsp;</td></tr>
-        </table>
+        <br>
+    <table class="heading_table">
 
-
-        <table bordercolor="#FF6600" width="77%" border="1">
-        <tr>
-            <td width="70%" >
-    <table width="100%" cellspacing="1">
-                <tr>
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Add Advance</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+     <table class="second_table"  ><tr><td>
+    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                <%--<tr>
                 <td width="20%" align="left" valign="top">Please Get Order First</td>
                 <td width="1%" align="left" valign="top"></td>
                 <td  align="left" width="20%"  valign="top"></td>
                 <td width="1%" align="left" valign="top"></td>
                 <td align="left"valign="top" width="20%"></td>
                     <td></td>
-                </tr>
+                </tr>--%>
            <tr>
-                <td width="20%" align="left" valign="top"></td>
 
-              <td colspan="5">
+
+              <td width="21%" >
                 <div id="selectnamediv"align="left" style="margin-left: 2px;"  class="labels">Please Select Customer <span style="color:#FF0000"> *</span>
-
+                                  </div></td>
+               <td width="25%">
                  <s:select id="selectcutomername" name="id1"  class="dropdown">
                         <option  value="0">---Select Customer---</option>
 
@@ -173,19 +183,19 @@ $(document).ready(function()
                           <option value ="<%=obj[0]%>"> <%=obj[1]%></option>
                      <%}%>
                      <%}%>
-                     
+
                   </s:select>
-                 </div>
-                </td>
+
+                </td><td colspan="2">&nbsp;</td>
             </tr>
 
       <tr>
-          <td width="20%" align="left" valign="top"></td>
+         <c:if test="${actionBean.cust!=null}">
 
-          <td colspan="5">
-        <c:if test="${actionBean.cust!=null}">
-             <div id="selectorderdiv"align="left" style="margin-left: 2px;" class="labels">please Select Order No. <span style="color:#FF0000"> *</span>
-                     <s:select id="selectorderno" name="id2"  class="dropdown">
+          <td >
+
+             <div id="selectorderdiv"align="left" style="margin-left: 2px;" class="labels">please Select Order No. <span style="color:#FF0000"> *</span> </div></td>
+                    <td> <s:select id="selectorderno" name="id2"  class="dropdown">
                     <option  value="0">---Select Order No.---</option>
                         <c:forEach items="${actionBean.orderNoList}" var="orderno" varStatus="loop" >
                         <c:choose>
@@ -198,49 +208,50 @@ $(document).ready(function()
                         </c:choose>
 		                </c:forEach>
                 </s:select>
-                 </c:if>
-            </div>
-          </td>
-      </tr>
+
+
+           </td><td colspan="2">&nbsp;</td>   </c:if>
+      </tr>   <tr><td>&nbsp;</td></tr>
         <c:if test="${actionBean.customerOrderList!=null}">
-            <tr>
-              <table border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family" width="90%">
-                    <tr>
-                        <td width="5%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Sr No.</span></strong></div></td>
-                        <td width="10%"  style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product Name</span></strong></div></td>
-                        <td width="10%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Ordered Quantity</span></strong></div></td>
-                        <td width="10%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Rate</span></strong></div></td>
-                        <td width="10%"  style="background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Total</span></strong></div></td>    
+            <tr >
+                <td colspan="4" style="margin-left:25px;">
+              <table width="70%" border="0"  cellspacing="0" cellpadding="0"  align="center" id="family">
+    <tr class="foreach_table">
+                        <td width="5%"  class="foreach_table_firstth"><div align="center"><span class="foreach_th_span">Sr No.</span></div></td>
+                        <td width="10%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Product Name</span></div></td>
+                        <td width="10%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Ordered Quantity</span></div></td>
+                        <td width="10%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Rate</span></div></td>
+                        <td width="10%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Total</span></div></td>
 
                        </tr>
                     <c:forEach var="orders" items="${actionBean.customerOrderList}" varStatus="loop">
-                    <tr>   
-                            <td width="5%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >${loop.index+1}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productName}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.orderedQuantity}</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #000000;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productCost}</span></strong></div></td>
-                            <td width="10%" style=""><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${orders.product.productCost*orders.orderedQuantity}</span></strong></div></td>
+                    <tr>
+                           <td class="foreach_table_firstth"><div align="right"><strong><span class="foreach_table_div" >${loop.index+1}</span></strong></div></td>
+                           <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productName}</span></strong></div></td>
+                            <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.orderedQuantity}</span></strong></div></td>
+                           <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productCost}</span></strong></div></td>
+                            <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productCost*orders.orderedQuantity}</span></strong></div></td>
                    </tr>
                     </c:forEach>
                    <tr>
-                            <td colspan="3" style="border-right:1px solid #000000; border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" ></span></strong></div></td>
-                            <td width="5%" style="border-right:1px solid #000000;border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Total</span></strong></div></td>
-                            <td width="10%" style="border-top:1px solid #000000"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
+                            <td colspan="3" style="border-right:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" ></span></strong></div></td>
+                            <td width="5%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Total</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
                    </tr>
                 </table>
-                <table>
+
                       <tr>
-                            <td width="20%" align="left"></td>
-                            <td width="18%" align="left"> <div align="left" style="margin-left: 2px;" class="labels">Amount<span style="color:#FF0000"> *</span></div>     </td>
-                            <td width="15%" align="left" valign="top"><div align="left"><s:text name="advance.amountReceived" id="advanceamount" class="textbox"></s:text></div> </td>
-                            <td width="15%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Advance Date<span style="color:#FF0000"> *</span></div></td>
-                            <td width="20%" align="left" valign="bottom"><div align="left" ><s:text id="advancedate"  name="advance.createDate" onFocus="showCalendarControl(this);" class="textbox"></s:text>
+
+                            <td width="21%" align="left"> <div align="left" style="margin-left: 2px;" class="labels">Amount<span style="color:#FF0000"> *</span></div>     </td>
+                            <td width="25%" align="left" valign="top"><div align="left"><s:text name="advance.amountReceived" id="advanceamount" class="textbox"></s:text></div> </td>
+                            <td width="13%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Advance Date<span style="color:#FF0000"> *</span></div></td>
+                            <td width="41%" align="left" valign="bottom"><div align="left" ><s:text id="advancedate"  name="advance.createDate" onFocus="showCalendarControl(this);" class="textbox"></s:text>
                       </tr>
 
                        <tr>
-                           <td width="20%" align="left"></td>
-                           <td width="18%" align="left" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Payment Mode<span style="color:#FF0000"> *</span></div></td>
-                            <td width="15%" align="left" valign="bottom"><div align="left" >
+
+                           <td width="21%" align="left" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Payment Mode<span style="color:#FF0000"> *</span></div></td>
+                            <td width="25%" align="left" valign="bottom"><div align="left" >
                                  <s:select name="advance.paymentMode.id" id="paymentmodedropdown" class="dropdown">
                                                     <option value="">---Payment Mode---</option>
                                                     <c:forEach items="${advanceBean.paymentModeList}" var="paymentMode" varStatus="loop" >
@@ -249,28 +260,28 @@ $(document).ready(function()
                                                 </s:select>
                                 </div>
 
-                           <td width="15%" align="right"> <div   align="right" style="margin-left: 2px; display:none" id="chequeddlable" class="labels">Cheque/DD No. <span style="color:#FF0000"> *</span></div>     </td>
-                            <td width="20%" align="left" valign="top"><div align="left" style="display:none;" id="advancechequeddno"><s:text name="advance.chequeOrDDNo" id="chequeddno" class="textbox"></s:text></div>
+                           <td width="13%" align="right"> <div   align="right" style="margin-left: 2px; display:none" id="chequeddlable" class="labels">Cheque/DD No. <span style="color:#FF0000"> *</span></div>     </td>
+                            <td width="41%" align="left" valign="top"><div align="left" style="display:none;" id="advancechequeddno"><s:text name="advance.chequeOrDDNo" id="chequeddno" class="textbox"></s:text></div>
                           <s:hidden name="total" value="${actionBean.total}"></s:hidden>
                                 <s:hidden name="advance.deleted" value="0"></s:hidden>
                                 <s:hidden name="advance.order.id" value="${actionBean.o.id}"></s:hidden>
                             </td>
-                          
-                           
+
+
                        </tr>
 
                     <tr>
-                        <td width="20%"></td>
-                        <td colspan="4" align="left" valign="top"><div align="left">     &nbsp;&nbsp;&nbsp;&nbsp;
-                        <s:submit id="addadvancebutton" name="addAdvance" value="Save"></s:submit>     &nbsp;&nbsp;&nbsp;&nbsp;
-                        <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
-                        <s:submit name="cancel" value="Cancel"></s:submit></div></td>
-                        <td >&nbsp;</td>
+                                      <td>&nbsp;</td>
+                        <td colspan="3" align="left" valign="top"><div align="left">     &nbsp;&nbsp;&nbsp;&nbsp;
+                        <s:submit id="addadvancebutton" name="addAdvance" class="buttons" value="Save"></s:submit>     &nbsp;&nbsp;&nbsp;&nbsp;
+                        <s:reset name="reset" value="Reset" class="buttons"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
+                        <s:submit name="cancel" value="Cancel" class="buttons"></s:submit></div></td>
+                        <td width="0%" >&nbsp;</td>
 
                     </tr>
-                         
-              </table>
 
+              </table>
+                              </td>
             </tr>
 
 
@@ -282,7 +293,7 @@ $(document).ready(function()
                 alert("Advance Already Made");
             </script>
         </c:if>
-        
+
         </table>
        </td>
         </tr>

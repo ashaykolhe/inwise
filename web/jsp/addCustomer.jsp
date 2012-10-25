@@ -7,7 +7,7 @@ To change this template use File | Settings | File Templates.
 --%>
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
-<script src="http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -127,37 +127,50 @@ To change this template use File | Settings | File Templates.
 </script>
 
 <s:layout-render name="/layout/_base.jsp">
+      <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Customers</li>
+                     <li style="margin-top:35px">
+                               <li ><s:link beanclass="com.inwise.action.CustomerActionBean" event="pageDirect">Add</s:link></li>
+                             <%--   <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="updateCustomerLink">Update</s:link></li>
+                                <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="deleteLink">Delete</s:link></li>--%>
+                               <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="viewLink">View</s:link></li>
+                  </ul>
+
+         </s:layout-component>
     <s:layout-component name="body">
         <s:form beanclass="com.inwise.action.CustomerActionBean">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-                <tr valign="top"><td >&nbsp;
-                </td></tr>
-                <tr><td align="left" class="pageheading" valign="top">
-                    Customer > Add Customer
-                </td></tr>
-                <tr valign="top"><td align="center">&nbsp;
-                </td></tr>
-            </table>
-            <table border="1" width="66%" bgcolor="#FCFCFC" ><tr><td>
-            <table width="100%" border="0" cellspacing="1" bordercolor="#FCFCFC">
-            <tr>
-                <td width="21%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
-                <td width="29%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>
-                <td width="18%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department<span style="color:#FF0000"> </span></div></td>
+            <br>
+    <table class="heading_table">
 
-                <td width="32%" align="left" valign="bottom"><div align="left" ><s:text id="addcustomerdepartment"  name="customer.department" class="textbox"></s:text>
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Add Customer</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+     <table class="second_table"  ><tr><td>
+            <table width="100%" border="0" cellspacing="0" bordercolor="#FCFCFC">
+            <tr>
+                <td width="18%" align="right"> <div align="left" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
+                <td width="22%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="addcustomername" class="textbox"></s:text></div> </td>
+                <td width="18%" align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Department<span style="color:#FF0000"> </span></div></td>
+
+                <td width="40%" align="left" valign="bottom"><div align="left" ><s:text id="addcustomerdepartment"  name="customer.department" class="textbox"></s:text>
                     <s:hidden name="customer.deleted" value="0"/>
                 </div></td>
 
 
 
             <tr>
-                <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Contact Person<span style="color:#FF0000"> </span></div></td>
+                <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Contact Person<span style="color:#FF0000"> </span></div></td>
                 <td align="left" valign="top"><div align="left"><s:text name="customer.contactPerson" id="addcustomercp" class="textbox"></s:text></div></td>
 
             </tr>
             <tr>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Address 1<span style="color:#FF0000"> </span></div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Address 1<span style="color:#FF0000"> </span></div></td>
             <td align="left" valign="top"><div align="left">
                 <table width="100%">
                     <tr>
@@ -199,7 +212,7 @@ To change this template use File | Settings | File Templates.
                 </table>
 
             </div></td>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Address 2</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Address 2</div></td>
             <td align="left" valign="top"><div align="left">
             <table width="100%">
             <tr>
@@ -246,30 +259,36 @@ To change this template use File | Settings | File Templates.
         </div></td>
         </tr>
         <tr>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Phone No 1</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Phone No 1</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.contactNo1" id="addcustomerphnno1" class="textbox"></s:text></div></td>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Phone No 2</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Phone No 2</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.contactNo2" class="textbox" id="addcustomerphnno2"></s:text></div></td>
         </tr>
         <tr>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Email Id</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Email Id</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.email" id="addcustomermailid" class="textbox"></s:text></div></td>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">TIN No.</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">TIN No.</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.tinNo" class="textbox"></s:text></div></td>
         </tr>
 
         <tr>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">ECC No.</div></td>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">ECC No.</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.eccNo" id="addvendorservicetax" class="textbox"></s:text></div></td>
+             <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Pan Card No.</div></td>
+            <td align="left" valign="top"><div align="left"><s:text name="customer.PanNo" class="textbox"></s:text></div></td>
+        </tr>
+                  <tr>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">TAN No.</div></td>
+            <td align="left" valign="top"><div align="left"><s:text name="customer.tanNo" id="addvendorservicetax" class="textbox"></s:text></div></td>
 
         </tr>
 
         <tr>
             <td >&nbsp;</td>
             <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit id="addcustomerbutton" name="addCustomer" value="Add"></s:submit>     &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit name="cancel" value="Cancel"></s:submit></div></td>
+                <s:submit id="addcustomerbutton" class="buttons" name="addCustomer" value="Add"></s:submit>     &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:reset name="reset" class="buttons" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
+                <s:submit name="cancel" class="buttons" value="Cancel"></s:submit></div></td>
             <td >&nbsp;</td>
 
         </tr>

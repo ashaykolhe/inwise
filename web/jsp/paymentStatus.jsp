@@ -30,20 +30,30 @@ this.form.submit();
     request.setAttribute("invoicelst",payStatusBean.getInvoicelst());
  %>
 <s:layout-render name="/layout/_base.jsp">
+    <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Invoice</li>
+                     <li style="margin-top:35px">
+                               <s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Generate</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="preupdate">Update</s:link></li>
+                                                      <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Payment Status
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
- <table width="70%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC"  >
-  <tr>
-    <td align="left">
+    <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Payment Status</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+     <table class="second_table"  ><tr><td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 <tr><td align="left" valign="top" width="14%">
   <div align="right" style="margin-left: 2px;" class="labels"><s:label name="Customer Name"></s:label><span style="color:#FF0000"> *</span></div></td>
@@ -79,12 +89,13 @@ Payment Status
    &nbsp;
     </td>
 						</tr> </table>
-              </td></tr></table>
-
+     </td></tr>
+              <tr>
+              <td>
              <c:if test="${payStatusBean.invoicelst!=null }">
 
                  <s:form beanclass="com.inwise.action.PaymentStatusActionBean">
-             <table class="t" id="invoicetable" width="100%"><tr><td>
+             <table class="t" id="invoicetable" width="88%"><tr><td>
         <d:table name="invoicelst" pagesize="10" class="disp" id="inwise" requestURI="paymentstatus">
             <d:column property="invoiceNumber" title="Invoice Number"   />
             <d:column property="customer.name" title="Customer Name"   />
@@ -103,8 +114,11 @@ Payment Status
             </d:column>
            </d:table>
             </td></tr><table>
+
  </s:form> </c:if>
-   
+              </td>
+                     </tr>    </table>
+
 
 </s:form>
 </s:layout-component>

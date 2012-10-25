@@ -23,10 +23,9 @@ public class Product {
     @Column(name = "product_cost",length = 10,precision = 8,nullable = false)
     private Double productCost;
 
-    @ManyToOne
-    @JoinColumn(name = "product_measurement_type_id")
-    private ProductMeasurementType productMeasurementType;
-
+    @ManyToOne()
+           @JoinColumn(name="unit_id")
+       private Unit unit;
     @Column(name = "deleted")
     private Integer deleted;
 
@@ -62,12 +61,12 @@ public class Product {
         this.productCost = productCost;
     }
 
-    public ProductMeasurementType getProductMeasurementType() {
-        return productMeasurementType;
+    public Unit getUnit() {
+        return unit;
     }
 
-    public void setProductMeasurementType(ProductMeasurementType productMeasurementType) {
-        this.productMeasurementType = productMeasurementType;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     @Override
@@ -76,7 +75,7 @@ public class Product {
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", productCost=" + productCost +
-                ", productMeasurementType=" + productMeasurementType +
+                ", unit=" + unit +
                 ", deleted=" + deleted +
                 '}';
     }

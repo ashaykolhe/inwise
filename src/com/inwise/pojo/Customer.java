@@ -36,7 +36,10 @@ public class Customer
 
     @Column(name = "ecc_no",length = 50)
     private String eccNo;
-
+     @Column(name = "pan_no",length = 50)
+    private String PanNo;
+     @Column(name = "tan_no",length = 50)
+    private String tanNo;
     @Column(name = "customer_code",length = 10)
     private String customerCode;
 
@@ -152,6 +155,22 @@ public class Customer
         this.addressList = addressList;
     }
 
+    public String getPanNo() {
+        return PanNo;
+    }
+
+    public void setPanNo(String panNo) {
+        PanNo = panNo;
+    }
+
+    public String getTanNo() {
+        return tanNo;
+    }
+
+    public void setTanNo(String tanNo) {
+        this.tanNo = tanNo;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -162,6 +181,8 @@ public class Customer
                 ", email='" + email + '\'' +
                 ", tinNo='" + tinNo + '\'' +
                 ", eccNo='" + eccNo + '\'' +
+                ", PanNo='" + PanNo + '\'' +
+                ", tanNo='" + tanNo + '\'' +
                 ", customerCode='" + customerCode + '\'' +
                 ", contactNo1=" + contactNo1 +
                 ", contactNo2=" + contactNo2 +

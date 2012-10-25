@@ -27,18 +27,31 @@ else
 
 %>
 <s:layout-render name="/layout/_base.jsp">
+     <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Product</li>
+                     <li style="margin-top:35px">
+                             <li><s:link beanclass="com.inwise.action.ProductActionBean" event="addProductLink">Add</s:link></li>
+                             <li><s:link beanclass="com.inwise.action.ProductActionBean" event="updateProductLink">Update</s:link></li>
+                                        <li><s:link beanclass="com.inwise.action.ProductActionBean" event="deleteProductLink">Delete</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.ProductActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Delete Product
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
-              <table width="100%"><tr><td>
+   <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Delete Product</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center">
+    <div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+   <table class="second_table"  ><tr><td>
                     <d:table name="prodlst" id="prod" pagesize="10" class="disp" requestURI="/product">
 
                  <d:column property="productName" title="Product Name"  />
@@ -48,7 +61,7 @@ Delete Product
 
                                      <s:link beanclass="com.inwise.action.ProductActionBean" event="deleteProduct" onclick="return show_confirm();" >
                                         <s:param name="id" value="${prod.id}"></s:param>
-                                    <img src="images/Close-2-icon.png" />   </s:link>
+                                    <img src="images/delete.jpg" />   </s:link>
 
                                 </d:column>
 

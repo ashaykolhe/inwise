@@ -14,7 +14,15 @@
                           }
          });
 
+       $("#getcustomerbutton").click(function(){
 
+              if ($("#cutomerName1").val()=="0"){
+                              alert("please select customer name.")
+                 
+
+                              return false;
+                          }
+         });
         var phoneval = /^([0-9]{0,10})$/;
 
            var emailval =  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -93,8 +101,8 @@
                                           return false;
 
                       }
-        
-          
+
+
      });
     });
 
@@ -108,20 +116,34 @@
 
 
 <s:layout-render name="/layout/_base.jsp">
+     <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Customer</li>
+                     <li style="margin-top:35px">
+                           <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="pageDirect">Add</s:link></li>
+                              <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="viewLink">View</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Customer > Update Customer
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
- <s:form beanclass="com.inwise.action.CustomerActionBean">
- <table width="50%" border="0"><tr><td width="34%" align="left" valign="top">
-   <div align="right" style="margin-left: 1px;" class="labels">Please select Customer Name<span style="color:#FF0000"> *</span></div></td>
-		  <td width="36%" align="left" valign="top" >
+      <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Update customer</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+
+
+      <table class="second_table"  >
+ <%--<s:form beanclass="com.inwise.action.CustomerActionBean">
+ <tr><td width="23%" align="left" valign="top">
+   <div align="left" style="margin-left: 1px;" class="labels">Please select Customer Name<span style="color:#FF0000"> *</span></div></td>
+		  <td width="21%" align="left" valign="top" >
 <s:select id="cutomerName" name="id"  class="dropdown">
                         <option  value="0">---Select Customer---</option>
               <c:forEach items="${customerlst}" var="customer" varStatus="loop" >
@@ -136,22 +158,21 @@ Customer > Update Customer
 		      </c:forEach>
            </s:select> </td>
 
-		  <td width="30%" align="left" valign="top" > <s:submit name="updateCustomer" id="getcustomerbutton"  value="Get"/>
-    
-						</tr></table>
-           </s:form>
+		  <td width="15%"  align="left" valign="top" > <s:submit name="updateCustomer" class="buttons" id="getcustomerbutton"  value="Get"/>
+    <td>&nbsp;</td>
+						</tr>
+           </s:form>--%>
               <c:if test="${actionBean.customer!=null}">
                   <s:form beanclass="com.inwise.action.CustomerActionBean">
 
- <table border="1" width="66%" bgcolor="#FCFCFC" ><tr><td>
-            <table width="100%" border="0" cellspacing="1" bordercolor="#FCFCFC">
-           
-            <tr>
-                <td width="18%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
-                <td width="32%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="updatecustomername" class="textbox"></s:text></div> </td>
-                <td width="18%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department</div></td>
 
-                <td width="32%" align="left" valign="bottom"><div align="left" ><s:text id="updatecustomerdepartment"  name="customer.department" class="textbox"></s:text>
+
+            <tr>
+                <td width="23%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Customer Name<span style="color:#FF0000"> *</span></div>     </td>
+                <td width="21%" align="left" valign="top"><div align="left"><s:text name="customer.name" id="updatecustomername" class="textbox"></s:text></div> </td>
+                <td width="15%" align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">Department</div></td>
+
+                <td width="41%" align="left" valign="bottom"><div align="left" ><s:text id="updatecustomerdepartment"  name="customer.department" class="textbox"></s:text>
                     <s:hidden name="customer.deleted" value="1"/>
                     <s:hidden name="customer.id" value="${customerBean.id}"/>
                 </div></td>
@@ -265,24 +286,30 @@ Customer > Update Customer
             <td align="left" valign="top"><div align="left"><s:text name="customer.tinNo" class="textbox"></s:text></div></td>
         </tr>
 
-        <tr>
-            <td align="right" valign="top"><div align="right" style="margin-left: 2px;" class="labels">ECC No.</div></td>
+      
+          <tr>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">ECC No.</div></td>
             <td align="left" valign="top"><div align="left"><s:text name="customer.eccNo" id="updatevendorservicetax" class="textbox"></s:text></div></td>
+             <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Pan Card No.</div></td>
+            <td align="left" valign="top"><div align="left"><s:text name="customer.PanNo" class="textbox"></s:text></div></td>
+        </tr>
+                  <tr>
+            <td align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">TAN No.</div></td>
+            <td align="left" valign="top"><div align="left"><s:text name="customer.tanNo" id="addvendorservicetax" class="textbox"></s:text></div></td>
 
         </tr>
-
         <tr>
             <td >&nbsp;</td>
             <td colspan="2" align="right" valign="top"><div align="center">     &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit id="updatecustomerbutton" name="update" value="Update"></s:submit>
+                <s:submit id="updatecustomerbutton" class="buttons" name="update" value="Update"></s:submit>
                 <s:hidden name="customer.customerCode" value="${customerBean.customer.customerCode}"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                <s:reset name="reset" value="Reset"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
-                <s:submit name="cancel" value="Cancel"></s:submit></div></td>
+                <s:reset name="reset" value="Reset" class="buttons"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
+              <%--  <s:submit name="cancel" value="Cancel" class="buttons"></s:submit></div></td>--%>
             <td >&nbsp;</td>
 
         </tr>
-        </table></td></tr>
-            </table>
+        </table>
+
     </s:form>
           </c:if>
       </s:layout-component>

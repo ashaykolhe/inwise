@@ -73,20 +73,19 @@
 
     <s:layout-component name="body">
 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-            <tr valign="top"><td >&nbsp;
-            </td></tr>
-            <tr><td align="left" class="pageheading" valign="top">
-                Order > Advance
-            </td></tr>
-            <tr valign="top"><td align="center">&nbsp;
-            </td></tr>
-        </table>
+        <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Advance</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+     <table class="second_table"  ><tr><td>
 
                 <s:form beanclass="com.inwise.action.AdvanceActionBean">
-                    <table width="50%"  border="1"  cellspacing="0" cellpadding="0"   align="left" bgcolor="#FCFCFC" id="itemupdate_table">
-                        <tr>
-                            <td align="left">
+
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 
 
@@ -126,9 +125,9 @@
                                         <td>&nbsp;</td>
                                         <td  colspan="2" align="left" >
                                             <div>
-                                                <s:submit name="saveAdvance" value="Pay" id="saveAdvance"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <s:reset name="reset" value="Reset"/>   &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <s:submit name="cancel" value="Cancel"/>
+                                                <s:submit name="saveAdvance" value="Pay" class="buttons" id="saveAdvance"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <s:reset name="reset" value="Reset" class="buttons"/>   &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <s:submit name="cancel" value="Cancel" class="buttons"/>
                                             </div>
                                         </td>
                                         <td width="14%" align="left" valign="top" ></td>

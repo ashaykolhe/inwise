@@ -284,26 +284,35 @@ $(document).ready(function(){
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <s:layout-render name="/layout/_base.jsp">
+ <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Order</li>
+                     <li style="margin-top:35px">
+                             <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
+                  <li>     <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                                                  <%--   <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>--%>
+                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
+                  </ul>
+
+         </s:layout-component>
 <s:layout-component name="body">
 <s:form beanclass="com.inwise.action.OrderActionBean">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-        <tr valign="top">
-            <td >&nbsp;
-            </td>
-        </tr>
-        <tr>
-            <td align="left" class="pageheading" valign="top">
-                Order > Add Order
-            </td>
-        </tr>
-        <tr valign="top"><td align="center">&nbsp;<span style="color:#FF0000" id="message"></span>
-        </td>
-        </tr>
+      <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Add Order</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
     </table>
-    <table border="1" width="65%" bgcolor="#FCFCFC" ><tr><td>
+     <table class="second_table"  ><tr><td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-                <td width="24%" align="left" valign="top">
+                <td width="22%" align="left" valign="top">
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
                     </div>
@@ -318,12 +327,12 @@ $(document).ready(function(){
                         </s:select>
                     </div>
                 </td>
-                <td width="24%" align="left" valign="top"><s:hidden name="order.deleted" value="0"/>
+                <td width="22%" align="left" valign="top"><s:hidden name="order.deleted" value="0"/>
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Order Date<span style="color:#FF0000"> *</span></div>
                     </div>
                 </td>
-                <td width="30%" align="left" valign="top">
+                <td width="34%" align="left" valign="top">
                     <div align="left">
                         <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
                     </div>
@@ -331,7 +340,7 @@ $(document).ready(function(){
             </tr>
 
             <tr>
-                <td width="24%" align="left" valign="top">
+                <td width="22%" align="left" valign="top">
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Customer Order No.<span style="color:#FF0000"> *</span></div>
                     </div>
@@ -341,12 +350,12 @@ $(document).ready(function(){
                         <s:text name="order.customerOrderNo" id="customerOrderNo" class="textbox" onchange="return checkCustomerOrderNo();"/>
                     </div>
                 </td>
-                <td width="24%" align="left" valign="top">
+                <td width="22%" align="left" valign="top">
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Consignee Name<span style="color:#FF0000"> *</span></div>
                     </div>
                 </td>
-                <td width="30%" align="left" valign="top">
+                <td width="34%" align="left" valign="top">
                     <div align="left">
                         <s:text name="order.consigneeName" id="consigneeName"  class="textbox"/>
                     </div>
@@ -354,7 +363,7 @@ $(document).ready(function(){
             </tr>
 
             <tr>
-                <td width="24%" align="left" valign="top">
+                <td width="22%" align="left" valign="top">
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Invoice Address<span style="color:#FF0000"> *</span></div>
                     </div>
@@ -367,12 +376,12 @@ $(document).ready(function(){
                         </s:select>
                     </div>
                 </td>
-                <td width="24%" align="left" valign="top">
+                <td width="22%" align="left" valign="top">
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Shipment Address<span style="color:#FF0000"> *</span></div>
                     </div>
                 </td>
-                <td width="30%" align="left" valign="top">
+                <td width="34%" align="left" valign="top">
                     <div align="left">
                         <s:hidden name="order.orderAddress[1].addressType.id" value="2"/>
                         <s:select id="shipmentAddress" name="order.orderAddress[1].address.id" class="dropdown">
@@ -387,22 +396,21 @@ $(document).ready(function(){
             </tr>
             <tr>
                 <td colspan="4"><br><div align="left" style="margin-left:10px;">
-
-                    <table width="90%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #000000;" align="left" id="family">
-                        <tr>
-                            <td width="17%" height="28px" style="border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Product</span></strong></div></td>
-                            <td width="21%"  style="border-right:1px solid #000000; background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Cost</span></strong></div></td>
-                            <td width="18%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">UOM</span></strong></div></td>
-                            <td width="17%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Quantity</span></strong></div></td>
-                            <td width="20%"  style=" border-right:1px solid #000000;background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;">Amount</span></strong></div></td>
-                            <td width="7%"  style=" background:#FFCC66;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;"><img src="images/Cfthrow.gif"/></span></strong></div></td>
+ <table width="95%" border="0"  cellspacing="0" cellpadding="0"  align="left" id="family">
+    <tr class="foreach_table">
+                            <td width="17%"  class="foreach_table_firstth"><div align="center"><span class="foreach_th_span">Product</span></div></td>
+                            <td width="21%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Cost</span></div></td>
+                            <td width="18%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">UOM</span></div></td>
+                            <td width="17%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Quantity</span></div></td>
+                            <td width="20%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Amount</span></div></td>
+                            <td width="5%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span"><img src="images/delete.jpg"/></span></div></td>
                         </tr>
                         <c:forEach var="i" begin="1" end="4" step="1" varStatus ="status" >
                             <tr id="tabletr">
-                                <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                    <div align="left" style="margin-left:4px;">
+                              <td class="foreach_table_firstth">
+    <div class="foreach_table_div">
                                         <div align="right">
-                                            <s:select id="productName${i}" name="order.orderDetail[${i}].product.id"  onchange= "return GetItemDetail(this);">
+                                            <s:select id="productName${i}" name="order.orderDetail[${i}].product.id" class="dropdowntable" onchange= "return GetItemDetail(this);">
                                                 <option  value="">---Select Product---</option>
                                                 <c:forEach items="${orderBean.productList}" var="product" varStatus="loop" >
                                                     <option value ="<c:out value='${product.id}'/>"><c:out value="${product.productName}"/></option>
@@ -410,42 +418,31 @@ $(document).ready(function(){
                                             </s:select>
                                         </div></div></td>
 
-                                <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                    <div align="left" style="margin-left:4px;">
-                                        <div align="right">
-                                            <s:text  name="productCost" id="cost${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                        </div></div></td>
-                                <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                    <div align="left" style="margin-left:4px;">
-                                        <div align="right">
-                                            <s:text name="productMeasurementType" id="productMeasurementType${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                        </div></div></td>
-                                <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                    <div align="left" style="margin-left:4px;">
-                                        <div align="right">
-                                            <s:text name="order.orderDetail[${i}].orderedQuantity" id="orderedQuantity${i}" onchange="return calculateBalance(this,${i})"  style="text-align:right;margin-right:2px;width:100px; "/>
-                                            <s:hidden name="order.orderDetail[${i}].remainingQuantity" id="remainingQuantity${i}" style="text-align:right;margin-right:2px;width:100px; "/>
-                                        </div></div></td>
-                                <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                                    <div align="left" style="margin-left:4px;">
-                                        <div align="right">
-                                            <s:text name="amount[${i}]" id="amount${i}" readonly="readonly" style="text-align:right;margin-right:2px;width:100px; "/>
-                                        </div></div></td>
-                                <td style="border-top:1px solid #000000;">
-                                    <div align="left" style="margin-left:0px;">
-                                        <div align="right">
-                                            <s:text name="delete[${i}]"   id="delete${i}" class="delete" style="background:url('images/Cfthrow.gif') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
+                               <td class="foreach_table_th"><div class="foreach_table_div">
+                                   <div align="right">
+                                            <s:text  name="productCost" id="cost${i}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                   </div>    </div></td>
+                               <td class="foreach_table_th"><div class="foreach_table_div"> <div align="right">
+                                            <s:text name="productMeasurementType" id="productMeasurementType${i}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                      </div>  </div></td>
+                              <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
+                                            <s:text name="order.orderDetail[${i}].orderedQuantity" id="orderedQuantity${i}" onchange="return calculateBalance(this,${i})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"  class="foreach_table_td" style=" width:100px;"/>
+                                            <s:hidden name="order.orderDetail[${i}].remainingQuantity" id="remainingQuantity${i}" />
+                                      </div>  </div></td>
+                              <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
+                                            <s:text name="amount[${i}]" id="amount${i}" readonly="readonly" class="foreach_table_td" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'" style=" width:100px;"/>
+                                     </div>   </div></td>
+                                <td class="foreach_table_th"><div class="foreach_table_div">     <div align="right">
+                                            <s:text name="delete[${i}]"   id="delete${i}" class="delete" style="background:url('images/delete.jpg') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
 
-                                        </div></div></td>
+                                    </div>    </div></td>
 
                             </tr>
                         </c:forEach>
                     </table>
-                    <tr>
-                        <td colspan="2">&nbsp;</td>
-                        <td >
-                            <div style="text-align:right; cursor: pointer;" class="links"><span style="vertical-align: top;text-align: right;font-size:medium; " class="addRow" id="add" >Add row</span></div>
-                        </td></tr>
+                    <tr><td colspan="4">
+    <div style="text-align:right; cursor: pointer;" class="links"><span style="vertical-align: top;text-align: left; " class="addRow" id="add" >Add row</span></div>
+    </td></tr>
                 </div></td>
             </tr>
             <tr>
@@ -456,11 +453,11 @@ $(document).ready(function(){
             <tr>
                 <td align="left">&nbsp;</td>
                 <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="addOrder" value="Submit" id="addOrder"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="reset"  value="Reset" name="reset"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="cancel" value="Cancel"></s:submit>
+                    <s:submit name="addOrder" value="Submit" class="buttons" id="addOrder"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="cancel" value="Cancel" class="buttons"></s:submit>
                 </div></td>
-                <td width="30%" align="left">&nbsp;</td>
+                <td width="34%" align="left">&nbsp;</td>
             </tr>
 
         </table></td></tr></table>

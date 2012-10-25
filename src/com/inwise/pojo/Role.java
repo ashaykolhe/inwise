@@ -2,7 +2,6 @@ package com.inwise.pojo;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -17,19 +16,21 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "role")
 public class Role {
-    
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "name",length = 20)
+   @Column(name = "id")
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Integer id;
+    @Column(name = "name")
     private String name;
-    
-    @Column(name = "deleted",length = 2)
-    private Integer deleted;
+    @Column(name = "deleted",nullable = true)
+    private  int deleted;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "role")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SELECT)
+    @JoinTable(name = "role_has_rolepermissions",
+        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id")
+    )
     private List<RolePermissions> rolePermissions = new ArrayList<RolePermissions>();
 
     public List<RolePermissions> getRolePermissions() {

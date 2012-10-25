@@ -1,8 +1,6 @@
 package com.inwise.pojo;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +15,7 @@ public class UserPermissions {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "name")
     private String name;
 
@@ -28,15 +26,12 @@ public class UserPermissions {
     @Column(name = "delete_menu")
     private String delete;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -73,13 +68,6 @@ public class UserPermissions {
         this.delete = delete;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public String toString() {

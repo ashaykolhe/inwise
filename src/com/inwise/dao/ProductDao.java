@@ -63,5 +63,19 @@ public class ProductDao extends BaseDao<Product,Integer> {
     {
           return (List<Product>)sessionProvider.get().createSQLQuery("Select product_name from product").list();
     }
+     public List<Product> getAllDeletedProduct() {
+        return (List<Product>)sessionProvider.get().createQuery("FROM Product where deleted='1'").list();
+    }
+    @Transactional
+      public void restoreAllProduct()
+    {
+        sessionProvider.get().createQuery("UPDATE Product SET deleted=0 WHERE deleted=1").executeUpdate();
 
+    }
+    @Transactional
+    public void restoreProduct(int id)
+    {
+        sessionProvider.get().createQuery("UPDATE Product SET deleted=0 WHERE id="+id).executeUpdate();
+
+    }
 }

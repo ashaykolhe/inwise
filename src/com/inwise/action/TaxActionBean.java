@@ -23,6 +23,7 @@ import java.util.Iterator;
 public class TaxActionBean extends BaseActionBean{
     private static final String ADDTAX="jsp/addTax.jsp";
     private static final String UPDATETAX="jsp/updateTax.jsp";
+    private static final String VIEWTAX="jsp/viewTax.jsp";
 
        @Inject
        protected TaxDao taxDao;
@@ -50,12 +51,7 @@ public class TaxActionBean extends BaseActionBean{
     @DefaultHandler
     public Resolution addTaxLink()
     {
-         if(taxDao.getMaxTax()){
-             taxlst=taxDao.listAll();
-        return new ForwardResolution(UPDATETAX);
-        }
-
-        else
+       
             return new ForwardResolution(ADDTAX);
     }
        
@@ -63,9 +59,8 @@ public class TaxActionBean extends BaseActionBean{
       public Resolution addTax()
       {
          
-              for(Iterator<Tax> i=taxlst.iterator();i.hasNext();){
-             taxDao.save(i.next());
-        }
+             taxDao.save(getTax());
+
                  
           return new RedirectResolution(TaxActionBean.class,"addTaxLink");
 
@@ -73,11 +68,15 @@ public class TaxActionBean extends BaseActionBean{
 
     public Resolution getTaxById(){
         tax  =taxDao.find(id);
-         return new JavaScriptResolution(tax);
+         return new ForwardResolution(UPDATETAX);
     }
       public Resolution updateTax(){
                     taxDao.save(getTax());
-           return new RedirectResolution(TaxActionBean.class,"addTaxLink");
+           return new RedirectResolution(TaxActionBean.class,"viewTaxLink");
       }
 
+      public Resolution viewTaxLink(){
+                 taxlst=taxDao.listAll();  
+           return new ForwardResolution(VIEWTAX);
+      }
 }

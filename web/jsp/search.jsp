@@ -9,10 +9,7 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
-
-
 <c:set var = "TR1" value="receiptOrderSlip"/>
-
 <c:if test="${actionBean.hdnvalue eq TR1}">
     <script type="text/javascript">
         function OpenPopup(){
@@ -263,7 +260,7 @@ $(document).ready(function() {
         }
 
     });
-    
+
 
 });
 </script>
@@ -280,21 +277,27 @@ $(document).ready(function() {
 %>
 
 <s:layout-render name="/layout/_base.jsp">
+  <s:layout-component name="left-menu">
+
+             <ul>
+                 <li>&nbsp;</li>
+                  <li class="left_menu_heading">Search/Print</li>
+                  <li style="margin-top:35px">    <s:link beanclass="com.inwise.action.SearchActionBean" event="searchLink">Search</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceLink">Print</s:link></li>
+              </ul>
+
+     </s:layout-component>
 <s:layout-component name="body">
 <s:form beanclass="com.inwise.action.SearchActionBean">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-    <tr valign="top"><td >&nbsp;
-    </td></tr>
+<br>
+    <table class="heading_table">
+
     <tr><td align="left" class="pageheading" valign="top">
-        <strong>Search</strong>
+      <div class="sub_heading" >Search</div>
     </td></tr>
-    <tr valign="top"><td align="center">&nbsp;
-    </td></tr>
-</table>
-<table bordercolor="#FF6600" width="77%" border="1">
-    <tr>
-        <td width="70%" height="124">
-            <table width="100%" cellspacing="1">
+     </table>
+     <table class="second_table"  ><tr><td>
+            <table width="100%" cellspacing="0" border="0" cellpadding="0">
                 <tr>
                     <td width="13%" align="left" valign="top">Search What ?</td>
                     <td width="87%" align="left" valign="top">
@@ -335,24 +338,24 @@ $(document).ready(function() {
                         <%--<td>&nbsp;<span style="visibility:hidden;" id="autocompleteval">${actionBean.name}</span></td>--%>
                     <td align="left" valign="top">
 
-                        <div id="myDiv1"  align="left" style="display:none;" class="labels">
+                        <div id="myDiv1"  align="left" style="display:none;" >
                                 <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
-                            &nbsp;&nbsp;<s:text  style="border:1px solid #FFCC66;height: 23px; width: 173px;" name="name" id="autocomplete" value=""/>
-                            <s:submit name="search" id="textgetbtn" value="Get" ></s:submit>
+                            &nbsp;&nbsp;<s:text  class="textbox" style="margin-left:0px;" name="name" id="autocomplete" value=""/>
+                            <s:submit name="search" id="textgetbtn"  value="Get" class="buttons"></s:submit>
                         </div>
 
-                        <div id="myDiv2"  align="left" style="display:none;" class="labels">
+                        <div id="myDiv2"  align="left" style="display:none;" >
                                 <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
-                            &nbsp;&nbsp;<s:text id="date" name="date" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                            <s:submit name="search" id="dategetbtn" value="Get" ></s:submit>
+                            &nbsp;&nbsp;<s:text id="date" name="date" style="margin-left:0px;"  readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
+                            <s:submit name="search" id="dategetbtn" value="Get" class="buttons"></s:submit>
 
                         </div>
 
-                        <div id="myDiv3"  align="left" style="display:none;" class="labels">
+                        <div id="myDiv3"  align="left" style="display:none;" >
                                 <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
-                            &nbsp;&nbsp;<s:text name="fromdate" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                            &nbsp;&nbsp;        <s:text id="betweendate" name="todate" style="height: 23px; width: 173px;" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
-                            <s:submit name="search" id="betgetbtn" value="Get" ></s:submit>
+                            &nbsp;&nbsp;<s:text name="fromdate" readonly="readonly" style="margin-left:0px;" onFocus="showCalendarControl(this);" class="textbox" />
+                            &nbsp;&nbsp;        <s:text id="betweendate" name="todate"  readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
+                            <s:submit name="search" id="betgetbtn" value="Get" class="buttons"></s:submit>
 
                         </div>
                     </td>
@@ -364,8 +367,8 @@ $(document).ready(function() {
 </table>
 <c:if test="${actionBean.customer!=null}">
     <c:if test="${actionBean.searchSubmenu eq 'custName'}">
-        
-        <table class="t" id="grntable" width="100%"><tr><td>
+
+        <table class="t" id="grntable" width="92%"><tr><td>
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
                <d:column property="name" title="Name"/>
@@ -376,11 +379,11 @@ $(document).ready(function() {
             </d:table></td></tr></table>
     </c:if>
     <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
-        <table class="t" id="grntable" width="100%"><tr><td>
+        <table class="t" id="grntable" width="92%"><tr><td>
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
                 <d:column property="customerCode" title="Customer Code"/>
                 <d:column property="name" title="Name"/>
-             
+
                 <d:column property="contactPerson" title="Contact Person Name"/>
                 <d:column property="contactNo1" title="Contact No :1"/>
                 <d:column property="contactNo2" title="Contact No :2"/>
@@ -388,7 +391,7 @@ $(document).ready(function() {
     </c:if>
 </c:if>
 <c:if test="${actionBean.invoice!=null and fn:startsWith(actionBean.searchSubmenu,'invoice')}">
-    <table class="t" id="grntable" width="100%"><tr><td>
+    <table class="t" id="grntable" width="92%"><tr><td>
         <d:table name="invoice" id="c" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -409,7 +412,7 @@ $(document).ready(function() {
 
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerName')}">
 
-    <table class="t" id="grntable" width="100%"><tr><td>
+    <table class="t" id="grntable" width="92%"><tr><td>
         <d:table name="invoicelst" id="c1" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -429,7 +432,7 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'invoiceCustomerOrderNo')}">
 
-    <table class="t" id="grntable" width="100%"><tr><td>
+    <table class="t" id="grntable" width="92%"><tr><td>
         <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -449,7 +452,7 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${actionBean.invoicelst!=null and fn:startsWith(actionBean.searchSubmenu,'invoiceDate' )}">
 
-    <table class="t" id="grntable" width="100%"><tr><td>
+    <table class="t" id="grntable" width="92%"><tr><td>
         <d:table name="invoicelst" id="c" pagesize="10"  class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="customer.name" title="Customer Name"/>
@@ -458,7 +461,7 @@ $(document).ready(function() {
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${c.invoiceNumber}"></s:param>
                     <s:param name="hdnvalue" value="invoicelst"></s:param>
-                    
+
                     <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
                     <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
 
@@ -470,7 +473,7 @@ $(document).ready(function() {
 
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerOrderNumber')}">
 
-    <table  class="t" id="grntable" width="100%"><tr><td>
+    <table  class="t" id="grntable" width="92%"><tr><td>
         <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
@@ -563,7 +566,7 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerName')}">
 
-    <table  class="t" id="grntable" width="100%"><tr><td>
+    <table  class="t" id="grntable" width="92%"><tr><td>
         <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
@@ -644,7 +647,7 @@ $(document).ready(function() {
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
-                   
+
                     <s:param name="name" value="${invoice.order.customer.name}"></s:param>
                     <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
                     <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
@@ -656,7 +659,7 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderDate')}">
 
-    <table  class="t" id="grntable" width="100%"><tr><td>
+    <table  class="t" id="grntable" width="92%"><tr><td>
         <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
             <d:column property="invoiceNumber" title="Invoice Number"/>
             <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>

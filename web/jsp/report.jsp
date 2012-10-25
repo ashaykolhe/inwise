@@ -142,6 +142,7 @@ $(document).ready(function(){
    $(".textboxmonth").hide();
         $(".textyear").hide();
           $(".fortodaydate").show();
+      $("#radio8").show();
       $(".forselectdate").hide();
           $("#dailytable").hide();
        $(".prodorcust").hide();
@@ -152,14 +153,14 @@ $(document).ready(function(){
       $("#producttable").hide();
       $("#alltaxtable").hide();
       if ($('input[name=stock]:checked').val() == "byTax" )
-     {
-               $("#inv").hide();
+     {            $("#radio8").show();
+               $("#inv").show();
          $("#inta").show();
            $("#radio8").attr("checked", false);
       ;}
            if ($('input[name=stock]:checked').val() == "byInvoice" )
      {
-
+            $("#radio8").show();
         $("#inv").show();
          $("#inta").hide();
            $("#radio8").attr("checked", false);
@@ -428,19 +429,16 @@ $("#autocompletep").val("");
 <s:layout-render name="/layout/_base.jsp">
     <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.ReportActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Report
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
-  <table bordercolor="#FF6600" width="90%" border="1">
- <tr>
- <td width="100%" height="200">
-      <table width="100%"  cellspacing="1">
+          <br>
+              <table class="heading_table">
+
+              <tr><td align="left" class="pageheading" valign="top">
+                <div class="sub_heading" >Report</div>
+              </td></tr>
+               </table>
+               <table class="second_table"  ><tr><td>
+
+      <table width="100%"  cellspacing="0" cellpadding="0" border="0">
           <tr class="firstrow">
                    <td width="8%" height="21"  align="left" valign="top">Search </td>
                    <td width="1%"  align="right" valign="top"><s:radio  value="byInvoice" id="invoiceradio"  name="stock"></s:radio></td>
@@ -502,7 +500,7 @@ Report
                    <td width="1%" colspan=""  align="right" valign="top"></td>
                    <td  align="right" colspan="2" valign="top"><strong>Select Date</strong> </td>
                    <td  align="left" colspan="7" valign="top"><s:text name="sdate" id="textboxh" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox"></s:text>
-                       &nbsp;&nbsp;<s:submit name="bySelectDate" id="getselectbydatebtn" value="Get"></s:submit></td>
+                       &nbsp;&nbsp;<s:submit name="bySelectDate" id="getselectbydatebtn" class="buttons" value="Get"></s:submit></td>
                <td  align="left" colspan="3" valign="top"></td>
 
                  </tr>
@@ -537,16 +535,18 @@ Report
 
               <tr class="textboxfromto"  style="display:none;">
                   <td>&nbsp;</td>
-                  <td colspan="4" align="left" valign="top">
- 	  <s:label name="From"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;<s:text name="from" class="textbox" id="fromto" readonly="readonly" onFocus="showCalendarControl(this);" ></s:text></td>
+                  <td colspan="5" align="left" valign="top">
+ 	  <s:label name="From"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <s:text name="from" class="textbox" id="fromto" readonly="readonly" onFocus="showCalendarControl(this);" ></s:text></td>
 
-                  <td colspan="3" align="left" valign="top">
- 	  <s:label name="To"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;<s:text name="to" class="textbox" id="to" readonly="readonly" onFocus="showCalendarControl(this);" ></s:text></td>
-                 <td align="left"><s:submit name="getfromto" value="Show" id="getfrom" ></s:submit></td>
+                  <td colspan="5" align="left" valign="top">
+ 	  <s:label name="To"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;
+                      <s:text name="to" class="textbox" id="to" readonly="readonly" onFocus="showCalendarControl(this);" ></s:text></td>
+                 <td align="left"><s:submit name="getfromto" class="buttons" value="Show" id="getfrom" ></s:submit></td>
               </tr>
                 <tr class="textboxmonth"  style="display:none;">
                   <td>&nbsp;</td>
-                  <td colspan="7" align="left" valign="top">
+                  <td colspan="8" align="left" valign="top">
  	  <s:label name="Month"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;
                       <s:select name="monthly" id="month" class="dropdown">
             <option  value="">----Select Month----</option>
@@ -563,12 +563,12 @@ Report
          </s:select></td>
 
                   <td colspan="4" align="left" valign="top">
- 	  <s:submit name="getmonth" value="Show" id="getmonth" ></s:submit>
+ 	  <s:submit name="getmonth" value="Show" id="getmonth" class="buttons" ></s:submit>
                  <td></td>
               </tr>
                <tr class="textyear" style="display:none;">
                   <td>&nbsp;</td>
-                  <td colspan="4" align="left" valign="top">
+                  <td colspan="5" align="left" valign="top">
  	  <s:label name="Year"></s:label>&nbsp;&nbsp;&nbsp;&nbsp;
                   <s:select id="y" name="y" class="dropdown">
                             <%int year = 2011;%>
@@ -580,7 +580,7 @@ Report
             </s:select></td>
 
                   <td colspan="4" align="left" valign="top">
- 	  <s:submit name="byYear" value="Show" id="byYear" ></s:submit>
+ 	  <s:submit name="byYear" value="Show" id="byYear" class="buttons"></s:submit>
                  <td></td>
               </tr>
          </table></td></tr></table>
@@ -810,7 +810,7 @@ Report
        pageContext.setAttribute("totals", totals);
 
           %>
-    
+
 
 
                       <c:if test="${actionBean.lst!=null && list.test=='a'}">

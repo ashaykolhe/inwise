@@ -3,9 +3,9 @@ package com.inwise.action;
 import net.sourceforge.stripes.action.*;
 import net.sourceforge.stripes.ajax.JavaScriptResolution;
 import com.inwise.pojo.Product;
-import com.inwise.pojo.ProductMeasurementType;
+import com.inwise.pojo.Unit;
 import com.inwise.dao.ProductDao;
-import com.inwise.dao.ProductMeasurementTypeDao;
+import com.inwise.dao.UnitDao;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -27,13 +27,14 @@ public class ProductActionBean extends BaseActionBean{
     private static final String ADDPRODUCT="jsp/addProduct.jsp";
     private static final String UPDATEPRODUCT="jsp/updateProduct.jsp";
     private static final String DELETEPRODUCT="jsp/deleteProduct.jsp";
-    
+     private static final String VIEWPRODUCT="jsp/viewProduct.jsp";
     Logger logger= LoggerFactory.getLogger(ProductActionBean.class);
      @Inject
      protected ProductDao productDao;
-    @Inject protected ProductMeasurementTypeDao productmsreDao;
+   @Inject
+   UnitDao unitdao;
     private Product product;
-     private List<ProductMeasurementType> prodmsrelst;
+  List<Unit> unitlst;
     private List<Product> prodlst;
      private String addProductName;
       private boolean flag;
@@ -70,19 +71,18 @@ public class ProductActionBean extends BaseActionBean{
         this.addProductName = addProductName;
     }
 
-    public List<ProductMeasurementType> getProdmsrelst() {
-        return prodmsrelst;
+    public List<Unit> getUnitlst() {
+        return unitlst;
     }
 
-    public void setProdmsrelst(List<ProductMeasurementType> prodmsrelst) {
-        this.prodmsrelst = prodmsrelst;
+    public void setUnitlst(List<Unit> unitlst) {
+        this.unitlst = unitlst;
     }
 
-   
     @DefaultHandler
     public Resolution addProductLink()
     {
-        prodmsrelst=productmsreDao.listAll();
+        unitlst=unitdao.getUnit();
         return new ForwardResolution(ADDPRODUCT);
     }
       public Resolution addProduct()
@@ -102,19 +102,19 @@ public class ProductActionBean extends BaseActionBean{
    public Resolution updateProductLink()
    {
        prodlst=productDao.listAll();
-       prodmsrelst=productmsreDao.listAll();
+    unitlst=unitdao.getUnit();
     
        return new ForwardResolution(UPDATEPRODUCT);
    }
     public Resolution getProductButton()
-    {
+    {      unitlst=unitdao.getUnit();
         product=productDao.find(id);
         return updateProductLink();
     }
    public Resolution updateProduct()
    {
        productDao.save(product);
-     return new RedirectResolution(ProductActionBean.class,"updateProductLink");
+     return new RedirectResolution(ProductActionBean.class,"viewProductLink");
    }
     public Resolution deleteProductLink()
     {
@@ -124,6 +124,12 @@ public class ProductActionBean extends BaseActionBean{
      public Resolution deleteProduct()
      {
          productDao.remove(id);
-         return new RedirectResolution(ProductActionBean.class,"deleteProductLink");
+         return new RedirectResolution(ProductActionBean.class,"viewProductLink");
      }
+      public Resolution viewProductLink()
+    {
+          prodlst=productDao.listAll();
+      return new ForwardResolution(VIEWPRODUCT);
+    }
+
 }

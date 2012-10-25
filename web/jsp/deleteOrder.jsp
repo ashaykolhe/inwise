@@ -27,18 +27,33 @@ else
 
 %>
 <s:layout-render name="/layout/_base.jsp">
+    <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Order</li>
+                     <li style="margin-top:35px">
+                             <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
+                                                   <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.OrderActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Order > Delete Order
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
-              <table width="100%"><tr><td>
+  <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Delete Order</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+
+
+      <table class="second_table"  ><tr><td>
                     <d:table name="orderlst" id="order" pagesize="10" class="disp" requestURI="/order">
                  <d:column property="id" title="Id"/>
                  <d:column property="customerOrderNo" title="Customer Order No"  />

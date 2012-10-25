@@ -106,4 +106,19 @@ public class CustomerDao extends BaseDao<Customer,Integer>
     {
           return (List<Customer>)sessionProvider.get().createSQLQuery("Select name from customer").list();
     }
+     public List<Customer> getAllDeletedCustomer() {
+        return (List<Customer>)sessionProvider.get().createQuery("FROM Customer where deleted='1'").list();
+    }
+    @Transactional
+      public void restoreAllCustomer()
+    {
+        sessionProvider.get().createQuery("UPDATE Customer SET deleted=0 WHERE deleted=1").executeUpdate();
+
+    }
+    @Transactional
+    public void restoreCustomer(int id)
+    {
+        sessionProvider.get().createQuery("UPDATE Customer SET deleted=0 WHERE id="+id).executeUpdate();
+
+    }
 }

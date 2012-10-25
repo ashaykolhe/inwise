@@ -18,7 +18,8 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class PasswordEncryptor implements TypeConverter<String> {
-    public String convert(String input, Class<? extends String> cls,Collection<ValidationError> errors)
+    public String convert(String input, Class<? extends String> cls,
+                          Collection<ValidationError> errors)
     {
         //password-superadmin iJo6eRs4dc+uQTV0tT2ku4qQ1T4=
         return hash(input);

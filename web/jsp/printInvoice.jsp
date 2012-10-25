@@ -24,7 +24,7 @@
             if (winl < 0) winl = 0;
             if (wint < 0) wint = 0;
            var page = "advance?advancePopupViaReceiptNo=&id="+${printBean.receiptNumber};
-            
+
             var windowprops = "height="+h+",width="+w+",top="+ wint +",left="+ winl +",location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=no,status=yes";
             window.open(page, "Popup", windowprops);
@@ -55,13 +55,13 @@
 
     $(window).load(function()
         {
-            
+
             if($('#receiptradio').is(':checked'))
-            {
+            {  $('#selectcutomername').show();
                $('#selectnamediv').show();
             }
             if($('#invoiceradio').is(':checked'))
-            {
+            {   $('#selectcutomername').show();
                $('#selectnamediv').show();
                  $('#selectorderdiv').show();
             }
@@ -69,17 +69,18 @@
 $(document).ready(function()
 {
         $('#invoiceradio').click(function()
-        {
+        {       $('#selectcutomername').show();
             $('#selectnamediv').show();
             $('#selectnamediv1').hide();
             $('#selectcutomername').val(0);
             $('#ordertable').hide();
             $('#msgtable').hide();
-            
+
 
           });
         $('#receiptradio').click(function()
         {
+             $('#selectcutomername').show();
            $('#selectnamediv').show();
            $('#selectorderdiv').hide();
            $('#selectcutomername').val(0);
@@ -120,13 +121,13 @@ $(document).ready(function()
                 this.form.submit();
             }
         });
-        
+
  });
 
 
-</script>                                      
+</script>
 <s:useActionBean beanclass="com.inwise.action.PrintActionBean" event="lst" var="listvar"></s:useActionBean>
-<% 
+<%
     request.setAttribute("customerNameForAdvance",listvar.getCustNameIdList());
     request.setAttribute("orederListFromAdvance",listvar.getOrderFromAdvance());
  request.setAttribute("cust",listvar.getCust());
@@ -137,40 +138,43 @@ $(document).ready(function()
 %>--%>
 
 <s:layout-render name="/layout/_base.jsp">
+ <s:layout-component name="left-menu">
+
+             <ul>
+                 <li>&nbsp;</li>
+                  <li class="left_menu_heading">Search/Print</li>
+                  <li style="margin-top:35px">    <s:link beanclass="com.inwise.action.SearchActionBean" event="searchLink">Search</s:link></li>
+                                                     <li><s:link beanclass="com.inwise.action.PrintActionBean" event="printInvoiceLink">Print</s:link></li>
+              </ul>
+
+     </s:layout-component>
     <s:layout-component name="body">
     <s:form id="formid" beanclass="com.inwise.action.PrintActionBean">
 
+<br>
+    <table class="heading_table">
 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-        <tr valign="top"><td >&nbsp;</td>   </tr>
-        <tr>
-            <td align="left" class="pageheading" valign="top">
-            <strong>Print</strong>
-            </td>
-        </tr>
-        <tr valign="top"><td align="center">&nbsp;</td></tr>
-        </table>
-
-
-        <table bordercolor="#FF6600" width="77%" border="1">
-        <tr>
-            <td width="70%" height="124">
-    <table width="100%" cellspacing="1">
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Print</div>
+    </td></tr>
+     </table>
+     <table class="second_table"  ><tr><td>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                <td width="20%" align="left" valign="top">Search By</td>
+                <td width="13%" align="left" valign="top">Search By</td>
                 <td width="1%" align="left" valign="top"><s:radio  value="byInvoice" id="invoiceradio"  name="printBy"></s:radio></td>
-                <td  align="left" width="20%"  valign="top">Invoice</td>
-                <td width="1%" align="left" valign="top"><s:radio value="byReceipt"  id="receiptradio"  name="printBy"></s:radio></td>
-                <td align="left"valign="top" width="20%">Receipt</td>
-                    <td></td>
+                <td  align="left" width="8%"  valign="top">Invoice</td>
+                <td width="2%" align="left" valign="top"><s:radio value="byReceipt"  id="receiptradio"  name="printBy"></s:radio></td>
+                <td align="left"valign="top" width="9%">Receipt</td>
+                    <td width="67%"></td>
                 </tr>
            <tr>
-                <td width="20%" align="left" valign="top"></td>
-         
-              <td colspan="5">
-                <div id="selectnamediv"align="left" style="margin-left: 2px; display:none;"  class="labels">Please Select Customer <span style="color:#FF0000"> *</span>
 
-                    <s:select id="selectcutomername" name="id"  class="dropdown"  onchange="showorderdropdown();">
+
+              <td colspan="3">
+                <div id="selectnamediv"align="left" style="margin-left: 2px; display:none;"  class="labels">Please Select Customer <span style="color:#FF0000"> *</span>
+                  </div></td><td colspan="2">
+                    <s:select id="selectcutomername" name="id" style="display :none ;"  class="dropdown"  onchange="showorderdropdown();">
                         <option  value="0">---Select Customer---</option>
                              <%List<Object> temp=(List<Object>)request.getAttribute("customerNameForAdvance");
                                Iterator<Object> it=temp.iterator();
@@ -188,13 +192,11 @@ $(document).ready(function()
                             <%}%>
                         <%}%>
                     </s:select>
-                 </div>
-
-                </td>
+                                </td>
             </tr>
-     
+
       <tr>
-          <td width="20%" align="left" valign="top"></td>
+          <td width="13%" align="left" valign="top"></td>
 
           <td colspan="5">
               <c:if test="${actionBean.showdropdown!=null}">
@@ -219,7 +221,7 @@ $(document).ready(function()
       </table>
         </td>
         </tr>
-   
+
    </table>
 
         <%--<table bordercolor="#FF6600" width="77%" id="msgtable">
@@ -229,14 +231,14 @@ $(document).ready(function()
                     <tr>
                         <div style="margin-top:05px;margin-left:150px;font-size:13px;font-family:Verdana;">
              <stripes:messages/>  </div>
-                        
+
                     </tr>
                 </table>
             </td>
            </tr>
          </table>--%>
 
-      
+
                 <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
                 <table width="77%" cellspacing="1">
                     <tr>
@@ -283,11 +285,11 @@ $(document).ready(function()
                                 <s:param name="id" value="<%=obj[3]%>"/>
                                 <s:param name="receiptNumber" value="<%=obj[1]%>"/>
                                 <img src="images/view.gif" alt=""></s:link></strong></div>
-                                
+
                             </td>
                    </tr>
                             <% i++;}%>
-                    
+
                             </table>--%>
 
                     </tr>
@@ -296,7 +298,7 @@ $(document).ready(function()
         </c:if>
              <c:if test="${actionBean.visibleInvoiceTable!=null}">
 
-        
+
                 <table width="77%" cellspacing="1">
                     <tr>
                         <td>
@@ -352,8 +354,8 @@ $(document).ready(function()
 
             </c:if>
 
-        
+
         </s:form>
-        
+
         </s:layout-component>
 </s:layout-render>

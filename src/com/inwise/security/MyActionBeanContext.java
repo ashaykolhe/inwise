@@ -21,11 +21,13 @@ public class MyActionBeanContext extends ActionBeanContext {
     @Inject protected UserDao userDao;
 
     public void setUser(User user) {
-
-        setCurrent(USER, user!=null ? user.getId() : 0);
+          System.out.println("hello"+user);
+        setCurrent(USER, user!=null ? user.getUser_id() : 0);
     }
     public User getUser() {
+
         Integer userId = getCurrent(USER, null);
+         System.out.println("hello123"+userId);
         return userDao.find(userId);
     }
     protected void setCurrent(String key, Object value) {

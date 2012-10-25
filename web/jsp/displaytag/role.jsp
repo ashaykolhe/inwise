@@ -11,14 +11,14 @@
                   <d:column  title="update">
                         <s:link beanclass="com.inwise.action.RoleActionBean" event="readname" onclick= "return updateLink(this);">
                           <s:param name="id" value="${rolel.id}"></s:param>
-                      <img src="/images/edit-icon.png" />
+                      <img src="images/edit-icon.png" />
                        </s:link>
 
                   </d:column>
                    <d:column title="Delete" class="delete">
                        <s:link beanclass="com.inwise.action.RoleActionBean" event="delete1" onclick= "return ajaxLink(this,'#role_table');">
                            <s:param name="id" value="${rolel.id}"></s:param>
-                       <img src="/images/Close-2-icon.png" />
+                       <img src="images/delete.jpg" />
                        </s:link>
                    </d:column>
 	 </d:table>

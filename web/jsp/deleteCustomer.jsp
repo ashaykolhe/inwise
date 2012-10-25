@@ -22,23 +22,37 @@ else
     return false;
 }
 </script>
+
 <s:useActionBean beanclass="com.inwise.action.CustomerActionBean" var="listofcustomer" event="deleteLink"></s:useActionBean>
 <% request.setAttribute("customerlst",listofcustomer.getCustomerlst());
 
 %>
 <s:layout-render name="/layout/_base.jsp">
+    <s:layout-component name="left-menu">
+
+                 <ul>
+                          <li>&nbsp;</li>
+                      <li class="left_menu_heading">Customer</li>
+                     <li style="margin-top:35px">
+                               <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="pageDirect">Add</s:link></li>
+                                <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="updateCustomerLink">Update</s:link></li>
+                                <li><s:link beanclass="com.inwise.action.CustomerActionBean" event="deleteLink">Delete</s:link></li>
+                  </ul>
+
+         </s:layout-component>
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.CustomerActionBean">
-   <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
- <tr valign="top"><td >&nbsp;
- </td></tr>
- <tr><td align="left" class="pageheading" valign="top">
-Customer > Delete Customer
- </td></tr>
- <tr valign="top"><td align="center">&nbsp;
- </td></tr>
- </table>
-              <table width="100%"><tr><td>
+    <br>
+    <table class="heading_table">
+
+    <tr><td align="left" class="pageheading" valign="top">
+      <div class="sub_heading" >Delete Customer</div>
+    </td></tr>
+   <%-- <tr valign="top"><td align="center">
+    <div class="msg"><s:messages/></div>
+    </td></tr>--%>
+    </table>
+   <table class="second_table"  ><tr><td>
                     <d:table name="customerlst" id="customer1" pagesize="10" class="disp" requestURI="/customer">
                  <d:column property="name" title="Customer Name"/>
                  <d:column property="department" title="Department"  />
@@ -48,7 +62,7 @@ Customer > Delete Customer
 
                               <s:link beanclass="com.inwise.action.CustomerActionBean" event="delete" onclick="return show_confirm();" >
                                 <s:param name="id" value="${customer1.id}"></s:param>
-                                <img src="images/Close-2-icon.png" />   </s:link>
+                                <img src="images/delete.jpg" />   </s:link>
 
                                 </d:column>
 

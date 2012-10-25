@@ -23,7 +23,7 @@ public class CustomerActionBean extends BaseActionBean
     private static final String ADDCUSTOMER="jsp/addCustomer.jsp";
     private static final String UPDATECUSTOMER="jsp/updateCustomer.jsp";
     private static final String DELETECUSTOMER="jsp/deleteCustomer.jsp";
-    
+    private  static  final String VIEWCUSTOMER="jsp/viewCustomer.jsp";
     @Inject
     CustomerDao customerDao;
 
@@ -67,7 +67,7 @@ public class CustomerActionBean extends BaseActionBean
     @DefaultHandler
     public Resolution pageDirect()
     {
-      
+
      return new ForwardResolution(ADDCUSTOMER);
     }
 
@@ -89,7 +89,7 @@ public class CustomerActionBean extends BaseActionBean
     public Resolution delete()
     {
         customerDao.remove(getId());
-        return new RedirectResolution(CustomerActionBean.class,"deleteLink");
+        return new RedirectResolution(CustomerActionBean.class,"viewLink");
     }
     public Resolution updateCustomerLink()
     {
@@ -109,7 +109,7 @@ public class CustomerActionBean extends BaseActionBean
 
               customerDao.save(customer);
 
-        return new RedirectResolution(CustomerActionBean.class,"updateCustomerLink");
+        return new RedirectResolution(CustomerActionBean.class,"viewLink");
     }
 
     public Resolution saveAddress(){
@@ -118,4 +118,9 @@ public class CustomerActionBean extends BaseActionBean
         customerDao.save(customer);
         return new JavaScriptResolution("done",customer);
     }
+     public Resolution viewLink()
+     {   customerlst=customerDao.listAll();
+
+         return new ForwardResolution(VIEWCUSTOMER);
+     }
 }

@@ -17,30 +17,26 @@ public class RolePermissions {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    
-    @Column(name = "name",length = 20)
+    private Long id;
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "add_menu",length = 10)
+    @Column(name = "add_menu")
     private String add;
-
-    @Column(name = "update_menu",length = 10)
+    @Column(name = "update_menu")
     private String update;
-    
-    @Column(name = "delete_menu",length = 10)
+    @Column(name = "delete_menu")
     private String delete;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(mappedBy = "rolePermissions")
+    private List<Role> roles=new ArrayList<Role>();
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getAdd() {
@@ -68,11 +64,11 @@ public class RolePermissions {
         this.delete = delete;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -89,10 +85,9 @@ public class RolePermissions {
         return "RolePermissions{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", add='" + add + '\'' +
-                ", update='" + update + '\'' +
-                ", delete='" + delete + '\'' +
-                ", role=" + role +
+                ", add=" + add +
+                ", update=" + update +
+                ", delete=" + delete +
                 '}';
     }
 }
