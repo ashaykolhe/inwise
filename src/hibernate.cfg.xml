@@ -38,5 +38,7 @@
         <mapping class="com.inwise.pojo.Payment"/>
         <mapping class="com.inwise.pojo.Traildate"/>
         <mapping class="com.inwise.pojo.Term" />
+        <mapping class="com.inwise.pojo.Proposal" />
+        <mapping class="com.inwise.pojo.ProposalDetail" />
     </session-factory>
 </hibernate-configuration>

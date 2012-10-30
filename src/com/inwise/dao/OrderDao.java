@@ -112,9 +112,9 @@ public void remove(Integer id) {
         try{
             Order order=super.find(id);
         order.setDeleted(1);
-            System.out.println("prod in delete dao"+order);
+
             super.save(order);
-            System.out.println("prod in delete dao2"+order);
+            
     }catch (Exception e){
         e.printStackTrace();
     }

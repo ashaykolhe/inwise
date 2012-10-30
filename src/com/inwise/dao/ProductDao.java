@@ -7,8 +7,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.codemonkey.simplejavamail.Email;
+import org.codemonkey.simplejavamail.Mailer;
+import org.codemonkey.simplejavamail.TransportStrategy;
 
+import javax.mail.util.ByteArrayDataSource;
+import javax.mail.Message;
 import java.util.List;
+import java.util.Properties;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -78,4 +87,5 @@ public class ProductDao extends BaseDao<Product,Integer> {
         sessionProvider.get().createQuery("UPDATE Product SET deleted=0 WHERE id="+id).executeUpdate();
 
     }
+     
 }

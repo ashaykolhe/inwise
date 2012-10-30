@@ -41,7 +41,7 @@ else
 
          </s:layout-component>
       <s:layout-component name="body">
-          <s:form beanclass="com.inwise.action.CustomerActionBean">
+          <s:form beanclass="com.inwise.action.TaxActionBean">
     <br>
     <table class="heading_table">
 
