@@ -168,7 +168,7 @@ span.pagelinks {
 .total td{
    font-weight:bold;
 }
-table#tablecss tr.total:last-child{
+table#proposal1 tr.total:last-child{
         color:#edeeef;
           display:none;
         border-top: 2px solid #edeeef;

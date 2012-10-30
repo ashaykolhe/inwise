@@ -82,6 +82,7 @@
 
                                              </li>
                                           <li><s:link beanclass="com.inwise.action.TaxActionBean" event="addTaxLink">Taxes</s:link></li>
+                                          <li><s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Proposal</s:link></li>
                                  <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Orders</s:link>
 
                                              </li>

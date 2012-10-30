@@ -10,15 +10,12 @@ To change this template use File | Settings | File Templates.
 <%@ page  import="java.util.*" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/steps.css"/>
-
 <script src="js/popup.js" type="text/javascript"></script>
 <script type="text/javascript">
   var rolename;
 function checkuser(){
-
 $.post("User.action?checkUserAlreadyPresent", {addUserName:$('#addusername').val()}, function (data) {
 var flag=eval(data);
-
 if(flag)
 {
 alert("User Already Exist !");
@@ -27,12 +24,9 @@ $('#addusername').focus();
 }
 
 });
-
-
 }//end of function
 function checkpwd(){
-
-    var strong = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\W).*$", "g");
+var strong = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\W).*$", "g");
 var medium = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
 var simple = new RegExp("(?=.{6,}).*", "g");
 var password = $("#password1").val();
