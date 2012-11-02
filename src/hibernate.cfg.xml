@@ -31,6 +31,7 @@
         <mapping class="com.inwise.pojo.Role"/>
         <mapping class="com.inwise.pojo.RolePermissions"/>
         <mapping class="com.inwise.pojo.Tax"/>
+        <mapping class="com.inwise.pojo.TaxDTO"/>
         <mapping class="com.inwise.pojo.User"/>
         <mapping class="com.inwise.pojo.UserPermissions"/>
         <mapping class="com.inwise.pojo.OrderAddress"/>

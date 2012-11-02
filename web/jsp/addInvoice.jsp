@@ -8,7 +8,7 @@
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" />
-<c:set var = "TR1" value="invoicereceipt"/>
+<%--<c:set var = "TR1" value="invoicereceipt"/>
 <c:if test="${actionBean.hiddenvalue eq TR1}">
     <script type="text/javascript">
         function OpenPopup(){
@@ -25,16 +25,16 @@
         }
         window.onLoad =OpenPopup();
     </script>
-</c:if >
+</c:if >--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
- <s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>
-<%request.setAttribute("prodlst",invoiceBean.getProductcategory());%>
+ <%--<s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>--%>
+<%--<%request.setAttribute("prodlst",invoiceBean.getProductcategory());%>--%>
 
  <s:layout-render name="/layout/_base.jsp">
 
 <s:layout-component name="head">
-  <script type="text/javascript">
+<%--  <script type="text/javascript">
 
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;//parseFloat(document.getElementById("inTotalAmount").value);
@@ -109,7 +109,7 @@
             });
 
          $('#inoid').change(function(){
-             
+
 
             if($('#inoid').attr('value')!=""){
 
@@ -206,7 +206,7 @@
     function getCustomerOrder(){
    /*     this.form.action='order?getCustomerOrderNo';
         this.form.submit();*/
-         
+
         $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
 
              var data=eval(result);
@@ -763,7 +763,7 @@ function validateOthers()
 
     });
 
-</script>
+</script>--%>
   </s:layout-component>
   <s:layout-component name="left-menu">
 
@@ -906,9 +906,7 @@ function validateOthers()
 
 
 		<tr>
-        	<td align="right" valign="top">
-            	<div align="right" style="margin-left:15px;" class="labels">
-					Sales Rep. Code.				</div>			</td>
+        	<td align="right" valign="top">&nbsp;</td>
 		  <td colspan="2" align="left" valign="top">
 				<s:text name="invoice.salesRepCode" value="1" id="insrepcode" type="text" class="textbox" readonly="readonly" style="border:0px;background-color:white;"
 											   size="9"/>			</td>
@@ -942,9 +940,10 @@ function validateOthers()
 					<div align="left" style="margin-right:38px" class="labels">
 						<b style="color:#888888;">(&nbsp;&nbsp;) fields are mandatory</b>					</div>
 					<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:-11px; margin-left:19px;">*</div>				</td>
-		<td>&nbsp;</td>	</tr>
+		<td>&nbsp;</td>
+        	</tr>
 			<tr>
-				<td>&nbsp;</td>
+				<td colspan="4">&nbsp;</td>
 			</tr>
 			<tr>
 				<td colspan="4">
@@ -1096,13 +1095,7 @@ Rate</b>
 							<td valign="top" class="foreach_table_th">
 								<div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
                                 <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.product.productCost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-
-                                    <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'MT'}">
-                                        <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">MT</span>
-                                    </c:if>
-                                    <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'unit'}">
-                                        <span id="utype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">unit</span>
-                                    </c:if>
+                                        <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">${orderdetailarray.product.unit.name}</span>
                                 </div>
 							</td>
 							<td valign="top" class="foreach_table_th">
@@ -1115,12 +1108,7 @@ Rate</b>
 							<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 									<s:text name="invoice.order.orderDetail[${loop.index}].amendmentCost" value="${orderdetailarray.amendmentCost}" id="inAmdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                                  <c:if test="${orderdetailarray.amendmentCost != null}">
-                                <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'MT'}">
-                                    <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">MT</span>
-                                </c:if>
-                                <c:if test="${orderdetailarray.product.productMeasurementType.measurementType eq 'unit'}">
-                                    <span id="utype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">unit</span>
-                                </c:if>
+                                    <span id="utype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">${orderdetailarray.product.unit.name}</span>
                                    </c:if>
 									</div>
 							</td>

@@ -21,15 +21,11 @@ public class InvoiceDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "drawing_no",length = 20)
-    private String drawingNo;
+    @Column(name = "material",length = 10)
+    private String material;
 
-    @ManyToOne
-    @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategory;
-
-    @Column(name = "csh_no",length = 20)
-    private String cshNo;
+    @Column(name = "chapter_id",length = 20)
+    private String chapterId;
 
     @Column(name = "dispatched",length = 10,precision = 8)
     private double dispatched;
@@ -39,17 +35,6 @@ public class InvoiceDetail {
 
     @Column(name = "product_cost",length = 10,precision = 8)
     private double productCost;
-
-    @Transient
-    private double dueQuantity;
-
-    public double getDueQuantity() {
-        return dueQuantity;
-    }
-
-    public void setDueQuantity(double dueQuantity) {
-        this.dueQuantity = dueQuantity;
-    }
 
     public Integer getId() {
         return id;
@@ -67,28 +52,20 @@ public class InvoiceDetail {
         this.product = product;
     }
 
-    public String getDrawingNo() {
-        return drawingNo;
+    public String getMaterial() {
+        return material;
     }
 
-    public void setDrawingNo(String drawingNo) {
-        this.drawingNo = drawingNo;
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
-    public ProductCategory getProductCategory() {
-        return productCategory;
+    public String getChapterId() {
+        return chapterId;
     }
 
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public String getCshNo() {
-        return cshNo;
-    }
-
-    public void setCshNo(String cshNo) {
-        this.cshNo = cshNo;
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 
     public double getDispatched() {
@@ -120,9 +97,8 @@ public class InvoiceDetail {
         return "InvoiceDetail{" +
                 "id=" + id +
                 ", product=" + product +
-                ", drawingNo='" + drawingNo + '\'' +
-                ", productCategory=" + productCategory +
-                ", cshNo='" + cshNo + '\'' +
+                ", material='" + material + '\'' +
+                ", chapterId='" + chapterId + '\'' +
                 ", dispatched=" + dispatched +
                 ", dispatching=" + dispatching +
                 ", productCost=" + productCost +
