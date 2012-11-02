@@ -62,7 +62,7 @@ public class TaxActionBean extends BaseActionBean{
              taxDao.save(getTax());
 
                  
-          return new RedirectResolution(TaxActionBean.class,"addTaxLink");
+          return new RedirectResolution(TaxActionBean.class,"viewTaxLink");
 
       }
 

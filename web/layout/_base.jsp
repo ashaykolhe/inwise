@@ -11,7 +11,7 @@
 <s:layout-definition>
 <s:layout-component name="head">
     <head>
-        <title>Inwise</title>
+        <title>Inwise</title>                                                                  
         <script type="text/javascript">
             function MakeArrayday(size) {
                 this.length = size;
@@ -82,8 +82,8 @@
 
                                              </li>
                                           <li><s:link beanclass="com.inwise.action.TaxActionBean" event="addTaxLink">Taxes</s:link></li>
-                                          <li><s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Proposal</s:link></li>
-                                 <li><s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Orders</s:link>
+                                          <li><s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Proposals</s:link></li>
+                                 <li><s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">Orders</s:link>
 
                                              </li>
                         <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Invoice</s:link>

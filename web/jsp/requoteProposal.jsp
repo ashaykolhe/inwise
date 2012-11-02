@@ -15,38 +15,6 @@ To change this template use File | Settings | File Templates.
 
 <script type="text/javascript">
 
-function GetItemDetail(button){
-    var count=$('#family #tabletr').length;
-    var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
-    var flag=true;
-    var check=$('#productName'+rowid+'').val();
-    for(var i=1;i<=count;i++)
-    {
-        if(rowid==i){
-            continue;
-        }
-        var temp=$('#productName'+i+'').val();
-
-        if(check==temp)
-        {
-            flag=false;
-            --rowid;
-
-            alert("This Product has been already added. Please select another product.");
-            $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","");
-            $('#family #tabletr:eq('+rowid+') input').removeAttr("value");
-            return false;
-        }//end of if
-    }//end of for
-    if(flag==true)
-    {
-        $.post('order?productDetailsAjax', {id:button.value}, function (data) {
-            var result=eval(data);
-
-            $('#productMeasurementType'+rowid+'').attr("value",result.unit.name);
-        });//end of post funtion
-    }//end of flag==true if
-} //end of getItem Funntion
 /*the function calculateBalance is use to validate rate textfiled for numeric as well as blank
  this function is called onChange of rate textfield  */
 function calculateBalance(p,i){
@@ -157,50 +125,11 @@ function calculateBalance(p,i){
     $('#family #tabletr:eq('+rowid+') input:eq(2)').focus();
     }
     }//end of function
-function deletethis(p,a){
-    var tr=$('#family #tabletr').length;
-    if(tr==1){
-        alert("You can not deleted the last row.");
-    }
-    else{
-        var count=$('#family #tabletr').length;
-         var rowidforcal=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
-        var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"))-1;
-         var amount= $('#amount'+rowidforcal+'').val();
-
-        $('#family #tabletr:eq('+rowid+') input').attr("value","");
-        $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","");
-
-         var totalamt= $('#totalAmount').val() ;
-            if($('#totalAmount').val().trim()=="" || $('#totalAmount').val().trim()=="0"){
-              totalamt=0;
-              amount=0;
-        }
-         var total=parseFloat(totalamt)-parseFloat(amount);
-        $('#totalAmount').attr("value",total);
-    }
-}
 $(document).ready(function(){
 
     $('.removeValue').attr("value","");
-
-
-    $('#add').click(function(){
-        var count=$('#family #tabletr').length+1;
-        $('#family #tabletr:last').clone(true).insertAfter('#family #tabletr:last');
-        $('#family #tabletr:last select:eq(0)').attr("value","");
-        $('#family #tabletr:last input').removeAttr("value");
-        $('#family #tabletr:last select:eq(0)').attr("name","proposal.proposalDetail["+count+"].product.id");
-        $('#family #tabletr:last input:eq(0)').attr("id","productMeasurementType"+count);
-        $('#family #tabletr:last input:eq(1)').attr("name","proposal.proposalDetail["+count+"].quantity");
-        $('#family #tabletr:last input:eq(1)').attr("id","quantity"+count);
-        $('#family #tabletr:last input:eq(2)').attr("name","proposal.proposalDetail["+count+"].cost");
-        $('#family #tabletr:last input:eq(2)').attr("id","cost"+count);
-        $('#family #tabletr:last input:eq(3)').attr("id","amount"+count);
-        $('#family #tabletr:last input:eq(4)').attr("name","delete["+count+"]");
-        $('#family #tabletr:last input:eq(4)').attr("id","delete"+count);
-    });
-    $("#addProposal").click(function(){
+   
+    $("#reQuote").click(function(){
         var numeric = /^[0-9]+$/;
         var count=$('#family #tabletr').length;
         if($('#customerName').attr("value")==""){
@@ -214,24 +143,21 @@ $(document).ready(function(){
 
         }
         for(var i=0;i<count;i++){
-            if(i==0){
-                if($('#family #tabletr:eq('+i+') select:eq(0)').attr("value")==""){
-                    alert("please select Product Name")
-                    return false;
-                }
-                else if($('#family #tabletr:eq('+i+') input:eq(1)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(1)').attr("value").trim()=="0"){
-                    $('#family #tabletr:eq('+i+') input:eq(1)').focus();
-                    $('#family #tabletr:eq('+i+') input:eq(1)').attr("value","");
-                    alert("please enter  quantity");
-                    return false;
-                }
-                 else if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
+
+
+
+                  if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
                     $('#family #tabletr:eq('+i+') input:eq(2)').focus();
                     $('#family #tabletr:eq('+i+') input:eq(2)').attr("value","");
-                    alert("please enter rate");
+                    alert("please enter quantity");
+                    return false;
+                } else if($('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="0"){
+                    $('#family #tabletr:eq('+i+') input:eq(1)').focus();
+                    $('#family #tabletr:eq('+i+') input:eq(1)').attr("value","");
+                    alert("please enter  rate");
                     return false;
                 }
-            }
+
         }   //end of for
         return true;
     });
@@ -320,12 +246,12 @@ $(document).ready(function(){
                                             <s:text name="productMeasurementType" id="productMeasurementType${loop.index}" value="${proposalDetail.product.unit.name}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
                                       </div>  </div></td>
                                 <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
-                                            <s:text name="proposal.proposalDetail[${loop.index}].quantity"   id="quantity${loop.index}"  onclick="if(this.value !=null){this.value=''}"  onchange="return calculateBalance(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"  class="foreach_table_td removeValue" style=" width:100px;"/>
+                                            <s:text name="proposal.proposalDetail[${loop.index}].quantity"   id="quantity${loop.index}"    onchange="return calculateBalance(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"  class="foreach_table_td removeValue" style=" width:100px;"/>
 
                                       </div>  </div></td>
                                <td class="foreach_table_th"><div class="foreach_table_div">
                                    <div align="right">
-                                            <s:text  name="proposal.proposalDetail[${loop.index}].cost"  id="cost${loop.index}" onclick="if(this.value !=null){this.value=''}"  class="foreach_table_td removeValue" style=" width:100px;" onchange="return calculateBalanceRate(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"/>
+                                            <s:text  name="proposal.proposalDetail[${loop.index}].cost"  id="cost${loop.index}"  class="foreach_table_td removeValue" style=" width:100px;" onchange="return calculateBalanceRate(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"/>
                                    </div>    </div></td>
 
 
@@ -357,9 +283,9 @@ $(document).ready(function(){
             <tr>
                 <td align="left">&nbsp;</td>
                 <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="reQuote" value="Requote" class="buttons" id="addProposal"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="cancel" value="Cancel" class="buttons"/>
+                    <s:submit name="reQuote" value="Requote" class="buttons" id="reQuote"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <s:submit name="convertToOrder" value="Covert To Order" class="buttonbig"/>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />
                 </div></td>
                 <td width="34%" align="left">&nbsp;</td>
             </tr>
@@ -380,6 +306,7 @@ $(document).ready(function(){
                                             <d:table name="pro" id="proposaldetail"  class="disp" requestURI="/proposal" decorator="totals">
 
                                                    <d:column property="requoteno" group="1" title="ReQuote Order"/>
+                                                   <d:column property="product.productName" title="Product Name"/>
                                                    <d:column property="quantity" title="Quantity"/>
                                                    <d:column property="cost" title="Rate"/>
                                                    <d:column property="amount" title="Amount" total="true" />

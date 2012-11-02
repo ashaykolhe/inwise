@@ -95,6 +95,23 @@ public class OrderDao extends BaseDao<Order,Integer> {
         }
         return (List<Order>)sessionProvider.get().createQuery("select distinct o from Order o WHERE o.createDate LIKE '"+sdate+"%'").list();
     }
+     public List<Order> findByOrderBetnDate(String frmdate,String todate) {
+        frmdate=frmdate.replace("/","-");
+        todate=todate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(frmdate);
+            frmdate = formatter.format(date);
+            Date date1 = (Date)formatter.parse(todate);
+            todate = formatter.format(date1);
+
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Order>)sessionProvider.get().createQuery("select distinct o from Order o WHERE o.createDate >= '"+frmdate+"' and o.createDate<='"+todate+"'").list();
+    }
     public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
         return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
     }
@@ -104,7 +121,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
     }
 
     public List<Order> getOrderList(){
-        return sessionProvider.get().createQuery("from Order where deleted='0'").list();
+        return sessionProvider.get().createQuery("from Order where deleted='0' ORDER BY id DESC").list();
     }
 
     @Override @Transactional

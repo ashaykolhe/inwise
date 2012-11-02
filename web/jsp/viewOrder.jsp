@@ -36,8 +36,7 @@ else
                           <li>&nbsp;</li>
                       <li class="left_menu_heading">Order</li>
                      <li style="margin-top:35px">
-                             <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
-                                    <li>                     <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                                         <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
                   </ul>
 
@@ -45,7 +44,7 @@ else
       <s:layout-component name="body">
           <s:form beanclass="com.inwise.action.OrderActionBean">
   <br>
-    <table class="heading_table">
+    <table class="heading_table" >
 
     <tr><td align="left" class="pageheading" valign="top">
       <div class="sub_heading" >View Order</div>
@@ -57,29 +56,43 @@ else
 
       <table class="second_table"  ><tr><td>
                     <d:table name="orderlst" id="order" pagesize="10" class="disp" requestURI="/order">
-                 <d:column property="id" title="Id"/>
+                 <d:column property="customer.name" title="Customer Name"/>
                  <d:column property="customerOrderNo" title="Customer Order No"  />
-                         <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
-                           <d:column  title="update">
-                                <s:link beanclass="com.inwise.action.OrderActionBean" event="checkOrderDispatched"  >
-                                        <s:param name="id"  value="${order.id}"></s:param>
-                                <img src="images/edit-icon.png" />
-                       </s:link>
+                 <d:column property="consigneeName" title="Consignee Name"  />
+                 <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                  <d:column title="Product Name">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="products" varStatus="loop" >
+                        <tr>
+                            <td>${products.product.productName}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
 
-                  </d:column>
-                 <d:column title="Delete" class="delete">
-
-                                     <s:link beanclass="com.inwise.action.OrderActionBean" event="delete" onclick="return show_confirm();" >
-                                        <s:param name="id"  value="${order.id}"></s:param>
-                                    <img src="images/delete.jpg" />   </s:link>
-
-                                </d:column>
-
+                         <d:column title="Ordered Quantity">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="qty" varStatus="loop1" >
+                        <tr>
+                            <td>${qty.orderedQuantity}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+                        <d:column title="Cost">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="cst" varStatus="loop3" >
+                        <tr>
+                            <td>${cst.cost}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+                          <d:column title="Remaining Quantity">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="reqty" varStatus="loop2" >
+                        <tr>
+                            <td>${reqty.remainingQuantity}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
              </d:table></td></tr></table>
-<c:set var = "TR1" value="alert"/>
-<c:if test="${actionBean.hiddenvalue eq TR1}">
-    <script type="text/javascript">
-       alert("order cannot be updated till completely dispatched.");
-    </script>
-</c:if >
+
  </s:form></s:layout-component></s:layout-render>

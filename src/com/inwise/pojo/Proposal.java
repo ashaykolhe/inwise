@@ -40,6 +40,16 @@ public class Proposal {
 
     @Column(name = "deleted",length = 2)
     private Integer deleted;
+    @Column(name = "requote_status",length = 20)
+    private String requoteStatus;
+
+    public String getRequoteStatus() {
+        return requoteStatus;
+    }
+
+    public void setRequoteStatus(String requoteStatus) {
+        this.requoteStatus = requoteStatus;
+    }
 
     public int getId() {
         return id;
@@ -95,7 +105,9 @@ public class Proposal {
                 ", customer=" + customer +
                 ", createDate=" + createDate +
                 ", proposalDetail=" + proposalDetail +
+                ", totalAmount=" + totalAmount +
                 ", deleted=" + deleted +
+                ", requoteStatus='" + requoteStatus + '\'' +
                 '}';
     }
 }

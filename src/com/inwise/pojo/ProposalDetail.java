@@ -27,7 +27,8 @@ public class ProposalDetail {
     private Double cost;
     @Column(name = "requote_no",length = 5)
     private Integer requoteno;
-
+    @Column(name = "requote_status",length = 20)
+    private String requoteStatus;
 
     @Transient
     private Double amount;
@@ -81,6 +82,14 @@ public class ProposalDetail {
         this.amount = amount;
     }
 
+    public String getRequoteStatus() {
+        return requoteStatus;
+    }
+
+    public void setRequoteStatus(String requoteStatus) {
+        this.requoteStatus = requoteStatus;
+    }
+
     @Override
     public String toString() {
         return "ProposalDetail{" +
@@ -89,6 +98,8 @@ public class ProposalDetail {
                 ", quantity=" + quantity +
                 ", cost=" + cost +
                 ", requoteno=" + requoteno +
+                ", requoteStatus='" + requoteStatus + '\'' +
+                ", amount=" + amount +
                 '}';
     }
 }

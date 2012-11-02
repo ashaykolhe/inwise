@@ -1,13 +1,11 @@
 package com.inwise.action;
 
 import net.sourceforge.stripes.action.*;
-import com.inwise.pojo.Customer;
-import com.inwise.pojo.Product;
-import com.inwise.pojo.Proposal;
-import com.inwise.pojo.ProposalDetail;
+import com.inwise.pojo.*;
 import com.inwise.dao.CustomerDao;
 import com.inwise.dao.ProductDao;
 import com.inwise.dao.ProposalDao;
+import com.inwise.dao.OrderDao;
 import com.google.inject.Inject;
 
 import java.util.List;
@@ -25,13 +23,50 @@ import java.util.Iterator;
 public class ProposalActionBean extends BaseActionBean{
     @Inject
     CustomerDao customerDao;
-
+    @Inject
+        OrderDao orderDao;
+     private Order order;
     @Inject
     ProductDao productDao;
     @Inject
     ProposalDao proposalDao;
     private Proposal proposal;
     private Proposal proposalDuplicate;
+    private String alert;
+    private List<Customer> customerList=new ArrayList<Customer>();
+    private List<Product> productList=new ArrayList<Product>();
+    private List<Proposal> proposallst;
+    private static final String ADDPROPOSAL="jsp/addProposal.jsp";
+     private static final String PREVIEWPROPOSAL="jsp/previewProposal.jsp";
+      private static final String EDITPROPOSAL="jsp/editProposal.jsp";
+    private static final String VIEWPROPOSAL="jsp/viewProposal.jsp";
+    private static final String REQUOTEPROPOSAL="jsp/requoteProposal.jsp";
+     private static final String CONVERTTOORDER="jsp/covertToOrder.jsp";
+     private List<Address> addressList=new ArrayList<Address>();
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public String getAlert() {
+        return alert;
+    }
+
+    public void setAlert(String alert) {
+        this.alert = alert;
+    }
+
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
 
     public Proposal getProposalDuplicate() {
         return proposalDuplicate;
@@ -41,12 +76,7 @@ public class ProposalActionBean extends BaseActionBean{
         this.proposalDuplicate = proposalDuplicate;
     }
 
-    private List<Customer> customerList=new ArrayList<Customer>();
-    private List<Product> productList=new ArrayList<Product>();
-    private List<Proposal> proposallst;
-    private static final String ADDPROPOSAL="jsp/addProposal.jsp";
-    private static final String VIEWPROPOSAL="jsp/viewProposal.jsp";
-    private static final String REQUOTEPROPOSAL="jsp/requoteProposal.jsp";
+
     public Proposal getProposal() {
         return proposal;
     }
@@ -85,9 +115,12 @@ public class ProposalActionBean extends BaseActionBean{
         productList=productDao.listAll();
         return new ForwardResolution(ADDPROPOSAL);
     }
+     public Resolution redirectProposalLink(){
 
+        return new RedirectResolution(ProposalActionBean.class,"addProposalLink");
+    }
     public Resolution addProposal(){
-        System.out.println("proposal"+proposal);
+      
         ProposalDetail g=null;
         for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
             g=(ProposalDetail)i.next();
@@ -96,28 +129,70 @@ public class ProposalActionBean extends BaseActionBean{
                 continue;
             }else {
                 g.setRequoteno(1);
-
+                 g.setRequoteStatus("requote");
                 continue;
             }
         }
-        System.out.println("proposal"+proposal);
 
-        Proposal saved= proposalDao.save(proposal);
-        System.out.println("saved id "+saved.getId());
-        proposalDao.sendGeneralMail(saved.getId());
-        return new RedirectResolution(ProposalActionBean.class,"addProposalLink");
+        proposalDao.save(proposal);
+
+       // proposalDao.sendGeneralMail(saved.getId());
+        return new RedirectResolution(ProposalActionBean.class,"previewLink");
     }
+     public Resolution editProposalLink(){
+          proposal=proposalDao.findByLastUpdate();
+           productList=productDao.listAll();
+         customerList=customerDao.listAll();
+        return new ForwardResolution(EDITPROPOSAL);
+    }
+    public Resolution editProposal(){
+         ProposalDetail g=null;
+        for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
+            g=(ProposalDetail)i.next();
+            if(g==null){
+                i.remove();
+                continue;
+            }else {
+                g.setRequoteno(1);
+                 g.setRequoteStatus("requote");
+                continue;
+            }
+        }
+         Proposal saved=  proposalDao.save(proposal);
+
+        proposalDao.sendGeneralMail(saved.getId());
+         return new RedirectResolution(ProposalActionBean.class,"previewLink");
+    }
+   public Resolution previewLink(){
+       proposal=proposalDao.findByLastUpdate();
+       return new ForwardResolution(PREVIEWPROPOSAL);  
+   }
+
     public Resolution viewProposalLink(){
+
         proposallst=proposalDao.listAll();
 
         return new ForwardResolution(VIEWPROPOSAL);
     }
     public Resolution getProposalList(){
        // proposallst=proposalDao.listAll();
+            String value=null;  
                proposal=proposalDao.find(id);
-          
-           
+            ProposalDetail po=null;
+        for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
+            po=(ProposalDetail)i.next();
+            value= po.getRequoteStatus();
+             if(value.equals("final")){
+                   break;
+                 }
+        }
+               
+        if(value.equals("final")){
+               alert="alertmsg";
+             return new ForwardResolution(ProposalActionBean.class,"viewProposalLink");
+        } else{
         return new ForwardResolution(REQUOTEPROPOSAL);
+        }
     }
 
     public Resolution reQuote(){
@@ -138,13 +213,57 @@ public class ProposalActionBean extends BaseActionBean{
             }else {
                 value++;
                 g.setRequoteno(value);
+                g.setRequoteStatus("requote");
                 --value;
                 continue;
             }
         }
         proposalDuplicate.getProposalDetail().addAll(proposal.getProposalDetail());
         proposal.setProposalDetail(proposalDuplicate.getProposalDetail());
+        proposal.setRequoteStatus("requote");
         proposalDao.save(proposal);
-        return new ForwardResolution(ProposalActionBean.class,"viewProposalLink");
+        return new RedirectResolution(ProposalActionBean.class,"viewProposalLink");
     }
+
+ public Resolution convertToOrder(){
+       Integer value=0;
+        proposalDuplicate=proposalDao.find(proposal.getId());
+        ProposalDetail po=null;
+        for(Iterator<ProposalDetail> i=proposalDuplicate.getProposalDetail().iterator();i.hasNext();){
+            po=(ProposalDetail)i.next();
+            value= po.getRequoteno();
+
+        }
+        ProposalDetail g=null;
+        for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
+            g=(ProposalDetail)i.next();
+            if(g==null){
+                i.remove();
+                continue;
+            }else {
+                value++;
+                g.setRequoteno(value);
+                g.setRequoteStatus("final");
+                --value;
+                continue;
+            }
+        }
+        proposalDuplicate.getProposalDetail().addAll(proposal.getProposalDetail());
+        proposal.setProposalDetail(proposalDuplicate.getProposalDetail());
+     proposal.setRequoteStatus("final");
+        proposalDao.save(proposal);
+
+     return  new RedirectResolution(ProposalActionBean.class,"redirectToConvertPage").addParameter("id",proposal.getId());
+ }
+    public Resolution redirectToConvertPage(){
+           proposal=proposalDao.find(id);
+          addressList=proposal.getCustomer().getAddressList();
+           return  new ForwardResolution(CONVERTTOORDER);
+    }
+    public Resolution addOrder(){
+     
+           orderDao.save(order);
+           return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
+       }
+
 }

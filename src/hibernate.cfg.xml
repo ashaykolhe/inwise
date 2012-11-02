@@ -40,5 +40,6 @@
         <mapping class="com.inwise.pojo.Term" />
         <mapping class="com.inwise.pojo.Proposal" />
         <mapping class="com.inwise.pojo.ProposalDetail" />
+        <mapping class="com.inwise.pojo.CompanyInfo"/>
     </session-factory>
 </hibernate-configuration>

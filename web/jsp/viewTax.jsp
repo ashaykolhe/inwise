@@ -46,7 +46,7 @@ else
     <table class="heading_table">
 
     <tr><td align="left" class="pageheading" valign="top">
-      <div class="sub_heading" >View Tax</div>
+      <div class="sub_heading" >View Taxes</div>
     </td></tr>
    <%-- <tr valign="top"><td align="center">
     <div class="msg"><s:messages/></div>

@@ -71,8 +71,8 @@ function combo(){
         {
             order.removeChild(options[i]);
         }// end for i
-        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","orderDate");
-        var ordershow=new Array("--Select Order Options--","Customer Order Number","Customer Name","Order Date");
+        var ordervalue=new Array("none","orderCustomerOrderNumber","orderCustomerName","orderDate","orderBtwnDates");
+        var ordershow=new Array("--Select Order Options--","Customer Order Number","Customer Name","Order Date","Order Between Dates");
         for(var i=0;i<ordervalue.length;i++){
             var t=ordervalue[i];
             if(t==submenuvalue){
@@ -90,8 +90,8 @@ function combo(){
             {
                 cust.removeChild(options[i]);
             }// end for i
-            var custvalue=new Array("none","custName","custCode");
-            var custshow=new Array("--Select Customer Option --","By Customer Name","By Customer Code");
+            var custvalue=new Array("none","custName","custCode","emailId");
+            var custshow=new Array("--Select Customer Option --","By Customer Name","By Customer Code","Email Id");
             for(var i=0;i<custvalue.length;i++){
                 var t=custvalue[i];
                 if(t==submenuvalue){
@@ -183,8 +183,27 @@ function fillsubmenu(){
                             $('#myDiv1').hide();
 
                         }
+                         else if($('#submenu').val() == 'orderBtwnDates'){
+                            $('#myDiv3').show();
+                            $('#myDiv2').hide();
+                            $('#myDiv1').hide();
+
+                        }
                         //"none","custName","custCode"
                         else if($('#submenu').val() == 'custName'){
+                                $('#myDiv3').hide();
+                                $('#myDiv2').hide();
+                                $('#myDiv1').show();
+                                $.post("search?autocust", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                                    /* $.get("/search?autovendor",function(result) {*/
+                                    var availableTags=eval(result);
+                                    $("input#autocomplete").autocomplete({
+                                        source: availableTags
+
+                                    });
+                                });
+                            }
+                              else if($('#submenu').val() == 'emailId'){
                                 $('#myDiv3').hide();
                                 $('#myDiv2').hide();
                                 $('#myDiv1').show();
@@ -353,8 +372,8 @@ $(document).ready(function() {
 
                         <div id="myDiv3"  align="left" style="display:none;" >
                                 <%--Please Enter Search Details first <span style="color:#FF0000"> *</span>--%>
-                            &nbsp;&nbsp;<s:text name="fromdate" readonly="readonly" style="margin-left:0px;" onFocus="showCalendarControl(this);" class="textbox" />
-                            &nbsp;&nbsp;        <s:text id="betweendate" name="todate"  readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
+                            From&nbsp;&nbsp;<s:text name="fromdate" readonly="readonly" style="margin-left:0px;" onFocus="showCalendarControl(this);" class="textbox" />
+                            &nbsp;&nbsp;To        <s:text id="betweendate" name="todate"  readonly="readonly" onFocus="showCalendarControl(this);" class="textbox" />
                             <s:submit name="search" id="betgetbtn" value="Get" class="buttons"></s:submit>
 
                         </div>
@@ -370,23 +389,35 @@ $(document).ready(function() {
 
         <table class="t" id="grntable" width="92%"><tr><td>
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
-                <d:column property="customerCode" title="Customer Code"/>
-               <d:column property="name" title="Name"/>
+              <d:column property="name" title="Customer Name"/>
+                 <d:column property="department" title="Department"  />
+                          <d:column property="customerCode" title="Customer Code" />
+                  <d:column property="email" title="Email Id" />
 
-                <d:column property="contactPerson" title="Contact Person Name"/>
-                <d:column property="contactNo1" title="Contact No :1"/>
-                <d:column property="contactNo2" title="Contact No :2"/>
+                         <d:column property="contactNo1" title="Phone Number" />
+            </d:table></td></tr></table>
+    </c:if>
+     <c:if test="${actionBean.searchSubmenu eq 'emailId'}">
+
+        <table class="t" id="grntable" width="92%"><tr><td>
+            <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
+              <d:column property="name" title="Customer Name"/>
+                 <d:column property="department" title="Department"  />
+                          <d:column property="customerCode" title="Customer Code" />
+                  <d:column property="email" title="Email Id" />
+
+                         <d:column property="contactNo1" title="Phone Number" />
             </d:table></td></tr></table>
     </c:if>
     <c:if test="${actionBean.searchSubmenu eq 'custCode'}">
         <table class="t" id="grntable" width="92%"><tr><td>
             <d:table name="custlst" id="c" pagesize="10" class="disp" requestURI="search">
-                <d:column property="customerCode" title="Customer Code"/>
-                <d:column property="name" title="Name"/>
+                <d:column property="name" title="Customer Name"/>
+                 <d:column property="department" title="Department"  />
+                          <d:column property="customerCode" title="Customer Code" />
+                  <d:column property="email" title="Email Id" />
 
-                <d:column property="contactPerson" title="Contact Person Name"/>
-                <d:column property="contactNo1" title="Contact No :1"/>
-                <d:column property="contactNo2" title="Contact No :2"/>
+                         <d:column property="contactNo1" title="Phone Number" />
             </d:table></td></tr></table>
     </c:if>
 </c:if>
@@ -471,86 +502,49 @@ $(document).ready(function() {
         </d:table></td></tr></table>
 </c:if>
 
-<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerOrderNumber')}">
+<c:if test="${actionBean.order!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerOrderNumber')}">
 
     <table  class="t" id="grntable" width="92%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
-            <d:column property="invoiceNumber" title="Invoice Number"/>
-            <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
-            <d:column property="customer.name" title="Customer Name"/>
-            <d:column title="Product Name">
+        <d:table style="true" name="order" id="order" pagesize="10" class="disp" requestURI="search">
+                  <d:column property="customerOrderNo" title="Customer Order No"  />
+                 <d:column property="customer.name" title="Customer Name"/>
+
+                 <d:column property="consigneeName" title="Consignee Name"  />
+                 <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                  <d:column title="Product Name">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                    <c:forEach items="${order.orderDetail}" var="products" varStatus="loop" >
                         <tr>
                             <td>${products.product.productName}</td></tr>
                     </c:forEach>
                 </table>
             </d:column>
-            <d:column title="Ordered Qty">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-                                    <td>${invoiceorder.orderedQuantity}</td>
-                                    <td>${invoiceorder.dispatchedQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="Dispatched Quantity">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
 
-                                    <td>${products.dispatched}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="remaining Quantity">
+                         <d:column title="Ordered Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.remainingQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="qty" varStatus="loop1" >
+                        <tr>
+                            <td>${qty.orderedQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Quantity">
+                        <d:column title="Cost">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="cst" varStatus="loop3" >
+                        <tr>
+                            <td>${cst.cost}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Cost">
+                          <d:column title="Remaining Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentCost}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="reqty" varStatus="loop2" >
+                        <tr>
+                            <td>${reqty.remainingQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
+
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
@@ -564,91 +558,54 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
-<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerName')}">
+<c:if test="${actionBean.orderlst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderCustomerName')}">
 
     <table  class="t" id="grntable" width="92%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
-            <d:column property="invoiceNumber" title="Invoice Number"/>
-            <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
-            <d:column property="customer.name" title="Customer Name"/>
-            <d:column title="Product Name">
+        <d:table style="true" name="orderlst" id="order" pagesize="10" class="disp" requestURI="search">
+
+                 <d:column property="customer.name" title="Customer Name"/>
+                  <d:column property="customerOrderNo" title="Customer Order No"  />
+                 <d:column property="consigneeName" title="Consignee Name"  />
+                 <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                  <d:column title="Product Name">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                    <c:forEach items="${order.orderDetail}" var="products" varStatus="loop" >
                         <tr>
                             <td>${products.product.productName}</td></tr>
                     </c:forEach>
                 </table>
             </d:column>
-            <d:column title="Ordered Qty">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-                                    <td>${invoiceorder.orderedQuantity}</td>
-                                    <td>${invoiceorder.dispatchedQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="Dispatched Quantity">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
 
-                                    <td>${products.dispatched}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="remaining Quantity">
+                         <d:column title="Ordered Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.remainingQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="qty" varStatus="loop1" >
+                        <tr>
+                            <td>${qty.orderedQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Quantity">
+                        <d:column title="Cost">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="cst" varStatus="loop3" >
+                        <tr>
+                            <td>${cst.cost}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Cost">
+                          <d:column title="Remaining Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentCost}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="reqty" varStatus="loop2" >
+                        <tr>
+                            <td>${reqty.remainingQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
+
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
-
-                    <s:param name="name" value="${invoice.order.customer.name}"></s:param>
+                    <s:param name="hdnvalue" value="orderCustomerOrderNumber"></s:param>
+                    <s:param name="name" value="${invoice.order.customerOrderNo}"></s:param>
                     <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
                     <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
 
@@ -657,90 +614,54 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
-<c:if test="${actionBean.invoicelst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderDate')}">
+<c:if test="${actionBean.orderlst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderDate')}">
 
     <table  class="t" id="grntable" width="92%"><tr><td>
-        <d:table style="true" name="invoicelst" id="invoice" pagesize="10" class="disp" requestURI="search">
-            <d:column property="invoiceNumber" title="Invoice Number"/>
-            <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
-            <d:column property="customer.name" title="Customer Name"/>
-            <d:column title="Product Name">
+           <d:table style="true" name="orderlst" id="order" pagesize="10" class="disp" requestURI="search">
+
+                 <d:column property="customer.name" title="Customer Name"/>
+                  <d:column property="customerOrderNo" title="Customer Order No"  />
+                 <d:column property="consigneeName" title="Consignee Name"  />
+                 <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                  <d:column title="Product Name">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
+                    <c:forEach items="${order.orderDetail}" var="products" varStatus="loop" >
                         <tr>
                             <td>${products.product.productName}</td></tr>
                     </c:forEach>
                 </table>
             </d:column>
-            <d:column title="Ordered Qty">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-                                    <td>${invoiceorder.orderedQuantity}</td>
-                                    <td>${invoiceorder.dispatchedQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="Dispatched Quantity">
-                <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
 
-                                    <td>${products.dispatched}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
-                </table>
-            </d:column>
-            <d:column title="remaining Quantity">
+                         <d:column title="Ordered Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.remainingQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="qty" varStatus="loop1" >
+                        <tr>
+                            <td>${qty.orderedQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Quantity">
+                        <d:column title="Cost">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentQuantity}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="cst" varStatus="loop3" >
+                        <tr>
+                            <td>${cst.cost}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
-            <d:column title="amendment Cost">
+                          <d:column title="Remaining Quantity">
                 <table>
-                    <c:forEach items="${invoice.invoiceDetail}" var="products" varStatus="loop" >
-                        <c:forEach items="${invoice.order.orderDetail}" var="invoiceorder" varStatus="loop1"  >
-                            <c:if test="${products.product.id eq invoiceorder.product.id}">
-                                <tr>
-
-                                    <td>${invoiceorder.amendmentCost}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach></c:forEach>
+                    <c:forEach items="${order.orderDetail}" var="reqty" varStatus="loop2" >
+                        <tr>
+                            <td>${reqty.remainingQuantity}</td></tr>
+                    </c:forEach>
                 </table>
             </d:column>
+
             <d:column title="View" class="delete" >
                 <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
                     <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
-                    <s:param name="name" value="${invoice.order.createDate}"></s:param>
+                    <s:param name="hdnvalue" value="orderCustomerOrderNumber"></s:param>
+                    <s:param name="name" value="${invoice.order.customerOrderNo}"></s:param>
                     <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
                     <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
 
@@ -749,7 +670,62 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
+ <c:if test="${actionBean.orderlst!=null and fn:containsIgnoreCase(actionBean.searchSubmenu,'orderBtwnDates')}">
 
+    <table  class="t" id="grntable" width="92%"><tr><td>
+        <d:table style="true" name="orderlst" id="order" pagesize="10" class="disp" requestURI="search">
+                  <d:column property="customerOrderNo" title="Customer Order No"  />
+                 <d:column property="customer.name" title="Customer Name"/>
+
+                 <d:column property="consigneeName" title="Consignee Name"  />
+                 <d:column property="createDate" title="Order Date"  format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                  <d:column title="Product Name">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="products" varStatus="loop" >
+                        <tr>
+                            <td>${products.product.productName}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+
+                         <d:column title="Ordered Quantity">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="qty" varStatus="loop1" >
+                        <tr>
+                            <td>${qty.orderedQuantity}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+                        <d:column title="Cost">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="cst" varStatus="loop3" >
+                        <tr>
+                            <td>${cst.cost}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+                          <d:column title="Remaining Quantity">
+                <table>
+                    <c:forEach items="${order.orderDetail}" var="reqty" varStatus="loop2" >
+                        <tr>
+                            <td>${reqty.remainingQuantity}</td></tr>
+                    </c:forEach>
+                </table>
+            </d:column>
+
+            <d:column title="View" class="delete" >
+                <s:link beanclass="com.inwise.action.SearchActionBean" event="print" >
+                    <s:param name="id" value="${invoice.invoiceNumber}"></s:param>
+                    <s:param name="hdnvalue" value="orderCustomerOrderNumber"></s:param>
+                    <s:param name="name" value="${invoice.order.customerOrderNo}"></s:param>
+                    <s:param name="searchMenu" value="${actionBean.searchMenu}"></s:param>
+                    <s:param name="searchSubmenu" value="${actionBean.searchSubmenu}"></s:param>
+
+                    <img src="images/view.gif" />
+                </s:link>
+            </d:column>
+        </d:table></td></tr></table>
+</c:if>
 </s:form>
 </s:layout-component>
 </s:layout-render>

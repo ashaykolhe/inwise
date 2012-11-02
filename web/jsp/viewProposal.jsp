@@ -7,6 +7,7 @@
 --%>
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
+
 <script type="text/javascript">
     function show_confirm()
 {
@@ -34,7 +35,7 @@ else
                               <li>&nbsp;</li>
                           <li class="left_menu_heading">Proposal</li>
                          <li style="margin-top:35px">
-                                 <s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Add</s:link></li>
+                                 <s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Create</s:link></li>
                       <li>     <s:link beanclass="com.inwise.action.ProposalActionBean" event="viewProposalLink">View</s:link></li>
 
 
@@ -46,7 +47,7 @@ else
     <table class="heading_table">
 
     <tr><td align="left" class="pageheading" valign="top">
-      <div class="sub_heading" >View Proposal</div>
+      <div class="sub_heading" >View Proposals</div>
     </td></tr>
    <%-- <tr valign="top"><td align="center">
     <div class="msg"><s:messages/></div>
@@ -60,30 +61,75 @@ else
              pageContext.setAttribute("totals", totals);
 
                 %>
-                     
+
                     <d:table name="propsallst" id="proposal1" pagesize="5" class="disp" requestURI="/proposal" decorator="totals">
                  <d:column property="id" title="Proposal Id"/>
                  <d:column property="customer.name" title="Customer"/>
                  <d:column property="createDate" title="Propsoal Date" format="{0,date,yyyy-MM-dd}" sortable="false"/>
                         <c:set var="pro" value="${proposal1.proposalDetail}" scope="request"/>
                       <d:column title="Re-Quote">
-                              <d:table name="pro" id="proposaldetail"  class="disp" requestURI="/proposal" decorator="totals">
+                              <d:table name="pro" id="proposaldetail" class="disp"   requestURI="/proposal" decorator="totals">
 
                                      <d:column property="requoteno" group="1" title="ReQuote Order"/>
+                                     <d:column property="product.productName" title="Product Name"/>
                                      <d:column property="quantity" title="Quantity"/>
                                      <d:column property="cost" title="Rate"/>
                                      <d:column property="amount" title="Amount" total="true" />
                               </d:table> </d:column>
-
-                         <d:column  title="Re-Quote">
-                                                     <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
+                                               <d:column  title="Re-Quote">
+                                        <table>             <c:choose>
+                            <c:when test="${proposal1.requoteStatus eq 'final'}">
+                             <tr>
+                                <td>
+                                   Order Generated
+                                    <br>
+                                    <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList" style="font-size:11px;"  >
+                                <s:param name="id" value="${proposal1.id}"></s:param>
+                               VIEW ORDER
+                       </s:link></td>
+                                </tr>
+                            </c:when> <c:otherwise>
+                              <tr>
+                                <td> <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
                                 <s:param name="id" value="${proposal1.id}"></s:param>
                                 <img src="images/edit-icon.png" />
-                       </s:link>
+                       </s:link></td>
+                                </tr>
+                            </c:otherwise> </c:choose>   </table> 
+                                                  <%--   <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
+                                <s:param name="id" value="${proposal1.id}"></s:param>
+                                <img src="images/edit-icon.png" />
+                       </s:link>--%>
+                        </d:column>
+                     <%-- <d:column title="Re-Quote">
+                <table>
 
-                  </d:column>
-
+                    <c:forEach items="${pro}" var="protest" varStatus="loop" >
+                              <c:choose>
+                            <c:when test="${protest.requoteStatus eq 'final'}">
+                                <tr>
+                                <td> <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
+                                <s:param name="id" value="${proposal1.id}"></s:param>
+                                <img src="images/edit-icon.png" />
+                       </s:link></td>
+                                </tr>
+                            </c:when> <c:otherwise>
+                              <tr>
+                                <td> <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList1"  >
+                                <s:param name="id" value="${proposal1.id}"></s:param>
+                                <img src="images/edit-icon.png" />
+                       </s:link></td>
+                                </tr>
+                            </c:otherwise> </c:choose>
+                        </c:forEach>
+                </table>
+            </d:column>--%>
 
              </d:table></td></tr></table>
-
+<c:set var = "TR1" value="alertmsg"/>
+<c:if test="${actionBean.alert eq TR1}">
+    <script type="text/javascript">
+        alert("Proposal converted to order");
+    </script>
+</c:if >
  </s:form></s:layout-component></s:layout-render>
