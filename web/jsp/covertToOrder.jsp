@@ -1,0 +1,407 @@
+<%--
+Created by IntelliJ IDEA.
+User: Milind
+Date: Feb 29, 2012
+Time: 5:26:54 PM
+To change this template use File | Settings | File Templates.
+--%>
+<%@ include file="/includes/_taglibInclude.jsp" %>
+<link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+<style type="text/css">
+    #popupContact{
+        display:none;
+        position:fixed;
+        _position:absolute; /* hack for internet explorer 6*/
+        height:300px;
+        width:550px;
+        background:#FFFFFF;
+        border:2px solid #cecece;
+        z-index:2;
+        padding:12px;
+        font-size:13px;
+    }
+</style>
+<script src="js/popup.js" type="text/javascript"/>
+
+
+<script type="text/javascript">
+
+
+</script>
+<script type="text/javascript">
+    function checkCustomerOrderNo() {
+        if($('#customerName').attr('value').trim()=="0"){
+            alert("please select customer");
+            $("#customerOrderNo").attr("value","");
+            $('#customerName').focus();
+            return false;
+        }
+        $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim()}, function (data) {
+            var flag=eval(data);
+            if(flag)
+            {
+                alert("this customer order number has already been used");
+                $("#customerOrderNo").val("");
+                $("#customerOrderNo").focus();
+                return false;
+            }
+            return true;
+        });
+
+    }
+    $(document).ready(function(){
+        $("#addOrder").click(function(){
+            var numeric = /^[0-9]+$/;
+            var count=$('#family #tabletr').length;
+            if($('#createDate').attr("value").trim()==""){
+                $('#createDate').focus();
+                alert("please select a date");
+                return false;
+            }else if($('#customerOrderNo').attr("value").trim()==""){
+                $('#customerOrderNo').focus();
+                alert("please enter customer order number");
+                return false;
+            }else if($('#consigneeName').attr("value").trim()==""){
+                $('#consigneeName').focus();
+                alert("please enter consignee's name");
+                return false;
+            }else if($('#invoiceAddress').attr("value").trim()=="0"){
+                $('#invoiceAddress').focus();
+                alert("please select invoice address");
+                return false;
+            }else if($('#shipmentAddress').attr("value").trim()=="0"){
+                $('#shipmentAddress').focus();
+                alert("please select shipment address");
+                return false;
+            }
+
+            return true;
+        });
+
+        function submitForm(button) {
+            //   button.disabled=true;
+            var form = button.form;
+            var resolution=button.name;
+            var params = $(form).serializeArray();
+            params.push({name: '_eventName' , value: button.name});
+            $.get("customer?"+resolution, params, function(data){
+                var result=eval(data);
+                if(result=="done"){
+                    $('#message').html("addess saved.");
+                    disablePopup();
+                    $('#customerName').change();
+                }
+
+            });
+            return false;
+        }
+        $('#customerName').change(function(){
+            var custid=$("#customerIdForAddress").val();
+
+
+            $.get("order?addressAjax",{id:custid}, function (result) {
+                var data=eval(result);
+                var options = '<option value="0">---Select Address---</option>';
+                for (var i = 0; i < data.length; i++) {
+                    options += '<option value="' + data[i].id + '">' + data[i].line1+","+ data[i].line2+","+ data[i].city+"-"+data[i].zip +'</option>';
+                }
+                $("#invoiceAddress").html(options);
+                $("#shipmentAddress").html(options);
+                $("#customerIdForAddress").attr("value",custid);
+            });
+        });
+
+    });
+    $(document).ready(function(){
+        //LOADING POPUP
+        //Click the button event!
+        $("#addAddress").click(function(){
+            //centering with css
+
+            centerPopup();
+            //load popup
+
+            loadPopup();
+        });
+
+
+
+        //CLOSING POPUP
+        //Click the x event!
+        $("#popupContactClose").click(function(){
+            disablePopup();
+
+        });
+
+        //Press Escape event!
+        $(document).keypress(function(e){
+            if(e.keyCode==27 && popupStatus==1){
+                disablePopup();
+            }
+        });
+    });
+
+
+</script>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<s:layout-render name="/layout/_base.jsp">
+<s:layout-component name="left-menu">
+
+    <ul>
+        <li>&nbsp;</li>
+        <li class="left_menu_heading">Proposal</li>
+        <li style="margin-top:35px">
+            <s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Create</s:link></li>
+        <li>     <s:link beanclass="com.inwise.action.ProposalActionBean" event="viewProposalLink">View</s:link></li>
+
+
+    </ul>
+</s:layout-component>
+<s:layout-component name="body">
+<s:form beanclass="com.inwise.action.ProposalActionBean">
+    <br>
+    <table class="heading_table">
+
+        <tr><td align="left" class="pageheading" valign="top">
+            <div class="sub_heading" >Create Order</div>
+        </td></tr>
+            <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+            </td></tr>--%>
+    </table>
+    <table class="second_table"  ><tr><td>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="22%" align="left" valign="top">
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Name of Customer<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top">
+                    <div align="left">
+                        <s:text name="ordername"  readonly="readonly"  id="customerName" class="textbox" value="${actionBean.proposal.customer.name}"></s:text>
+                        <s:hidden name="order.customer.id"   value="${actionBean.proposal.customer.id}"/>
+                         <s:hidden name="order.proposal.id"   value="${actionBean.proposal.id}"/>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top"><s:hidden name="order.deleted" value="0"/>
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Order Date<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="34%" align="left" valign="top">
+                    <div align="left">
+                        <s:text name="order.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="22%" align="left" valign="top">
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Customer Order No.<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top">
+                    <div align="left">
+                        <s:text name="order.customerOrderNo" id="customerOrderNo" class="textbox" onchange="return checkCustomerOrderNo();"/>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top">
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Consignee Name<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="34%" align="left" valign="top">
+                    <div align="left">
+                        <s:text name="order.consigneeName" id="consigneeName"  class="textbox"/>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="22%" align="left" valign="top">
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Invoice Address<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top">
+                    <div align="left">
+                        <s:hidden name="order.orderAddress[0].addressType.id" value="1"/>
+                        <s:select id="invoiceAddress" name="order.orderAddress[0].address.id" class="dropdown">
+                            <option  value="0">---Select Address---</option>
+
+
+                            <c:forEach items="${actionBean.addressList}" var="address" varStatus="loop" >
+
+                                <option value ="<c:out value="${address.id}"/>"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
+
+                            </c:forEach>
+
+                        </s:select>
+                    </div>
+                </td>
+                <td width="22%" align="left" valign="top">
+                    <div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Shipment Address<span style="color:#FF0000"> *</span></div>
+                    </div>
+                </td>
+                <td width="34%" align="left" valign="top">
+                    <div align="left">
+                        <s:hidden name="order.orderAddress[1].addressType.id" value="2"/>
+                        <s:select id="shipmentAddress" name="order.orderAddress[1].address.id" class="dropdown">
+                            <option  value="0">---Select Address---</option>
+                            <c:forEach items="${actionBean.addressList}" var="address" varStatus="loop" >
+
+                                <option value ="<c:out value="${address.id}"/>"> ${address.line1},&nbsp;${address.line2},&nbsp;${address.city}-${address.zip},&nbsp;${address.state},&nbsp;${address.country}</option>
+
+                            </c:forEach>
+                        </s:select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+                <td><s:button name="addAddress" class="links" id="addAddress" value="Add Address"  style="color : red;"/></td>
+            </tr>
+            <tr>
+                <td colspan="4"><br><div align="left" style="margin-left:10px;">
+                    <table width="95%" border="0"  cellspacing="0" cellpadding="0"  align="left" id="family">
+                        <tr class="foreach_table">
+                            <td width="17%"  class="foreach_table_firstth"><div align="center"><span class="foreach_th_span">Product</span></div></td>
+
+                            <td width="18%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">UOM</span></div></td>
+                            <td width="17%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Quantity</span></div></td>
+                            <td width="21%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Rate</span></div></td>
+                            <td width="20%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Amount</span></div></td>
+
+                        </tr>
+                        <c:forEach items="${actionBean.proposal.proposalDetail}" var="proposalDetail" varStatus="loop" >
+                            <c:if test="${proposalDetail.requoteStatus eq 'final'}">
+                                <tr id="tabletr">
+                                    <td class="foreach_table_firstth">
+                                        <div class="foreach_table_div">
+                                            <div align="right">
+
+                                                <s:text name="order.orderDetail23[${loop.index}].product.id"  id="productName${loop.index}" value="${proposalDetail.product.productName}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                                <s:hidden name="order.orderDetail[${loop.index}].product.id"  id="productName${loop.index}" value="${proposalDetail.product.id}" />
+                                            </div></div></td>
+
+
+                                    <td class="foreach_table_th"><div class="foreach_table_div"> <div align="right">
+                                        <s:text name="productMeasurementType" id="productMeasurementType${loop.index}" value="${proposalDetail.product.unit.name}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+
+                                    </div>  </div></td>
+                                    <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
+                                        <s:text name="order.orderDetail[${loop.index}].orderedQuantity" value="${proposalDetail.quantity}"   id="quantity${loop.index}"  readonly="readonly"  class="foreach_table_td" style=" width:100px;"/>
+                                        <s:hidden name="order.orderDetail[${loop.index}].remainingQuantity" value="${proposalDetail.quantity}" id="remainingQuantity${loop.index}" />
+                                    </div>  </div></td>
+                                    <td class="foreach_table_th"><div class="foreach_table_div">
+                                        <div align="right">
+                                            <s:text  name="order.orderDetail[${loop.index}].cost" value="${proposalDetail.cost}"  id="cost${loop.index}"  readonly="readonly"class="foreach_table_td"  style=" width:100px;" />
+
+                                        </div>    </div></td>
+                                    <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
+                                        <s:text name="amount[${loop.index}]" id="amount${loop.index}" value="${proposalDetail.cost * proposalDetail.quantity}" readonly="readonly" class="foreach_table_td"  style=" width:100px;"/>
+                                    </div>   </div></td>
+
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </table>
+
+                </div></td>
+            </tr>
+            <tr>
+                <td align="left">&nbsp;</td>
+                <td align="left" colspan="2">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left">&nbsp;</td>
+                <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="addOrder" value="Submit" class="buttons" id="addOrder"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <s:submit name="cancel" value="Cancel" class="buttons"/>
+                </div></td>
+                <td width="34%" align="left">&nbsp;</td>
+            </tr>
+
+        </table></td></tr></table>
+</s:form>
+
+<div id="popupContact">
+    <a id="popupContactClose">x</a>
+
+    <h1>Add Another Address</h1>
+    <p id="contactArea">
+        <s:form beanclass="com.inwise.action.CustomerActionBean" id="saverole">
+    <table width="100%" border="0">
+        <tr>
+            <td>
+                <span style="color:#FF0000">Line1 *</span>
+                <s:hidden name="id" id="customerIdForAddress" value="${actionBean.proposal.customer.id}"/>
+            </td>
+            <td colspan="3" width="27%" align="left" valign="top" >
+                <s:text name="address.line1"  id="line1" class="textbox" style="width:100%;"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="color:#FF0000">Line2 *</span>
+            </td>
+            <td colspan="3" width="27%" align="left" valign="top" >
+                <s:text name="address.line2"  id="line2" class="textbox"  style="width:100%;"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="color:#FF0000">City *</span>
+            </td>
+            <td width="27%" align="left" valign="top" >
+                <s:text name="address.city"  id="city1" class="textbox"/>
+
+            </td>
+            <td>
+                <span style="color:#FF0000">State *</span>
+            </td>
+            <td width="27%" align="left" valign="top" >
+                <s:text name="address.state"  id="line1" class="textbox"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span style="color:#FF0000">Country *</span>
+            </td>
+            <td width="27%" align="left" valign="top" >
+                <s:text name="address.country"  id="country" class="textbox"/>
+
+            </td>
+            <td>
+                <span style="color:#FF0000">Zip *</span>
+            </td>
+            <td width="27%" align="left" valign="top" >
+                <s:text name="address.zip"  id="zip" class="textbox"/>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+            <td colspan="2" id="saverolebtn">
+                <s:submit name="saveAddress" value="Save"  onclick= "return submitForm(this);"/>
+
+            </td>
+        </tr>
+    </table>
+    </s:form>
+    </p>
+</div>
+
+<div id="backgroundPopup"></div>
+
+</s:layout-component>
+</s:layout-render>

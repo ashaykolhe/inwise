@@ -1,8 +1,10 @@
 package com.inwise.dao;
 
 import com.inwise.pojo.Proposal;
+import com.wideplay.warp.persist.Transactional;
 
 import java.util.Properties;
+import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,6 +28,14 @@ public class ProposalDao extends BaseDao<Proposal,Integer>{
     public ProposalDao() {
         super(Proposal.class);
     }
+
+@Override @Transactional
+public List<Proposal> listAll() {
+      
+      return    sessionProvider.get().createQuery("from Proposal ORDER BY id DESC ").list();
+
+
+}
     public void sendGeneralMail(Integer id) {
         try {
                 Properties prop = new Properties();
@@ -58,7 +68,7 @@ public class ProposalDao extends BaseDao<Proposal,Integer>{
                 email.addRecipient("",emailTo, Message.RecipientType.TO);
                 email.setFromAddress("",emailFrom);
               //  email.addAttachment(name,dataSource);
-                email.setSubject("Hi this is mail from bajaj.minal@gmail.com to check enterpride");
+                email.setSubject("Hi this is mail from bajaj.minal@gmail.com to check inwise");
                 email.setText("for approval of proposal order");
 
                 new Mailer(hostName,port,emailFrom,pass, TransportStrategy.SMTP_SSL).sendMail(email);
@@ -68,5 +78,9 @@ public class ProposalDao extends BaseDao<Proposal,Integer>{
         }
 
        }
+
+     public Proposal findByLastUpdate() {
+        return (Proposal)sessionProvider.get().createQuery("from Proposal order by id desc").setMaxResults(1).uniqueResult();
+    }
     
 }

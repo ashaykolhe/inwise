@@ -8,13 +8,14 @@ To change this template use File | Settings | File Templates.
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 
-<s:useActionBean beanclass="com.inwise.action.ProposalActionBean" var="proposalBean" event="addProposalLink"/>
+<s:useActionBean beanclass="com.inwise.action.ProposalActionBean" var="proposalBean" event="editProposalLink"/>
 
 <script type="text/javascript">
 
 function GetItemDetail(button){
     var count=$('#family #tabletr').length;
     var rowid=button.name.substring(button.name.indexOf("[")+1,button.name.indexOf("]"));
+    
     var flag=true;
     var check=$('#productName'+rowid+'').val();
     for(var i=1;i<=count;i++)
@@ -22,8 +23,8 @@ function GetItemDetail(button){
         if(rowid==i){
             continue;
         }
-        var temp=$('#productName'+i+'').val();
 
+        var temp=$('#productName'+i+'').val();
         if(check==temp)
         {
             flag=false;
@@ -106,7 +107,7 @@ function calculateBalance(p,i){
     alert('please Enter Numeric value for rate');
 
          var amount= $('#amount'+rowid+'').val();
-        
+
         alert(amount);
          --rowid;
     $('#family #tabletr:eq('+rowid+') input:eq(2)').val("");
@@ -135,7 +136,7 @@ function calculateBalance(p,i){
               totalamt=0;
              amountbeforcal=0;
         }
-      
+
        var total=(parseFloat(totalamt)-parseFloat(amountbeforcal))+parseFloat(amount);
     $('#totalAmount').attr("value",total);
 
@@ -162,17 +163,26 @@ function deletethis(p,a){
     else{
         var count=$('#family #tabletr').length;
          var rowidforcal=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
-        var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"))-1;
+        
+        var rowid=p.name.substring(p.name.indexOf("[")+1,p.name.indexOf("]"));
          var amount= $('#amount'+rowidforcal+'').val();
 
-        $('#family #tabletr:eq('+rowid+') input').attr("value","");
-        $('#family #tabletr:eq('+rowid+') select:eq(0)').attr("value","");
+       /* $('#family #tabletr:eq('+rowidforcal+') input').attr("value","");
+        $('#family #tabletr:eq('+rowidforcal+') select:eq(0)').attr("value","");*/
+
+           $('#productName'+rowidforcal+'').attr("value","");
+           $('#productMeasurementType'+rowidforcal+'').attr("value","");
+           $('#quantity'+rowidforcal+'').attr("value","");
+           $('#cost'+rowidforcal+'').attr("value","");
+           $('#amount'+rowidforcal+'').attr("value","");
+
 
          var totalamt= $('#totalAmount').val() ;
-            if($('#totalAmount').val().trim()=="" || $('#totalAmount').val().trim()=="0"){
-              totalamt=0;
+            if(amount=="" || amount=="0"){
+            
               amount=0;
         }
+        
          var total=parseFloat(totalamt)-parseFloat(amount);
         $('#totalAmount').attr("value",total);
     }
@@ -245,8 +255,8 @@ $(document).ready(function(){
                      <li style="margin-top:35px">
                              <s:link beanclass="com.inwise.action.ProposalActionBean" event="addProposalLink">Create</s:link></li>
                   <li>     <s:link beanclass="com.inwise.action.ProposalActionBean" event="viewProposalLink">View</s:link></li>
-                                                 
-                                                  
+
+
                   </ul>
 
          </s:layout-component>
@@ -256,7 +266,7 @@ $(document).ready(function(){
     <table class="heading_table">
 
     <tr><td align="left" class="pageheading" valign="top">
-      <div class="sub_heading" >Create Proposal</div>
+      <div class="sub_heading" >Edit Proposal</div>
     </td></tr>
    <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
     </td></tr>--%>
@@ -271,19 +281,33 @@ $(document).ready(function(){
                 </td>
                 <td width="22%" align="left" valign="top">
                     <div align="left">
-                        <s:select id="customerName" name="proposal.customer.id" class="dropdown">
+                        <div align="left">
+                            <s:select id="customerName" name="proposal.customer.id" class="dropdown">
                             <option  value="">---Select Customer---</option>
                             <c:forEach items="${proposalBean.customerList}" var="customer" varStatus="loop" >
+                                <c:choose>
+                                <c:when test="${actionBean.proposal.customer.id eq customer.id}">
+                                <option value ="<c:out value="${actionBean.proposal.customer.id}"/>" selected="selected"> <c:out value="${actionBean.proposal.customer.name}"/></option>
+                                </c:when>
+
+                                <c:otherwise>
                                 <option value ="${customer.id}"><c:out value="${customer.name}"/></option>
-                            </c:forEach>
-                        </s:select>
+                                </c:otherwise>
+                                </c:choose>
+
+                                </c:forEach>
+
+                                </s:select>
+               
+                         <s:hidden name="proposal.id" value="${proposalBean.proposal.id}" />
+                    </div>
                     </div>
                 </td>
                 <td width="22%" align="left" valign="top"><s:hidden name="proposal.deleted" value="0"/>
                     <div align="left" style="margin-left: 2px;" class="labels">
                         <div align="right">Proposal Date<span style="color:#FF0000"> *</span></div>
                     </div>
-                </td>                                                                                
+                </td>
                 <td width="34%" align="left" valign="top">
                     <div align="left">
                         <s:text name="proposal.createDate" id="createDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"/>
@@ -292,8 +316,8 @@ $(document).ready(function(){
                 </td>
             </tr>
 
-          
-           
+
+
             <tr>
                 <td colspan="4"><br><div align="left" style="margin-left:10px;">
  <table width="95%" border="0"  cellspacing="0" cellpadding="0"  align="left" id="family">
@@ -306,40 +330,53 @@ $(document).ready(function(){
                             <td width="20%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span">Amount</span></div></td>
                             <td width="5%"  class="foreach_table_th"><div align="center"><span class="foreach_th_span"><img src="images/delete.jpg"/></span></div></td>
                         </tr>
-                        <c:forEach var="i" begin="1" end="4" step="1" varStatus ="status" >
+                         <c:forEach items="${actionBean.proposal.proposalDetail}" var="proposalDetail" varStatus="loop" >
+                            <c:if test="${proposalDetail.requoteno eq 1}">
                             <tr id="tabletr">
                               <td class="foreach_table_firstth">
     <div class="foreach_table_div">
                                         <div align="right">
-                                            <s:select id="productName${i}" name="proposal.proposalDetail[${i}].product.id" class="dropdowntable" onchange= "return GetItemDetail(this);">
+
+                                       <s:select id="productName${loop.index}" name="proposal.proposalDetail[${loop.index}].product.id" class="dropdowntable" onchange= "return GetItemDetail(this);">
                                                 <option  value="">---Select Product---</option>
-                                                <c:forEach items="${proposalBean.productList}" var="product" varStatus="loop" >
-                                                    <option value ="<c:out value='${product.id}'/>"><c:out value="${product.productName}"/></option>
-                                                </c:forEach>
+                                      <c:forEach items="${proposalBean.productList}" var="itemidloop" >
+                                          <c:choose>
+                                            <c:when test="${proposalDetail.product.id eq itemidloop.id}">
+                                            <option value ="<c:out value="${proposalDetail.product.id}"/>" selected="selected"> <c:out value="${proposalDetail.product.productName}"/></option>
+                                            </c:when>
+
+                                            <c:otherwise>
+                                            <option value ="${itemidloop.id}"><c:out value="${itemidloop.productName}"/></option>
+                                            </c:otherwise>
+                                            </c:choose>
+                                            </c:forEach>
+
                                             </s:select>
                                         </div></div></td>
                                  <td class="foreach_table_th"><div class="foreach_table_div"> <div align="right">
-                                            <s:text name="productMeasurementType" id="productMeasurementType${i}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
+                                            <s:text name="productMeasurementType" id="productMeasurementType${loop.index}" value="${proposalDetail.product.unit.name}" readonly="readonly" class="foreach_table_td" style=" width:100px;"/>
                                       </div>  </div></td>
                                 <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
-                                            <s:text name="proposal.proposalDetail[${i}].quantity" id="quantity${i}" onchange="return calculateBalance(this,${i})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"  class="foreach_table_td" style=" width:100px;"/>
+                                            <s:text name="proposal.proposalDetail[${loop.index}].quantity"   id="quantity${loop.index}"    onchange="return calculateBalance(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"  class="foreach_table_td removeValue" style=" width:100px;"/>
 
                                       </div>  </div></td>
                                <td class="foreach_table_th"><div class="foreach_table_div">
                                    <div align="right">
-                                            <s:text  name="proposal.proposalDetail[${i}].cost" id="cost${i}"  class="foreach_table_td" style=" width:100px;" onchange="return calculateBalanceRate(this,${i})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"/>
+                                            <s:text  name="proposal.proposalDetail[${loop.index}].cost"  id="cost${loop.index}"  class="foreach_table_td removeValue" style=" width:100px;" onchange="return calculateBalanceRate(this,${loop.index})" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'"/>
                                    </div>    </div></td>
 
 
                               <td class="foreach_table_th"><div class="foreach_table_div">    <div align="right">
-                                            <s:text name="amount[${i}]" id="amount${i}" readonly="readonly" class="foreach_table_td" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'" style=" width:100px;"/>
-                                     </div>   </div></td>
-                                <td class="foreach_table_th"><div class="foreach_table_div">     <div align="right">
-                                            <s:text name="delete[${i}]"   id="delete${i}" class="delete" style="background:url('images/delete.jpg') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
-                                            
-                                    </div>    </div></td>
 
-                            </tr>
+                                            <s:text name="amount[${loop.index}]" id="amount${loop.index}"   readonly="readonly" class="foreach_table_td removeValue" onfocus="this.style.background='#edeeef';" onblur="this.style.background='white'" style=" width:100px;"/>
+                                            
+
+                              </div>   </div></td>
+                               <td class="foreach_table_th"><div class="foreach_table_div">     <div align="right">
+                                            <s:text name="delete[${loop.index}]"   id="delete${loop.index}" class="delete" style="background:url('images/delete.jpg') no-repeat center;border :none;cursor:auto;"    onclick="return deletethis(this)"/>
+
+                                    </div>    </div></td>
+                            </tr></c:if>
                         </c:forEach>
      <tr>
          <td colspan="3"> &nbsp;</td>
@@ -362,9 +399,9 @@ $(document).ready(function(){
             <tr>
                 <td align="left">&nbsp;</td>
                 <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="addProposal" value="Preview" class="buttons" id="addProposal"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <s:submit name="cancel" value="Cancel" class="buttons"></s:submit>
+                    <s:submit name="editProposal" value="Preview" class="buttons" id="addProposal"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
+                   <s:submit name="cancel" value="Cancel" class="buttons"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                 </div></td>
                 <td width="34%" align="left">&nbsp;</td>
             </tr>

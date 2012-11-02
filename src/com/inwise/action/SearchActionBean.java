@@ -52,7 +52,7 @@ public class SearchActionBean extends BaseActionBean{
     private Invoice invoice;
     private Order order;
     private String searchMenu,searchSubmenu,name,content,ajaxSubmenu,hdnvalue,invoicenumber;
-    private String date;
+    private String date,fromdate,todate;
     private Advance advance;
 
     public Advance getAdvance() {
@@ -195,16 +195,39 @@ public class SearchActionBean extends BaseActionBean{
     {
         return new ForwardResolution("jsp/search.jsp");
     }
+
+    public String getFromdate() {
+        return fromdate;
+    }
+
+    public void setFromdate(String fromdate) {
+        this.fromdate = fromdate;
+    }
+
+    public String getTodate() {
+        return todate;
+    }
+
+    public void setTodate(String todate) {
+        this.todate = todate;
+    }
+
     public Resolution search()
     {
 
-        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+getSearchSubmenu());
 //Customer
 //"none","custName","custCode"
         if(searchSubmenu.equalsIgnoreCase("custName"))
         {
             customer=customerDao.findByCustomerName(getName());
             System.out.println("Cussssssssssttttttttooommmmmmmmmeeeerrrrrrrrrrr"+customer);
+        }
+        if(searchSubmenu.equalsIgnoreCase("emailId"))
+        {
+            System.out.println("resolk");
+            customer=customerDao.findByEmailId(getName());
+           System.out.println("resolk"+getCustomer());
         }
         if(searchSubmenu.equalsIgnoreCase("custCode"))
             customer=customerDao.findByCustomerCode(getName());
@@ -227,7 +250,7 @@ public class SearchActionBean extends BaseActionBean{
         {
             order=orderDao.findByOrderCustomerOrderNumber(getName());
             invoicelst=orderDao.findInvoiceByCustomerOrderNumber(getName());
-            System.out.println("oooooooooooooooooooooooooooooooooooooooooo"+order);
+            System.out.println("oooooooooooooooooooooooooooooooooooooooooo"+invoicelst);
         }
         if(searchSubmenu.equalsIgnoreCase("orderCustomerName"))
         {
@@ -236,10 +259,18 @@ public class SearchActionBean extends BaseActionBean{
             invoicelst=orderDao.findInvoiceByCustomerName(getName());
             System.out.println("oooooooooooo"+getOrder());
         }
-        if(searchSubmenu.equalsIgnoreCase("orderDate"))
+        if(searchSubmenu.equalsIgnoreCase("orderBtwnDates"))
+        {
+           System.out.println("hello");
+            orderlst=orderDao.findByOrderBetnDate(getFromdate(),getTodate());
+            System.out.println("oooooooooooo"+getOrderlst()); 
+        }
+        if(searchSubmenu.equalsIgnoreCase("orderDate")) {
               invoicelst=invoiceDao.findInvoiceByOrderDate(getDate());
-            //orderlst=orderDao.findByOrderDate(getDate());
+            orderlst=orderDao.findByOrderDate(getDate());
+        }
         return new ForwardResolution("jsp/search.jsp");
+
     }
     public Resolution autoinvoice()
     {
@@ -285,7 +316,13 @@ public class SearchActionBean extends BaseActionBean{
         {
 
             Stringlst=customerDao.getCustomerCodeLst();
+        }  if(ajaxSubmenu.equals("emailId"))
+        {
+
+            Stringlst=customerDao.getEmailIdLst();
+             System.out.println("emaild"+Stringlst);
         }
+
         return new JavaScriptResolution(Stringlst);
     }
     public Resolution print()

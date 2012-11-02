@@ -3,6 +3,8 @@ package com.inwise.dao;
 import com.inwise.dao.BaseDao;
 import com.inwise.pojo.Tax;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Minal
@@ -22,4 +24,9 @@ public class TaxDao extends BaseDao<Tax,Integer>{
          return false;
 
      }
+    @Override
+       public List<Tax> listAll() {
+           return    sessionProvider.get().createQuery("from Tax ORDER BY id DESC").list();
+       }
+
 }

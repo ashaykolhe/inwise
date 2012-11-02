@@ -88,9 +88,9 @@ public class ProductActionBean extends BaseActionBean{
       public Resolution addProduct()
       {
             logger.info("created product: "+product);
-          System.out.println("product "+product);
+
               productDao.save(getProduct());
-          return new RedirectResolution(ProductActionBean.class,"addProductLink");
+          return new RedirectResolution(ProductActionBean.class,"viewProductLink");
       }
     public Resolution productAlreadyPresent()
     {

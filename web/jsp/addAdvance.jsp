@@ -130,9 +130,7 @@ $(document).ready(function()
                           <li>&nbsp;</li>
                       <li class="left_menu_heading">Order</li>
                      <li style="margin-top:35px">
-                             <s:link beanclass="com.inwise.action.OrderActionBean" event="pre">Add</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="updateOrderLink">Update</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="deleteOrderLink">Delete</s:link></li>
+                               <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
                   </ul>
 

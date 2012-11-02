@@ -22,7 +22,7 @@
     height:60px;
 }
 .heading_table{
-    width:928.5px;
+    width:988.5px;
     border:0;
     border:1px solid #cccccc;
     cellspacing:0;
@@ -104,7 +104,7 @@
  .buttonbig{
 	font-family:Verdana;
 	font-size:12px;
-	  width:90px;
+	  width:108px;
 	color:#000000;
 	background:url(../images/button2.jpg) center center repeat;
 	 border:none;
@@ -262,7 +262,7 @@ width: 99%;
     border-left:1px solid #cccccc;
     border-right:1px solid #cccccc;
     border-bottom:1px solid #cccccc;
-    width:928.2px;
+    width:988.2px;
     background-color:white;
 }
 .second_table1{

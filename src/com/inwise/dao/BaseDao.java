@@ -36,7 +36,7 @@ public class BaseDao<T, PK extends Serializable> implements IDao<T, PK> {
 	}
 
   public T find(PK id) {
-      System.out.println("id"+(T) sessionProvider.get().get(this.persistentClass, id));
+
 		return (T) sessionProvider.get().get(this.persistentClass, id);
 	}
 

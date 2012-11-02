@@ -38,7 +38,7 @@ public class TrailDate extends BaseDao<Traildate,Long>
             {
                 Date d=new Date();
                 Date d1=new Date();
-                d1.setDate(d.getDate()+15);
+                d1.setDate(d.getDate()+365);
                 String date1=encrypt.convert(String.valueOf(d.getTime()),null,null);
                 String date2=encrypt.convert(String.valueOf(d1.getTime()),null,null);
                 traildate.setDate1(date1);

@@ -64,8 +64,7 @@ public class ProductDao extends BaseDao<Product,Integer> {
 
     @Override
     public List<Product> listAll() {
-         Criteria criteria = sessionProvider.get().createCriteria(Product.class).add(Restrictions.eq("deleted",0));
-    return criteria.list();
+        return    sessionProvider.get().createQuery("from Product  where deleted=0 ORDER BY id DESC").list();
     }
 
     public List<Product> listallprodname()

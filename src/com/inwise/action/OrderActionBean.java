@@ -35,7 +35,7 @@ public class OrderActionBean extends BaseActionBean{
 
     @Inject
     ProductDao productDao;
-
+     private Proposal proposal;
     private Order order;
     private String customerOrderNumber;
     private List<Customer> customerList=new ArrayList<Customer>();
@@ -46,6 +46,14 @@ public class OrderActionBean extends BaseActionBean{
     private int shipmentToAddressId;
     private Integer invoicenum;
        private String hiddenvalue;
+
+    public Proposal getProposal() {
+        return proposal;
+    }
+
+    public void setProposal(Proposal proposal) {
+        this.proposal = proposal;
+    }
 
     public String getHiddenvalue() {
         return hiddenvalue;

@@ -36,6 +36,16 @@ public class OrderDetail {
 
     @Column(name = "remaining_quantity",length = 10)
     private Double remainingQuantity;
+     @Column(name = "cost",length = 10)
+    private Double cost;
+
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
 
     public Integer getId() {
         return id;

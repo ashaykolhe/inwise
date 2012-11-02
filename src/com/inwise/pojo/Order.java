@@ -56,6 +56,9 @@ public class Order {
     @Column(name = "deleted",length = 2)
     private Integer deleted;
 
+     @OneToOne
+    @JoinColumn(name = "proposal_id")
+    private Proposal proposal;
     public int getId() {
         return id;
     }
@@ -136,6 +139,14 @@ public class Order {
         this.orderAddress = orderAddress;
     }
 
+    public Proposal getProposal() {
+        return proposal;
+    }
+
+    public void setProposal(Proposal proposal) {
+        this.proposal = proposal;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -149,6 +160,7 @@ public class Order {
                 ", orderDetail=" + orderDetail +
                 ", orderAddress=" + orderAddress +
                 ", deleted=" + deleted +
+                ", proposal=" + proposal +
                 '}';
     }
 }

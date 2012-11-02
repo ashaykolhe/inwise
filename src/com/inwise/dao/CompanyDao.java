@@ -22,6 +22,8 @@ public class CompanyDao extends BaseDao<CompanyInfo,Long>
         return true;
     }
 
-
+    public CompanyInfo findByLastUpdate() {
+        return (CompanyInfo)sessionProvider.get().createQuery("from CompanyInfo order by id desc").setMaxResults(1).uniqueResult();
+    }
     
 }

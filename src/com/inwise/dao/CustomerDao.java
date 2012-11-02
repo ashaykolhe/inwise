@@ -6,6 +6,7 @@ import com.inwise.pojo.Product;
 import com.wideplay.warp.persist.Transactional;
 
 import java.util.List;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -45,8 +46,8 @@ public class CustomerDao extends BaseDao<Customer,Integer>
 
   @Override
    public List<Customer> listAll() {
-        Criteria criteria = sessionProvider.get().createCriteria(Customer.class).add(Restrictions.eq("deleted",0));
-   return criteria.list();
+   return    sessionProvider.get().createQuery("from Customer  where deleted=0 ORDER BY id DESC").list();
+
    }
 
 	
@@ -57,11 +58,31 @@ public class CustomerDao extends BaseDao<Customer,Integer>
     public List<String> getCustomerCodeLst() {
          return (List<String>)sessionProvider.get().createQuery("SELECT distinct c.customerCode from Customer c").list();
     }
+    public List<String> getEmailIdLst() {
+        
+        List Email=(List<String>)sessionProvider.get().createQuery("SELECT distinct c.email from Customer c").list() ;
+         System.out.println("in dao"+Email);
+        Object co;
+        String value;
+         for(Iterator i=Email.iterator();i.hasNext();){
+                    co=i.next();
 
+            if(co==null ){
+               
+                i.remove();
+                
+               }
+                }
+        System.out.println(Email);
+         return Email;
+        
+    }
     public Customer findByCustomerName(String name) {
         return (Customer) sessionProvider.get().createQuery("SELECT distinct c from Customer c where c.name='"+name+"' " ).uniqueResult();
     }
-
+    public Customer findByEmailId(String name) {
+        return (Customer) sessionProvider.get().createQuery("SELECT distinct c from Customer c where c.email='"+name+"' " ).uniqueResult();
+    }
     public Customer findByCustomerCode(String name) {
     return (Customer) sessionProvider.get().createQuery("SELECT distinct c from Customer c where c.customerCode='"+name+"' " ).uniqueResult();
     }
