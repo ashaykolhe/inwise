@@ -25,7 +25,7 @@ else
 </script>
 
 <s:useActionBean beanclass="com.inwise.action.ProposalActionBean" var="list" event="viewProposalLink"></s:useActionBean>
-<% request.setAttribute("propsallst",list.getProposallst());
+<% request.setAttribute("proposallst",list.getProposallst());
 
 %>
 <s:layout-render name="/layout/_base.jsp">
@@ -62,7 +62,7 @@ else
 
                 %>
 
-                    <d:table name="propsallst" id="proposal1" pagesize="5" class="disp" requestURI="/proposal" decorator="totals">
+                    <d:table name="proposallst" id="proposal1" pagesize="5" class="disp" requestURI="/proposal" decorator="totals">
                  <d:column property="id" title="Proposal Id"/>
                  <d:column property="customer.name" title="Customer"/>
                  <d:column property="createDate" title="Propsoal Date" format="{0,date,yyyy-MM-dd}" sortable="false"/>
@@ -126,10 +126,5 @@ else
             </d:column>--%>
 
              </d:table></td></tr></table>
-<c:set var = "TR1" value="alertmsg"/>
-<c:if test="${actionBean.alert eq TR1}">
-    <script type="text/javascript">
-        alert("Proposal converted to order");
-    </script>
-</c:if >
+
  </s:form></s:layout-component></s:layout-render>

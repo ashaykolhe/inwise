@@ -87,7 +87,7 @@ function checkCustomerOrderNo() {
         $('#customerName').focus();
         return false;
     }
-    $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim()}, function (data) {
+    $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim(),customerid:$("#customerName").val().trim()}, function (data) {
         var flag=eval(data);
         if(flag)
         {

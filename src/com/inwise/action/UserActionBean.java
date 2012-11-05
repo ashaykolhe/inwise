@@ -175,6 +175,7 @@ public class UserActionBean extends BaseActionBean{
 
     @RolesAllowed({PermissionConstants.ADD_USERS})
    public Resolution addUser(){
+        System.out.println("user exist"+getUser());
         if(count.equalsIgnoreCase("0"))
         {
          userDao.SaveUser(user);
@@ -192,7 +193,7 @@ public class UserActionBean extends BaseActionBean{
 //        rolelst=roledao.getRole();
         test="a";
 
-
+ getContext().getMessages().add(new LocalizableMessage("/User.action.add.success"));
      return new ForwardResolution("jsp/rolePermissionstep.jsp");
            //return new RedirectResolution(UserActionBean.class,"addUserLink");
    }
@@ -211,7 +212,7 @@ public class UserActionBean extends BaseActionBean{
             userlst=userDao.getUser();
       id=userDao.findIdByLatestUpdate();
         role=userDao.findById(userDao.findIdByLatestUpdate()).getRole();
-
+           getContext().getMessages().add(new LocalizableMessage("/User.action.update.success"));
 
           rolePermission=role.getRolePermissions();
     //  test="b";
@@ -221,7 +222,7 @@ public class UserActionBean extends BaseActionBean{
     //get user list by id
      public Resolution userlist(){
 
-         user= userDao.findByUsername(name);
+         user= userDao.findByUsername(id);
           rolelst=roledao.getRole();
          userlst=userDao.getUser();
          return new ForwardResolution(UPDATEUSER);
@@ -239,8 +240,8 @@ public class UserActionBean extends BaseActionBean{
     public Resolution delete(){
 
          userDao.remove(id);
-               
-        return new ForwardResolution(UserActionBean.class,"viewUserLink");
+                    getContext().getMessages().add(new LocalizableMessage("/User.action.delete.success"));
+        return new RedirectResolution(UserActionBean.class,"viewUserLink");
     }
 
     @RolesAllowed({PermissionConstants.ROLE_PERMISSIONS})
@@ -402,6 +403,7 @@ public Resolution checkPassword()
    public Resolution updatePassword(){
        getContext().getUser().setPassword(InjectorFactory.getInjector().getInstance(PasswordEncryptor.class).hash(password));
        userDao.SaveUser(getUser());
+         getContext().getMessages().add(new LocalizableMessage("/User.action.password.success"));
        return new ForwardResolution(UserActionBean.class,"changePasswordLink");
    }
       public Resolution userLink(){

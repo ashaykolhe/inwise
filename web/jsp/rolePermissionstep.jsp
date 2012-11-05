@@ -79,7 +79,8 @@ $('#'+name+'[type="checkbox"]').attr('checked', false);
 
     <tr><td align="left" class="pageheading" valign="top">
       <div class="sub_heading" >Set Role Permission</div>
-        
+       <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>  
     </td></tr>
 <tr><td><div class="wizard-steps">
   <div class="completed-step"><s:link beanclass="com.inwise.action.UserActionBean" event="userLink">

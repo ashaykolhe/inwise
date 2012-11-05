@@ -11,6 +11,8 @@ To change this template use File | Settings | File Templates.
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="css/steps.css"/>
 <script src="js/popup.js" type="text/javascript"></script>
+
+
 <script type="text/javascript">
   var rolename;
 function checkuser(){
@@ -44,140 +46,9 @@ $("#strength").html('<span style="color:blue">Medium!</span>');
 $("#strength").html('<span style="color:red">Weak!</span>');
 }
 }
-$(document).ready(function() {
-$('#err').hide();
-$('#add').click(function(){
-
-    if ($("#adduserfullname").val().trim() ==""){
-alert("please enter name.");
-$("#adduserfullname").focus() ;
-return false;
-}
-     if ($("#adduserempid").val().trim() ==""){
-alert("please enter emp id.");
-$("#adduserempid").focus() ;
-return false;
-}
-if ($("#addusername").val().trim() ==""){
-alert("please enter user name.");
-$("#addusername").focus() ;
-return false;
-}
-if ($("#password1").val().trim() ==""){
-alert("please enter Password.");
-$("#password1").focus() ;
-return false;
-}
-
-if ($("#confpass").val().trim() ==""){
-alert("please enter confirm password.");
-$("#confpass").focus() ;
-return false;
-}
-
-if($('#password1').val() !=$('#confpass').val())
-{
-alert("passwords do not match.");
-$("#confpass").val("");
-$("#confpass").focus() ;
-return false;
-}
 
 
-if ($("#roledropdown").val()=="0"){
-alert("please select the role");
 
-return false;
-}
-});
-
-
-});
-
-function ajaxLink(link, update) {
-if (confirm("Are you sure, you want to delete selected record."))
-{
-$ .get(link, function (data) {
-$(update).html(data);
-$(update).show();
-});
-}
-return false;
-}
-////////////////////////////////
- function submitForm(button,update) {
-
-var form = button.form;
-var resolution=button.name;
-var params = $(form).serializeArray();
-if ($("#roletxt").val().trim() ==""){
-alert("Please enter role");
-$("#roletxt").focus() ;
-return false;
-}else{
-$.post("Role.action?checkRoleAlreadyPresent", {addRoleName:$("#roletxt").val().trim()}, function (data) {
-var flag=eval(data);
-
-      var updatename=$('#roletxt').val().trim().toString();
-
-
-if(updatename == rolename)
-{
-params.push({name: '_eventName' , value: button.name});
-
-$.post("Role.action?resolution", params, function (data) {
-  $( update ).html(data);
-$(update).show();
-$('#roletxt').val("");
-$('#saverolebtn').show();
-$('#updaterolebtn').hide();
-    rolename=null;
-});
-return true;
-}
-else if(flag)
-{
-alert("Role Already Exist !");
-$("#roletxt").val("");
-$("#roletxt").focus();
-}
-else
-{
-    alert("ee");
-params.push({name: '_eventName' , value: button.name});
-$.post("Role.action?resolution", params, function (data) {
-  $( update ).html(data);
-$(update).show();
-$('#roletxt').val("");
-$('#saverolebtn').show();
-$('#updaterolebtn').hide();
-});
-}
-
-});
-
-}//end of else
-return false;
-}
-////////////////////////////////////////
-
-
-function updateLink(link) {
-
-$ .get(link, function (data) {
-
-var result=eval(data);
-
-$('#roletxt').attr("value",result.name);
-$('#rolehdnid').attr("value",result.id);
-       rolename=$('#roletxt').val().trim().toString();
-
-$('#saverolebtn').hide();
-$('#updaterolebtn').show();
-
-});
-return false;
-}
 
 $(document).ready(function(){
 
@@ -237,9 +108,142 @@ if(e.keyCode==27 && popupStatus==1){
 disablePopup();
 }
 });
+
+$('#err').hide();
+$('#add').click(function(){
+
+    if ($("#adduserfullname").val().trim() ==""){
+alert("please enter name.");
+$("#adduserfullname").focus() ;
+return false;
+}
+     if ($("#adduserempid").val().trim() ==""){
+alert("please enter emp id.");
+$("#adduserempid").focus() ;
+return false;
+}
+if ($("#addusername").val().trim() ==""){
+alert("please enter user name.");
+$("#addusername").focus() ;
+return false;
+}
+if ($("#password1").val().trim() ==""){
+alert("please enter Password.");
+$("#password1").focus() ;
+return false;
+}
+
+if ($("#confpass").val().trim() ==""){
+alert("please enter confirm password.");
+$("#confpass").focus() ;
+return false;
+}
+
+if($('#password1').val() !=$('#confpass').val())
+{
+alert("passwords do not match.");
+$("#confpass").val("");
+$("#confpass").focus() ;
+return false;
+}
+
+
+if ($("#roledropdown").val()=="0"){
+alert("please select the role");
+
+return false;
+}
+});
+    
 });
 
+  function ajaxLink(link, update) {
+  if (confirm("Are you sure, you want to delete selected record."))
+  {
+  $ .get(link, function (data) {
+  $(update).html(data);
+  $(update).show();
+  });
+  }
+  return false;
+  }
+////////////////////////////////
+   function submitForm(button,update) {
+
+  var form = button.form;
+  var resolution=button.name;
+  var params = $(form).serializeArray();
+  if ($("#roletxt").val().trim() ==""){
+  alert("Please enter role");
+  $("#roletxt").focus() ;
+  return false;
+  }else{
+  $.post("Role.action?checkRoleAlreadyPresent", {addRoleName:$("#roletxt").val().trim()}, function (data) {
+  var flag=eval(data);
+
+        var updatename=$('#roletxt').val().trim().toString();
+
+
+  if(updatename == rolename)
+  {
+  params.push({name: '_eventName' , value: button.name});
+
+  $.post("Role.action?resolution", params, function (data) {
+    $( update ).html(data);
+  $(update).show();
+  $('#roletxt').val("");
+  $('#saverolebtn').show();
+  $('#updaterolebtn').hide();
+      rolename=null;
+  });
+  return true;
+  }
+  else if(flag)
+  {
+  alert("Role Already Exist !");
+  $("#roletxt").val("");
+  $("#roletxt").focus();
+  }
+  else
+  {
+
+  params.push({name: '_eventName' , value: button.name});
+  $.post("Role.action?resolution", params, function (data) {
+    $( update ).html(data);
+  $(update).show();
+  $('#roletxt').val("");
+  $('#saverolebtn').show();
+  $('#updaterolebtn').hide();
+  });
+  }
+
+  });
+
+  }//end of else
+  return false;
+  }
+////////////////////////////////////////
+
+
+  function updateLink(link) {
+
+  $ .get(link, function (data) {
+
+  var result=eval(data);
+
+  $('#roletxt').attr("value",result.name);
+  $('#rolehdnid').attr("value",result.id);
+         rolename=$('#roletxt').val().trim().toString();
+
+  $('#saverolebtn').hide();
+  $('#updaterolebtn').show();
+
+  });
+  return false;
+  }
+    
 </script>
+
 <s:useActionBean beanclass="com.inwise.action.UserActionBean" var="listofuser" event="addUserLink"></s:useActionBean>
 <%
 request.setAttribute("rolelst",listofuser.getRolelst());
@@ -379,10 +383,10 @@ request.setAttribute("rolelst",listofuser.getRolelst());
 </tr>
 <tr>
 <td>&nbsp;</td>
-<td  colspan="2" align="left" ><div style="margin-left: 2px;"><s:submit name="addUser" class="buttons"  value="Add" id="add"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
+<td  colspan="2" align="left" ><div style="margin-left: 2px;"><s:submit name="addUser" class="buttons"  value="Add" id="addUser"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
 <s:reset name="reset" value="Reset" class="buttons"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
 <s:submit name="cancel" value="Cancel" class="buttons"></s:submit></div>
-    <s:hidden name="id"  value="role.id"/></td></tr>
+ <%--   <s:hidden name="id"  value="role.id"/></td></tr>--%>
 </table>
 </td>
 </tr>

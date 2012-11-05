@@ -26,93 +26,28 @@
             <td><div align="center" class="style3">Unit-ll : Plot No. 1444,1443,1266,1456,San Nuagaon, Chikatmati, Kalunga</div></td>
         </tr>
         <tr>
-            <td><div align="center" class="style3" style="margin-top:5px; text-decoration:underline">ADVANCE RECEIPT</div></td>
+            <td><div align="center" class="style3" style="margin-top:5px;font-weight:bold; text-decoration:underline">Payment Receipt</div></td>
         </tr>
         <tr>
-            <td height="229"><table border="0" cellspacing="0" cellpadding="0">
+            <td ><table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td><div align="left"  style="margin-top:5px;">
-                        <div align="center" class="style1" style="margin-bottom:2px"><b>DATE :</b></div>
+                    <td width="90"><div align="left"  >
+                        <div align="center" class="style1" style="margin-bottom:2px"><b> Receipt No :</b></div>
                     </div></td>
-                    <td><div align="left"><fmt:formatDate value="<%= new Date()%>"/> </div></td>
-                    <td><div align="right" class="style1"><b>No.  :</b></div></td>
-                    <td>${advanceBean.advance.id}</td>
+                    <td width="360"><div align="left">${advanceBean.advance.id}</div></td>
+                    <td width="53"><div align="right" class="style1"><b>Date :</b></div></td>
+                    <td width="257"><div align="left"><fmt:formatDate value="<%= new Date()%>"/></div> </td>
                 </tr>
-                <tr>
-                    <td><div align="left"  style="margin-top:5px;">
-                        <div align="center" class="style1" style="margin-bottom:2px"><b>Customer Order No. :</b></div>
-                    </div></td>
-                    <td><div align="left">${advanceBean.advance.order.customerOrderNo}</div></td>
-                    <td><div align="right" class="style1"><b>Received From  :</b></div></td>
-                    <td>${advanceBean.advance.order.customer.name}</td>
-                </tr>
-                <tr>
-                    <td height="103"><div align="left"  style="margin-top:5px;">
-                        <div align="center" class="style1" style="margin-bottom:2px"><b>Payment Amount:</b></div>
-                    </div></td>
-                <td><div align="left">${advanceBean.advance.amountReceived}</div></td>
-                    <td><div align="right" class="style1"><b>Payment Mode  :</b></div></td>
-                    <td>${advanceBean.advance.paymentMode.mode}</td>
-                </tr>
+               
+                
             </table>    </td>
         </tr>
-        <tr>
-            <td><table width="730px" border="1" cellspacing="0" cellpadding="0" align="center">
-                <tr>
-                    <td width="12%" height="30" valign="middle"><div align="center" class="style3">No.</div></td>
-                    <td width="40%" valign="middle"><div align="center" class="style3">Product Name</div></td>
-                    <td width="14%" valign="middle"><div align="center" class="style3">Quantity</div></td>
-                    <td width="11%" valign="middle"><div align="center" class="style3">Amount</div></td>
-                </tr>
-                <c:forEach items="${advanceBean.advance.order.orderDetail}" var="orderDetail" varStatus="loop" >
-
-
-                    <tr id="tabletr">
-                        <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                            <div align="left" style="margin-left:4px;">
-                                <div align="right">
-                                        ${loop.index+1}
-                                </div></div></td>
-                        <td style="border-top:1px solid #000000;border-right:1px solid #000000;"><div align="left" style="margin-left:4px;">
-                            <div align="right">
-                                    ${orderDetail.product.productName}
-                            </div></div></td>
-
-                        <td style="border-top:1px solid #000000;border-right:1px solid #000000;">
-                            <div align="left" style="margin-left:4px;">
-                                <div align="right">
-                                        ${orderDetail.orderedQuantity}
-                                </div></div></td>
-
-                        <td style="border-top:1px solid #000000;border-right:1px solid #000000;"><div align="left" style="margin-left:4px;">
-                            <div align="right">
-                                    ${orderDetail.product.productCost * orderDetail.orderedQuantity}
-                            </div></div></td>
-
-                    </tr>
-                </c:forEach>
-            </table></td>
-        </tr>
-
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td width="13%" height="27" class="style1"><div align="left" style="margin-left:2px">
-                        <div align="right">Prepared By :</div>
-                    </div></td>
-                    <td width="16%" class="style1">&nbsp;</td>
-                    <td width="12%" class="style1">Received By :</td>
-                    <td width="12%" class="style1">&nbsp;</td>
-                    <td width="12%" class="style1">Verified By :</td>
-                    <td width="11%" class="style1">&nbsp;</td>
-                    <td width="12%" class="style1">Checked By :</td>
-                    <td width="12%" class="style1">&nbsp;</td>
-                </tr>
-            </table></td>
-        </tr>
+        <tr><td>&nbsp;</td></tr>    
+     <tr><td align="left"><p align="left">With reference to your PO no. <strong style="text-decoration:underline">${advanceBean.advance.order.proposal.id}</strong>  dated <s:text style="text-decoration:underline;border :none;" name="test" size="8" formatType="date" value="${advanceBean.advance.order.proposal.createDate}" formatPattern="dd/MM/yyyy"/>it is hereby confirmed
+         that we have received INR<strong style="text-decoration:underline">  ${advanceBean.advance.amountReceived}</strong>   towards the advance/balance payment through cheque/dd/Online Transfer.</p></td></tr>
+<tr><td><p align="left">We thank you for the same and look forward to a long and mutually benefitting relationship.</p></td></tr>
+    <tr><td>&nbsp;</td></tr>    
+         <tr><td align="left"><div align="left">For</div> </td></tr>      
     </table>
 </s:form>
 </body>

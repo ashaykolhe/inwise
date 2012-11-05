@@ -91,7 +91,26 @@ function combo(){
                 cust.removeChild(options[i]);
             }// end for i
             var custvalue=new Array("none","custName","custCode","emailId");
-            var custshow=new Array("--Select Customer Option --","By Customer Name","By Customer Code","Email Id");
+            var custshow=new Array("--Select Customer Option --","Customer Name","Customer Code","Email Id");
+            for(var i=0;i<custvalue.length;i++){
+                var t=custvalue[i];
+                if(t==submenuvalue){
+                    cust.options[i]=new Option(custshow[i],custvalue[i],false,true);}
+                else
+                    cust.options[i]=new Option(custshow[i],custvalue[i]);
+            }    //end of for
+        }
+     else if($('#menu').val()=='byProposal')
+        {
+            var cust=document.getElementById("submenu");
+            var options=cust.getElementsByTagName("option");
+            var i;
+            for (i=0; i<options.length; i++)
+            {
+                cust.removeChild(options[i]);
+            }// end for i
+            var custvalue=new Array("none","proposalCustName","proposalOrderDate","proposalBetwnDate");
+            var custshow=new Array("--Select Proposal Option --","Customer Name","Proposal Date","Proposal Between Dates");
             for(var i=0;i<custvalue.length;i++){
                 var t=custvalue[i];
                 if(t==submenuvalue){
@@ -226,9 +245,36 @@ function fillsubmenu(){
                                         $("input#autocomplete").autocomplete({
                                             source: availableTags
                                         });
+
+
                                     });
                                 }
+    else if($('#submenu').val() == 'proposalCustName'){
+                                    $('#myDiv3').hide();
+                                    $('#myDiv2').hide();
+                                    $('#myDiv1').show();
+                                    $.post("search?autoproposal", {ajaxSubmenu:$('#submenu').val()}, function (result) {
+                                        /* $.get("/search?autovendor",function(result) {*/
+                                        var availableTags=eval(result);
+                                        $("input#autocomplete").autocomplete({
+                                            source: availableTags
+                                        });
 
+
+                                    });
+                                }
+     else if($('#submenu').val() == 'proposalOrderDate'){
+                            $('#myDiv3').hide();
+                            $('#myDiv2').show();
+                            $('#myDiv1').hide();
+
+                        }
+                         else if($('#submenu').val() == 'proposalBetwnDate'){
+                            $('#myDiv3').show();
+                            $('#myDiv2').hide();
+                            $('#myDiv1').hide();
+
+                        }
 }
 $(document).ready(function() {
 
@@ -291,7 +337,7 @@ $(document).ready(function() {
     request.setAttribute("invoicelst",searchlst.getInvoicelst());
     request.setAttribute("order",searchlst.getOrder());
     request.setAttribute("orderlst",searchlst.getOrderlst());
-
+     request.setAttribute("proposallst",searchlst.getProposallst());
 
 %>
 
@@ -321,8 +367,8 @@ $(document).ready(function() {
                     <td width="13%" align="left" valign="top">Search What ?</td>
                     <td width="87%" align="left" valign="top">
                         <%
-                            String[] menu={"byInvoice","byOrder","byCustomer"};
-                            String[] name={"Invoice","Order","Customer"};
+                            String[] menu={"byInvoice","byOrder","byCustomer","byProposal"};
+                            String[] name={"Invoice","Order","Customer","Proposal"};
                         %>
                         <s:select name="searchMenu" id="menu" class="dropdown" onchange="combo()">
                             <option value="0">----Select Menu----</option>
@@ -726,6 +772,31 @@ $(document).ready(function() {
             </d:column>
         </d:table></td></tr></table>
 </c:if>
+      <%
+
+             org.displaytag.decorator.TotalTableDecorator totals = new org.displaytag.decorator.TotalTableDecorator();
+                         totals.setSubtotalLabel("partial amount");
+             pageContext.setAttribute("totals", totals);
+
+                %>
+ <c:if test="${actionBean.proposallst!=null}">
+
+        <table class="t" id="grntable" width="92%"><tr><td>
+             <d:table name="proposallst" id="proposal1" pagesize="5" class="disp" requestURI="/proposal" decorator="totals">
+                 <d:column property="id" title="Proposal Id"/>
+                 <d:column property="customer.name" title="Customer"/>
+                 <d:column property="createDate" title="Propsoal Date" format="{0,date,yyyy-MM-dd}" sortable="false"/>
+                        <c:set var="pro" value="${proposal1.proposalDetail}" scope="request"/>
+                      <d:column title="Re-Quote">
+                              <d:table name="pro" id="proposaldetail" class="disp"   requestURI="/proposal" decorator="totals">
+
+                                     <d:column property="requoteno" group="1" title="ReQuote Order"/>
+                                     <d:column property="product.productName" title="Product Name"/>
+                                     <d:column property="quantity" title="Quantity"/>
+                                     <d:column property="cost" title="Rate"/>
+                                     <d:column property="amount" title="Amount" total="true" />
+                              </d:table> </d:column></d:table></td></tr></table>
+    </c:if>
 </s:form>
 </s:layout-component>
 </s:layout-render>

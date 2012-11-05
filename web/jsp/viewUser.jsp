@@ -53,6 +53,8 @@
                                 &nbsp;| &nbsp;          <s:link beanclass="com.inwise.action.UserActionBean" event="userPermissionLink" class="pageheading_link">User Permission</s:link>
     </div>
     </td></tr>
+         <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>
     </table>
     <s:form beanclass="com.inwise.action.UserActionBean">
 

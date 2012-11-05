@@ -22,7 +22,7 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "ordered_quantity",nullable = false,precision = 8)
+    @Column(name = "ordered_quantity",precision = 8)
     private Double orderedQuantity;
 
     @Column(name = "amendment_cost",length = 10)
@@ -113,6 +113,7 @@ public class OrderDetail {
                 ", amendmentQuantity=" + amendmentQuantity +
                 ", dispatchedQuantity=" + dispatchedQuantity +
                 ", remainingQuantity=" + remainingQuantity +
+                ", cost=" + cost +
                 '}';
     }
 }

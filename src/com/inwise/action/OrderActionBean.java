@@ -38,6 +38,7 @@ public class OrderActionBean extends BaseActionBean{
      private Proposal proposal;
     private Order order;
     private String customerOrderNumber;
+    Integer customerid;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
     private List<Address> addressList=new ArrayList<Address>();
@@ -135,6 +136,14 @@ public class OrderActionBean extends BaseActionBean{
         this.customerOrderNumber = customerOrderNumber;
     }
 
+    public Integer getCustomerid() {
+        return customerid;
+    }
+
+    public void setCustomerid(Integer customerid) {
+        this.customerid = customerid;
+    }
+
     @DefaultHandler
     public Resolution pre(){
         customerList=customerDao.listAll();
@@ -150,6 +159,7 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution addOrder(){
+        System.out.println("hello"+order);
         orderDao.save(order);
         return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
     }
@@ -158,8 +168,6 @@ public class OrderActionBean extends BaseActionBean{
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
         orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
-        System.out.println("oooooooooooo"+order);
-      
         return updateOrderLink();
     }
 
@@ -239,7 +247,7 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution customerOrderNoAlreadyPresent()
     {
-        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber));
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber,customerid));
     }
 
     public Resolution deleteOrderLink(){

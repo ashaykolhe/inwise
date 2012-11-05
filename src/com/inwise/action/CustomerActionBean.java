@@ -76,7 +76,7 @@ public class CustomerActionBean extends BaseActionBean
 
             customer.setAddressList(addresslst);
         customerDao.save(customer);
-
+        getContext().getMessages().add(new LocalizableMessage("/Customer.action.add.success"));
       return new RedirectResolution(CustomerActionBean.class,"viewLink");
     }
 
@@ -89,6 +89,7 @@ public class CustomerActionBean extends BaseActionBean
     public Resolution delete()
     {
         customerDao.remove(getId());
+         getContext().getMessages().add(new LocalizableMessage("/Customer.action.delete.success"));
         return new RedirectResolution(CustomerActionBean.class,"viewLink");
     }
     public Resolution updateCustomerLink()
@@ -108,7 +109,7 @@ public class CustomerActionBean extends BaseActionBean
     {
 
               customerDao.save(customer);
-
+             getContext().getMessages().add(new LocalizableMessage("/Customer.action.update.success"));
         return new RedirectResolution(CustomerActionBean.class,"viewLink");
     }
 

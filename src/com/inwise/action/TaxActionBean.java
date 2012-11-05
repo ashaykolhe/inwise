@@ -60,7 +60,7 @@ public class TaxActionBean extends BaseActionBean{
       {
          
              taxDao.save(getTax());
-
+                     getContext().getMessages().add(new LocalizableMessage("/Tax.action.add.success"));
                  
           return new RedirectResolution(TaxActionBean.class,"viewTaxLink");
 
@@ -72,6 +72,7 @@ public class TaxActionBean extends BaseActionBean{
     }
       public Resolution updateTax(){
                     taxDao.save(getTax());
+            getContext().getMessages().add(new LocalizableMessage("/Tax.action.update.success"));
            return new RedirectResolution(TaxActionBean.class,"viewTaxLink");
       }
 

@@ -5,9 +5,13 @@ import com.wideplay.warp.persist.Transactional;
 
 import java.util.Properties;
 import java.util.List;
+import java.util.Date;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
@@ -82,5 +86,39 @@ public List<Proposal> listAll() {
      public Proposal findByLastUpdate() {
         return (Proposal)sessionProvider.get().createQuery("from Proposal order by id desc").setMaxResults(1).uniqueResult();
     }
-    
+      public List<Proposal> findProposalByOrderDate(String sdate) {
+         sdate=sdate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(sdate);
+            sdate = formatter.format(date);
+
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Proposal>)sessionProvider.get().createQuery("select i from Proposal i WHERE i.createDate LIKE '"+sdate+"%'").list();
+    }
+     public List<Proposal> findByProposalBetnDate(String frmdate,String todate) {
+        frmdate=frmdate.replace("/","-");
+        todate=todate.replace("/","-");
+        try{
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = (Date)formatter.parse(frmdate);
+            frmdate = formatter.format(date);
+            Date date1 = (Date)formatter.parse(todate);
+            todate = formatter.format(date1);
+
+        }
+        catch (ParseException e)
+        {
+            System.out.println("Exception :"+e);
+        }
+        return (List<Proposal>)sessionProvider.get().createQuery("select distinct o from Proposal o WHERE o.createDate >= '"+frmdate+"' and o.createDate<='"+todate+"'").list();
+    }
+
+      public List<Proposal> findProposalByCustomerName(String name) {
+         return (List<Proposal>)sessionProvider.get().createQuery("select i from Proposal i WHERE i.customer.name='"+name+"'").list();
+    }
 }

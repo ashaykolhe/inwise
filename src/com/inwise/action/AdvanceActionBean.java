@@ -213,7 +213,7 @@ public class AdvanceActionBean extends BaseActionBean
         total=0.0;
         custNameIdList=orderDao.getCustomerForAdvance();
         paymentModeList=paymentModeDao.listAll();
-        o=orderDao.findAOrderByOrderNo(id2);
+        o=orderDao.findAOrderByOrderNo(id2,id1);
         System.out.println(o);
         System.out.println(id2);
         setCust(o.getCustomer());
@@ -231,7 +231,7 @@ public class AdvanceActionBean extends BaseActionBean
                 while (itr.hasNext())
                {
                    OrderDetail temp=itr.next();
-                   total=total+temp.getOrderedQuantity()*temp.getProduct().getProductCost();
+                   total=total+temp.getOrderedQuantity()*temp.getCost();
 
                }
         }

@@ -81,6 +81,7 @@ e.printStackTrace();
            System.out.println("company"+getCompanyInfo());
         companyInfo.setCompLogo(bFile);
         companyDao.save(companyInfo);
+        getContext().getMessages().add(new LocalizableMessage("/Company.action.add.success"));
         return new RedirectResolution(CompanyActionBean.class,"pre");
     }
 

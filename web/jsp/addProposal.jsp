@@ -258,8 +258,8 @@ $(document).ready(function(){
     <tr><td align="left" class="pageheading" valign="top">
       <div class="sub_heading" >Create Proposal</div>
     </td></tr>
-   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
-    </td></tr>--%>
+    <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>
     </table>
      <table class="second_table"  ><tr><td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">

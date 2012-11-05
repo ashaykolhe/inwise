@@ -104,8 +104,8 @@ public class UserDao extends BaseDao<User,Integer>{
        public List getUserNamelist(){
         return sessionProvider.get().createQuery("select username from User where deleted='0'").list();
     }
-    public User findByUsername(String name){
-          return (User)sessionProvider.get().createQuery("from User where username='"+name+"'").uniqueResult();
+    public User findByUsername(Integer id){
+          return (User)sessionProvider.get().createQuery("from User where id='"+id+"'").uniqueResult();
       }
     public Integer findIdByLatestUpdate(){
               return (Integer)sessionProvider.get().createQuery("select id from User  where createDate=(select max(createDate) from User)").uniqueResult();

@@ -2,6 +2,7 @@ package com.inwise.dao;
 
 import com.wideplay.warp.persist.Transactional;
 import com.inwise.pojo.Term;
+import com.inwise.pojo.TermOrder;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,9 +19,26 @@ public class TermDao extends BaseDao<Term,Integer> {
     public Term findByMaxId() {
          return (Term)sessionProvider.get().createQuery("from Term where id=(select max(id) from Term)").uniqueResult();
     }
-
+     public TermOrder findByMaxOrderId() {
+         return (TermOrder)sessionProvider.get().createQuery("from TermOrder where id=(select max(id) from TermOrder)").uniqueResult();
+    }
      @Transactional
     public boolean SaveTerm(Term terms) {
+       try {
+            if(terms!=null){
+
+                sessionProvider.get().merge(terms);
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Transactional
+    public boolean SaveTermForOrder(TermOrder terms) {
        try {
             if(terms!=null){
 

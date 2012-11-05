@@ -1,12 +1,6 @@
 package com.inwise.action;
-import com.inwise.dao.OrderDao;
-import com.inwise.dao.CustomerDao;
-import com.inwise.dao.InvoiceDao;
-import com.inwise.dao.AdvanceDao;
-import com.inwise.pojo.Invoice;
-import com.inwise.pojo.Order;
-import com.inwise.pojo.Customer;
-import com.inwise.pojo.Advance;
+import com.inwise.dao.*;
+import com.inwise.pojo.*;
 import com.inwise.utils.Converter;
 
 import javax.inject.Inject;
@@ -43,7 +37,10 @@ public class SearchActionBean extends BaseActionBean{
     AdvanceDao advanceDao;
     @Inject
     InvoiceDao invoiceDao;
+     @Inject
+     ProposalDao proposalDao;
     private List<Invoice> invoicelst;
+     private List<Proposal> proposallst;
     private List<Integer> Integerlst;
     private List<String> Stringlst;
     private List<Order> orderlst;
@@ -212,6 +209,14 @@ public class SearchActionBean extends BaseActionBean{
         this.todate = todate;
     }
 
+    public List<Proposal> getProposallst() {
+        return proposallst;
+    }
+
+    public void setProposallst(List<Proposal> proposallst) {
+        this.proposallst = proposallst;
+    }
+
     public Resolution search()
     {
 
@@ -269,6 +274,21 @@ public class SearchActionBean extends BaseActionBean{
               invoicelst=invoiceDao.findInvoiceByOrderDate(getDate());
             orderlst=orderDao.findByOrderDate(getDate());
         }
+         if(searchSubmenu.equals("proposalCustName"))
+        {
+
+            proposallst=proposalDao.findProposalByCustomerName(getName());
+        }
+         if(searchSubmenu.equals("proposalOrderDate"))
+        {
+
+            proposallst=proposalDao.findProposalByOrderDate(getDate());
+        }  if(searchSubmenu.equals("proposalBetwnDate"))
+        {
+
+            proposallst=proposalDao.findByProposalBetnDate(getFromdate(),getTodate());
+             System.out.println("emaild"+Stringlst);
+        }
         return new ForwardResolution("jsp/search.jsp");
 
     }
@@ -322,6 +342,16 @@ public class SearchActionBean extends BaseActionBean{
             Stringlst=customerDao.getEmailIdLst();
              System.out.println("emaild"+Stringlst);
         }
+
+        return new JavaScriptResolution(Stringlst);
+    }
+    public Resolution autoproposal()
+    {
+        if(ajaxSubmenu.equals("proposalCustName"))
+        {
+            Stringlst=customerDao.getCustomerNameLst();
+        }
+
 
         return new JavaScriptResolution(Stringlst);
     }

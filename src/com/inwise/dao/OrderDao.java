@@ -112,8 +112,8 @@ public class OrderDao extends BaseDao<Order,Integer> {
         }
         return (List<Order>)sessionProvider.get().createQuery("select distinct o from Order o WHERE o.createDate >= '"+frmdate+"' and o.createDate<='"+todate+"'").list();
     }
-    public boolean customerOrderNoAlreadyPresent(String customerOrderNo){
-        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult()==null ? false : true;
+    public boolean customerOrderNoAlreadyPresent(String customerOrderNo,int id){
+        return sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"' and o.customer.id='"+id+"'").uniqueResult()==null ? false : true;
     }
 
     public Integer latestOrderId(){
@@ -143,9 +143,9 @@ public void remove(Integer id) {
         return (List<Invoice>)sessionProvider.get().createQuery("select i from Invoice i WHERE i.order.customerOrderNo='"+name+"'").list();
     }
     
-    public Order findAOrderByOrderNo(String customerOrderNo)
+    public Order findAOrderByOrderNo(String customerOrderNo,Integer id)
     {
-        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"'").uniqueResult();
+        return (Order)sessionProvider.get().createQuery("from Order o where o.customerOrderNo='"+customerOrderNo+"' and o.customer.id='"+id+"'").uniqueResult();
     }
    
      

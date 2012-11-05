@@ -232,7 +232,7 @@
       <div class="sub_heading" style="height:40px">Update User</div>
        
     </td></tr>
-    </table>                <s:form beanclass="com.inwise.action.UserActionBean">
+    </table>               <%-- <s:form beanclass="com.inwise.action.UserActionBean">
         <table class="second_table"  >
 
    <tr>
@@ -244,7 +244,7 @@
             <s:text name="name" id="userdropdown" class="textbox"></s:text>
         <s:hidden name="id" value="${actionBean.user.user_id}" />
 
-    <%--<s:select name="id" id="userdropdown" class="dropdown">
+    --%><%--<s:select name="id" id="userdropdown" class="dropdown">
 
     <option value="">---Select User---</option>
     <c:forEach items="${userlst}" var="userloop" varStatus="loop" >
@@ -260,15 +260,15 @@
 
     </c:forEach>
 
-    </s:select>--%>
+    </s:select>--%><%--
     </td>
     <s:errors field="user.id"/>
     <td width="53%" colspan="2" align="left" valign="top" > <s:submit name="userlist" class="buttons" id="getUserBtn" value="Get"/></td>
-    </tr>      </s:form>
+    </tr>      </s:form>--%>
     <c:if test="${actionBean.user!=null}">
     <s:form beanclass="com.inwise.action.UserActionBean">
 
-
+     <table class="second_table"  >
 
        <tr>
     <td width="24%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Name<span style="color:#FF0000"> *</span></div>     </td>
