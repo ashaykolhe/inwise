@@ -109,13 +109,20 @@
     <td align="left">
     <table width="100%" border="0" cellspacing="0" >
 
-    <tr>
-    <td width="20%" align="right"> <div align="left" style="margin-left: 2px;" class="labels">Company Name<span style="color:#FF0000"> *</span></div>     </td>
-    <td width="17%" align="left" valign="top"><div align="left"><s:text name="companyInfo.compName" id="addcompanyname" class="textbox"/></div> </td>
-    <td width="19%" align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Logo<span style="color:#FF0000"> *</span></div> </td>
+    <tr> <td width="20%" align="right"> <div align="left" style="margin-left: 2px;" class="labels">Company Name<span style="color:#FF0000"> *</span></div>     </td> <c:choose> <c:when test="${actionBean.companyInfo!=null}">
+
+               <td width="17%" align="left" valign="top"><div align="left"><s:text name="companyInfo.compName" readonly="readonly" id="addcompanyname" class="textbox"/></div> </td>
+
+    </c:when>
+    <c:otherwise> <td width="17%" align="left" valign="top"><div align="left"><s:text name="companyInfo.compName" id="addcompanyname" class="textbox"/></div> </td>
+     <td width="19%" align="right" valign="top"><div align="left" style="margin-left: 2px;" class="labels">Logo<span style="color:#FF0000"> *</span></div> </td>
 
     <td width="17%" align="left" valign="bottom"><div align="left" ><s:file name="logo"></s:file>
     <s:hidden name="vendor.deleted" value="0"/>
+    </c:otherwise>
+    </c:choose>
+
+
     </div></td>
     <td width="13%" align="left" valign="bottom">&nbsp;</td>
     <td width="13%" align="left" valign="bottom">&nbsp;</td>
