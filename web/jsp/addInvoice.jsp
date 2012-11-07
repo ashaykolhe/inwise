@@ -28,14 +28,14 @@
 </c:if >--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
- <%--<s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>--%>
+<s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>
 <%--<%request.setAttribute("prodlst",invoiceBean.getProductcategory());%>--%>
 
- <s:layout-render name="/layout/_base.jsp">
+<s:layout-render name="/layout/_base.jsp">
 
 <s:layout-component name="head">
-<%--  <script type="text/javascript">
-
+<script type="text/javascript">
+<%--
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;//parseFloat(document.getElementById("inTotalAmount").value);
     var calinFright=0.0;
@@ -108,34 +108,7 @@
 
             });
 
-         $('#inoid').change(function(){
 
-
-            if($('#inoid').attr('value')!=""){
-
-                var current=this;
-                var orderId=$(this).attr("value");
-
-                $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
-                var data=eval(result);
-
-                    if(data){
-                        $('#hide').html("Invoice of Order Id "+orderId+" is dispatched.");
-                                               $('#hide').css({
-                                                   align:"right",
-                                                   color:"red"
-                                               });
-
-
-                    }else{
-                       current.form.action='invoice?getOrderDetail';
-                        current.form.submit();
-
-                    }
-            });
-
-            }
-        });
         $('.generatenpreviewbtn').click(function(){
 
             var countl =$('#inCount').html();
@@ -202,149 +175,342 @@
 
       });
 
-
-    function getCustomerOrder(){
-   /*     this.form.action='order?getCustomerOrderNo';
-        this.form.submit();*/
-
-        $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
-
-             var data=eval(result);
-
-             var options = '<option value="">---Select Customer Order No---</option>';
-                     for (var i = 0; i < data.length; i++) {
-
-                         options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
-                     }
-                     $("#inoid").html(options);
-          });
-           $('.trid').show();
-
-    }
-
-     function Adv()
-     {
-
-         if(document.getElementById('inAdvanceEntered').value=="")
-         {
-             document.getElementById('inAdvanceEntered').value=(0).toFixed(2);
-         }
-         else if(!(document.getElementById('inAdvanceEntered').value.match(floatExp)))
-         {
-             alert("Please enter valid float number");
-             document.getElementById('inAdvanceEntered').focus();
-             return false;
-         }
-
-         var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-          calinAdvance = parseFloat(document.getElementById("inAdvance").value);
-
-         if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvance))
-         {
-             alert("Entered value is larger than 'Advance Available'");
-             document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
-             document.getElementById("inAdvanceEntered").focus();
-             return false;
-         }
+----%>
+$(document).ready(function(){
+    $('#inoid').change(function(){
 
 
-         calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
-         document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
-         document.getElementById("inNetPayable").value = ((parseFloat(calinGrandTotal) - parseFloat(calinAdvanceEntered))).toFixed(2);
+        if($('#inoid').attr('value')!=""){
 
-             return true;
-     }
+            var current=this;
+            var orderId=$(this).attr("value");
 
+            $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
+                var data=eval(result);
 
-
-     function jqCheckAll1(name)  {
-
-        if($('#allbox').attr('checked'))
-    {
-        $('#'+name+'[type="checkbox"]').attr('checked', true);
-        //var countl = document.getElementById('inCount').value;
-        var countl =$('#inCount').html();
-
-	for(q=0;q<countl;q++)
-	{
-    var chkid="chkbx"+q;
+                if(data){
+                    $('#hide').html("Invoice of Order Id "+orderId+" is dispatched.");
+                    $('#hide').css({
+                        align:"right",
+                        color:"red"
+                    });
 
 
+                }else{
+                    current.form.action='invoice?getOrderDetail';
+                    current.form.submit();
 
-        $('#'+chkid+'[type="checkbox"]').attr('checked', true);
-
-
-                     var itemno="inDraw"+q;
-                  var cshno="inCsh"+q;
-                  var disp="inDisp"+q;
-    var selectid="inProType"+q;
-
-   document.getElementById(itemno).disabled = false;
-   document.getElementById(disp).disabled = false;
-   document.getElementById(cshno).disabled = false;
-     document.getElementById(selectid).disabled = false;
-
-
-
-	}
-    }
-    else {
-            var countl =$('#inCount').html();
-
-	for(a=0;a<countl;a++)
-	{
-    var chkid="chkbx"+a;
-   $('#'+chkid+'[type="checkbox"]').attr('checked', false);
-
-                  var itemno="inDraw"+a;
-                  var cshno="inCsh"+a;
-                  var disp="inDisp"+a;
-    var selectid="inProType"+a;
-
-
-     var emptyitem=document.getElementById(itemno);
-        emptyitem.value="Item No";
-     var emptydisp=document.getElementById(disp);
-        emptydisp.value="Enter Dispaching Qty";
-     var emptycsh=document.getElementById(cshno);
-        emptycsh.value="Enter CSH No";
-        document.getElementById(itemno).disabled = true;
-        document.getElementById(cshno).disabled = true;
-        document.getElementById(disp).disabled = true;
-        document.getElementById(selectid).disabled = true;
-        var calv=parseFloat(document.getElementById("inValue"+a).value);
-      calinTotalAmount=calinTotalAmount-calv;
-
-
-      document.getElementById("inTotalAmount").value=(0).toFixed(2);
-      document.getElementById("inValue"+a).value=(0).toFixed(2);
-        /*document.getElementById("inGrandTotal").value=(0).toFixed(2);
-        document.getElementById("inOtherCharges").value=(0).toFixed(2);
-                          document.getElementById("inNetPayable").value=(0).toFixed(2);
-                          document.getElementById("inFright").value=(0).toFixed(2);
-                          document.getElementById("inInsurance").value=(0).toFixed(2);
-                          document.getElementById("inOthers").value=(0).toFixed(2);
-*/
+                }
+            });
 
         }
+    });
 
-        unCheckedTax();
-   }
-     }
+});
+
+function getCustomerOrder(){
+    /*     this.form.action='order?getCustomerOrderNo';
+     this.form.submit();*/
+
+    $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
+
+        var data=eval(result);
+
+        var options = '<option value="">---Select Customer Order No---</option>';
+        for (var i = 0; i < data.length; i++) {
+
+            options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
+        }
+        $("#inoid").html(options);
+    });
+    $('.trid').show();
+
+}
+<%--
+function Adv()
+{
+
+if(document.getElementById('inAdvanceEntered').value=="")
+{
+    document.getElementById('inAdvanceEntered').value=(0).toFixed(2);
+}
+else if(!(document.getElementById('inAdvanceEntered').value.match(floatExp)))
+{
+    alert("Please enter valid float number");
+    document.getElementById('inAdvanceEntered').focus();
+    return false;
+}
+
+var calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
+ calinAdvance = parseFloat(document.getElementById("inAdvance").value);
+
+if(parseFloat(calinAdvanceEntered)>parseFloat(calinAdvance))
+{
+    alert("Entered value is larger than 'Advance Available'");
+    document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
+    document.getElementById("inAdvanceEntered").focus();
+    return false;
+}
+
+
+calinAdvanceEntered = parseFloat(document.getElementById("inAdvanceEntered").value);
+document.getElementById("inAdvanceRemain").value = ((parseFloat(calinAdvance) - parseFloat(calinAdvanceEntered))).toFixed(2);
+document.getElementById("inNetPayable").value = ((parseFloat(calinGrandTotal) - parseFloat(calinAdvanceEntered))).toFixed(2);
+
+    return true;
+}
 
 
 
-     function CST()
+function jqCheckAll1(name)  {
+
+if($('#allbox').attr('checked'))
+{
+$('#'+name+'[type="checkbox"]').attr('checked', true);
+//var countl = document.getElementById('inCount').value;
+var countl =$('#inCount').html();
+
+for(q=0;q<countl;q++)
+{
+var chkid="chkbx"+q;
+
+
+
+$('#'+chkid+'[type="checkbox"]').attr('checked', true);
+
+
+            var itemno="inDraw"+q;
+         var cshno="inCsh"+q;
+         var disp="inDisp"+q;
+var selectid="inProType"+q;
+
+document.getElementById(itemno).disabled = false;
+document.getElementById(disp).disabled = false;
+document.getElementById(cshno).disabled = false;
+document.getElementById(selectid).disabled = false;
+
+
+
+}
+}
+else {
+   var countl =$('#inCount').html();
+
+for(a=0;a<countl;a++)
+{
+var chkid="chkbx"+a;
+$('#'+chkid+'[type="checkbox"]').attr('checked', false);
+
+         var itemno="inDraw"+a;
+         var cshno="inCsh"+a;
+         var disp="inDisp"+a;
+var selectid="inProType"+a;
+
+
+var emptyitem=document.getElementById(itemno);
+emptyitem.value="Item No";
+var emptydisp=document.getElementById(disp);
+emptydisp.value="Enter Dispaching Qty";
+var emptycsh=document.getElementById(cshno);
+emptycsh.value="Enter CSH No";
+document.getElementById(itemno).disabled = true;
+document.getElementById(cshno).disabled = true;
+document.getElementById(disp).disabled = true;
+document.getElementById(selectid).disabled = true;
+var calv=parseFloat(document.getElementById("inValue"+a).value);
+calinTotalAmount=calinTotalAmount-calv;
+
+
+document.getElementById("inTotalAmount").value=(0).toFixed(2);
+document.getElementById("inValue"+a).value=(0).toFixed(2);
+/*document.getElementById("inGrandTotal").value=(0).toFixed(2);
+document.getElementById("inOtherCharges").value=(0).toFixed(2);
+                 document.getElementById("inNetPayable").value=(0).toFixed(2);
+                 document.getElementById("inFright").value=(0).toFixed(2);
+                 document.getElementById("inInsurance").value=(0).toFixed(2);
+                 document.getElementById("inOthers").value=(0).toFixed(2);
+*/
+
+}
+
+unCheckedTax();
+}
+}
+
+
+
+function CST()
+{
+
+  var val=$('#inCSTSval').val();
+
+inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
+     document.getElementById("inOvatnCst").value=inOvatnCstTax;
+         inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+         document.getElementById("inTaxCharges").value=inTaxChargesTax;
+inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
+       document.getElementById("inOtherCharges").value=inOtherChargesTax;
+calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+      document.getElementById("inGrandTotal").value=calinGrandTotal;
+
+   calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+      document.getElementById("inNetPayable").value=calinNetPayable;
+
+
+}
+function CSTOVAT()
+{
+               var vat=$('#inCSTS').val().trim().toString();
+
+               if(vat=="CST")
+               {
+                   $('#inCSTSval').show();
+                       var cst=document.getElementById("inCSTSval");
+                                     var options=cst.getElementsByTagName("option");
+                                        cst.options[0]=new Option(t4,t4);
+                                        cst.options[1]=new Option(t5,t5);
+                                 inOvatnCstTax = ((calinTotalAmount * t4)/100).toFixed(2);
+   document.getElementById("inOvatnCst").value=inOvatnCstTax;
+       inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+       document.getElementById("inTaxCharges").value=inTaxChargesTax;
+
+
+               document.getElementById("inEntryTax").value=(0.0).toFixed(2);
+inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
+            document.getElementById("inOtherCharges").value=inOtherChargesTax;
+                   calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+                         document.getElementById("inGrandTotal").value=calinGrandTotal;
+
+                      calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                         document.getElementById("inNetPayable").value=calinNetPayable;
+
+
+                $('#t6').hide();
+               }
+                  else
+               {
+                 $('#inCSTSval').hide();
+               $('#t6').show();
+                   inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
+document.getElementById("inOvatnCst").value=inOvatnCstTax;
+inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+document.getElementById("inTaxCharges").value=inTaxChargesTax;
+                   inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
+                           document.getElementById("inEntryTax").value=inEntryTaxT;
+inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
+    document.getElementById("inOtherCharges").value=inOtherChargesTax;
+
+                   calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+                         document.getElementById("inGrandTotal").value=calinGrandTotal;
+
+                      calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                         document.getElementById("inNetPayable").value=calinNetPayable;
+
+
+               }
+
+
+}
+function Selected(s)
+{
+
+var chkid="chkbx"+s;
+
+
+var e=document.getElementById(chkid);
+
+if(e.checked)
+{
+
+var selectid="inProType"+s;
+            var itemno="inDraw"+s;
+         var cshno="inCsh"+s;
+         var disp="inDisp"+s;
+
+
+
+
+document.getElementById(itemno).disabled = false;
+document.getElementById(cshno).disabled = false;
+document.getElementById(disp).disabled = false;
+document.getElementById(selectid).disabled = false;
+}
+else
+{
+
+var selectid="inProType"+s;
+            var itemno="inDraw"+s;
+         var cshno="inCsh"+s;
+         var disp="inDisp"+s;
+var emptyitem=document.getElementById(itemno);
+emptyitem.value="Item No";
+var emptydisp=document.getElementById(disp);
+emptydisp.value="Enter Dispaching Qty";
+var emptycsh=document.getElementById(cshno);
+emptycsh.value="Enter CSH No";
+document.getElementById(itemno).disabled = true;
+document.getElementById(disp).disabled = true;
+document.getElementById(cshno).disabled = true;
+document.getElementById(selectid).disabled = true;
+ var calv=parseFloat(document.getElementById("inValue"+s).value);
+calinTotalAmount=calinTotalAmount-calv;
+document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
+document.getElementById("inValue"+s).value=(0).toFixed(2);
+
+  unCheckedTax();
+
+
+
+
+
+}
+
+}
+
+function unCheckedTax()
+ {
+     inExciseTax = ((calinTotalAmount * t1)/100).toFixed(2);
+         document.getElementById("inExcise").value=inExciseTax;
+         inEducationCessTax= ((inExciseTax * t2)/100).toFixed(2);
+         document.getElementById("inEducationCess").value=inEducationCessTax;
+         inSecTax= ((inExciseTax * t3)/100).toFixed(2);
+         document.getElementById("inSec").value=inSecTax;
+
+     if(calinTotalAmount==0)
      {
+    inExciseTax=0.0;
+            inEducationCessTax=0.0;
+              inSecTax=0.0;
+              inOvatnCstTax=0.0;
+              inEntryTaxT=0.0;
+              calinFright=0.0;
+               calinInsurance=0.0;
+                calinOthers=0.0;
+               calinGrandTotal=0.0;
+               calinNetPayable=0.0;
+              inTaxChargesTax=0.0;
+              inOtherChargesTax=0.0;
 
-           var val=$('#inCSTSval').val();
+         document.getElementById("inGrandTotal").value="00.0";
+          document.getElementById("inOtherCharges").value="00.0";
+        document.getElementById("inNetPayable").value="00.0";
+        document.getElementById("inFright").value=(0).toFixed(2);
+        document.getElementById("inInsurance").value=(0).toFixed(2);
+        document.getElementById("inOthers").value=(0).toFixed(2);
+        document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
+         document.getElementById("inAdvanceRemain").value =calinAdvance;
+         }
+     if($('#inCSTS').val()=="OVAT")
+     {
+         inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
+         document.getElementById("inOvatnCst").value=inOvatnCstTax;
+             inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+             document.getElementById("inTaxCharges").value=inTaxChargesTax;
+         inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
+                                  document.getElementById("inEntryTax").value=inEntryTaxT;
 
-      inOvatnCstTax = ((calinTotalAmount * parseFloat(val))/100).toFixed(2);
-              document.getElementById("inOvatnCst").value=inOvatnCstTax;
-                  inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-                  document.getElementById("inTaxCharges").value=inTaxChargesTax;
-         inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
-                document.getElementById("inOtherCharges").value=inOtherChargesTax;
+         inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
+         document.getElementById("inOtherCharges").value=inOtherChargesTax;
          calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
                document.getElementById("inGrandTotal").value=calinGrandTotal;
 
@@ -353,1169 +519,773 @@
 
 
      }
-function CSTOVAT()
-{
-                        var vat=$('#inCSTS').val().trim().toString();
+     else if($('#inCSTS').val()=="CST")
+     {
+         if($('#inCSTSval').val()==t4)
+         {
+            inOvatnCstTax = ((calinTotalAmount * t4)/100).toFixed(2);
+         document.getElementById("inOvatnCst").value=inOvatnCstTax;
+             inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+             document.getElementById("inTaxCharges").value=inTaxChargesTax;
+             inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
+                             document.getElementById("inOtherCharges").value=inOtherChargesTax;
+             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                        if(vat=="CST")
-                        {
-                            $('#inCSTSval').show();
-                                var cst=document.getElementById("inCSTSval");
-                                              var options=cst.getElementsByTagName("option");
-                                                 cst.options[0]=new Option(t4,t4);
-                                                 cst.options[1]=new Option(t5,t5);
-                                          inOvatnCstTax = ((calinTotalAmount * t4)/100).toFixed(2);
-            document.getElementById("inOvatnCst").value=inOvatnCstTax;
-                inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-                document.getElementById("inTaxCharges").value=inTaxChargesTax;
+                calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                   document.getElementById("inNetPayable").value=calinNetPayable;
 
+         }
+         else if($('#inCSTSval').val()==t5)
+         {
+             inOvatnCstTax = ((calinTotalAmount * t5)/100).toFixed(2);
+         document.getElementById("inOvatnCst").value=inOvatnCstTax;
+             inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+             document.getElementById("inTaxCharges").value=inTaxChargesTax;
+             inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
+                             document.getElementById("inOtherCharges").value=inOtherChargesTax;
+             calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+                   document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-                        document.getElementById("inEntryTax").value=(0.0).toFixed(2);
-        inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
-                     document.getElementById("inOtherCharges").value=inOtherChargesTax;
-                            calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-                                  document.getElementById("inGrandTotal").value=calinGrandTotal;
+                calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+                   document.getElementById("inNetPayable").value=calinNetPayable;
 
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-                                  document.getElementById("inNetPayable").value=calinNetPayable;
-
-
-                         $('#t6').hide();
-                        }
-                           else
-                        {
-                          $('#inCSTSval').hide();
-                        $('#t6').show();
-                            inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
-     document.getElementById("inOvatnCst").value=inOvatnCstTax;
-         inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-         document.getElementById("inTaxCharges").value=inTaxChargesTax;
-                            inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
-                                    document.getElementById("inEntryTax").value=inEntryTaxT;
-        inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
-             document.getElementById("inOtherCharges").value=inOtherChargesTax;
-
-                            calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-                                  document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-                               calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-                                  document.getElementById("inNetPayable").value=calinNetPayable;
-
-
-                        }
-
-
-}
-function Selected(s)
-{
-
-     var chkid="chkbx"+s;
-
-
-    var e=document.getElementById(chkid);
-
-    if(e.checked)
-    {
-
-    var selectid="inProType"+s;
-                     var itemno="inDraw"+s;
-                  var cshno="inCsh"+s;
-                  var disp="inDisp"+s;
-
-
-
-
-     document.getElementById(itemno).disabled = false;
-     document.getElementById(cshno).disabled = false;
-     document.getElementById(disp).disabled = false;
-     document.getElementById(selectid).disabled = false;
-    }
-    else
-    {
-
-    var selectid="inProType"+s;
-                     var itemno="inDraw"+s;
-                  var cshno="inCsh"+s;
-                  var disp="inDisp"+s;
-         var emptyitem=document.getElementById(itemno);
-        emptyitem.value="Item No";
-      var emptydisp=document.getElementById(disp);
-        emptydisp.value="Enter Dispaching Qty";
-     var emptycsh=document.getElementById(cshno);
-        emptycsh.value="Enter CSH No";
-        document.getElementById(itemno).disabled = true;
-        document.getElementById(disp).disabled = true;
-        document.getElementById(cshno).disabled = true;
-        document.getElementById(selectid).disabled = true;
-          var calv=parseFloat(document.getElementById("inValue"+s).value);
-        calinTotalAmount=calinTotalAmount-calv;
-        document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
-        document.getElementById("inValue"+s).value=(0).toFixed(2);
-
-           unCheckedTax();
-
-
-
-
-
-    }
-
+         }
 }
 
-       function unCheckedTax()
-          {
-              inExciseTax = ((calinTotalAmount * t1)/100).toFixed(2);
-                  document.getElementById("inExcise").value=inExciseTax;
-                  inEducationCessTax= ((inExciseTax * t2)/100).toFixed(2);
-                  document.getElementById("inEducationCess").value=inEducationCessTax;
-                  inSecTax= ((inExciseTax * t3)/100).toFixed(2);
-                  document.getElementById("inSec").value=inSecTax;
 
-              if(calinTotalAmount==0)
-              {
-             inExciseTax=0.0;
-                     inEducationCessTax=0.0;
-                       inSecTax=0.0;
-                       inOvatnCstTax=0.0;
-                       inEntryTaxT=0.0;
-                       calinFright=0.0;
-                        calinInsurance=0.0;
-                         calinOthers=0.0;
-                        calinGrandTotal=0.0;
-                        calinNetPayable=0.0;
-                       inTaxChargesTax=0.0;
-                       inOtherChargesTax=0.0;
-
-                  document.getElementById("inGrandTotal").value="00.0";
-                   document.getElementById("inOtherCharges").value="00.0";
-                 document.getElementById("inNetPayable").value="00.0";
-                 document.getElementById("inFright").value=(0).toFixed(2);
-                 document.getElementById("inInsurance").value=(0).toFixed(2);
-                 document.getElementById("inOthers").value=(0).toFixed(2);
-                 document.getElementById("inAdvanceEntered").value=(0).toFixed(2);
-                  document.getElementById("inAdvanceRemain").value =calinAdvance;
-                  }
-              if($('#inCSTS').val()=="OVAT")
-              {
-                  inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
-                  document.getElementById("inOvatnCst").value=inOvatnCstTax;
-                      inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-                      document.getElementById("inTaxCharges").value=inTaxChargesTax;
-                  inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
-                                           document.getElementById("inEntryTax").value=inEntryTaxT;
-
-                  inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
-                  document.getElementById("inOtherCharges").value=inOtherChargesTax;
-                  calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-                        document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-                     calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-                        document.getElementById("inNetPayable").value=calinNetPayable;
-
-
-              }
-              else if($('#inCSTS').val()=="CST")
-              {
-                  if($('#inCSTSval').val()==t4)
-                  {
-                     inOvatnCstTax = ((calinTotalAmount * t4)/100).toFixed(2);
-                  document.getElementById("inOvatnCst").value=inOvatnCstTax;
-                      inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-                      document.getElementById("inTaxCharges").value=inTaxChargesTax;
-                      inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
-                                      document.getElementById("inOtherCharges").value=inOtherChargesTax;
-                      calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-                            document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-                         calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-                            document.getElementById("inNetPayable").value=calinNetPayable;
-
-                  }
-                  else if($('#inCSTSval').val()==t5)
-                  {
-                      inOvatnCstTax = ((calinTotalAmount * t5)/100).toFixed(2);
-                  document.getElementById("inOvatnCst").value=inOvatnCstTax;
-                      inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-                      document.getElementById("inTaxCharges").value=inTaxChargesTax;
-                      inOtherChargesTax= (parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inTaxChargesTax)).toFixed(2);
-                                      document.getElementById("inOtherCharges").value=inOtherChargesTax;
-                      calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-                            document.getElementById("inGrandTotal").value=calinGrandTotal;
-
-                         calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-                            document.getElementById("inNetPayable").value=calinNetPayable;
-
-                  }
  }
-
-
-          }
 
 
 function CalculateAmount(d)
 {
 
 
-        var totalamount=0;
-        var inDisp="inDisp"+d;
-        var calinDisp = parseFloat(document.getElementById(inDisp).value);
+var totalamount=0;
+var inDisp="inDisp"+d;
+var calinDisp = parseFloat(document.getElementById(inDisp).value);
 
 
-    var inRemQty="inRemQty"+d;
-    var calinRemQty = parseFloat(document.getElementById(inRemQty).value);
-    var inAmdCost="inAmdCost"+d;
-    var calinAmdCost = parseFloat(document.getElementById(inAmdCost).value);
+var inRemQty="inRemQty"+d;
+var calinRemQty = parseFloat(document.getElementById(inRemQty).value);
+var inAmdCost="inAmdCost"+d;
+var calinAmdCost = parseFloat(document.getElementById(inAmdCost).value);
 
-    var inProdCost="inProdCost"+d;
-    var calinProdCost = parseFloat(document.getElementById(inProdCost).value);
-    var inValue="inValue"+d;
+var inProdCost="inProdCost"+d;
+var calinProdCost = parseFloat(document.getElementById(inProdCost).value);
+var inValue="inValue"+d;
 var calinValue = parseFloat(document.getElementById(inValue).value);
 
-     var chkdisp= /^[0-9]+$/.test(document.getElementById(inDisp).value);
+var chkdisp= /^[0-9]+$/.test(document.getElementById(inDisp).value);
 
-                        if(!chkdisp)
-                             {
+               if(!chkdisp)
+                    {
 
-                                 alert("Enter valid Dispatching Quantity for :"+document.getElementById("inProdName"+d).value);
-                                 calinValue = parseFloat(document.getElementById(inValue).value);
+                        alert("Enter valid Dispatching Quantity for :"+document.getElementById("inProdName"+d).value);
+                        calinValue = parseFloat(document.getElementById(inValue).value);
 
-                                             calinTotalAmount=parseFloat(calinTotalAmount)-parseFloat(calinValue);
+                                    calinTotalAmount=parseFloat(calinTotalAmount)-parseFloat(calinValue);
 
-                                             document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
-                                             unCheckedTax();
-                                            $('#'+inValue).val("0.00");
+                                    document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
+                                    unCheckedTax();
+                                   $('#'+inValue).val("0.00");
 
-                                  document.getElementById(inDisp).value="Enter Dispaching Qty";
-                                 return false;
-                             }
-    if(parseFloat(calinDisp) > parseFloat(calinRemQty)){
-            alert("Dispatching Quantity cannot be greater than remaining quantity");
-
-
-         calinValue = parseFloat(document.getElementById(inValue).value);
-
-              calinTotalAmount=parseFloat(calinTotalAmount)-parseFloat(calinValue);
-
-              document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
-              unCheckedTax();
-             $('#'+inValue).val("0.00");
-            $('#'+inDisp).val("Enter Dispaching Qty");
-            }
-    else
-    {
-        //This is beccause all variable are globally declared so when onchange of dispached text field data result in adding old total along with new one
-                            /*////////////////////////////////////////////////////////////////////////////*/
-                            /*////*/        if(parseFloat(calinValue)>0){                         /*////*/
-                            /*////*/            calinTotalAmount=calinTotalAmount-calinValue;     /*////*/
-                            /*////*/        }                                                     /*////*/
-                            /*////////////////////////////////////////////////////////////////////////////*/
+                         document.getElementById(inDisp).value="Enter Dispaching Qty";
+                        return false;
+                    }
+if(parseFloat(calinDisp) > parseFloat(calinRemQty)){
+   alert("Dispatching Quantity cannot be greater than remaining quantity");
 
 
+calinValue = parseFloat(document.getElementById(inValue).value);
 
-           if(calinAmdCost>0)
-         calinValue=calinDisp * calinAmdCost;
-        else
-         calinValue=calinDisp * calinProdCost;
+     calinTotalAmount=parseFloat(calinTotalAmount)-parseFloat(calinValue);
 
-
-         calinTotalAmount=calinTotalAmount +calinValue;
-
-         $('#'+inValue).val(calinValue);
-         $('#inTotalAmount').val(calinTotalAmount.toFixed(2));
-     /*    var checkbox="chkbx"+s;
-         var e=document.getElementById(checkbox);
-            if(e.checked && parseFloat(calinValue)>parseFloat(0))
-            {
-                calinTotalAmount=0.0;
-            }*/
-    }
-     dropdownname=$("#inProType"+d+" option:selected").text().trim().toString();
-    if(dropdownname=="MFG & Supply" || dropdownname=="Sale" || dropdownname=="None")
-    {
-    inExciseTax = ((calinTotalAmount * t1)/100).toFixed(2);
-    document.getElementById("inExcise").value=inExciseTax;
-    inEducationCessTax= ((inExciseTax * t2)/100).toFixed(2);
-    document.getElementById("inEducationCess").value=inEducationCessTax;
-    inSecTax= ((inExciseTax * t3)/100).toFixed(2);
-    document.getElementById("inSec").value=inSecTax;
-    }
-    else if(dropdownname=="Fabrication" || dropdownname=="Reimbursement")
-    {
-      inExciseTax = (0).toFixed(2);
-    document.getElementById("inExcise").value=inExciseTax;
-    inEducationCessTax= (0).toFixed(2);
-    document.getElementById("inEducationCess").value=inEducationCessTax;
-    inSecTax= (0).toFixed(2);
-    document.getElementById("inSec").value=inSecTax;
-    }
-
-    var vat=$('#inCSTS').val().trim().toString();
-    if(vat=="OVAT")
-        {
-    inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
-    document.getElementById("inOvatnCst").value=inOvatnCstTax;
-        inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
-        document.getElementById("inTaxCharges").value=inTaxChargesTax;
-
-        inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
-        document.getElementById("inEntryTax").value=inEntryTaxT;
-
-            calinFright=parseFloat(document.getElementById("inFright").value);
-
-            calinInsurance=parseFloat(document.getElementById("inInsurance").value);
-
-          calinOthers=parseFloat(document.getElementById("inOthers").value);
-
-        inOtherChargesTax=(parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
-        document.getElementById("inOtherCharges").value=inOtherChargesTax;
+     document.getElementById("inTotalAmount").value=(calinTotalAmount).toFixed(2);
+     unCheckedTax();
+    $('#'+inValue).val("0.00");
+   $('#'+inDisp).val("Enter Dispaching Qty");
+   }
+else
+{
+//This is beccause all variable are globally declared so when onchange of dispached text field data result in adding old total along with new one
+                   /*////////////////////////////////////////////////////////////////////////////*/
+                   /*////*/        if(parseFloat(calinValue)>0){                         /*////*/
+                   /*////*/            calinTotalAmount=calinTotalAmount-calinValue;     /*////*/
+                   /*////*/        }                                                     /*////*/
+                   /*////////////////////////////////////////////////////////////////////////////*/
 
 
-          calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-            document.getElementById("inGrandTotal").value=calinGrandTotal;
-         calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-            document.getElementById("inNetPayable").value=calinNetPayable;
+
+  if(calinAmdCost>0)
+calinValue=calinDisp * calinAmdCost;
+else
+calinValue=calinDisp * calinProdCost;
 
 
-                        }
-                           else if(vat=="CST")
-                        {
-                            CST();
-                        }
+calinTotalAmount=calinTotalAmount +calinValue;
+
+$('#'+inValue).val(calinValue);
+$('#inTotalAmount').val(calinTotalAmount.toFixed(2));
+/*    var checkbox="chkbx"+s;
+var e=document.getElementById(checkbox);
+   if(e.checked && parseFloat(calinValue)>parseFloat(0))
+   {
+       calinTotalAmount=0.0;
+   }*/
+}
+dropdownname=$("#inProType"+d+" option:selected").text().trim().toString();
+if(dropdownname=="MFG & Supply" || dropdownname=="Sale" || dropdownname=="None")
+{
+inExciseTax = ((calinTotalAmount * t1)/100).toFixed(2);
+document.getElementById("inExcise").value=inExciseTax;
+inEducationCessTax= ((inExciseTax * t2)/100).toFixed(2);
+document.getElementById("inEducationCess").value=inEducationCessTax;
+inSecTax= ((inExciseTax * t3)/100).toFixed(2);
+document.getElementById("inSec").value=inSecTax;
+}
+else if(dropdownname=="Fabrication" || dropdownname=="Reimbursement")
+{
+inExciseTax = (0).toFixed(2);
+document.getElementById("inExcise").value=inExciseTax;
+inEducationCessTax= (0).toFixed(2);
+document.getElementById("inEducationCess").value=inEducationCessTax;
+inSecTax= (0).toFixed(2);
+document.getElementById("inSec").value=inSecTax;
+}
+
+var vat=$('#inCSTS').val().trim().toString();
+if(vat=="OVAT")
+{
+inOvatnCstTax = ((calinTotalAmount * t6)/100).toFixed(2);
+document.getElementById("inOvatnCst").value=inOvatnCstTax;
+inTaxChargesTax= (parseFloat(inExciseTax)+ parseFloat(inEducationCessTax) + parseFloat(inSecTax) + parseFloat(inOvatnCstTax )).toFixed(2);
+document.getElementById("inTaxCharges").value=inTaxChargesTax;
+
+inEntryTaxT= (((parseFloat(inTaxChargesTax) + parseFloat(calinTotalAmount))* t7) / 100).toFixed(2);
+document.getElementById("inEntryTax").value=inEntryTaxT;
+
+   calinFright=parseFloat(document.getElementById("inFright").value);
+
+   calinInsurance=parseFloat(document.getElementById("inInsurance").value);
+
+ calinOthers=parseFloat(document.getElementById("inOthers").value);
+
+inOtherChargesTax=(parseFloat(calinFright) + parseFloat(calinInsurance) + parseFloat(calinOthers) + parseFloat(inEntryTaxT)+parseFloat(inTaxChargesTax)).toFixed(2);
+document.getElementById("inOtherCharges").value=inOtherChargesTax;
+
+
+ calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+   document.getElementById("inGrandTotal").value=calinGrandTotal;
+calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+   document.getElementById("inNetPayable").value=calinNetPayable;
+
+
+               }
+                  else if(vat=="CST")
+               {
+                   CST();
+               }
 
 
 
 }
 function validateFreight()
 {
-    if(!($('#inFright').val().match(floatExp)))
-        {
-            alert("Please enter valid float number");
-            document.getElementById("inFright").value=(0).toFixed(2);
-            document.getElementById("inFright").focus();
-            return false;
-           }
-         calinFright=$('#inFright').val();
-    inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinFright)).toFixed(2);
-        document.getElementById("inOtherCharges").value=inOtherChargesTax;
-    calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-          document.getElementById("inGrandTotal").value=calinGrandTotal;
+if(!($('#inFright').val().match(floatExp)))
+{
+   alert("Please enter valid float number");
+   document.getElementById("inFright").value=(0).toFixed(2);
+   document.getElementById("inFright").focus();
+   return false;
+  }
+calinFright=$('#inFright').val();
+inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinFright)).toFixed(2);
+document.getElementById("inOtherCharges").value=inOtherChargesTax;
+calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+ document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-       calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-          document.getElementById("inNetPayable").value=calinNetPayable;
+calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+ document.getElementById("inNetPayable").value=calinNetPayable;
 
-       return true;
+return true;
 
 }
 function validateInsurance()
 {
-    if(!($('#inInsurance').val().match(floatExp)))
-        {
-            alert("Please enter valid float number");
-            document.getElementById("inInsurance").value=(0).toFixed(2);
-            document.getElementById("inInsurance").focus();
-            return false;
-           }
-        calinInsurance=$('#inInsurance').val();
-    inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinInsurance)).toFixed(2);
-        document.getElementById("inOtherCharges").value=inOtherChargesTax;
-    calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-          document.getElementById("inGrandTotal").value=calinGrandTotal;
+if(!($('#inInsurance').val().match(floatExp)))
+{
+   alert("Please enter valid float number");
+   document.getElementById("inInsurance").value=(0).toFixed(2);
+   document.getElementById("inInsurance").focus();
+   return false;
+  }
+calinInsurance=$('#inInsurance').val();
+inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinInsurance)).toFixed(2);
+document.getElementById("inOtherCharges").value=inOtherChargesTax;
+calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+ document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-       calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-          document.getElementById("inNetPayable").value=calinNetPayable;
+calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+ document.getElementById("inNetPayable").value=calinNetPayable;
 
-       return true;
+return true;
 
 }
 function validateOthers()
 {
-    if(!($('#inOthers').val().match(floatExp)))
-        {
-            alert("Please enter valid float number");
-            document.getElementById("inOthers").value=(0).toFixed(2);
-            document.getElementById("inOthers").focus();
-            return false;
-           }
-    calinOthers=$('#inOthers').val();
-    inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinOthers)).toFixed(2);
-        document.getElementById("inOtherCharges").value=inOtherChargesTax;
-    calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
-          document.getElementById("inGrandTotal").value=calinGrandTotal;
+if(!($('#inOthers').val().match(floatExp)))
+{
+   alert("Please enter valid float number");
+   document.getElementById("inOthers").value=(0).toFixed(2);
+   document.getElementById("inOthers").focus();
+   return false;
+  }
+calinOthers=$('#inOthers').val();
+inOtherChargesTax= (parseFloat(inOtherChargesTax) + parseFloat(calinOthers)).toFixed(2);
+document.getElementById("inOtherCharges").value=inOtherChargesTax;
+calinGrandTotal=(parseFloat(calinTotalAmount) + parseFloat(inOtherChargesTax)).toFixed(2);
+ document.getElementById("inGrandTotal").value=calinGrandTotal;
 
-       calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
-          document.getElementById("inNetPayable").value=calinNetPayable;
+calinNetPayable=(parseFloat(calinGrandTotal)).toFixed(2);
+ document.getElementById("inNetPayable").value=calinNetPayable;
 
-       return true;
+return true;
 
 }
+$(document).ready(function(){
+$('#inIssue').timepicker({
+              ampm: true,
+              hourMin:00,
+              hourMax: 24
+          });
+      $('#inRemoval').timepicker({
+              ampm: true,
+              hourMin:00,
+              hourMax: 24
+          });
+
+
+});
+--%>
+
+
+
+
+</script>
+
+<script type="text/javascript">
     $(document).ready(function(){
-        $('#inIssue').timepicker({
-                       ampm: true,
-                       hourMin:00,
-                       hourMax: 24
-                   });
-               $('#inRemoval').timepicker({
-                       ampm: true,
-                       hourMin:00,
-                       hourMax: 24
-                   });
+
+        //enable the input textfields of the selected row
+        var enableRow=function(index){
+            $('#material'+index).removeAttr("disabled").css("background-color","lightblue");
+            $('#chapterId'+index).removeAttr("disabled").css("background-color","lightblue");
+            $('#dispatching'+index).removeAttr("disabled").css("background-color","lightblue");
+        };
+
+        //disable the input textfields of the selected row
+        var disableRow=function(index){
+            $('#material'+index).attr("disabled","disabled").css("background-color","#edeeef");
+            $('#chapterId'+index).attr("disabled","disabled").css("background-color","#edeeef");
+            $('#dispatching'+index).attr("disabled","disabled").css("background-color","#edeeef");
+        };
+
+
+        //function to extract row index from selected checkbox id and then enable or disable row
+        var productIndividualCheckBox=function(that){
+            var id=that.attr("id");
+            var index=id.substring(5);
+            if($(that).is(':checked')){
+                enableRow(index);
+            }else{
+                disableRow(index);
+            }
+
+        };
+
+        //check/uncheck individual selected product rows
+        $('.productRowCheckBox').change(function(){
+            var that=$(this);
+            productIndividualCheckBox(that);
+        });
+
+        //check/uncheck all product rows
+        $('#allbox').change(function(){
+            var allBox=$(this);
+            if(allBox.is(':checked')){
+                $('.productRowCheckBox').each(function(){
+                    var checkBox=$(this);
+                    checkBox.attr("checked","checked");
+                    productIndividualCheckBox(checkBox);
+                });
+            }else{
+                $('.productRowCheckBox').each(function(){
+                    var checkBox=$(this);
+                    checkBox.removeAttr("checked");
+                    productIndividualCheckBox(checkBox);
+                });
+            }
+
+        });
+
+
+        //calcullate amount
+        var calculateAmount=function(that){
+            var id=that.attr("id");
+            var index=id.substring(11);
+            alert(index);
+        };
+
+        $('.dispatching').fo
+
 
 
     });
-
-</script>--%>
-  </s:layout-component>
-  <s:layout-component name="left-menu">
-
-                 <ul>
-                          <li>&nbsp;</li>
-                      <li class="left_menu_heading">Invoice</li>
-                     <li style="margin-top:35px">
-                               <s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Generate</s:link></li>
-                                                     <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="preupdate">Update</s:link></li>
-                                                      <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
-                  </ul>
-
-         </s:layout-component>
-      <s:layout-component name="body">
-          <s:form beanclass="com.inwise.action.InvoiceActionBean">
-     <br>
-    <table class="heading_table">
-
-    <tr><td align="left" class="pageheading" valign="top">
-      <div class="sub_heading" >Generate Invoice</div>
-    </td></tr>
-   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
-    </td></tr>--%>
-    </table>
-     <table class="second_table"  ><tr><td>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
-
- 	<tr>
-			<td colspan="4" align="left">
-				<div align="left" style="margin-left:15px;text-align:left;" class="labels" >
-					Please Enter Order Details ::				</div>			</td>
-		</tr>
-
-		<tr>
-			<td width="19%" align="right" valign="top">
-			  <div align="right"  class="labels">
-			    Customer Name				</div>			</td>
-	  <td width="27%" align="left" valign="top">
-          <s:select id="incname"  name="invoice.customer.id" class="dropdown" onchange="getCustomerOrder()">
-                <option  value="0">---Select Customer Name---</option>
-                <c:forEach items="${invoiceBean.customerlst}" var="orderloop" varStatus="loop" >
-                    <c:choose>
-                        <c:when test="${invoiceBean.order.customer.id eq orderloop.id}">
-                            <option value ="<c:out value="${invoiceBean.order.customer.id}"/>" selected="selected"> <c:out value="${invoiceBean.order.customer.name}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value ="<c:out value="${orderloop.id}"/>"> <c:out value="${orderloop.name}"/></option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </s:select>
-     </td>
-          <td width="15%" align="right" valign="top">&nbsp;</td>
-            <td width="39%">&nbsp;</td>
-		</tr>
-
-		<tr style="display :none;" class="trid">
-			<td width="19%" align="right" valign="top">
-            <div align="right">
-            <span class="labels" style="margin-left:15px;">Customer Order No.</span></div></td>
-	  <td width="27%" align="left" valign="top">
-              <s:select id="inoid" name="id" class="dropdown">
-                             <option  value="0">---Select Customer Order No---</option>
-                        </s:select>
-  <input type="hidden" name="sendorderid" id="sendorderid" value="">
-	    </td>
-
-                 <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
-			 <span style="display:none;"  id="custodid" >${invoiceBean.id}</span>
-
-
-		</tr>
-
-           </table>
-          </s:form>
-            <div id="hide">
-           <c:if test="${actionBean.order!=null}">
-                    <script type="text/javascript">
-                        $(document).ready(function() {
-                            if($('#custodid').html()!=null)
-                                 {
-                                     $('.trid').show();
-                                 }
-
-                         });
-
-                     </script>
-                  <s:form beanclass="com.inwise.action.InvoiceActionBean">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
-
-
-
-           <tr>
-                <td>
-               <div align="right" style="margin-left:15px;" class="labels">
-			    Order Date 				</div>
-			</td>
-	 		<td width="25%" align="left" valign="top">
-			<div align="left">
-
-
-					<s:text  value="" name="order.createDate" id="inodate" size="8" style="border:0px;background-color:#FCFCFC;" class="textbox"  readonly="readonly" />
-
-				</div>
-            </td>
-		 	<td width="19%">&nbsp;
-
-			</td>
-
-			<td align="left" style="margin-left:10px;">&nbsp;
-
-			</td>
-		</tr>
-            <tr>
-                <td>
-                <div align="right">
-				<span class="labels" style="margin-left:15px;">
-					Amendment No.
-				</span></div>
-			</td>
-	 		<td width="24%" align="left" valign="top">
-				<s:text name="invoice.order.amendmentNo" value="${invoiceBean.order.amendmentNo}" id="txtamndNo" readonly="readonly" class="textbox"  style="border:0px;background-color:#FCFCFC;"/>
-            </td>
-		 	<td width="19%">
-		  		<div align="right" style="margin-left:15px;" class="labels">
-					Amendment Date
-				</div>
-			</td>
-
-			<td align="left" style="margin-left:10px;">
-				<div align="left">
-					<s:text name="invoice.order.amendmentDate" value="${invoiceBean.order.amendmentDate}" id="txtamnddate" class="textbox" size="8" style="border:0px;
-													background-color: #FCFCFC;" readonly="readonly"/>
-				</div>
-			</td>
-		</tr>
-
-
-
-
-
-		<tr>
-        	<td align="right" valign="top">&nbsp;</td>
-		  <td colspan="2" align="left" valign="top">
-				<s:text name="invoice.salesRepCode" value="1" id="insrepcode" type="text" class="textbox" readonly="readonly" style="border:0px;background-color:white;"
-											   size="9"/>			</td>
-		</tr>
-
-		<tr valign="top">
-			<td width="18%" align="right" valign="top">
-			  <div align="right"  style="margin-left:15px;" class="labels">
-			    Invoice To				</div>			</td>
-	  <td width="24%" align="left" valign="bottom">
-
-                       <s:hidden name="invoice.order.orderAddress[0].addressType.id" value="1"/>
-					<s:textarea readonly="readonly"  name="ksjkdf"  id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #ccccff"/>
-
-							</td>
-			<td width="19%" align="right" valign="top">
-			  <div align="right" style="margin-left:15px;" class="labels">
-			    Consignee					</div>				</td>
-  <td width="39%" align="left" valign="bottom">
-  <div align="left">
-                         <s:hidden name="invoice.order.orderAddress[1].addressType.id" value="2"/>
-      <s:textarea readonly="readonly" name="sdffgdsfg" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #ccccff" />
-    </div>				</td>
-	  </tr>
-
-			<tr>
-				<td>&nbsp;				</td>
-			</tr>
-			<tr>
-				<td align="left" >
-					<div align="left" style="margin-right:38px" class="labels">
-						<b style="color:#888888;">(&nbsp;&nbsp;) fields are mandatory</b>					</div>
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:-11px; margin-left:19px;">*</div>				</td>
-		<td>&nbsp;</td>
-        	</tr>
-			<tr>
-				<td colspan="4">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="4">
-
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
-					  <tr class="foreach_table">
-							<td align="center" width="4%"class="foreach_table_firstth">
-								<s:checkbox name="allbox" id="allbox" value="chekbx" onclick="jqCheckAll1('chkbx');"/>
-							</td>
-							<td nowrap="nowrap" width="5%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
-									<b>Item No.</b>
-									<br>&nbsp;
-								</div>
-							</td>
-							<td nowrap="nowrap" width="9%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px;  margin-left:1px; margin-right:1px; font-size: 11px;" class="labels">
-									<b>Tariff Item No.</b>
-									<br>&nbsp;
-								</div>
-							</td>
-							<td width="10%" nowrap="nowrap" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Product Name</b>
-									<br>&nbsp;
-								</div>
-							</td>
-							<td nowrap="nowrap" width="11%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Product Type</b>
-									<br>&nbsp;
-								</div>
-							</td>
-							<td nowrap="nowrap" width="6%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Ordered<br>Quantity</b>
-								</div>
-							</td>
- 							<td nowrap="nowrap" width="6%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Remaining<br>Quantity</b>
-								</div>
-							</td>
-
-							<td nowrap="nowrap" width="12%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Product<br>Rate</b>
-								</div>
-							</td>
-							<td nowrap="nowrap" width="7%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Amendment<br>Quantity</b>
-								</div>
-							</td>
-							<td nowrap="nowrap" width="9%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Amendment<br> Product<br>
-Rate</b>
-								</div>
-							</td>
-							<td nowrap="nowrap" width="11%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Dispatching<br>Quantity</b>
-								</div>
-							</td>
-							<td nowrap="nowrap" width="11%" class="foreach_table_th">
-								<div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels">
-									<b>Assessable Value</b>
-									<br>&nbsp;
-								</div>
-							</td>
-						</tr>
-                          <c:forEach items="${invoiceBean.order.orderDetail}" var="orderdetailarray" varStatus="loop" >
-						<tr>
-							<td align="center" valign="top" class="foreach_table_firstth">
-								<div style="margin-top:5px;">
-
-									<s:checkbox name="chkbx" id="chkbx${loop.index}" onClick="return Selected(${loop.index});"/>
-								</div>
-							</td>
-							<td valign="top"  class="foreach_table_th">
-								<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<%--<input  name="orderdetailarray[${loop.index}].product.name" id="inDraw${loop.index}" type="text" size="5" disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;" value="Item No" onFocus="if(this.value=='Item No'){this.value='';}" >--%>
-								<s:text  id="inDraw${loop.index}" value="Item No" onFocus="if(this.value=='Item No'){this.value='';}"  name="invoice.invoiceDetail[${loop.index}].drawingNo" disabled="disabled" size="15" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-								</div>
-							</td>
-							<td valign="top" class="foreach_table_th">
-
-								<div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
-
-										<s:text name="invoice.invoiceDetail[${loop.index}].cshNo" id="inCsh${loop.index}" value="Enter CSH No" onFocus="if(this.value=='Enter CSH No'){this.value='';}"   disabled="disabled" size="12" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/><div style="color: #ff0000; font-size:10px;">*</div>
-
-								</div>
-							</td>
-							<td valign="top" class="foreach_table_th">
-
-                                <div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
-							        <s:hidden name="invoice.invoiceDetail[${loop.index}].product.id" value="${orderdetailarray.product.id}"/>
-                                    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inProdName${loop.index}" size="15" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-								</div>
-							</td>
-							<td valign="top" class="foreach_table_th">
-								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px;  margin-left:1px; font-size: 12px;" class="labels">
-									<s:hidden name="invoice.invoiceDetail[${loop.index}].productCategory.id" value="1"/>
-                                    <s:select id="inProType${loop.index}" name="invoice.invoiceDetail[${loop.index}].productCategory.type" disabled="disabled" style="width:100px; margin-left:0px; font-size: 12px;" onChange="javascript: CalculateAmount(${loop.index});">
-										<option value="MFG & Supply">MFG. & Supply</option>
-										<option value="Sale">Sale</option>
-										<option value="Fabrication">Fabrication</option>
-										<option value="Reimbursement">Reimbursement</option>
-										<option value="None">None</option>
-									</s:select>
-                               <%-- <s:select id="inProType${loop.index}" name="invoice.invoiceDetail[${loop.index}].productCategory.id" disabled="disabled" style="width:100px;" class="dropdown"  onChange="javascript: CalculateAmount(${loop.index});">
-
-
-                                                    <c:forEach items="${prodlst}" var="ploop" >
-
-                                                                   <c:choose>
-                                                                 <c:when test="${invoicedetail.productCategory.id eq ploop.id}">
-                                                                       <option value ="<c:out value="${invoicedetail.productCategory.id}"/>" selected="selected"> <c:out value="${invoicedetail.productCategory.type}"/></option>
-                                                                 </c:when>
-
-                                                                 <c:otherwise>
-                                                               <option value ="${ploop.id}"><c:out value="${ploop.type}"/></option>
-                                                                 </c:otherwise>
-                                                                 </c:choose>
-
-
-                                                             </c:forEach>
-
-
-                                          </s:select>--%>
-
-
-								</div>
-							</td>
-
-							<td valign="top" class="foreach_table_th">
-
-								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-							      <s:text name="invoice.invoiceDetail[${loop.index}].dispatching" value="${orderdetailarray.orderedQuantity}" id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-                                </div>
-                        	</td>
-   							<td valign="top" class="foreach_table_th">
-								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-								<s:text name="invoice.order.orderDetail[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-                                </div>
-							</td>
-
-							<td valign="top" class="foreach_table_th">
-								<div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                                <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.product.productCost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-                                        <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">${orderdetailarray.product.unit.name}</span>
-                                </div>
-							</td>
-							<td valign="top" class="foreach_table_th">
-								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-								    <s:text name="invoice.order.orderDetail[${loop.index}].amendmentQuantity" value="${orderdetailarray.amendmentQuantity}" id="inAmdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-
-								</div>
-							</td>
-							<td valign="top" class="foreach_table_th">
-							<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-									<s:text name="invoice.order.orderDetail[${loop.index}].amendmentCost" value="${orderdetailarray.amendmentCost}" id="inAmdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-                                 <c:if test="${orderdetailarray.amendmentCost != null}">
-                                    <span id="utype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; background-color: #ccffcc; font-size: 12px;">${orderdetailarray.product.unit.name}</span>
-                                   </c:if>
-									</div>
-							</td>
-
-							<td valign="top" class="foreach_table_th">
-								<div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px; margin-left:1px; font-size: 12px;" class="labels">
-                            			<s:text name="invoice.invoiceDetail[${loop.index}].dispatched" value="Enter Dispaching Qty" id="inDisp${loop.index}" size="20" onFocus="if(this.value=='Enter Dispaching Qty'){this.value='';}"
-                                                disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;" onchange="javascript: CalculateAmount(${loop.index});"/><div style="color: #ff0000; font-size:10px;">*</div>
-                                </div>
-
-							</td>
-
-							<td valign="top" class="foreach_table_th">
-								<div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                                			<s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="0.00" id="inValue${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
-                        		<s:hidden name="inCount" id="inCount" value="${loop.index}"/>								</div>							</td>
-						</tr>
-                              <c:if test="${loop.last}">
-                                 <span style="visibility:hidden;" id="inCount">${loop.count}</span>
-                              </c:if>
-
-                      </c:forEach>
-						<tr>
-                            <td>&nbsp;<%--<s:hidden name="inCount" id="inCount" value="${loop.index}"/>--%>
-
-                            </td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-							<td>&nbsp;							</td>
-                            	<td>&nbsp;							</td>
-							<td colspan="2"  nowrap style="border-right:1px solid #ccccff">
-					        	<div align="center" class="labels">
-									<b>Total Amount ( A )</b>								</div>							</td>
-							<td style="border-right:1px solid #ccccff; border-bottom:1px solid #ccccff;height:24px; ">
-
-								<div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-                                    <s:text name="invoice.totalAmount" id="inTotalAmount" formatType="number" formatPattern="##.##"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right;"/>
-								</div>							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td align="left" colspan="2">
-					<div align="left" style="margin-left:15px;" class="labels">
-						<b style="color:#888888">Taxes are applicable on ' Total Amount + Other Charges '</b>					</div>				</td>
-			</tr>
-
-			<tr>
-				<td>&nbsp;				</td>
-			</tr>
-
-			<tr>
-	            <td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						Excise @ <span id="t1"></span>%				</div>				</td>
-              <td align="left" valign="top">
-					<s:text name="invoice.exciseTax" id="inExcise" class="textbox" value="0.00"  size="22" readonly="readonly" style="text-align:right;" />
-					<s:hidden name="invoice.excise" id="excise"/>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Education_Cess @ <span id="t2"></span>%				</div>				</td>
-			  <td align="left" valign="top">
-					<div align="left">
-						<s:text name="invoice.educationCessTax" class="textbox" id="inEducationCess"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
-						<s:hidden name="invoice.educationCess" id="educationCess"/>
-					</div>				</td>
-			</tr>
-
-			<tr>
-            	<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Secondary & Higher <br>Edu_Cess @ <span id="t3"></span>	% </div>				</td>
-              <td align="left">
-					<s:text name="invoice.secondaryHigherEducationCessTax" id="inSec" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
-					<s:hidden name="invoice.secondaryHigherEducationCess" id="secondaryHigherEducationCess"/>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						<s:select name="invoice.cstOvatType" id="inCSTS"  class="dropdown" style="width:70px; margin-left:0px; font-size: 12px;" onchange="CSTOVAT();">
-										<option value="OVAT">OVAT</option>
-										<option value="CST">CST</option>
-						</s:select>
-                        @
-                        <s:select name="invoice.cstOvat" id="inCSTSval"  class="dropdown" style="width:50px; margin-left:0px; font-size: 12px;" onchange="CST();">
-
-
-						</s:select>
-                        <span id="t6"></span> %
-
-						<div id="ovatid" style="display: inline;">
-
-						</div>
-
-											</div>				</td>
-              <td align="left" valign="top">
-                           <s:hidden name="invoice.cstOvat" id="cstOvat"/>
-
-					    <s:text name="invoice.cstOvatTax" id="inOvatnCst" class="textbox"  size="22" readonly="readonly" style="text-align:right;" value="0.00"/>
-							</td>
-			</tr>
-
-			<tr>
-				<td>&nbsp;				</td>
-				<td>&nbsp;				</td>
-				<td align="right" valign="top" nowrap>
-					<div align="right" style="margin-left:15px;" class="labels">
-						<b>Tax Charges ( B )<br> (Sum of Taxes)</b>					</div>				</td>
-			  <td colspan="3" align="left" valign="top" >
-					<s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#ccccff; "  class="textbox" readonly="readonly" value="0.00"/>				</td>
-			</tr>
-
-			<tr>
-				<td align="right" valign="top">
-                	<div align="right" style="margin-left:15px;" class="labels">
-						Entry Tax (Appl. for OVAT) @<span id="t7"></span> %
-					</div>
-				</td>
-                <td align="left" valign="top">
-                    <s:hidden name="invoice.inEntryTaxGiven" id="inEntryTaxGiven"/>
-					<s:text name="invoice.entry" class="textbox" id="inEntryTax"  value="0.00" readonly="readonly" size="22" style="text-align:right;"/>
-				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Freight
-					</div>
-				</td>
-                <td align="left">
-					<div align="left">
-						<s:text name="invoice.freight" class="textbox" id="inFright"  value="0.00" size="22" onchange="return validateFreight();" style="text-align:right;"/>
-					</div>
-				</td>
-			</tr>
-
-			<tr>
-            	<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						Insurance
-					</div>
-				</td>
-                <td align="left" valign="top">
-					<s:text name="invoice.insurance" class="textbox" id="inInsurance"  value="0.00" size="22" onchange="return validateInsurance();" style="text-align:right;"/>
-				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Others
-					</div>
-				</td>
-                <td align="left">
-					<div align="left">
-						<s:text name="invoice.others" id="inOthers" class="textbox"  value="0.00" size="22" onchange="return validateOthers();" style="text-align:right;"/>
-					</div>
-				</td>
-			</tr>
-
-			<tr>
-				<td>&nbsp;
-
-			    </td>
-				<td>&nbsp;
-
-			    </td>
-				<td nowrap>
-					<div align="right" style="margin-left:15px;" class="labels">
-						<b>Other Charges ( C )</b>
-					</div>
-				</td>
-				<td align="left" colspan="3" >
-					<s:text name="invoice.otherCharges" id="inOtherCharges"  class="textbox" type="text" size="22" readonly="readonly" value="0.00"  style="text-align:right;background-color:#ccccff;"/>
-				</td>
-			</tr>
-
-			<tr>
-				<td>&nbsp;
-
-				</td>
-			</tr>
-			<tr>
-				<td colspan="4">
-					<table width="80%" border="0" cellpadding="0" cellspacing="0" align="center">
-						<tr>
-							<td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;">
-								<div align="center" class="labels">
-									<b><u>Grand Total ( A+B+C )</u></b>								</div>							</td>
-							<td width="2%" align="left" valign="top">
-								<div align="center" class="labels" style="margin-top:10px;">
-									<b>_</b>								</div>							</td>
-							<td width="8%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;">
-								<div align="center" class="labels">
-									<b><u>Advance Available</u> &nbsp;</b>
-									<img src="images/Rupee.JPG"/>&nbsp;
-									<c:choose>
-                                     <c:when test="${invoiceBean.advance.amountRemained != null}">
-									<s:text name="invoice.amountReceived"   value="${invoiceBean.advance.amountRemained}"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
-                                    </c:when>
-                                        <c:otherwise>
-                                    <s:text name="invoice.amountReceived"   value="0.00"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
-                                        </c:otherwise>
-                                    </c:choose>
-								</div>
-							</td>
-							<td width="2%" align="left" valign="top">
-								<div align="center" class="labels" style="margin-top: 17px;">
-									<b>=</b>								</div>							</td>
-							<td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;">
-								<div align="center" class="labels">
-									<b><u>Net Payable</u></b>								</div>							</td>
-						</tr>
-						<tr>
-							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
-								<div align="center">
-
-									<s:text name="invoice.grandTotal" id="inGrandTotal" formatType="number" formatPattern="##.##" class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
-								</div>
-							</td>
-							<td align="left" valign="top">
-							</td>
-							<td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;">
-								<div align="center" class="labels">
-									<b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    		<s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #ccccff;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
-								</div>
-							</td>
-							<td align="left" valign="top">
-							</td>
-							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
-								<div align="center">
-        		<s:text name="invoice.netPayable" class="textbox" id="inNetPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>&nbsp;
-
-							</td>
-							<td>&nbsp;
-
-							</td>
-							<td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;">
-								<div align="center" class="labels" style="margin-top: 10px;">
-									<b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                                    <c:choose>
-                                <c:when test="${invoiceBean.advance.amountRemained != null}">
-									<s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                      <s:text name="invoice.amountRemained" id="inAdvanceRemain" value="0.00"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
-                                    </c:otherwise>
-                                    </c:choose>
-								</div>&nbsp;
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-
-			<tr>
-				<td>&nbsp;				</td>
-			</tr>
-			<tr>
-				<td align="right" valign="top">
-                	<div align="right" style="margin-left:15px;" class="labels">
-						Issue Time					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.issueTime" id="inIssue" class="textbox" readonly="readonly"   style="text-align:right;"/>
-								</div>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Removal Time					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.removalTime" class="textbox"  id="inRemoval" readonly="readonly"  style="text-align:right;"/>
-										</div>				</td>
-			</tr>
-
-			<tr>
-				<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						Station from					</div>				</td>
-			  <td align="left">
-					<s:text name="insf" id="insf"  class="textbox" value="Kansbahal" size="22" style="border:0px;
-											background-color:#FCFCFC;" readonly="readonly"/>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Station To					</div>				</td>
-			  <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.stationto" class="textbox"  id="inst"  size="22" value=""/>				</div>				</td>
-			</tr>
-
-			<tr>
-				<td align="right" valign="top">
-                	<div align="right" style="margin-left:15px;" class="labels">
-						Des Adv No.					</div>				</td>
-              <td align="left">
-						<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-							<s:text name="invoice.desAdvNo" class="textbox"  id="indesno"  value="" size="22"/>					</div>					</td>
-					<td>
-						<div align="right" style="margin-left:15px;" class="labels">
-						FGN No.					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.fgnNo" class="textbox"  id="infgnno"  value="" size="22"/>				</div>				</td>
-			</tr>
-            <tr>
-            	<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						Mode of Dispatch					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.modeOfDispatch" id="inmode"  value="" size="22" class="textbox" />					</div>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Vehicle No.					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.vehicleNo" id="invehicle" type="text" value=""  size="22" class="textbox" />					</div>				</td>
-			</tr>
-            <tr>
-				<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						No. of Packages					</div>				</td>
-              <td align="left">
-					<div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
-						<s:text name="invoice.noOfPackages" id="inpack"  value="" class="textbox"  size="22" style="text-align:right;"/>				</div>				</td>
-			</tr>
-			<tr>
-				<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						Region & BR A/C Code					</div>				</td>
-			  <td align="left">
-					<div align="left">
-						<s:text name="invoice.regBr" id="inbrcode" class="textbox"   value="" size="22"/>
-					</div>				</td>
-				<td>
-					<div align="right" style="margin-left:15px;" class="labels">
-						Contract Note No. & Date					</div>				</td>
-              <td align="left">
-					<div align="left">
-						<s:text name="invoice.contNoteDate" id="incontract" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox"  />
-					</div>				</td>
-			</tr>
-            <tr>
-				<td align="right" valign="top">
-					<div align="right" style="margin-left:15px;" class="labels">
-						RR/GCN No.						</div>					</td>
-			  <td align="left">
-							<div align="left">
-								<s:text name="invoice.rrgcnNo" id="inrrgcn" class="textbox"   value="" size="22"/>
-						</div>						</td>
-					<td>
-						<div align="right" style="margin-left:15px;" class="labels">
-							Documents Through							</div>						</td>
-              <td align="left">
-							<div align="left">
-						  		<s:text name="invoice.documentsThrough" class="textbox"  id="inDocuments"  value="" size="22"/>
-			  	        </div>						</td>
-				</tr>
-					<tr>
-				<td>&nbsp;				</td>
-			</tr>
-				<tr>
-					<td valign="top">
-				  <div align="right" style="margin-left:15px;" class="labels">
-				  Remarks						</div>					</td>
-				  <td align="left" colspan="3">
-
-						<s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:694px;border:1px solid #ccccff; text-align: left;resize:none"/>
-												</td>
-					</tr>
-				  	<tr>
-						<td>&nbsp;						</td>
-					</tr>
-					<tr>
-						<td>&nbsp;						</td>
-                        <td align="left" colspan="2">
-							<%--<s:hidden  name="hdnAct" id="hdnAct" value=""/>--%>
-							<%--<input type="button" value="Preview" class="buttons" name="inpreview" id="inpreview"  style="width:80px; margin-left: 60px;" onClick="return ValidateInvoice('Preview');">--%>
-
-                      <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
-
-
-
-                      <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
-
-
-                      <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
-
-							<s:submit class="generatenpreviewbtn" name="addgenerate"  value="Generate" />
-													&nbsp;&nbsp;
-							<%--<input type="button" value="Cancel" class="buttons" name="Cancel" style="width:80px; margin-left: 10px;" onClick="javascript: cancel();">--%>
-
-                            &nbsp;&nbsp; <s:submit class="generatenpreviewbtn" name="addpreview" value="Preview"></s:submit>
-                            &nbsp;&nbsp; <s:submit name="cancel" class="buttons" value="Cancel"/>
-
-                        </td>
-
-				</tr>
-</table>
-
- </s:form>
-          </c:if>
-      </div>
+</script>
+</s:layout-component>
+<s:layout-component name="left-menu">
+
+    <ul>
+        <li>&nbsp;</li>
+        <li class="left_menu_heading">Invoice</li>
+        <li style="margin-top:35px">
+            <s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Generate</s:link></li>
+        <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="preupdate">Update</s:link></li>
+        <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
+    </ul>
 
 </s:layout-component>
- </s:layout-render>
+<s:layout-component name="body">
+<s:form beanclass="com.inwise.action.InvoiceActionBean">
+    <br>
+    <table class="heading_table">
+
+        <tr><td align="left" class="pageheading" valign="top">
+            <div class="sub_heading" >Generate Invoice</div>
+        </td></tr>
+            <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+            </td></tr>--%>
+    </table>
+    <table class="second_table"  ><tr><td>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
+
+        <tr>
+            <td colspan="4" align="left">
+                <div align="left" style="margin-left:15px;text-align:left;" class="labels" >
+                    Please Enter Order Details ::				</div>			</td>
+        </tr>
+
+        <tr>
+            <td width="19%" align="right" valign="top">
+                <div align="right"  class="labels">
+                    Customer Name				</div>			</td>
+            <td width="27%" align="left" valign="top">
+                <s:select id="incname"  name="invoice.customer.id" class="dropdown" onchange="getCustomerOrder()">
+                    <option  value="0">---Select Customer Name---</option>
+                    <c:forEach items="${invoiceBean.customerlst}" var="orderloop" varStatus="loop" >
+                        <c:choose>
+                            <c:when test="${invoiceBean.order.customer.id eq orderloop.id}">
+                                <option value ="<c:out value="${invoiceBean.order.customer.id}"/>" selected="selected"> <c:out value="${invoiceBean.order.customer.name}"/></option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value ="<c:out value="${orderloop.id}"/>"> <c:out value="${orderloop.name}"/></option>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </s:select>
+            </td>
+            <td width="15%" align="right" valign="top">&nbsp;</td>
+            <td width="39%">&nbsp;</td>
+        </tr>
+
+        <tr style="display :none;" class="trid">
+            <td width="19%" align="right" valign="top">
+                <div align="right">
+                    <span class="labels" style="margin-left:15px;">Customer Order No.</span></div></td>
+            <td width="27%" align="left" valign="top">
+                <s:select id="inoid" name="id" class="dropdown">
+                    <option  value="0">---Select Customer Order No---</option>
+                </s:select>
+                <input type="hidden" name="sendorderid" id="sendorderid" value="">
+            </td>
+
+            <span style="display:none;"  id="custorno" >${invoiceBean.order.customerOrderNo}</span>
+            <span style="display:none;"  id="custodid" >${invoiceBean.id}</span>
+
+
+        </tr>
+
+    </table>
+</s:form>
+<div id="hide">
+<c:if test="${actionBean.order!=null}">
+<script type="text/javascript">
+    $(document).ready(function() {
+        if($('#custodid').html()!=null)
+        {
+            $('.trid').show();
+        }
+
+    });
+
+</script>
+<s:form beanclass="com.inwise.action.InvoiceActionBean">
+<table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
+<tr>
+<td colspan="4"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<c:forEach items="${invoiceBean.order.orderDetail}" var="orderdetailarray" varStatus="loop" >
+<tr>
+<td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+<table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
+<tr></tr>
+<tr>
+    <td><div align="right" style="margin-left:15px;" class="labels"> Order Date </div></td>
+    <td width="25%" align="left" valign="top"><div align="left">
+        <s:text  value="" name="order.createDate" id="inodate" size="8" style="border:0px;background-color:#FCFCFC;" class="textbox"  readonly="readonly" />
+    </div></td>
+    <td width="19%">&nbsp;</td>
+    <td align="left" style="margin-left:10px;">&nbsp;</td>
+</tr>
+
+<tr>
+    <td align="right" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"></td>
+</tr>
+<tr valign="top">
+    <td width="18%" align="right" valign="top"><div align="right"  style="margin-left:15px;" class="labels"> Invoice To </div></td>
+    <td width="24%" align="left" valign="bottom"><s:hidden name="invoice.order.orderAddress[0].addressType.id" value="1"/>
+        <s:textarea readonly="readonly"  name="ksjkdf"  id="invoiceAddress"  style="height: 100px; width:180px;resize:none;border:1px solid #ccccff"/></td>
+    <td width="19%" align="right" valign="top"><div align="right" style="margin-left:15px;" class="labels"> Consignee </div></td>
+    <td width="39%" align="left" valign="bottom"><div align="left">
+        <s:hidden name="invoice.order.orderAddress[1].addressType.id" value="2"/>
+        <s:textarea readonly="readonly" name="sdffgdsfg" id="shipmentAddress" style="height: 100px; width:180px;resize:none;border:1px solid #ccccff" />
+    </div></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td align="left" ><div align="left" style="margin-right:38px" class="labels"> <b style="color:#888888;">(&nbsp;&nbsp;) fields are mandatory</b></div>
+        <div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:-11px; margin-left:19px;">*</div></td>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="4">&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="4"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr class="foreach_table">
+            <td align="center" width="3%"class="foreach_table_firstth"><s:checkbox name="allbox" id="allbox" value="chekbx"/></td>
+            <td nowrap="nowrap" width="4%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; margin-left:1px; margin-right:1px; font-size: 11px;" class="labels"> <b>Sr. No.</b> <br />
+                &nbsp; </div></td>
+            <td nowrap="nowrap" width="11%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px;  margin-left:1px; margin-right:1px; font-size: 11px;" class="labels"> <b>Material Code</b></div></td>
+            <td nowrap="nowrap" width="11%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px;  margin-left:1px; margin-right:1px; font-size: 11px;" class="labels"> <b>Chapter ID</b></div></td>
+            <td width="8%" nowrap="nowrap" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Material Name</b> <br />
+                &nbsp; </div></td>
+            <td nowrap="nowrap" width="5%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Ordered<br />
+                Quantity</b></div></td>
+            <td nowrap="nowrap" width="6%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Remaining<br />
+                Quantity</b></div></td>
+            <td nowrap="nowrap" width="12%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Product<br />
+                Rate</b></div></td>
+            <td nowrap="nowrap" width="17%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Unit</b></div></td>
+
+            <td nowrap="nowrap" width="13%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"> <b>Dispatching<br />
+                Quantity</b></div></td>
+            <td nowrap="nowrap" width="10%" class="foreach_table_th"><div align="center" style="margin-top:5px; margin-bottom:5px; font-size: 11px; margin-left:1px; margin-right:1px; " class="labels"><b>Amount</b></div></td>
+        </tr>
+        <c:forEach items="${invoiceBean.order.orderDetail}" var="orderdetailarray" varStatus="loop">
+            <tr>
+                <td align="center" valign="top" class="foreach_table_firstth"><div style="margin-top:5px;">
+                    <s:checkbox name="chkbx" id="chkbx${loop.index}" class="productRowCheckBox"/>
+                </div></td>
+                <td valign="top"  class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">  <b>${loop.index+1}</b>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].material" id="material${loop.index}" disabled="disabled" size="15" maxlength="10" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].chapterId" id="chapterId${loop.index}" disabled="disabled" size="15" maxlength="20" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inProdName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].dispatching" value="${orderdetailarray.orderedQuantity}" id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.order.orderDetail[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.cost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; font-size: 12px;">${orderdetailarray.product.unit.name}</span></div></td>
+                <td valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px; margin-left:1px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].dispatched" id="dispatching${loop.index}" size="20" class="dispatching"
+                            disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;background-color:#edeeef;   font-size: 12px;"/>
+                    <div style="color: #ff0000; font-size:10px;">*</div>
+                </div></td>
+                <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="0.00" id="amount${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                    <s:hidden name="inCount" id="inCount" value="${loop.index}"/>
+                </div></td>
+            </tr>
+            <c:if test="${loop.last}"> <span style="visibility:hidden;" id="inCount">${loop.count}</span></c:if>
+        </c:forEach>
+        <tr>
+            <td colspan="8">&nbsp;</td>
+            <td colspan="2"  nowrap style="border-right:1px solid #ccccff"><div align="center" class="labels"> <b>Total Amount ( A )</b></div></td>
+            <td style="border-right:1px solid #ccccff; border-bottom:1px solid #ccccff;height:24px; "><div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
+                <s:text name="invoice.totalAmount" id="inTotalAmount" formatType="number" formatPattern="##.##"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right;"/>
+            </div></td>
+        </tr>
+    </table></td>
+</tr>
+<tr>
+    <td align="left" colspan="2"><div align="left" style="margin-left:15px;" class="labels"> <b style="color:#888888">Taxes are applicable on ' Total Amount + Other Charges '</b></div></td>
+</tr>
+<tr>
+    <td colspan="4">&nbsp;</td>
+</tr>
+
+
+
+<tr>
+    <td colspan="4"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <c:forEach items="${invoiceBean.taxlst}" var="tax" varStatus="loop">
+            <tr><td width="40%" align="left" valign="top">&nbsp;</td>
+                <td width="3%" align="center" valign="top" class="foreach_table_firstth"><div style="margin-top:5px;">
+                    <s:checkbox name="taxchkbx" id="taxchkbx${loop.index}" onClick="return Selected(${loop.index});"/>
+                </div></td>
+                <td width="11%" valign="top"  class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.taxes[${loop.index}].tax.name" value="${tax.name}" disabled="disabled" id="taxName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/></div></td>
+                <td width="5%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.taxes[${loop.index}].previousTaxPercent" value="${tax.taxPercentage}" disabled="disabled" id="taxPercentage${loop.index}" readonly="readonly" size="15" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>                                  </div></td>
+                <td width="10%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+                    <b>applied on</b>
+                </div></td>
+
+                <td width="13%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
+
+                    <s:select id="applicableOn${loop.index}" name="invoice.taxes[${loop.index}].applicableOn" disabled="disabled" class="dropdown">
+                        <option  value="0">---Select Applicable On---</option>
+                        <option  value="totalAmount">Total Amount</option>
+                        <c:forEach items="${invoiceBean.taxlst}" var="orderloop" varStatus="loop" >
+                            <option value="<c:out value="${orderloop.name}"/>"><c:out value="${orderloop.name}"/></option>
+                        </c:forEach>
+                    </s:select>
+                </div>
+                </td>
+                <td width="35%" valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.taxes[${loop.index}].applicableOnAmount" id="applicableOnAmount${loop.index}" size="15" disabled="disabled" readonly="readonly" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
+                </div></td>
+            </tr>
+            <c:if test="${loop.last}"> <span style="visibility:hidden;" id="inCount">${loop.count}</span></c:if>
+        </c:forEach>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+            <td colspan="2"  nowrap style="border-right:1px solid #ccccff"><div align="right" style="margin-left:15px;" class="labels"> <b>Tax Charges ( B )<br />
+                (Sum of Taxes)</b></div></td>
+            <td style="border-right:1px solid #ccccff; border-bottom:1px solid #ccccff;height:24px; "><div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
+                <s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#ccccff; "  class="textbox" readonly="readonly" value="0.00"/>
+            </div></td>
+        </tr>
+    </table></td>
+</tr>
+<tr>
+    <td></td>
+    <td align="left"></td>
+    <td></td>
+    <td align="left" valign="top"></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="right" valign="top" nowrap>&nbsp;</td>
+    <td colspan="3" align="left" valign="top" >&nbsp;</td>
+</tr>
+<tr>
+    <td align="right" valign="top"></td>
+    <td align="left" valign="top"></td>
+    <td></td>
+    <td align="left"></td>
+</tr>
+<tr>
+    <td align="right" valign="top"></td>
+    <td align="left" valign="top"></td>
+    <td></td>
+    <td align="left"></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td nowrap></td>
+    <td align="left" colspan="3" ></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="4"><table width="80%" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+            <td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Grand Total ( A+B+C )</u></b></div></td>
+            <td width="2%" align="left" valign="top"><div align="center" class="labels" style="margin-top:10px;"> <b>_</b></div></td>
+            <td width="8%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Advance Available</u> &nbsp;</b> <img src="images/Rupee.JPG"/>&nbsp;
+                <c:choose>
+                    <c:when test="${invoiceBean.advance.amountRemained != null}">
+                        <s:text name="invoice.amountReceived"   value="${invoiceBean.advance.amountRemained}"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                    </c:when>
+                    <c:otherwise>
+                        <s:text name="invoice.amountReceived"   value="0.00"   id="inAdvance" size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                    </c:otherwise>
+                </c:choose>
+            </div></td>
+            <td width="2%" align="left" valign="top"><div align="center" class="labels" style="margin-top: 17px;"> <b>=</b></div></td>
+            <td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Net Payable</u></b></div></td>
+        </tr>
+        <tr>
+            <td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;"><div align="center">
+                <s:text name="invoice.grandTotal" id="inGrandTotal" formatType="number" formatPattern="##.##" class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+            </div></td>
+            <td align="left" valign="top"></td>
+            <td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;"><div align="center" class="labels"> <b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                <s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #ccccff;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+            </div></td>
+            <td align="left" valign="top"></td>
+            <td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;"><div align="center">
+                <s:text name="invoice.netPayable" class="textbox" id="inNetPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+            </div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;"><div align="center" class="labels" style="margin-top: 10px;"> <b><u>Advance Remain</u>&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                <c:choose>
+                    <c:when test="${invoiceBean.advance.amountRemained != null}">
+                        <s:text name="invoice.amountRemained" id="inAdvanceRemain"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                    </c:when>
+                    <c:otherwise>
+                        <s:text name="invoice.amountRemained" id="inAdvanceRemain" value="0.00"  size="11" readonly="readonly" style="border:0px; text-align:right;"/>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+                &nbsp; </td>
+        </tr>
+    </table></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td align="right" valign="top">
+        <div align="right" style="margin-left:15px;" class="labels">
+            Challan Pass Number					</div>
+    </td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.challanPassNumber" id="challanPassNumber" class="textbox"  />
+    </div>	</td>
+    <td><div align="right" style="margin-left:15px;" class="labels">
+        Challan Date					</div></td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.challanDate" id="challanDate" readonly="readonly" onFocus="showCalendarControl(this);" class="textbox"  />
+    </div></td>
+</tr>
+<tr>
+    <td align="right" valign="top">
+        <div align="right" style="margin-left:15px;" class="labels">
+            LOI Number					</div>
+    </td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.loiNumber" id="loiNumber" class="textbox"  />
+    </div>	</td>
+    <td><div align="right" style="margin-left:15px;" class="labels">
+        LR Number					</div></td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.lrNumber" id="lrNumber" class="textbox"  />
+    </div></td>
+</tr>
+<tr>
+    <td align="right" valign="top">
+        <div align="right" style="margin-left:15px;" class="labels">
+            Transporter					</div>
+    </td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.transporter" id="transporter" class="textbox"  />
+    </div>	</td>
+    <td><div align="right" style="margin-left:15px;" class="labels">
+        Vehicle Number					</div></td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.vehicleNo" id="vehicleNo" class="textbox"  />
+    </div></td>
+</tr>
+<tr>
+    <td align="right" valign="top">
+        <div align="right" style="margin-left:15px;" class="labels">
+            Freight					</div>
+    </td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.freight" id="freight" class="textbox"  />
+    </div>	</td>
+    <td><div align="right" style="margin-left:15px;" class="labels">
+        Due Date					</div></td>
+    <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
+        <s:text name="invoice.dueDate" id="dueDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"  />
+    </div></td>
+</tr>                          <tr>
+    <td align="right" valign="top"></td>
+    <td align="left"></td>
+</tr>
+<tr>
+    <td valign="top">
+        <div align="right" style="margin-left:15px;" class="labels">
+            Remarks						</div>					</td>
+    <td align="left" colspan="3">
+
+        <s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:650px;border:1px solid #ccccff; text-align: left;resize:none"/>
+    </td>
+</tr>                          <tr>
+    <td align="right" valign="top"></td>
+    <td align="left"></td>
+    <td></td>
+    <td align="left"></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td valign="top"></td>
+    <td align="left" colspan="3"></td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+</tr>
+<tr>
+    <td>&nbsp;</td>
+    <td align="left" colspan="2">
+        <s:hidden name="invoice.order.id" value="${invoiceBean.order.id}"/>
+        <s:hidden name="advance.order.id" value="${invoiceBean.advance.order.id}"/>
+        <s:hidden name="invoice.customer.id" value="${invoiceBean.order.customer.id}"/>
+        <s:submit class="generatenpreviewbtn" name="addgenerate"  value="Generate" />
+        &nbsp;&nbsp;
+        &nbsp;&nbsp;
+        <s:submit class="generatenpreviewbtn" name="addpreview" value="Preview"></s:submit>
+        &nbsp;&nbsp;
+        <s:submit name="cancel" class="buttons" value="Cancel"/></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
+</table>
+</div></td>
+</tr>
+</c:forEach>
+</table></td>
+</tr>
+</table>
+</s:form>
+</c:if>
+</div>
+
+</s:layout-component>
+</s:layout-render>
