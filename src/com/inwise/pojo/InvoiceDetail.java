@@ -36,6 +36,17 @@ public class InvoiceDetail {
     @Column(name = "product_cost",length = 10,precision = 8)
     private double productCost;
 
+    @Transient
+    private double dueQuantity;
+
+    public double getDueQuantity() {
+        return dueQuantity;
+    }
+
+    public void setDueQuantity(double dueQuantity) {
+        this.dueQuantity = dueQuantity;
+    }
+
     public Integer getId() {
         return id;
     }

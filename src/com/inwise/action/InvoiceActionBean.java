@@ -187,11 +187,11 @@ public class InvoiceActionBean extends BaseActionBean{
 
     @DefaultHandler
     public Resolution pre(){
-
         customerlst=customerDao.listAll();
         orderlst=orderDao.listAll();
-        System.out.println("iiiiiiiiiiiiiiiddddddddddddd "+id);
-        productcategory=invoiceDao.getProductCategorylst();
+        taxlst=taxDao.listAll();
+//        System.out.println("iiiiiiiiiiiiiiiddddddddddddd "+id);
+//        productcategory=invoiceDao.getProductCategorylst();
         return new ForwardResolution("jsp/addInvoice.jsp");
     }
     public Resolution getOrderDetail(){

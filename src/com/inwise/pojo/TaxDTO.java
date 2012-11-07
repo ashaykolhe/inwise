@@ -17,12 +17,17 @@ public class TaxDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "tax_id")
-    private Tax tax;
+    @Column(name = "tax_name",length = 20)
+    private String taxName;
 
     @Column(name = "previous_tax_percent",length = 10,precision = 8)
     private Double previousTaxPercent;
+
+    @Column(name = "applicable_on",length = 20)
+    private String applicableOn;
+
+    @Column(name = "applicable_on_amount",length = 10,precision = 8)
+    private Double applicableOnAmount;
 
     @Column(name = "tax_amount",length = 10,precision = 8)
     private Double taxAmount;
@@ -35,12 +40,12 @@ public class TaxDTO {
         this.id = id;
     }
 
-    public Tax getTax() {
-        return tax;
+    public String getTaxName() {
+        return taxName;
     }
 
-    public void setTax(Tax tax) {
-        this.tax = tax;
+    public void setTaxName(String taxName) {
+        this.taxName = taxName;
     }
 
     public Double getPreviousTaxPercent() {
@@ -59,12 +64,30 @@ public class TaxDTO {
         this.taxAmount = taxAmount;
     }
 
+    public String getApplicableOn() {
+        return applicableOn;
+    }
+
+    public void setApplicableOn(String applicableOn) {
+        this.applicableOn = applicableOn;
+    }
+
+    public Double getApplicableOnAmount() {
+        return applicableOnAmount;
+    }
+
+    public void setApplicableOnAmount(Double applicableOnAmount) {
+        this.applicableOnAmount = applicableOnAmount;
+    }
+
     @Override
     public String toString() {
         return "TaxDTO{" +
                 "id=" + id +
-                ", tax=" + tax +
+                ", taxName='" + taxName + '\'' +
                 ", previousTaxPercent=" + previousTaxPercent +
+                ", applicableOn='" + applicableOn + '\'' +
+                ", applicableOnAmount=" + applicableOnAmount +
                 ", taxAmount=" + taxAmount +
                 '}';
     }

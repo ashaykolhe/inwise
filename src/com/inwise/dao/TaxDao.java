@@ -26,7 +26,7 @@ public class TaxDao extends BaseDao<Tax,Integer>{
      }
     @Override
        public List<Tax> listAll() {
-           return    sessionProvider.get().createQuery("from Tax ORDER BY id DESC").list();
+           return    sessionProvider.get().createQuery("from Tax").list();
        }
 
 }
