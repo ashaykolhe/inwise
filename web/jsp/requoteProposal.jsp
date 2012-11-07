@@ -128,7 +128,7 @@ function calculateBalance(p,i){
 $(document).ready(function(){
 
     $('.removeValue').attr("value","");
-   
+
     $("#reQuote").click(function(){
         var numeric = /^[0-9]+$/;
         var count=$('#family #tabletr').length;
@@ -161,6 +161,38 @@ $(document).ready(function(){
         }   //end of for
         return true;
     });
+    $("#covertToOrder").click(function(){
+         var numeric = /^[0-9]+$/;
+         var count=$('#family #tabletr').length;
+         if($('#customerName').attr("value")==""){
+             alert("please select Customer Name");
+             $('#customerName').focus();
+             return false;
+         }else if($('#createDate').attr("value").trim()==""){
+             $('#createDate').focus();
+             alert("please select a date");
+             return false;
+
+         }
+         for(var i=0;i<count;i++){
+
+
+
+                   if($('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(2)').attr("value").trim()=="0"){
+                     $('#family #tabletr:eq('+i+') input:eq(2)').focus();
+                     $('#family #tabletr:eq('+i+') input:eq(2)').attr("value","");
+                     alert("please enter quantity");
+                     return false;
+                 } else if($('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="" || $('#family #tabletr:eq('+i+') input:eq(3)').attr("value").trim()=="0"){
+                     $('#family #tabletr:eq('+i+') input:eq(1)').focus();
+                     $('#family #tabletr:eq('+i+') input:eq(1)').attr("value","");
+                     alert("please enter  rate");
+                     return false;
+                 }
+
+         }   //end of for
+         return true;
+     });
 
 
 });
@@ -284,7 +316,7 @@ $(document).ready(function(){
                 <td align="left">&nbsp;</td>
                 <td align="left" colspan="2"><div align="left" style="margin-left:20px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <s:submit name="reQuote" value="Requote" class="buttons" id="reQuote"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                   <s:submit name="convertToOrder" value="Covert To Order" class="buttonbig"/>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   <s:submit name="convertToOrder" value="Covert To Order" id="covertToOrder" class="buttonbig"/>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    <input type="reset"  value="Reset" name="reset" class="buttons"  style="width:80px" />
                 </div></td>
                 <td width="34%" align="left">&nbsp;</td>

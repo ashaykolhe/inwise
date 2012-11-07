@@ -61,7 +61,7 @@
    <table class="second_table"  ><tr><td>
     <d:table name="userlst" id="user1" pagesize="10" class="disp" requestURI="/User.action">
     <d:column property="username" title="User Name"  />
-       <d:column property="dep" title="Department"  />
+       <d:column property="name" title="Name"  />
        <d:column property="empId" title="Employee Id"  />
        <d:column property="role.name" title="Role"  />
         <d:column title="Update" >

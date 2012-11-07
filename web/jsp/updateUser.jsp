@@ -8,9 +8,10 @@
     <%@ include file="/includes/_taglibInclude.jsp" %>
     <%@page import="java.util.*" %>
     <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+   
      <link rel="stylesheet" type="text/css" href="css/steps.css"/>
-
+   
+      <script src="js/popup.js" type="text/javascript"></script>
     <script type="text/javascript">
          var rolename;
        var availableTags;
@@ -149,7 +150,7 @@
     //Click the button event!
     $("#rolebutton").click(function(){
     //centering with css
-
+    
     centerPopup();
     //load popup
 
@@ -354,7 +355,7 @@
     <td  colspan="2" align="left" ><div ><s:submit name="updateUser" value="Update" class="buttons" id="updateusername1"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
     <s:reset name="reset" value="Reset" class="buttons"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
     <s:submit name="cancel" value="Cancel" class="buttons"></s:submit></div>
-        <s:hidden name="id"  value="role.id"/></td></tr>
+
     </td></tr>
 
 

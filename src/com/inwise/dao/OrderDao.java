@@ -44,6 +44,7 @@ public class OrderDao extends BaseDao<Order,Integer> {
         return custNameIdList;
     }
 
+   
   /*-----------------  this method is for getting order nos for those advance is made-------------*/
     public List<Object> getOrderForPrint(Integer id)
     {

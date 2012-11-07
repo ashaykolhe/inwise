@@ -124,13 +124,14 @@ $(document).ready(function()
 %>
 
 <s:layout-render name="/layout/_base.jsp">
-    <s:layout-component name="left-menu">
+   <s:layout-component name="left-menu">
 
                  <ul>
                           <li>&nbsp;</li>
                       <li class="left_menu_heading">Order</li>
                      <li style="margin-top:35px">
-                               <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                                         <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="proformaLink">Create Proforma Invoice</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
                   </ul>
 

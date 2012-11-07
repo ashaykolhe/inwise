@@ -42,5 +42,6 @@
         <mapping class="com.inwise.pojo.ProposalDetail" />
         <mapping class="com.inwise.pojo.CompanyInfo"/>
         <mapping class="com.inwise.pojo.TermOrder"/>
+        <mapping class="com.inwise.pojo.ProformaInvoice"/>
     </session-factory>
 </hibernate-configuration>

@@ -4,14 +4,14 @@ import com.inwise.pojo.Order;
 
 import net.sourceforge.stripes.action.*;
 import com.inwise.pojo.*;
-import com.inwise.dao.OrderDao;
-import com.inwise.dao.AdvanceDao;
-import com.inwise.dao.PaymentModeDao;
-import com.inwise.dao.CustomerDao;
+import com.inwise.dao.*;
 import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 
 /**
@@ -26,10 +26,12 @@ public class AdvanceActionBean extends BaseActionBean
 {
     private static final String ADVANCE="jsp/advance.jsp";
     private static final String ADDADVANCE="jsp/addAdvance.jsp";
+     private static final String PROFORMAINVOICE="jsp/proformaInvoice.jsp";
     private static final String ADVANCERECEIPT="jsp/receipt/advanceReceipt.jsp";
     @Inject
     AdvanceDao advanceDao;
-
+     @Inject
+    ProformaInvoiceDao proformaDao;
     @Inject
     PaymentModeDao paymentModeDao;
 
@@ -38,22 +40,33 @@ public class AdvanceActionBean extends BaseActionBean
 
     @Inject
     OrderDao orderDao;
-
+     private ProformaInvoice proforma;
     private Advance advance;
     private boolean popup;
     private List<PaymentMode> paymentModeList=new ArrayList<PaymentMode>();
-
+     String alert;
     private String checkAdvanceMade;
     private Double total;
     private Integer id1;
     private String id2;
     private Customer cust;
     private Order o;
+    @Inject
+    CompanyDao companyDao;
 
+    private CompanyInfo companyInfo;
 
     List<Object> custNameIdList;
     List<Order> orderNoList;
     List<OrderDetail> customerOrderList;
+
+    public ProformaInvoice getProforma() {
+        return proforma;
+    }
+
+    public void setProforma(ProformaInvoice proforma) {
+        this.proforma = proforma;
+    }
 
     public AdvanceDao getAdvanceDao() {
         return advanceDao;
@@ -175,6 +188,22 @@ public class AdvanceActionBean extends BaseActionBean
         this.customerOrderList = customerOrderList;
     }
 
+    public CompanyInfo getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(CompanyInfo companyInfo) {
+        this.companyInfo = companyInfo;
+    }
+
+    public String getAlert() {
+        return alert;
+    }
+
+    public void setAlert(String alert) {
+        this.alert = alert;
+    }
+
     public Resolution advanceLink()
     {
         System.out.println("in advance link resolution");
@@ -282,6 +311,26 @@ public class AdvanceActionBean extends BaseActionBean
        System.out.println("advance popup resoltuin");
        advance = advanceDao.latestAdvanceReceipt();
        System.out.println(advance);
+        companyInfo=companyDao.findByLastUpdate();
+
+        if(companyInfo!=null){
+            FileOutputStream fos =null;
+            try{
+                byte[] imageBytes=companyInfo.getCompLogo();
+                InputStream is = new ByteArrayInputStream(imageBytes);
+                String filename="companyLogo.jpg";
+                fos = new FileOutputStream("C:\\" + filename);
+                int b = 0;
+                while ((b = is.read()) != -1)
+                {
+                    fos.write(b);
+                }
+                fos.flush();
+                    fos.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
        return new ForwardResolution(ADVANCERECEIPT);
    }
 
@@ -290,10 +339,92 @@ public class AdvanceActionBean extends BaseActionBean
        System.out.println("advance popup resoltuin");
        advance = advanceDao.find(id);
        System.out.println(advance);
+        companyInfo=companyDao.findByLastUpdate();
+
+        if(companyInfo!=null){
+            FileOutputStream fos =null;
+            try{
+                byte[] imageBytes=companyInfo.getCompLogo();
+                InputStream is = new ByteArrayInputStream(imageBytes);
+                String filename="companyLogo.jpg";
+                fos = new FileOutputStream("C:\\" + filename);
+                int b = 0;
+                while ((b = is.read()) != -1)
+                {
+                    fos.write(b);
+                }
+                fos.flush();
+                    fos.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
        return new ForwardResolution(ADVANCERECEIPT);
    }
 
     public Resolution cancel(){
         return new RedirectResolution(OrderActionBean.class);
     }
+    /* public Resolution proformaLink(){
+          paymentModeList=paymentModeDao.listAll();
+        System.out.println(paymentModeList);
+        custNameIdList=orderDao.getCustomerForAdvance();
+          customerList=customerDao.listAll();
+        productList=productDao.listAll();
+        return new ForwardResolution(PROFORMAINVOICE);
+    }
+     public Resolution getOrderNumbersForProforma()
+    {
+        custNameIdList=orderDao.getCustomerForAdvance();
+        paymentModeList=paymentModeDao.listAll();
+       System.out.println("iiiiiiiiiddddddddddd"+id1);
+       orderNoList=orderDao.getCustomerOrderNo(id1);
+        cust=customerDao.find(id1);
+
+        return new ForwardResolution(PROFORMAINVOICE);
+    }
+    public Resolution getCustomerOrderForProforma()
+    {
+
+        total=0.0;
+        custNameIdList=orderDao.getCustomerForAdvance();
+        paymentModeList=paymentModeDao.listAll();
+        o=orderDao.findAOrderByOrderNo(id2,id1);
+
+        setCust(o.getCustomer());
+
+
+        if(advanceDao.advanceMadeOrNot(o.getId()))
+        {
+           checkAdvanceMade="yes";
+            getContext().getMessages().add(new SimpleMessage("Advance is already made"));
+        }
+        else
+        {
+                customerOrderList=o.getOrderDetail();
+                Iterator<OrderDetail> itr=customerOrderList.iterator();
+                while (itr.hasNext())
+               {
+                   OrderDetail temp=itr.next();
+                   total=total+temp.getOrderedQuantity()*temp.getCost();
+
+               }
+        }
+         orderNoList=orderDao.getCustomerOrderNo(cust.getId());
+
+        return new ForwardResolution(PROFORMAINVOICE);
+    }
+
+ public Resolution addProforma(){
+
+     System.out.println("proforma");
+      cust=customerDao.find(id1);
+     custNameIdList=orderDao.getCustomerForAdvance();
+      o=orderDao.findAOrderByOrderNo(id2,id1);
+     proforma.setCustomer(o.getCustomer());
+   proforma.setOrder(o);
+  alert="Yes";
+      System.out.println("proforma"+getProforma());
+        return new RedirectResolution(AdvanceActionBean.class,"proformaLink").addParameter("Yes",alert);
+ }*/
 }

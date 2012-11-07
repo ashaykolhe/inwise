@@ -21,11 +21,11 @@ public class CompanyActionBean extends BaseActionBean
 {
     @Inject
     CompanyDao companyDao;
-    private static final String ADDCOMPANY="jsp/addCompany.jsp";
+
     private CompanyInfo companyInfo;
 
     private FileBean logo;
-
+    private static final String ADDCOMPANY="jsp/addCompany.jsp";
     public FileBean getLogo() {
         return logo;
     }
@@ -46,20 +46,28 @@ public class CompanyActionBean extends BaseActionBean
     public Resolution pre()
     {
           companyInfo=companyDao.findByLastUpdate();
-  /*      System.out.println("companyInfoimage"+companyInfo.getCompLogo());
+         
         if(companyInfo!=null){
+            FileOutputStream fos =null;
             try{
-                 byte[] imageBytes=null;
-                InputStream in = new ByteArrayInputStream(imageBytes);
-         ImageIO.read(in);
-       *//*          ByteArrayOutputStream out = new ByteArrayOutputStream();
-       ImageIO.write("".toString(), "PNG" *//**//* for instance *//**//*, out);*//*
-       // imageBytes = out.toByteArray();
-}catch(Exception e){
-e.printStackTrace();
-}
-       //     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(c);
-        }*/
+                byte[] imageBytes=companyInfo.getCompLogo();
+                InputStream is = new ByteArrayInputStream(imageBytes);
+                String filename="companyLogo.jpg";
+                String relativePath="/images/" + filename;
+
+                
+                fos = new FileOutputStream(getContext().getRequest().getRealPath("/")+"/images/"  + filename);
+                int b = 0;
+                while ((b = is.read()) != -1)
+                {
+                    fos.write(b);
+                }
+                fos.flush();
+                    fos.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
         System.out.println(companyInfo);
         return new ForwardResolution(ADDCOMPANY);
     }
