@@ -84,9 +84,9 @@
     <tr><td align="left" class="pageheading" valign="top">
       <div class="sub_heading" >Change Password</div>
     </td></tr>
-  <%--  <tr valign="top"><td align="center">&nbsp;
+    <tr valign="top"><td align="center">&nbsp;
     <div class="msg"><s:messages/></div>
-    </td></tr>--%>
+    </td></tr>
     </table>
     <table class="second_table"  >
     <tr>

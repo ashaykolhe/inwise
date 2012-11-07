@@ -8,9 +8,10 @@
     <%@ include file="/includes/_taglibInclude.jsp" %>
     <%@page import="java.util.*" %>
     <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+   
      <link rel="stylesheet" type="text/css" href="css/steps.css"/>
-
+   
+      <script src="js/popup.js" type="text/javascript"></script>
     <script type="text/javascript">
          var rolename;
        var availableTags;
@@ -149,7 +150,7 @@
     //Click the button event!
     $("#rolebutton").click(function(){
     //centering with css
-
+    
     centerPopup();
     //load popup
 
@@ -232,7 +233,7 @@
       <div class="sub_heading" style="height:40px">Update User</div>
        
     </td></tr>
-    </table>                <s:form beanclass="com.inwise.action.UserActionBean">
+    </table>               <%-- <s:form beanclass="com.inwise.action.UserActionBean">
         <table class="second_table"  >
 
    <tr>
@@ -244,7 +245,7 @@
             <s:text name="name" id="userdropdown" class="textbox"></s:text>
         <s:hidden name="id" value="${actionBean.user.user_id}" />
 
-    <%--<s:select name="id" id="userdropdown" class="dropdown">
+    --%><%--<s:select name="id" id="userdropdown" class="dropdown">
 
     <option value="">---Select User---</option>
     <c:forEach items="${userlst}" var="userloop" varStatus="loop" >
@@ -260,15 +261,15 @@
 
     </c:forEach>
 
-    </s:select>--%>
+    </s:select>--%><%--
     </td>
     <s:errors field="user.id"/>
     <td width="53%" colspan="2" align="left" valign="top" > <s:submit name="userlist" class="buttons" id="getUserBtn" value="Get"/></td>
-    </tr>      </s:form>
+    </tr>      </s:form>--%>
     <c:if test="${actionBean.user!=null}">
     <s:form beanclass="com.inwise.action.UserActionBean">
 
-
+     <table class="second_table"  >
 
        <tr>
     <td width="24%" align="right"> <div align="right" style="margin-left: 2px;" class="labels">Name<span style="color:#FF0000"> *</span></div>     </td>
@@ -354,7 +355,7 @@
     <td  colspan="2" align="left" ><div ><s:submit name="updateUser" value="Update" class="buttons" id="updateusername1"></s:submit>&nbsp;&nbsp;&nbsp;&nbsp;
     <s:reset name="reset" value="Reset" class="buttons"></s:reset>   &nbsp;&nbsp;&nbsp;&nbsp;
     <s:submit name="cancel" value="Cancel" class="buttons"></s:submit></div>
-        <s:hidden name="id"  value="role.id"/></td></tr>
+
     </td></tr>
 
 

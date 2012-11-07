@@ -186,7 +186,7 @@ public class PrintActionBean extends BaseActionBean
 
     public Resolution printInvoiceLink()
     {
-        System.out.println("in print invoice resolution");
+
         custNameIdList=orderDao.getCustomerForAdvance();
         return new ForwardResolution(PRINTINVOICE);
     }
@@ -194,8 +194,11 @@ public class PrintActionBean extends BaseActionBean
     public Resolution getOrderDropDown()
     {
         custNameIdList=orderDao.getCustomerForAdvance();
+        System.out.println("in print invoice resolution"+custNameIdList);
         orderNoList=orderDao.getCustomerOrderNo(id);
+         System.out.println("in print invoice resolution2222222222222"+orderNoList);
         cust=customerDao.find(id);
+         System.out.println("in print invoice resolution22222222222223333333"+cust);
         showdropdown="yes";
        return new ForwardResolution(PRINTINVOICE);
     }
@@ -211,6 +214,8 @@ public class PrintActionBean extends BaseActionBean
         {
             setVisibleAdvanceTable="yes";
             System.out.println(orderFromAdvance.size());
+        }   else{
+               setVisibleAdvanceTable="alert";
         }
         getContext().getMessages().add(new SimpleMessage(orderFromAdvance.size()+"  Items are found all are displying"));
         cust=customerDao.find(id);

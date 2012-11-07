@@ -27,6 +27,7 @@ public class OrderActionBean extends BaseActionBean{
     private static final String UPDATEORDER="jsp/updateOrder.jsp";
     private static final String DELETEORDER="jsp/deleteOrder.jsp";
      private static final String VIEWORDER="jsp/viewOrder.jsp";
+        private static final String PROFORMAINVOICE="jsp/proformaInvoice.jsp";
     @Inject
     OrderDao orderDao;
 
@@ -36,8 +37,10 @@ public class OrderActionBean extends BaseActionBean{
     @Inject
     ProductDao productDao;
      private Proposal proposal;
+        private ProformaInvoice proforma;
     private Order order;
     private String customerOrderNumber;
+    Integer customerid;
     private List<Customer> customerList=new ArrayList<Customer>();
     private List<Product> productList=new ArrayList<Product>();
     private List<Address> addressList=new ArrayList<Address>();
@@ -46,6 +49,23 @@ public class OrderActionBean extends BaseActionBean{
     private int shipmentToAddressId;
     private Integer invoicenum;
        private String hiddenvalue;
+       private Double total;
+
+    public ProformaInvoice getProforma() {
+        return proforma;
+    }
+
+    public void setProforma(ProformaInvoice proforma) {
+        this.proforma = proforma;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
 
     public Proposal getProposal() {
         return proposal;
@@ -135,6 +155,14 @@ public class OrderActionBean extends BaseActionBean{
         this.customerOrderNumber = customerOrderNumber;
     }
 
+    public Integer getCustomerid() {
+        return customerid;
+    }
+
+    public void setCustomerid(Integer customerid) {
+        this.customerid = customerid;
+    }
+
     @DefaultHandler
     public Resolution pre(){
         customerList=customerDao.listAll();
@@ -150,6 +178,7 @@ public class OrderActionBean extends BaseActionBean{
     }
 
     public Resolution addOrder(){
+        System.out.println("hello"+order);
         orderDao.save(order);
         return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
     }
@@ -158,8 +187,6 @@ public class OrderActionBean extends BaseActionBean{
         order=orderDao.find(id);
         addressList=order.getCustomer().getAddressList();
         orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
-        System.out.println("oooooooooooo"+order);
-      
         return updateOrderLink();
     }
 
@@ -239,7 +266,7 @@ public class OrderActionBean extends BaseActionBean{
 
     public Resolution customerOrderNoAlreadyPresent()
     {
-        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber));
+        return new JavaScriptResolution(orderDao.customerOrderNoAlreadyPresent(customerOrderNumber,customerid));
     }
 
     public Resolution deleteOrderLink(){
@@ -274,5 +301,32 @@ public class OrderActionBean extends BaseActionBean{
         orderlst=orderDao.getOrderList();
         return new ForwardResolution(VIEWORDER);
     }
+     public Resolution proformaLink(){
+        customerList=customerDao.listAll();
+        productList=productDao.listAll(); 
+        return new ForwardResolution(PROFORMAINVOICE);
+    }
+    public Resolution getOrdersProforma(){
+        total=0.0;
+        order=orderDao.find(id);
+        List test;
+         test=order.getOrderDetail();
+                Iterator<OrderDetail> itr=test.iterator();
+                while (itr.hasNext())
+               {
+                   OrderDetail temp=itr.next();
+                   total=total+temp.getOrderedQuantity()*temp.getCost();
 
+               }
+        addressList=order.getCustomer().getAddressList();
+        orderlst=orderDao.getCustomerOrderNo(order.getCustomer().getId());
+        return proformaLink();
+    }
+    public Resolution addProforma(){
+
+     System.out.println("proforma");
+
+      System.out.println("proforma"+getProforma());
+        return new RedirectResolution(OrderActionBean.class,"proformaLink");
+}
 }

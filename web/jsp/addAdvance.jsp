@@ -90,7 +90,7 @@ $(document).ready(function()
             }
         });
 
-    /*$('#advancepaymode').change(function(){
+    $('#advancepaymode').change(function(){
            if($('#advancepaymode').val()=="cheque"||$('#advancepaymode').val()=="dd")
            {
 
@@ -103,7 +103,7 @@ $(document).ready(function()
                $('#advancechequeddno').hide();
             }
 
-        });*/
+        });
     $('#selectorderno').change(function()
         {
             this.form.action='advance?getCustomerOrder';
@@ -124,13 +124,14 @@ $(document).ready(function()
 %>
 
 <s:layout-render name="/layout/_base.jsp">
-    <s:layout-component name="left-menu">
+   <s:layout-component name="left-menu">
 
                  <ul>
                           <li>&nbsp;</li>
                       <li class="left_menu_heading">Order</li>
                      <li style="margin-top:35px">
-                               <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                                         <s:link beanclass="com.inwise.action.OrderActionBean" event="viewOrderLink">View</s:link></li>
+                     <li><s:link beanclass="com.inwise.action.OrderActionBean" event="proformaLink">Create Proforma Invoice</s:link></li>
                                                    <li><s:link beanclass="com.inwise.action.AdvanceActionBean" event="advanceLink">Advance Payment</s:link></li>
                   </ul>
 
@@ -227,14 +228,14 @@ $(document).ready(function()
                            <td class="foreach_table_firstth"><div align="right"><strong><span class="foreach_table_div" >${loop.index+1}</span></strong></div></td>
                            <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productName}</span></strong></div></td>
                             <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.orderedQuantity}</span></strong></div></td>
-                           <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productCost}</span></strong></div></td>
-                            <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.product.productCost*orders.orderedQuantity}</span></strong></div></td>
+                           <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.cost}</span></strong></div></td>
+                            <td class="foreach_table_th"><div align="right"><strong><span class="foreach_table_div">${orders.cost*orders.orderedQuantity}</span></strong></div></td>
                    </tr>
                     </c:forEach>
                    <tr>
                             <td colspan="3" style="border-right:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" ></span></strong></div></td>
-                            <td width="5%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Total</span></strong></div></td>
-                            <td width="10%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="center"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
+                            <td width="5%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="left"><strong><span style="color:#3B3131;font-size:13px;font-weight:bold;" >Total</span></strong></div></td>
+                            <td width="10%" style="border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;"><div align="right"><strong><span style="color:#3B3131;font-size:13px;">${actionBean.total}</span></strong></div></td>
                    </tr>
                 </table>
 

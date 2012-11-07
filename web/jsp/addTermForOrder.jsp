@@ -21,8 +21,8 @@ return false;
     </script>
 <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<s:useActionBean beanclass="com.inwise.action.TermActionBean" var="termslist" event="termsPageRedirect"></s:useActionBean>
-<% request.setAttribute("term",termslist.getTerm());
+<s:useActionBean beanclass="com.inwise.action.TermActionBean" var="termslist" event="termsLinkForOrder"></s:useActionBean>
+<% request.setAttribute("termorder",termslist.getTermorder());
 %>
 <s:layout-render name="/layout/_base.jsp">
        <s:layout-component name="left-menu">
@@ -44,20 +44,18 @@ return false;
 <table class="heading_table">
 
 <tr><td align="left" class="pageheading" valign="top">
-  <div class="sub_heading" >Add Terms And Condition For Invoice</div>
+  <div class="sub_heading" >Add Terms And Condition For Order</div>
     <div align="right" ><s:link beanclass="com.inwise.action.TermActionBean" event="termsPageRedirect" class="pageheading_link">For Invoice</s:link>
         &nbsp;| &nbsp;<s:link beanclass="com.inwise.action.TermActionBean" event="termsLinkForOrder" class="pageheading_link">For Order</s:link>
-     
-    </div>  <div class="msg"><s:messages/></div>
+   
+    </div><div class="msg"><s:messages/></div>
 </td></tr>
-
-
-
+  
 </table>
 <table class="second_table"  >
 <tr>
 <td align="left">
-<table width="100%" border="0" cellspacing="0" bordercolor="#FCFCFC"> 
+<table width="100%" border="0" cellspacing="1" bordercolor="#FCFCFC">
 <tr>
 <td colspan="2">
 <div align="left" ><b>Please Enter Terms And Condition:</b></div>
@@ -68,7 +66,7 @@ return false;
 <td width="33" align="right" valign="top">
 <div align="right" ></div>
 </td>
-<td width="717"><textarea name="term.firstTerm" id="test1" style="height:250px;width:800px;resize:none;" >${term.firstTerm}</textarea></td>
+<td width="717"><textarea name="termorder.firstTerm" id="test1" style="height:250px;width:800px;resize:none;" >${termorder.firstTerm}</textarea></td>
 </tr>
 <%--
 <tr>
@@ -92,13 +90,13 @@ return false;
 --%>
 
 
-<tr ><s:hidden name="term.id" ></s:hidden>
+<tr ><s:hidden name="termorder.id" ></s:hidden>
 <td >&nbsp;</td>
 <td  align="center">
 
 <div align="left" style="margin-left:80px;">
 
-<s:submit name="saveTerm" value="Add" id="add" class="buttons"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
+<s:submit name="saveTermForOrder" value="Add" id="add" class="buttons"></s:submit> &nbsp;&nbsp;&nbsp;&nbsp;
 <s:button name="Cancel" value="Cancel" class="buttons" onclick="javascript:window.close();"></s:button></div>
 </td>
 </tr>

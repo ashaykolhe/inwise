@@ -238,9 +238,9 @@ $(document).ready(function()
            </tr>
          </table>--%>
 
-
-                <c:if test="${actionBean.setVisibleAdvanceTable!=null}">
-                <table width="77%" cellspacing="1">
+               <c:set var = "TR1" value="yes"/>
+                <c:if test="${actionBean.setVisibleAdvanceTable eq TR1}">
+                <table width="87%" cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
                             <d:table name="orederListFromAdvance" id="order" pagesize="10" class="disp" requestURI="/print">
@@ -354,8 +354,12 @@ $(document).ready(function()
 
             </c:if>
 
-
         </s:form>
-
+         <c:set var = "TR1" value="alert"/>
+                <c:if test="${actionBean.setVisibleAdvanceTable eq TR1}">
+                    <script type="text/javascript">
+                         alert("Advance payment has not done for selected customer.");
+                    </script>
+                                        </c:if>
         </s:layout-component>
 </s:layout-render>

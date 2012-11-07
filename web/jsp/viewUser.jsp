@@ -53,13 +53,15 @@
                                 &nbsp;| &nbsp;          <s:link beanclass="com.inwise.action.UserActionBean" event="userPermissionLink" class="pageheading_link">User Permission</s:link>
     </div>
     </td></tr>
+         <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>
     </table>
     <s:form beanclass="com.inwise.action.UserActionBean">
 
    <table class="second_table"  ><tr><td>
     <d:table name="userlst" id="user1" pagesize="10" class="disp" requestURI="/User.action">
     <d:column property="username" title="User Name"  />
-       <d:column property="dep" title="Department"  />
+       <d:column property="name" title="Name"  />
        <d:column property="empId" title="Employee Id"  />
        <d:column property="role.name" title="Role"  />
         <d:column title="Update" >

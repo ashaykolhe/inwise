@@ -90,6 +90,7 @@ public class ProductActionBean extends BaseActionBean{
             logger.info("created product: "+product);
 
               productDao.save(getProduct());
+             getContext().getMessages().add(new LocalizableMessage("/Product.action.add.success"));
           return new RedirectResolution(ProductActionBean.class,"viewProductLink");
       }
     public Resolution productAlreadyPresent()
@@ -114,6 +115,7 @@ public class ProductActionBean extends BaseActionBean{
    public Resolution updateProduct()
    {
        productDao.save(product);
+             getContext().getMessages().add(new LocalizableMessage("/Product.action.update.success"));
      return new RedirectResolution(ProductActionBean.class,"viewProductLink");
    }
     public Resolution deleteProductLink()
@@ -124,6 +126,7 @@ public class ProductActionBean extends BaseActionBean{
      public Resolution deleteProduct()
      {
          productDao.remove(id);
+               getContext().getMessages().add(new LocalizableMessage("/Product.action.delete.success"));
          return new RedirectResolution(ProductActionBean.class,"viewProductLink");
      }
       public Resolution viewProductLink()

@@ -37,7 +37,7 @@ To change this template use File | Settings | File Templates.
             $('#customerName').focus();
             return false;
         }
-        $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim()}, function (data) {
+        $.get('order?customerOrderNoAlreadyPresent', {customerOrderNumber:$("#customerOrderNo").val().trim(),customerid:$("#customerid").val().trim()}, function (data) {
             var flag=eval(data);
             if(flag)
             {
@@ -181,7 +181,7 @@ To change this template use File | Settings | File Templates.
                 <td width="22%" align="left" valign="top">
                     <div align="left">
                         <s:text name="ordername"  readonly="readonly"  id="customerName" class="textbox" value="${actionBean.proposal.customer.name}"></s:text>
-                        <s:hidden name="order.customer.id"   value="${actionBean.proposal.customer.id}"/>
+                        <s:hidden name="order.customer.id"  id="customerid" value="${actionBean.proposal.customer.id}"/>
                          <s:hidden name="order.proposal.id"   value="${actionBean.proposal.id}"/>
                     </div>
                 </td>

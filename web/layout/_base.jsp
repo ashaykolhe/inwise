@@ -2,6 +2,8 @@
 <%@ page import="java.text.DateFormat" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="com.inwise.dao.UserDao" %>
+<%@ page import="com.inwise.guice.InjectorFactory" %>
 
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -59,8 +61,13 @@
 
 </s:layout-component>
     <table width="100%" height="100%" border="0" align="center"  style="background-color:white;">
+        <%
+                        Integer iduser=(Integer)request.getSession().getAttribute("user");
+                        String Name= InjectorFactory.getInjector().getInstance(UserDao.class).findById(iduser).getUsername();
+
+                    %>
         <tr >
-            <td height="30" colspan="2" align="right"><s:layout-component name="header"><div align="right" style="margin-right: 5px;color:black;font-size:10px;font-family:sans-serif; font-weight: bold;">WELCOME
+            <td height="30" colspan="2" align="right"><s:layout-component name="header"><div align="right" style="margin-right: 5px;color:black;font-size:10px;font-family:sans-serif; font-weight: bold;">WELCOME <%= Name.toUpperCase() %>
                 <s:link beanclass="com.inwise.action.LoginActionBean" event="logout" class="links" style="font-size:11px;">(Logout)</s:link></a></div>
                 <div align="right" style="margin-right:5px;color:black;" class="labels">
                     <%	Date date = Calendar.getInstance().getTime();

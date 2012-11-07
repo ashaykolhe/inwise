@@ -258,8 +258,8 @@ $(document).ready(function(){
     <tr><td align="left" class="pageheading" valign="top">
       <div class="sub_heading" >Create Proposal</div>
     </td></tr>
-   <%-- <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
-    </td></tr>--%>
+    <tr valign="top"><td align="center"><div class="msg"><s:messages/></div>
+    </td></tr>
     </table>
      <table class="second_table"  ><tr><td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -353,6 +353,14 @@ $(document).ready(function(){
     <div style="text-align:right; cursor: pointer;" class="links"><span style="vertical-align: top;text-align: left; " class="addRow" id="add" >Add row</span></div>
     </td></tr>
                 </div></td>
+            </tr>
+              <tr>
+                <td align="left"><div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Email</div>
+                    </div></td>
+                <td align="left" ><s:checkbox name="emailbox"/></td>
+                <td align="left">&nbsp;</td>
+                <td align="left">&nbsp;</td>
             </tr>
             <tr>
                 <td align="left">&nbsp;</td>

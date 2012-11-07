@@ -43,6 +43,15 @@ public class ProposalActionBean extends BaseActionBean{
     private static final String REQUOTEPROPOSAL="jsp/requoteProposal.jsp";
      private static final String CONVERTTOORDER="jsp/covertToOrder.jsp";
      private List<Address> addressList=new ArrayList<Address>();
+      private boolean emailbox;
+
+    public boolean isEmailbox() {
+        return emailbox;
+    }
+
+    public void setEmailbox(boolean emailbox) {
+        this.emailbox = emailbox;
+    }
 
     public Order getOrder() {
         return order;
@@ -116,12 +125,13 @@ public class ProposalActionBean extends BaseActionBean{
         return new ForwardResolution(ADDPROPOSAL);
     }
      public Resolution redirectProposalLink(){
+          getContext().getMessages().add(new LocalizableMessage("/Proposal.action.add.success"));
 
         return new RedirectResolution(ProposalActionBean.class,"addProposalLink");
     }
     public Resolution addProposal(){
-      
-        ProposalDetail g=null;
+        System.out.println("email"+emailbox);
+       /* ProposalDetail g=null;
         for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
             g=(ProposalDetail)i.next();
             if(g==null){
@@ -135,7 +145,7 @@ public class ProposalActionBean extends BaseActionBean{
         }
 
         proposalDao.save(proposal);
-
+*/
        // proposalDao.sendGeneralMail(saved.getId());
         return new RedirectResolution(ProposalActionBean.class,"previewLink");
     }
@@ -160,7 +170,8 @@ public class ProposalActionBean extends BaseActionBean{
         }
          Proposal saved=  proposalDao.save(proposal);
 
-        proposalDao.sendGeneralMail(saved.getId());
+       // proposalDao.sendGeneralMail(saved.getId());
+             getContext().getMessages().add(new LocalizableMessage("/Proposal.action.add.success"));
          return new RedirectResolution(ProposalActionBean.class,"previewLink");
     }
    public Resolution previewLink(){
@@ -176,23 +187,11 @@ public class ProposalActionBean extends BaseActionBean{
     }
     public Resolution getProposalList(){
        // proposallst=proposalDao.listAll();
-            String value=null;  
+        
                proposal=proposalDao.find(id);
-            ProposalDetail po=null;
-        for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
-            po=(ProposalDetail)i.next();
-            value= po.getRequoteStatus();
-             if(value.equals("final")){
-                   break;
-                 }
-        }
-               
-        if(value.equals("final")){
-               alert="alertmsg";
-             return new ForwardResolution(ProposalActionBean.class,"viewProposalLink");
-        } else{
+
         return new ForwardResolution(REQUOTEPROPOSAL);
-        }
+        
     }
 
     public Resolution reQuote(){
@@ -261,9 +260,10 @@ public class ProposalActionBean extends BaseActionBean{
            return  new ForwardResolution(CONVERTTOORDER);
     }
     public Resolution addOrder(){
-     
+                 System.out.println("hello"+order);
            orderDao.save(order);
-           return new RedirectResolution(AdvanceActionBean.class,"redirectAdvance");
+            getContext().getMessages().add(new LocalizableMessage("/Order.action.add.success"));
+           return new RedirectResolution(OrderActionBean.class,"viewOrderLink");
        }
 
 }
