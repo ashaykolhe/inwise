@@ -77,7 +77,7 @@
         <tr><td>&nbsp;</td></tr>   <c:set value="dd" var="TRI"/> <c:set value="cheque" var="TR2"/>
      <tr><td align="left"><p align="left">With reference to your PO no. <strong style="text-decoration:underline">${advanceBean.advance.order.proposal.id}</strong>  dated <s:text style="text-decoration:underline;border :none;" name="test" size="8" formatType="date" value="${advanceBean.advance.order.proposal.createDate}" formatPattern="dd/MM/yyyy"/>it is hereby confirmed
          that we have received INR<strong style="text-decoration:underline">  ${advanceBean.advance.amountReceived}</strong>   towards the advance/balance payment through ${advanceBean.advance.paymentMode.mode}.
-        <c:if test="${advanceBean.advance.paymentMode.mode eq TRI or advanceBean.advance.paymentMode.mode eq TR2}">Cheque/DD No${advanceBean.advance.chequeOrDDNo}</c:if>
+        <c:if test="${advanceBean.advance.paymentMode.mode eq TRI or advanceBean.advance.paymentMode.mode eq TR2}"> No${advanceBean.advance.chequeOrDDNo}</c:if>
      </p></td></tr>
 <tr><td><p align="left">We thank you for the same and look forward to a long and mutually benefitting relationship.</p></td></tr>
     <tr><td>&nbsp;</td></tr>    

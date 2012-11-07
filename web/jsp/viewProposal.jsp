@@ -55,9 +55,8 @@ else
     </table>
    <table class="second_table"  ><tr><td>
        <%
-
              org.displaytag.decorator.TotalTableDecorator totals = new org.displaytag.decorator.TotalTableDecorator();
-                         totals.setSubtotalLabel("partial amount");
+             totals.setSubtotalLabel("partial amount");
              pageContext.setAttribute("totals", totals);
 
                 %>
@@ -67,16 +66,16 @@ else
                  <d:column property="customer.name" title="Customer"/>
                  <d:column property="createDate" title="Propsoal Date" format="{0,date,yyyy-MM-dd}" sortable="false"/>
                         <c:set var="pro" value="${proposal1.proposalDetail}" scope="request"/>
-                      <d:column title="Re-Quote">
+                      <d:column title="Quotation Revision">
                               <d:table name="pro" id="proposaldetail" class="disp"   requestURI="/proposal" decorator="totals">
 
-                                     <d:column property="requoteno" group="1" title="ReQuote Order"/>
+                                     <d:column property="requoteno" group="1" title="Revision #"/>
                                      <d:column property="product.productName" title="Product Name"/>
                                      <d:column property="quantity" title="Quantity"/>
                                      <d:column property="cost" title="Rate"/>
                                      <d:column property="amount" title="Amount" total="true" />
                               </d:table> </d:column>
-                                               <d:column  title="Re-Quote">
+                                               <d:column  title="Revise">
                                         <table>             <c:choose>
                             <c:when test="${proposal1.requoteStatus eq 'final'}">
                              <tr>
@@ -96,35 +95,8 @@ else
                        </s:link></td>
                                 </tr>
                             </c:otherwise> </c:choose>   </table> 
-                                                  <%--   <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
-                                <s:param name="id" value="${proposal1.id}"></s:param>
-                                <img src="images/edit-icon.png" />
-                       </s:link>--%>
+
                         </d:column>
-                     <%-- <d:column title="Re-Quote">
-                <table>
-
-                    <c:forEach items="${pro}" var="protest" varStatus="loop" >
-                              <c:choose>
-                            <c:when test="${protest.requoteStatus eq 'final'}">
-                                <tr>
-                                <td> <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList"  >
-                                <s:param name="id" value="${proposal1.id}"></s:param>
-                                <img src="images/edit-icon.png" />
-                       </s:link></td>
-                                </tr>
-                            </c:when> <c:otherwise>
-                              <tr>
-                                <td> <s:link beanclass="com.inwise.action.ProposalActionBean" event="getProposalList1"  >
-                                <s:param name="id" value="${proposal1.id}"></s:param>
-                                <img src="images/edit-icon.png" />
-                       </s:link></td>
-                                </tr>
-                            </c:otherwise> </c:choose>
-                        </c:forEach>
-                </table>
-            </d:column>--%>
-
-             </d:table></td></tr></table>
+                                </d:table></td></tr></table>
 
  </s:form></s:layout-component></s:layout-render>

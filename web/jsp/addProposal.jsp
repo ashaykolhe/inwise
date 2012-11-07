@@ -354,6 +354,14 @@ $(document).ready(function(){
     </td></tr>
                 </div></td>
             </tr>
+              <tr>
+                <td align="left"><div align="left" style="margin-left: 2px;" class="labels">
+                        <div align="right">Email</div>
+                    </div></td>
+                <td align="left" ><s:checkbox name="emailbox"/></td>
+                <td align="left">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+            </tr>
             <tr>
                 <td align="left">&nbsp;</td>
                 <td align="left" colspan="2">&nbsp;</td>

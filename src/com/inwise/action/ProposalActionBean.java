@@ -43,6 +43,15 @@ public class ProposalActionBean extends BaseActionBean{
     private static final String REQUOTEPROPOSAL="jsp/requoteProposal.jsp";
      private static final String CONVERTTOORDER="jsp/covertToOrder.jsp";
      private List<Address> addressList=new ArrayList<Address>();
+      private boolean emailbox;
+
+    public boolean isEmailbox() {
+        return emailbox;
+    }
+
+    public void setEmailbox(boolean emailbox) {
+        this.emailbox = emailbox;
+    }
 
     public Order getOrder() {
         return order;
@@ -121,8 +130,8 @@ public class ProposalActionBean extends BaseActionBean{
         return new RedirectResolution(ProposalActionBean.class,"addProposalLink");
     }
     public Resolution addProposal(){
-      
-        ProposalDetail g=null;
+        System.out.println("email"+emailbox);
+       /* ProposalDetail g=null;
         for(Iterator<ProposalDetail> i=proposal.getProposalDetail().iterator();i.hasNext();){
             g=(ProposalDetail)i.next();
             if(g==null){
@@ -136,7 +145,7 @@ public class ProposalActionBean extends BaseActionBean{
         }
 
         proposalDao.save(proposal);
-
+*/
        // proposalDao.sendGeneralMail(saved.getId());
         return new RedirectResolution(ProposalActionBean.class,"previewLink");
     }
