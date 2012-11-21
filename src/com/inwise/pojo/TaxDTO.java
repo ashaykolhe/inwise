@@ -26,9 +26,6 @@ public class TaxDTO {
     @Column(name = "applicable_on",length = 20)
     private String applicableOn;
 
-    @Column(name = "applicable_on_amount",length = 10,precision = 8)
-    private Double applicableOnAmount;
-
     @Column(name = "tax_amount",length = 10,precision = 8)
     private Double taxAmount;
 
@@ -72,14 +69,6 @@ public class TaxDTO {
         this.applicableOn = applicableOn;
     }
 
-    public Double getApplicableOnAmount() {
-        return applicableOnAmount;
-    }
-
-    public void setApplicableOnAmount(Double applicableOnAmount) {
-        this.applicableOnAmount = applicableOnAmount;
-    }
-
     @Override
     public String toString() {
         return "TaxDTO{" +
@@ -87,7 +76,6 @@ public class TaxDTO {
                 ", taxName='" + taxName + '\'' +
                 ", previousTaxPercent=" + previousTaxPercent +
                 ", applicableOn='" + applicableOn + '\'' +
-                ", applicableOnAmount=" + applicableOnAmount +
                 ", taxAmount=" + taxAmount +
                 '}';
     }

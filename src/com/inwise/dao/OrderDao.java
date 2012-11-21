@@ -157,7 +157,6 @@ public void remove(Integer id) {
     public Boolean checkInvoiceForThisOrderDispatched(Integer orderId){
 
         Double remainingQuantity=(Double)sessionProvider.get().createSQLQuery("select sum(od.remaining_quantity) from order_master o left join order_has_orderdetail ohod on o.id=ohod.order_id left join order_detail od on od.id=ohod.order_detail_id where o.id="+orderId).uniqueResult();
-                System.out.println("aaaa"+remainingQuantity);
         return remainingQuantity==0.0;
     }
     @Transactional

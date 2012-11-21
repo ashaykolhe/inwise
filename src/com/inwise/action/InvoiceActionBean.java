@@ -32,10 +32,13 @@ public class InvoiceActionBean extends BaseActionBean{
     @Inject
     InvoiceNumberDao invoiceNumberDao;
 
+    @Inject TermDao termDao;
 
 
     @Inject
     protected OrderDao orderDao;
+
+    private Term term;
     private String today;
     private List<Invoice> invoicelst;
     private List<Customer> customerlst;
@@ -49,6 +52,14 @@ public class InvoiceActionBean extends BaseActionBean{
     private int in,ad,orid,inid;
     private String hiddenvalue;
     Long invoicenum;
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
+    }
 
     public String getToday() {
         return today;
@@ -211,8 +222,6 @@ public class InvoiceActionBean extends BaseActionBean{
 
     public Resolution addpreview()
     {
-
-
         if(invoice!=null){
             if (invoice.getCreateDate() == null)
             {
@@ -224,14 +233,26 @@ public class InvoiceActionBean extends BaseActionBean{
 
         }
         List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
-        InvoiceDetail idetail=null;
+        
         for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
-            idetail=(InvoiceDetail)i.next();
+            InvoiceDetail idetail=(InvoiceDetail)i.next();
             if(idetail==null){
                 i.remove();
-                continue;
+            }else if(idetail.getProduct()==null){
+                i.remove();
             }
         }
+
+        List<TaxDTO> taxes=invoice.getTaxes();
+        for (Iterator<TaxDTO> taxDTOIterator = taxes.iterator(); taxDTOIterator.hasNext();) {
+            TaxDTO taxDTO = taxDTOIterator.next();
+            if(taxDTO==null){
+                taxDTOIterator.remove();
+            }else if(taxDTO.getApplicableOn()==null){
+                taxDTOIterator.remove();
+            }
+        }
+
         if(invoice.getAmountRemained()==null)
         {
             invoice.setAmountRemained(invoice.getAmountReceived());
@@ -239,12 +260,14 @@ public class InvoiceActionBean extends BaseActionBean{
 
         invoice.setDeleted(0);
         invoice.setInvoiceDetail(invoicedetail);
+        invoice.setTaxes(taxes);
 
 
 
         invoice=invoiceDao.save(invoice);
-        //advanceDao.setAmountRemained(invoice.getAmountRemained(),advance.getOrder().getId());
+        advanceDao.setAmountRemained(invoice.getAmountRemained(),advance.getOrder().getId());
         return new RedirectResolution(InvoiceActionBean.class,"redirectpreview").addParameter("in",invoice.getInvoiceNumber());
+//        return new RedirectResolution(InvoiceActionBean.class);
 
     }
 
@@ -356,7 +379,6 @@ public class InvoiceActionBean extends BaseActionBean{
     {
 
         int no=Integer.parseInt(getContext().getRequest().getParameter("in"));
-        //Integer.parseInt(getContext().getRequest().getParameter("ad"));
 
         invoice=invoiceDao.findByInvoiceNumber(no);
         advance=advanceDao.getAdvancedByOrderId(invoice.getOrder().getId());
@@ -375,7 +397,7 @@ public class InvoiceActionBean extends BaseActionBean{
                 continue;
             }
         }
-
+        term=termDao.findByMaxId();
         return new ForwardResolution("jsp/receipt/InvoicePreviewPage.jsp");
     }
     public Resolution editinvoice()

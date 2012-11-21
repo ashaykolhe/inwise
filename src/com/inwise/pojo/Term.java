@@ -12,21 +12,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "term")
 public class Term {
-     @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
-     @Column(name = "first_term",length = 5000)
-      private String firstTerm;
-
-      @Column(name = "second_term")
-      private String secondTerm;
-
-      @Column(name = "third_term")
-      private String thirdTerm;
-      @Column(name = "forth_term")
-      private String forthTerm;
-
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @Column(name = "terms",length = 5000)
+    private String terms;
 
     public Integer getId() {
         return id;
@@ -36,49 +27,19 @@ public class Term {
         this.id = id;
     }
 
-    public String getFirstTerm() {
-        return firstTerm;
+    public String getTerms() {
+        return terms;
     }
 
-    public void setFirstTerm(String firstTerm) {
-        this.firstTerm = firstTerm;
+    public void setTerms(String terms) {
+        this.terms = terms;
     }
-
-    public String getSecondTerm() {
-        return secondTerm;
-    }
-
-    public void setSecondTerm(String secondTerm) {
-        this.secondTerm = secondTerm;
-    }
-
-    public String getThirdTerm() {
-        return thirdTerm;
-    }
-
-    public void setThirdTerm(String thirdTerm) {
-        this.thirdTerm = thirdTerm;
-    }
-
-    public String getForthTerm() {
-        return forthTerm;
-    }
-
-    public void setForthTerm(String forthTerm) {
-        this.forthTerm = forthTerm;
-    }
-
-
 
     @Override
     public String toString() {
-        return "Terms{" +
+        return "Term{" +
                 "id=" + id +
-                ", firstTerm='" + firstTerm + '\'' +
-                ", secondTerm='" + secondTerm + '\'' +
-                ", thirdTerm='" + thirdTerm + '\'' +
-                ", forthTerm='" + forthTerm + '\'' +
-
+                ", terms='" + terms + '\'' +
                 '}';
     }
 }

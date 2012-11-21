@@ -236,7 +236,7 @@ public class InvoiceDao extends BaseDao<Invoice,Integer>{
         return invoicelst;
     }
     public String createPdf(Invoice invoice, Advance advance) {
-        String filepath=null;
+        /*String filepath=null;
         try {
             Document document=new Document(PageSize.A4, -70, -70, 10, 10);
             filepath="c:/Inwise/"+invoice.getCustomer().getName()+"_"+invoice.getOrder().getCustomerOrderNo()+"_"+invoice.getInvoiceNumber()+".pdf";
@@ -1709,10 +1709,10 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
             elvenrwmntable.addCell(packagecellval);
 
             }
-            /*PdfPCell packagecellval = new PdfPCell(new Phrase(invoice.getNoOfPackages().toString(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
+            *//*PdfPCell packagecellval = new PdfPCell(new Phrase(invoice.getNoOfPackages().toString(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
             packagecellval.setHorizontalAlignment(Element.ALIGN_CENTER);
             elvenrwmntable.addCell(packagecellval);
-*/
+*//*
             PdfPCell vehiclecellval = new PdfPCell(new Phrase(invoice.getVehicleNo(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9)));
             vehiclecellval.setHorizontalAlignment(Element.ALIGN_CENTER);
             elvenrwmntable.addCell(vehiclecellval);
@@ -1952,7 +1952,8 @@ PdfPCell regioncellval = new PdfPCell(new Phrase(invoice.getRegBr()+"1", FontFac
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        return filepath;
+        return filepath;*/
+        return null;
 
     }
     String[] unitdo = { "", " One", " Two", " Three", " Four", " Five", " Six",
