@@ -68,28 +68,8 @@ return false;
 <td width="33" align="right" valign="top">
 <div align="right" ></div>
 </td>
-<td width="717"><textarea name="term.firstTerm" id="test1" style="height:250px;width:800px;resize:none;" >${term.firstTerm}</textarea></td>
+<td width="717"><textarea name="term.terms" id="test1" style="height:250px;width:800px;resize:none;" >${term.terms}</textarea></td>
 </tr>
-<%--
-<tr>
-<td width="33" align="right" valign="top">
-<div align="right" ><b>2:</b></div>
-</td>
-<td width="717"><textarea name="term.secondTerm" style="height:40px;width:600px;resize:none;" >${term.secondTerm}</textarea></td>
-</tr>
-<tr>
-<td width="33" align="right" valign="top">
-<div align="right" ><b>3:</b></div>
-</td>
-<td width="717"><textarea name="term.thirdTerm" style="height:40px;width:600px;resize:none;" >${term.thirdTerm}</textarea></td>
-</tr>
-<tr>
-<td width="33" align="right" valign="top">
-<div align="right" ><b>4:</b></div>
-</td>
-<td width="717"><textarea name="term.forthTerm" style="height:40px;width:600px;resize:none;" >${term.forthTerm}</textarea></td>
-</tr>
---%>
 
 
 <tr ><s:hidden name="term.id" ></s:hidden>

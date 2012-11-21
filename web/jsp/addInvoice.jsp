@@ -34,7 +34,7 @@
 <s:layout-render name="/layout/_base.jsp">
 
 <s:layout-component name="head">
-<script type="text/javascript">
+<%--<script type="text/javascript">--%>
 <%--
     var t1=0.0;var t2=0.0;var t3=0.0;var t4=0.0;var t5=0.0;var t6=0.0; var t7=0.0;var taxloop=0.0;
     var calinTotalAmount =0.0;//parseFloat(document.getElementById("inTotalAmount").value);
@@ -83,30 +83,7 @@
 
                             ooid.options[1]=new Option(oo,oid,false,true);
 
-                         $.get("order?InvoiceToAddressAjax",{invoiceToAddressId:$('#custodid').html()}, function (result) {
-                var data=eval(result);
 
-                var options='';
-
-                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
-
-                $("#invoiceAddress").html(options);
-
-
-
-            });
-            $.get("order?ShipmentToAddressAjax",{shipmentToAddressId:$('#custodid').html()}, function (result) {
-                var data=eval(result);
-
-                var options='';
-
-                    options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
-
-
-                $("#shipmentAddress").html(options);
-
-
-            });
 
 
         $('.generatenpreviewbtn').click(function(){
@@ -176,56 +153,12 @@
       });
 
 ----%>
-$(document).ready(function(){
-    $('#inoid').change(function(){
+<%--//$(document).ready(function(){--%>
+<%----%>
+<%----%>
+<%--//});--%>
 
 
-        if($('#inoid').attr('value')!=""){
-
-            var current=this;
-            var orderId=$(this).attr("value");
-
-            $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
-                var data=eval(result);
-
-                if(data){
-                    $('#hide').html("Invoice of Order Id "+orderId+" is dispatched.");
-                    $('#hide').css({
-                        align:"right",
-                        color:"red"
-                    });
-
-
-                }else{
-                    current.form.action='invoice?getOrderDetail';
-                    current.form.submit();
-
-                }
-            });
-
-        }
-    });
-
-});
-
-function getCustomerOrder(){
-    /*     this.form.action='order?getCustomerOrderNo';
-     this.form.submit();*/
-
-    $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
-
-        var data=eval(result);
-
-        var options = '<option value="">---Select Customer Order No---</option>';
-        for (var i = 0; i < data.length; i++) {
-
-            options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
-        }
-        $("#inoid").html(options);
-    });
-    $('.trid').show();
-
-}
 <%--
 function Adv()
 {
@@ -772,76 +705,324 @@ $('#inIssue').timepicker({
 
 
 
-</script>
+<%--</script>--%>
 
 <script type="text/javascript">
-    $(document).ready(function(){
 
-        //enable the input textfields of the selected row
-        var enableRow=function(index){
-            $('#material'+index).removeAttr("disabled").css("background-color","lightblue");
-            $('#chapterId'+index).removeAttr("disabled").css("background-color","lightblue");
-            $('#dispatching'+index).removeAttr("disabled").css("background-color","lightblue");
-        };
+function getCustomerOrder(){
+    /*     this.form.action='order?getCustomerOrderNo';
+     this.form.submit();*/
 
-        //disable the input textfields of the selected row
-        var disableRow=function(index){
-            $('#material'+index).attr("disabled","disabled").css("background-color","#edeeef");
-            $('#chapterId'+index).attr("disabled","disabled").css("background-color","#edeeef");
-            $('#dispatching'+index).attr("disabled","disabled").css("background-color","#edeeef");
-        };
+    $.get("order?getCustomerOrderNo", {id:$('#incname').val()}, function (result) {
 
+        var data=eval(result);
 
-        //function to extract row index from selected checkbox id and then enable or disable row
-        var productIndividualCheckBox=function(that){
-            var id=that.attr("id");
-            var index=id.substring(5);
-            if($(that).is(':checked')){
-                enableRow(index);
-            }else{
-                disableRow(index);
-            }
+        var options = '<option value="">---Select Customer Order No---</option>';
+        for (var i = 0; i < data.length; i++) {
 
-        };
+            options += '<option value="' + data[i].id + '">' + data[i].customerOrderNo + '</option>';
+        }
+        $("#inoid").html(options);
+    });
+    $('.trid').show();
 
-        //check/uncheck individual selected product rows
-        $('.productRowCheckBox').change(function(){
-            var that=$(this);
-            productIndividualCheckBox(that);
-        });
+}
 
-        //check/uncheck all product rows
-        $('#allbox').change(function(){
-            var allBox=$(this);
-            if(allBox.is(':checked')){
-                $('.productRowCheckBox').each(function(){
-                    var checkBox=$(this);
-                    checkBox.attr("checked","checked");
-                    productIndividualCheckBox(checkBox);
-                });
-            }else{
-                $('.productRowCheckBox').each(function(){
-                    var checkBox=$(this);
-                    checkBox.removeAttr("checked");
-                    productIndividualCheckBox(checkBox);
-                });
-            }
+$(document).ready(function(){
 
-        });
+    $('#inoid').change(function(){
 
 
-        //calcullate amount
-        var calculateAmount=function(that){
-            var id=that.attr("id");
-            var index=id.substring(11);
-            alert(index);
-        };
+        if($('#inoid').attr('value')!=""){
 
-        $('.dispatching').fo
+            var current=this;
+            var orderId=$(this).attr("value");
+
+            $.get("order?checkInvoiceForThisOrderDispatched",{id:orderId}, function (result) {
+                var data=eval(result);
+
+                if(data){
+                    $('#hide').html("Invoice of Order Id "+orderId+" is dispatched.");
+                    $('#hide').css({
+                        align:"right",
+                        color:"red"
+                    });
+
+
+                }else{
+                    current.form.action='invoice?getOrderDetail';
+                    current.form.submit();
+
+                }
+            });
+
+        }
+    });
+
+    $.get("order?InvoiceToAddressAjax",{invoiceToAddressId:$('#custodid').html()}, function (result) {
+        var data=eval(result);
+
+        var options='';
+
+        options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+
+        $("#invoiceAddress").html(options);
 
 
 
     });
+    $.get("order?ShipmentToAddressAjax",{shipmentToAddressId:$('#custodid').html()}, function (result) {
+        var data=eval(result);
+
+        var options='';
+
+        options += data.line1+","+ data.line2+","+ data.city+"-"+data.zip ;
+
+
+        $("#shipmentAddress").html(options);
+
+
+    });
+
+    //check/uncheck individual selected product rows
+    $('.productRowCheckBox').change(function(){
+        var productRow=$(this);
+        productIndividualCheckBox(productRow);
+    });
+
+
+    //check/uncheck all product rows
+    $('#allbox').change(function(){
+        var allBox=$(this);
+        if(allBox.is(':checked')){
+            $('.productRowCheckBox').each(function(){
+                var checkBox=$(this);
+                checkBox.attr("checked","checked");
+                productIndividualCheckBox(checkBox);
+            });
+        }else{
+            $('.productRowCheckBox').each(function(){
+                var checkBox=$(this);
+                checkBox.removeAttr("checked");
+                productIndividualCheckBox(checkBox);
+            });
+        }
+    });
+
+    //function to extract row index from selected checkbox id and then enable or disable row
+    var productIndividualCheckBox=function(productRow){
+        var id=productRow.attr("id");
+        var index=id.substring(5);
+        if($(productRow).is(':checked')){
+            enableProductRow(index);
+        }else{
+            disableProductRow(index);
+        }
+    };
+
+    //enable the input of the selected product row
+    var enableProductRow=function(index){
+        $('#productId'+index).removeAttr("disabled");
+        $('#material'+index).removeAttr("disabled").css("background-color","lightblue");
+        $('#chapterId'+index).removeAttr("disabled").css("background-color","lightblue");
+        $('#dispatching'+index).removeAttr("disabled").attr("value","").css("background-color","lightblue");
+    };
+
+    //disable the input of the selected product row
+    var disableProductRow=function(index){
+        $('#productId'+index).attr("disabled","disabled");
+        $('#material'+index).attr("disabled","disabled").attr("value","").css("background-color","#edeeef");
+        $('#chapterId'+index).attr("disabled","disabled").attr("value","").css("background-color","#edeeef");
+        $('#dispatching'+index).attr("disabled","disabled").attr("value","0").css("background-color","#edeeef").change();
+        calculateTotalAmount();
+    };
+
+    //calculate amount
+    $('.dispatching').change(function(){
+        var dispatching=$(this);
+        var id=dispatching.attr("id");
+        var index=id.substring(11);
+        var dispatchingQuantity=parseFloat(dispatching.attr("value"));
+        var remainingQuantity=parseFloat($('#remainingQuantity'+index).attr("value"));
+        if(dispatchingQuantity > remainingQuantity){
+            alert("Dispatching quantity cannot be greater than "+remainingQuantity);
+            dispatching.attr("value","").focus();
+        }else{
+            calculateAmount(index,dispatchingQuantity);
+        }
+    });
+
+
+    var calculateAmount=function(index, dispatchingQuantity){
+        var productCost=parseFloat($('#productCost'+index).attr("value"));
+        var amount=dispatchingQuantity * productCost;
+        $('#amount'+index).attr("value",amount.toFixed(2));
+        calculateTotalAmount();
+    };
+
+
+
+    var calculateTotalAmount=function(){
+        var totalAmount=0.00;
+        $('.amount').each(function(){
+            var amountRow=$(this);
+            var currentAmount=parseFloat(amountRow.attr("value"));
+            totalAmount=totalAmount+currentAmount;
+        });
+        $('#totalAmount').attr("value",totalAmount.toFixed(2));
+        recalculateTaxCharge();
+        calculateGrandTotal();
+        enableDisableTaxCheckBox();
+    };
+
+    var enableDisableTaxCheckBox=function(){
+        if($('#totalAmount').attr("value")=="0.00"){
+            $('.taxCheckBox').each(function(){
+                $(this).attr("disabled","disabled").removeAttr("checked").change();
+            });
+        }else{
+            $('.taxCheckBox').each(function(){
+                $(this).removeAttr("disabled");
+            });
+        }
+    };
+
+
+    //check/uncheck tax row
+    $('.taxCheckBox').change(function(){
+        var taxRow=$(this);
+        taxIndividualCheckBox(taxRow);
+    });
+
+    //function to extract row index from selected checkbox id and then enable or disable row
+    var taxIndividualCheckBox=function(taxRow){
+        var id=taxRow.attr("id");
+        var index=id.substring(11);
+        if($(taxRow).is(':checked')){
+            enableTaxRow(index);
+        }else{
+            disableTaxRow(index);
+        }
+    };
+
+    //enable the input of the selected tax row
+    var enableTaxRow=function(index){
+        $('#applicableOn'+index).removeAttr("disabled").css("background-color","lightblue");
+    };
+
+    var taxIndependent=true;
+    //disable the input of the selected tax row
+    var disableTaxRow=function(index){
+        checkDependentTaxes(index);
+        if(taxIndependent){
+            $('#applicableOn'+index).attr("disabled","disabled").attr("value","0").css("background-color","#edeeef").change();
+            $('#taxAmount'+index).attr("value","0.00");
+            calculateTotalTaxCharge();
+        }
+        taxIndependent=true;
+    };
+
+    var checkDependentTaxes=function(index){
+        var taxName=$('#taxName'+index).attr("value");
+        $('.taxCheckBox').each(function(){
+            var currentCheckBox=$(this);
+            var currentId=currentCheckBox.attr("id");
+            var currentIndex=currentId.substring(11);
+            if(currentCheckBox.is(':checked')){
+                var applicableOn=$('#applicableOn'+currentIndex).attr("value");
+                if(applicableOn==taxName){
+                    alert("please uncheck dependent taxes.");
+                    $('#taxCheckBox'+index).attr("checked","checked");
+                    taxIndependent=false;
+                }
+            }
+        });
+    };
+
+    var recalculateTaxCharge=function(){
+        $('.applicableOn').each(function(){
+            $(this).change();
+        });
+    };
+
+    $('.applicableOn').change(function(){
+        var applicableOnRow=$(this);
+        var id=applicableOnRow.attr("id");
+        var index=id.substring(12);
+        var applicableOn=applicableOnRow.attr("value");
+        if(applicableOn=="totalAmount"){
+            calculateIndividualTax(index,index,applicableOn);
+        }else{
+            $('.taxCheckBox').each(function(){
+                var checkBox=$(this);
+                var id=checkBox.attr("id");
+                var indexCheckBox=id.substring(11);
+                var taxName=$('#taxName'+indexCheckBox).attr("value");
+                var taxAmount=parseFloat($('#taxAmount'+indexCheckBox).attr("value"));
+                if(applicableOn==taxName){
+                    if(!checkBox.is(':checked')){
+                        alert(applicableOn+" is not selected.");
+                        applicableOnRow.attr("value","0");
+                        $('#taxAmount'+indexCheckBox).attr("value","0.00");
+                    }else if(taxAmount=="0.00"){
+                        alert(applicableOn+" value is zero.");
+                        applicableOnRow.attr("value","0");
+                    }else{
+                        calculateIndividualTax(index,indexCheckBox,applicableOn);
+                    }
+
+                }
+            });
+        }
+    });
+
+    var calculateIndividualTax=function(index,indexCheckBox,applicableOn){
+        var taxPercentage=parseFloat($('#taxPercentage'+index).attr("value"));
+        var totalAmount=0.00;
+        if(applicableOn=="totalAmount"){
+            totalAmount=parseFloat($("#totalAmount").attr("value"));
+        }else{
+            totalAmount=parseFloat($("#taxAmount"+indexCheckBox).attr("value"));
+        }
+        var tax= ((taxPercentage/100)* totalAmount).toFixed(2);
+        $('#taxAmount'+index).attr("value",tax);
+        calculateTotalTaxCharge();
+
+    };
+
+    var calculateTotalTaxCharge=function(){
+        var totalTax=0.00;
+        $('.taxAmount').each(function(){
+            var taxRox=$(this);
+            var currentTax=parseFloat(taxRox.attr("value"));
+            totalTax=totalTax+currentTax;
+        });
+        $('#taxCharges').attr("value",totalTax.toFixed(2));
+        calculateGrandTotal();
+    };
+
+    var calculateGrandTotal=function(){
+        var totalAmount=parseFloat($('#totalAmount').attr("value"));
+        var taxCharges=parseFloat($('#taxCharges').attr("value"));
+        var grandTotal=totalAmount+taxCharges;
+        $('#grandTotal').attr("value",grandTotal.toFixed(2));
+        calculateNetPayable();
+    };
+
+    $('#advanceEntered').change(function(){
+        calculateNetPayable();
+    });
+
+    var calculateNetPayable=function(){
+        var grandTotal=parseFloat($('#grandTotal').attr("value"));
+        var advanceEntered=parseFloat($('#advanceEntered').attr("value"));
+        var netPayable=grandTotal-advanceEntered;
+        $('#netPayable').attr("value",netPayable.toFixed(2));
+    };
+
+
+
+});
 </script>
 </s:layout-component>
 <s:layout-component name="left-menu">
@@ -934,7 +1115,6 @@ $('#inIssue').timepicker({
 <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
 <tr>
 <td colspan="4"><table width="100%" border="0" cellpadding="0" cellspacing="0">
-<c:forEach items="${invoiceBean.order.orderDetail}" var="orderdetailarray" varStatus="loop" >
 <tr>
 <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"  align="center">
@@ -999,6 +1179,7 @@ $('#inIssue').timepicker({
             <tr>
                 <td align="center" valign="top" class="foreach_table_firstth"><div style="margin-top:5px;">
                     <s:checkbox name="chkbx" id="chkbx${loop.index}" class="productRowCheckBox"/>
+                    <s:hidden name="invoice.invoiceDetail[${loop.index}].product.id" id="productId${loop.index}" disabled="disabled" value="${orderdetailarray.product.id}"/>
                 </div></td>
                 <td valign="top"  class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">  <b>${loop.index+1}</b>
                 </div></td>
@@ -1009,26 +1190,26 @@ $('#inIssue').timepicker({
                     <s:text name="invoice.invoiceDetail[${loop.index}].chapterId" id="chapterId${loop.index}" disabled="disabled" size="15" maxlength="20" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" value="${orderdetailarray.product.productName}"  id="inProdName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                    <s:text name="invoice.invoiceDetail[${loop.index}].product.productName" disabled="disabled" value="${orderdetailarray.product.productName}"  id="inProdName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
                     <s:text name="invoice.invoiceDetail[${loop.index}].dispatching" value="${orderdetailarray.orderedQuantity}" id="inOrdQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.order.orderDetail[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="inRemQty${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                    <s:text name="invoice.order.orderDetail[${loop.index}].remainingQuantity" value="${orderdetailarray.remainingQuantity}" id="remainingQuantity${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.cost}" id="inProdCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                    <s:text name="invoice.invoiceDetail[${loop.index}].productCost" value="${orderdetailarray.cost}" id="productCost${loop.index}" size="10" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="right"   style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
                     <span id="mtype${loop.index}" style="margin-top:0px ; border:0px; text-align:right; font-size: 12px;">${orderdetailarray.product.unit.name}</span></div></td>
                 <td valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:1px; margin-left:1px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.invoiceDetail[${loop.index}].dispatched" id="dispatching${loop.index}" size="20" class="dispatching"
+                    <s:text name="invoice.invoiceDetail[${loop.index}].dispatched" id="dispatching${loop.index}" value="0" size="20" class="dispatching"
                             disabled="disabled" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;background-color:#edeeef;   font-size: 12px;"/>
                     <div style="color: #ff0000; font-size:10px;">*</div>
                 </div></td>
                 <td valign="top" class="foreach_table_th"><div align="right" style="margin-top:5px; margin-bottom:5px; margin-right:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="0.00" id="amount${loop.index}" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
+                    <s:text name="invoice.invoiceDetail[${loop.index}].dueQuantity" value="0.00" id="amount${loop.index}" class="amount" size="20" readonly="readonly" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>
                     <s:hidden name="inCount" id="inCount" value="${loop.index}"/>
                 </div></td>
             </tr>
@@ -1038,7 +1219,7 @@ $('#inIssue').timepicker({
             <td colspan="8">&nbsp;</td>
             <td colspan="2"  nowrap style="border-right:1px solid #ccccff"><div align="center" class="labels"> <b>Total Amount ( A )</b></div></td>
             <td style="border-right:1px solid #ccccff; border-bottom:1px solid #ccccff;height:24px; "><div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-                <s:text name="invoice.totalAmount" id="inTotalAmount" formatType="number" formatPattern="##.##"  size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right;"/>
+                <s:text name="invoice.totalAmount" id="totalAmount" size="20"  readonly="readonly" value="0.00" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right;"/>
             </div></td>
         </tr>
     </table></td>
@@ -1057,29 +1238,34 @@ $('#inIssue').timepicker({
         <c:forEach items="${invoiceBean.taxlst}" var="tax" varStatus="loop">
             <tr><td width="40%" align="left" valign="top">&nbsp;</td>
                 <td width="3%" align="center" valign="top" class="foreach_table_firstth"><div style="margin-top:5px;">
-                    <s:checkbox name="taxchkbx" id="taxchkbx${loop.index}" onClick="return Selected(${loop.index});"/>
+                    <s:checkbox name="taxchkbx" id="taxCheckBox${loop.index}" class="taxCheckBox" disabled="disabled"/>
                 </div></td>
                 <td width="11%" valign="top"  class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.taxes[${loop.index}].tax.name" value="${tax.name}" disabled="disabled" id="taxName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/></div></td>
+                    <s:text name="invoice.taxes[${loop.index}].taxName" value="${tax.name}" id="taxName${loop.index}" size="15" readonly="readonly" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/></div></td>
                 <td width="5%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.taxes[${loop.index}].previousTaxPercent" value="${tax.taxPercentage}" disabled="disabled" id="taxPercentage${loop.index}" readonly="readonly" size="15" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>                                  </div></td>
+                    <s:text name="invoice.taxes[${loop.index}].previousTaxPercent" value="${tax.taxPercentage}" id="taxPercentage${loop.index}" readonly="readonly" size="15" maxlength="10" style="margin-top:0px ; border:0px; text-align:right;   font-size: 12px;"/>                                  </div></td>
                 <td width="10%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
                     <b>applied on</b>
                 </div></td>
 
                 <td width="13%" valign="top" class="foreach_table_th"><div style="color: #ff0000; font-family: Verdana; font-size:10px; margin-top:5px; margin-right:3px; font-size: 12px;" class="labels">
 
-                    <s:select id="applicableOn${loop.index}" name="invoice.taxes[${loop.index}].applicableOn" disabled="disabled" class="dropdown">
+                    <s:select id="applicableOn${loop.index}" name="invoice.taxes[${loop.index}].applicableOn" disabled="disabled" class="dropdown applicableOn">
                         <option  value="0">---Select Applicable On---</option>
                         <option  value="totalAmount">Total Amount</option>
-                        <c:forEach items="${invoiceBean.taxlst}" var="orderloop" varStatus="loop" >
-                            <option value="<c:out value="${orderloop.name}"/>"><c:out value="${orderloop.name}"/></option>
+                        <c:forEach items="${invoiceBean.taxlst}" var="orderloop" >
+                            <c:choose>
+                                <c:when test="${orderloop.name ne tax.name}">
+                                    <option value="<c:out value="${orderloop.name}"/>"><c:out value="${orderloop.name}"/></option>
+                                </c:when>
+                            </c:choose>
+
                         </c:forEach>
                     </s:select>
                 </div>
                 </td>
-                <td width="35%" valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
-                    <s:text name="invoice.taxes[${loop.index}].applicableOnAmount" id="applicableOnAmount${loop.index}" size="15" disabled="disabled" readonly="readonly" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
+                <td width="20%" valign="top" class="foreach_table_th"><div align="left" style="margin-top:5px; margin-bottom:5px; margin-right:3px;  margin-left:3px; font-size: 12px;" class="labels">
+                    <s:text name="invoice.taxes[${loop.index}].taxAmount" id="taxAmount${loop.index}" class="taxAmount" value="0.00" size="15" readonly="readonly" style="margin-top:0px ;background-color:#edeeef; border:0px; text-align:right; font-size: 12px;"/>
                 </div></td>
             </tr>
             <c:if test="${loop.last}"> <span style="visibility:hidden;" id="inCount">${loop.count}</span></c:if>
@@ -1089,7 +1275,7 @@ $('#inIssue').timepicker({
             <td colspan="2"  nowrap style="border-right:1px solid #ccccff"><div align="right" style="margin-left:15px;" class="labels"> <b>Tax Charges ( B )<br />
                 (Sum of Taxes)</b></div></td>
             <td style="border-right:1px solid #ccccff; border-bottom:1px solid #ccccff;height:24px; "><div align="right" style="color: #ff0000; font-family: Verdana; font-size:10px; margin-right:3px;">
-                <s:text name="invoice.taxCharges" id="inTaxCharges"   size="22"  style="text-align:right;background-color:#ccccff; "  class="textbox" readonly="readonly" value="0.00"/>
+                <s:text name="invoice.taxCharges" id="taxCharges"   size="22"  style="text-align:right;background-color:#ccccff; "  class="textbox" readonly="readonly" value="0.00"/>
             </div></td>
         </tr>
     </table></td>
@@ -1130,7 +1316,7 @@ $('#inIssue').timepicker({
 <tr>
     <td colspan="4"><table width="80%" border="0" cellpadding="0" cellspacing="0" align="center">
         <tr>
-            <td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Grand Total ( A+B+C )</u></b></div></td>
+            <td width="5%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Grand Total ( A+B )</u></b></div></td>
             <td width="2%" align="left" valign="top"><div align="center" class="labels" style="margin-top:10px;"> <b>_</b></div></td>
             <td width="8%" nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000;"><div align="center" class="labels"> <b><u>Advance Available</u> &nbsp;</b> <img src="images/Rupee.JPG"/>&nbsp;
                 <c:choose>
@@ -1147,15 +1333,15 @@ $('#inIssue').timepicker({
         </tr>
         <tr>
             <td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;"><div align="center">
-                <s:text name="invoice.grandTotal" id="inGrandTotal" formatType="number" formatPattern="##.##" class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+                <s:text name="invoice.grandTotal" id="grandTotal" formatType="number" formatPattern="##.##" class="textbox" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
             </div></td>
             <td align="left" valign="top"></td>
             <td  nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000;"><div align="center" class="labels"> <b><u>Deduct Advance</u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                <s:text name="invoice.amountDetect"  value="0.00" id="inAdvanceEntered"  size="12" style="text-align:right;border:1px solid #ccccff;" onFocus="if(this.value==''){this.value='0.00';}" onChange="return Adv();if(this.value==''){this.value='0.00';}"/>
+                <s:text name="invoice.amountDetect"  value="0.00" id="advanceEntered"  size="12" style="text-align:right;border:1px solid #ccccff;" onFocus="if(this.value==''){this.value='0.00';}" onChange="if(this.value==''){this.value='0.00';}"/>
             </div></td>
             <td align="left" valign="top"></td>
             <td nowrap style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-bottom: 1px solid #000000;"><div align="center">
-                <s:text name="invoice.netPayable" class="textbox" id="inNetPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
+                <s:text name="invoice.netPayable" class="textbox" id="netPayable" size="15"  readonly="readonly" style="border:0px; text-align:right;background-color:#FCFCFC;" value="0.00"/>
             </div></td>
         </tr>
         <tr>
@@ -1233,7 +1419,8 @@ $('#inIssue').timepicker({
     <td align="left"><div style="color: #ff0000; font-family: Verdana; font-size:10px ;">
         <s:text name="invoice.dueDate" id="dueDate" readonly="readonly" onFocus="showCalendarControl(this);"  class="textbox"  />
     </div></td>
-</tr>                          <tr>
+</tr>
+<tr>
     <td align="right" valign="top"></td>
     <td align="left"></td>
 </tr>
@@ -1245,7 +1432,8 @@ $('#inIssue').timepicker({
 
         <s:textarea name="invoice.remark" wrap="off" id="inremark" style="height: 60px; width:650px;border:1px solid #ccccff; text-align: left;resize:none"/>
     </td>
-</tr>                          <tr>
+</tr>
+<tr>
     <td align="right" valign="top"></td>
     <td align="left"></td>
     <td></td>
@@ -1270,7 +1458,7 @@ $('#inIssue').timepicker({
         <s:submit class="generatenpreviewbtn" name="addgenerate"  value="Generate" />
         &nbsp;&nbsp;
         &nbsp;&nbsp;
-        <s:submit class="generatenpreviewbtn" name="addpreview" value="Preview"></s:submit>
+        <s:submit class="generatenpreviewbtn" name="addpreview" value="Preview"/>
         &nbsp;&nbsp;
         <s:submit name="cancel" class="buttons" value="Cancel"/></td>
 </tr>
@@ -1279,7 +1467,6 @@ $('#inIssue').timepicker({
 </table>
 </div></td>
 </tr>
-</c:forEach>
 </table></td>
 </tr>
 </table>

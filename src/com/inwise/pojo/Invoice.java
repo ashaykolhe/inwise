@@ -98,6 +98,17 @@ public class Invoice {
     @Column(name = "amount_detect",length = 10,precision = 8)
     private Double amountDetect;
 
+    @Transient
+    private Double dueQuantity;
+
+    public Double getDueQuantity() {
+        return dueQuantity;
+    }
+
+    public void setDueQuantity(Double dueQuantity) {
+        this.dueQuantity = dueQuantity;
+    }
+
     public Integer getInvoiceNumber() {
         return invoiceNumber;
     }
