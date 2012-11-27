@@ -233,7 +233,7 @@ public class InvoiceActionBean extends BaseActionBean{
 
         }
         List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
-        
+
         for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
             InvoiceDetail idetail=(InvoiceDetail)i.next();
             if(idetail==null){
@@ -274,12 +274,22 @@ public class InvoiceActionBean extends BaseActionBean{
     public Resolution addgenerate()
     {
         List<InvoiceDetail> invoicedetail=invoice.getInvoiceDetail();
-        InvoiceDetail id=null;
         for(Iterator<InvoiceDetail> i=invoicedetail.iterator();i.hasNext();){
-            id=(InvoiceDetail)i.next();
-            if(id==null){
+            InvoiceDetail idetail=(InvoiceDetail)i.next();
+            if(idetail==null){
                 i.remove();
-                continue;
+            }else if(idetail.getProduct()==null){
+                i.remove();
+            }
+        }
+
+        List<TaxDTO> taxes=invoice.getTaxes();
+        for (Iterator<TaxDTO> taxDTOIterator = taxes.iterator(); taxDTOIterator.hasNext();) {
+            TaxDTO taxDTO = taxDTOIterator.next();
+            if(taxDTO==null){
+                taxDTOIterator.remove();
+            }else if(taxDTO.getApplicableOn()==null){
+                taxDTOIterator.remove();
             }
         }
         if(invoice.getAmountRemained()==null)
@@ -289,6 +299,7 @@ public class InvoiceActionBean extends BaseActionBean{
 
         invoice.setDeleted(0);
         invoice.setInvoiceDetail(invoicedetail);
+        invoice.setTaxes(taxes);
         //   in=invoice.getInvoiceNumber();
 
         orderDao.setRemainingNDispatchedQtyForUpdateOrder(invoice.getOrder().getId(),invoice.getInvoiceDetail());
@@ -403,10 +414,31 @@ public class InvoiceActionBean extends BaseActionBean{
     public Resolution editinvoice()
     {
 
-        invoice=invoiceDao.findByInvoiceNumber(invoice.getInvoiceNumber());
-
+        invoice = invoiceDao.findByInvoiceNumber(invoice.getInvoiceNumber());
+        List<TaxDTO> invoicedTax=invoice.getTaxes();
+        List<TaxDTO> tempTax=invoice.getTaxes();
+        taxlst=taxDao.listAll();
+        for (Iterator<Tax> iterator = taxlst.iterator(); iterator.hasNext();) {
+            Tax tax = iterator.next();
+            int count=0;
+            for (Iterator<TaxDTO> taxDTOIterator = invoicedTax.iterator(); taxDTOIterator.hasNext();) {
+                TaxDTO taxDTO = taxDTOIterator.next();
+                if(!tax.getName().equals(taxDTO.getTaxName())){
+                    count++;
+                }
+                if(count==invoicedTax.size()){
+                    TaxDTO taxNotPresent=new TaxDTO();
+                    taxNotPresent.setTaxName(tax.getName());
+                    taxNotPresent.setPreviousTaxPercent(tax.getTaxPercentage());
+                    taxNotPresent.setApplicableOn(null);
+                    taxNotPresent.setTaxAmount(0D);
+                    tempTax.add(taxNotPresent);
+                }
+            }
+        }
+        
         advance=advanceDao.getAdvancedByOrderId(ad);
-        productcategory=invoiceDao.getProductCategorylst();
+
 
 
         return new ForwardResolution("jsp/editInvoice.jsp");

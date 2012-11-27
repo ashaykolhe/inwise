@@ -15,6 +15,7 @@
 
 <%@ taglib prefix="ajax" uri="http://ajaxtags.sourceforge.net/tags/ajaxtags" %>
 <script type="text/javascript" src="js/jquery.js"></script>
+
 <link href="css/CalendarControl.css" rel="stylesheet" type="text/css">
 <link href="css/popup_error.css" rel="stylesheet" type="text/css">
 <script src="js/hoverIntent.js"></script>
