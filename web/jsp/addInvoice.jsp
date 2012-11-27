@@ -8,7 +8,7 @@
 <%@ include file="/includes/_taglibInclude.jsp" %>
 <link rel="stylesheet" href="css/general.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" />
-<%--<c:set var = "TR1" value="invoicereceipt"/>
+<c:set var = "TR1" value="invoicereceipt"/>
 <c:if test="${actionBean.hiddenvalue eq TR1}">
     <script type="text/javascript">
         function OpenPopup(){
@@ -25,11 +25,10 @@
         }
         window.onLoad =OpenPopup();
     </script>
-</c:if >--%>
+</c:if >
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <s:useActionBean beanclass="com.inwise.action.InvoiceActionBean" var="invoiceBean" event="pre" ></s:useActionBean>
-<%--<%request.setAttribute("prodlst",invoiceBean.getProductcategory());%>--%>
 
 <s:layout-render name="/layout/_base.jsp">
 
@@ -1032,7 +1031,6 @@ $(document).ready(function(){
         <li class="left_menu_heading">Invoice</li>
         <li style="margin-top:35px">
             <s:link beanclass="com.inwise.action.InvoiceActionBean" event="pre">Generate</s:link></li>
-        <li><s:link beanclass="com.inwise.action.InvoiceActionBean" event="preupdate">Update</s:link></li>
         <li><s:link beanclass="com.inwise.action.PaymentStatusActionBean" event="page">Payment Status</s:link></li>
     </ul>
 
